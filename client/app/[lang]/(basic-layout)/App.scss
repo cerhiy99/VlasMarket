@@ -1,0 +1,81 @@
+// font-family: 'Onest', sans-serif;
+
+body {
+  min-height: 100vh;
+  margin: 0;
+  background-color: #f3f7fb;
+  font-family: 'Roboto', sans-serif;
+}
+
+main {
+  min-height: 50vh;
+}
+
+footer {
+  width: 100%;
+  position: relative;
+  bottom: 0;
+}
+
+@mixin admin-responsive-width {
+  margin: 0 auto;
+  width: 95%;
+}
+
+@mixin responsive-width {
+  margin: 0 auto;
+  @media (min-width: 768px) {
+    width: 94%;
+  }
+  /*
+  @media (max-width: 1024px) and (min-width: 768px) {
+    width: 95%;
+  }*/
+
+  @media (max-width: 767px) {
+    width: 98%;
+  }
+  @media (max-width: 375px) {
+    width: 95%;
+  }
+  max-width: 1600px;
+}
+// @font-face {
+//   font-family: 'PT Root UI';
+//   src:
+//     url('../assest/fonts/font/PTRootUI-Regular.woff2') format('woff2'),
+//     url('../../assest/fonts/font/PTRootUI-Regular.woff') format('woff'),
+//     url('../assest/fonts/pt-root-ui/PT Root UI_Regular.otf') format('opentype');
+//   font-weight: 400;
+//   font-style: normal;
+// }
+
+// @font-face {
+//   font-family: 'PT Root UI';
+//   src:
+//     url('../assest/fonts/font/PTRootUI-Bold.woff2') format('woff2'),
+//     url('../assest/fonts/font/PTRootUI-Bold.woff') format('woff'),
+//     url('../assest/fonts/pt-root-ui/PT Root UI_Bold.otf') format('opentype');
+//   font-weight: 700;
+//   font-style: normal;
+// }
+
+// @font-face {
+//   font-family: 'PT Root UI';
+//   src:
+//     url('../assest/fonts/font/PTRootUI-Medium.woff2') format('woff2'),
+//     url('../assest/fonts/font/PTRootUI-Medium.woff') format('woff'),
+//     url('../assest/fonts/pt-root-ui/PT Root UI_Medium.otf') format('opentype');
+//   font-weight: 500;
+//   font-style: normal;
+// }
+
+// @font-face {
+//   font-family: 'PT Root UI';
+//   src:
+//     url('../assest/fonts/font/PTRootUI-Light.woff2') format('woff2'),
+//     url('../assest/fonts/font/PTRootUI-Light.woff') format('woff'),
+//     url('../assest/fonts/pt-root-ui/PT Root UI_Light.otf') format('opentype');
+//   font-weight: 300;
+//   font-style: normal;
+// }

@@ -1,0 +1,135 @@
+.header-search {
+  width: calc(100%);
+  display: flex;
+  height: 40px;
+  box-sizing: border-box;
+  position: relative; /* Додаємо для позиціонування випадаючого списку */
+
+  input {
+    font: inherit;
+    width: 100%;
+    padding: 0 0 0 15px;
+    border: none;
+    font-size: 15px;
+    font-weight: 400;
+    line-height: 17.73px;
+    color: #000000;
+    border-radius: 5px 0px 0px 5px;
+    outline: none; /* Прибираємо стандартний outline при фокусі */
+    box-shadow: none; /* Прибираємо стандартний box-shadow при фокусі */
+
+    &::placeholder {
+      font-size: 13px;
+      font-weight: 400;
+      line-height: 15.73px;
+      color: #797f8b;
+      padding: 0;
+    }
+  }
+
+  .search-svg {
+    box-sizing: border-box;
+    cursor: pointer;
+    /* Додайте стилі для самої іконки, якщо потрібно (наприклад, padding, background) */
+    background-color: #f0f0f0; /* Приклад фону для кнопки пошуку */
+    display: flex;
+    align-items: center;
+    border-radius: 0 5px 5px 0;
+  }
+
+  /* Стилі для випадаючого списку підказок */
+  .search-dropdown {
+    position: absolute;
+    top: calc(100% - 5px); /* Розміщуємо під полем введення */
+    left: 0;
+    width: calc(100% - 56.5px); /* Ширина як у поля пошуку */
+    background-color: #ffffff;
+    border: 1px solid #e0e0e0;
+    border-top: none; /* Прибираємо верхню межу, щоб зливалося з полем */
+    border-radius: 0 0 8px 8px; /* Округлі кути знизу */
+    box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.1); /* М'яка тінь */
+    z-index: 1000; /* Перекриває інший контент */
+    max-height: 350px; /* Обмеження висоти з прокруткою */
+    overflow-y: auto; /* Додаємо прокрутку */
+    padding: 10px 0; /* Внутрішні відступи */
+
+    /* Стилі для красивого скролу (WebKit browsers) */
+    &::-webkit-scrollbar {
+      width: 8px; /* Ширина скролу */
+    }
+
+    &::-webkit-scrollbar-track {
+      background: #f1f1f1; /* Колір фону треку скролу */
+      border-radius: 10px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background: #888; /* Колір повзунка скролу */
+      border-radius: 10px;
+      &:hover {
+        background: #555; /* Колір повзунка при наведенні */
+      }
+    }
+
+    /* Стилі для красивого скролу (Firefox) */
+    scrollbar-width: thin; /* "auto" або "thin" */
+    scrollbar-color: #888 #f1f1f1; /* колір_повзунка колір_треку */
+  }
+
+  .search-section {
+    margin-bottom: 10px; /* Відступ між секціями */
+    &:last-child {
+      margin-bottom: 0;
+    }
+
+    .search-section-title {
+      font-weight: 600;
+      padding: 5px 15px;
+      color: #333;
+      border-bottom: 1px solid #f0f0f0;
+      margin-bottom: 5px;
+      font-size: 14px;
+
+      &--product {
+        color: #007bff;
+      } /* Синій для товарів */
+      &--category {
+        color: #28a745;
+      } /* Зелений для категорій */
+      &--subcategory {
+        color: #ffc107;
+      } /* Жовтий для підкатегорій */
+      &--country {
+        color: #6f42c1;
+      } /* Фіолетовий для країн */
+    }
+
+    ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .search-item {
+      a {
+        display: block;
+        padding: 8px 15px;
+        text-decoration: none;
+        color: #333;
+        font-size: 13px;
+        transition: background-color 0.2s ease;
+
+        &:hover {
+          background-color: #f5f5f5;
+          color: #000;
+        }
+      }
+
+      .search-item__art {
+        font-size: 11px;
+        color: #888;
+        margin-left: 5px;
+      }
+    }
+  }
+}

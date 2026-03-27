@@ -1,0 +1,25 @@
+.discount-or-free-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  gap: 5px;
+  max-width: calc(100% - 35px);
+  flex-wrap: wrap;
+  position: absolute;
+  left: 3px;
+  div {
+    padding: 5px;
+    font-size: 12px;
+    font-weight: 700;
+    line-height: 9.29px;
+    text-align: center;
+    text-underline-position: from-font;
+    text-decoration-skip-ink: none;
+    color: #ffffff;
+    display: flex;
+    align-self: center;
+    justify-content: center;
+    border-radius: 9338.17px;
+    z-index: 3;
+  }
+}

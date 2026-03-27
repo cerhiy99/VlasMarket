@@ -1,0 +1,77 @@
+.coment-container {
+  background-color: #ffffff;
+  padding: 10px 15px;
+  border-radius: 8px;
+
+  .coment-tile {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    height: 24px;
+    cursor: pointer;
+
+    p {
+      margin: 0;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .coment-title-svg {
+      transition: transform 0.3s ease; // Плавне обертання стрілки
+      svg {
+        display: block;
+      }
+    }
+
+    .rotate {
+      transform: rotate(180deg); // Обертання стрілки
+    }
+  }
+
+  .open {
+    max-height: 0;
+    overflow: hidden;
+    transition:
+      max-height 0.5s ease,
+      opacity 0.5s ease;
+    opacity: 0;
+
+    &.visible {
+      max-height: 500px; // Укажіть максимальну висоту для контенту
+      opacity: 1;
+    }
+    textarea {
+      font:inherit;
+      box-sizing: border-box;
+      width: 100%;
+      padding: 10px;
+      margin-top: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      outline: none;
+      resize: none; /* Забороняє змінювати розмір */
+      overflow: hidden; /* Приховує смуги прокрутки */
+            font-size: 14px;
+      font-weight: 400;
+      line-height: 22.01px;
+      text-align: left;
+      text-underline-position: from-font;
+      text-decoration-skip-ink: none;
+      color: #333333;
+      &::placeholder {
+        
+        font-size: 13.67px;
+        font-weight: 400;
+        line-height: 16.02px;
+        text-align: left;
+        text-underline-position: from-font;
+        text-decoration-skip-ink: none;
+        color: #7d7d91;
+      }
+      &:focus {
+        border-color: #ffd400;
+      }
+    }
+  }
+}

@@ -1,0 +1,30 @@
+.search-ukr-post-container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  fieldset {
+    display: flex;
+    flex-direction: row;
+    gap: 25%;
+    margin: 0;
+    border: none;
+    padding: 0;
+    width: 100%;
+    .select-input {
+      display: flex;
+      flex-direction: row;
+      gap: 5px;
+      cursor: pointer;
+      input {
+        padding: 0;
+        margin: 0;
+      }
+      p {
+        margin: 0;
+      }
+    }
+  }
+  input {
+    margin: 5px 0;
+  }
+}

@@ -1,0 +1,148 @@
+.locality-container {
+  color: #333333;
+  .locality {
+    margin-top: 10px;
+
+    font-size: 15px;
+    line-height: 16px;
+    font-weight: 400;
+    color: #000;
+
+    span {
+      color: red;
+    }
+  }
+  .open-locality {
+    position: relative;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    #input-no-focus {
+      &:focus {
+        border-color: #ccc;
+      }
+    }
+
+    .svg-arrow-down {
+      position: absolute;
+      top: calc(50%);
+      right: 15px;
+      transform: translateY(-30%);
+      transition: transform 0.8s ease; // Плавне обертання стрілки
+
+      &.rotate {
+        transform: translateY(-30%) rotate(180deg); // Обертання стрілки на 180°
+      }
+    }
+  }
+
+  .dropdown1 {
+    max-height: 0;
+    opacity: 0;
+    overflow: hidden;
+    transition:
+      max-height 0.8s ease,
+      opacity 0.8s ease;
+
+    &.visible {
+      max-height: unset;
+      opacity: 1;
+    }
+
+    .search-city-container {
+      margin: 5px 0;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      padding: 5px;
+      .search-locality {
+        position: relative;
+        .svg-search-locality {
+          position: absolute;
+          top: calc(50% - 12px);
+          left: 5px;
+        }
+        input {
+          box-sizing: border-box;
+          padding-left: 30px;
+        }
+      }
+      ul {
+        display: flex;
+        flex-direction: column;
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        max-height: 35vh;
+        overflow-y: auto;
+
+        // Прибираємо стандартні стрілки
+        scrollbar-width: thin; /* Для Firefox */
+        scrollbar-color: #ccc transparent; /* Колір для Firefox */
+
+        // Для WebKit (Chrome, Edge, Safari)
+        &::-webkit-scrollbar {
+          width: 4px; /* Товщина скролу */
+        }
+
+        &::-webkit-scrollbar-track {
+          background: transparent; /* Фон треку скролу */
+        }
+
+        &::-webkit-scrollbar-thumb {
+          background-color: #ccc; /* Колір скролу */
+          border-radius: 8px; /* Закруглення */
+        }
+
+        &::-webkit-scrollbar-thumb:hover {
+          background-color: #aaa; /* Зміна кольору при наведенні */
+        }
+
+        &::-webkit-scrollbar-corner {
+          background: transparent; /* Прибираємо стрілки в кутах (якщо є) */
+        }
+        li {
+          margin: 0;
+          padding: 0;
+          width: 100%;
+          display: flex;
+          align-items: center;
+          border-bottom: 1px solid #ccc;
+          padding: 5px 0;
+          .li-description {
+            padding-left: 10px;
+            font-weight: 400;
+          }
+        }
+      }
+    }
+    label {
+      font-size: 13.67px;
+      font-weight: 400;
+      line-height: 20.01px;
+      text-align: left;
+      margin: 0;
+      color: #7d7d91;
+    }
+
+    .list-popular {
+      margin-top: 3px;
+
+      ul {
+        display: flex;
+        flex-direction: row;
+        list-style: none;
+        justify-content: space-between;
+        margin: 0;
+        padding: 0;
+
+        li {
+          color: blue;
+          cursor: pointer;
+        }
+      }
+    }
+  }
+  .curier-or-post-or-departament {
+    margin-top: 10px;
+  }
+}

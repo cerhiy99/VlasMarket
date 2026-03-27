@@ -1,0 +1,98 @@
+@import "../../App.scss";
+
+.brend-letter-container {
+  @include responsive-width;
+  h1 {
+    font-size: 30px;
+    font-weight: 500;
+    line-height: 36.63px;
+    text-underline-position: from-font;
+    text-decoration-skip-ink: none;
+    color: #05172f;
+    background-color: #ffffff;
+    border-radius: 15px;
+    padding: 20px;
+  }
+  .brends-letter {
+    display: flex;
+
+    width: calc(100% - 40px);
+    padding: 20px;
+    background-color: #ffffff;
+    border-radius: 15px;
+    @media (max-width: 460px) {
+      flex-direction: column;
+      gap: 20px;
+    }
+    p {
+      font-size: 18px;
+      font-weight: 700;
+      line-height: 20.7px;
+      text-align: left;
+      text-underline-position: from-font;
+      text-decoration-skip-ink: none;
+      color: #05172f;
+      width: 100px;
+      margin: 0;
+      grid-column: span 1; /* Займає одну колонку по ширині */
+      grid-row: span 2; /* Займає два рядки по висоті */
+      height: 100%; /* Розтягується на всю висоту двох рядків */
+    }
+    .brends {
+      display: grid;
+      grid-template-columns: repeat(
+        7,
+        1fr
+      ); /* По замовчуванню 7 елементів у ряд */
+      justify-content: space-between; /* Розподіл елементів з самого лівого до правого краю */
+      gap: 20px; /* Відстань між елементами */
+      width: 100%; /* Контейнер на всю ширину */
+      padding: 0; /* Відсутність внутрішніх відступів */
+      margin: 0; /* Відсутність зовнішніх відступів */
+    }
+
+    .brend {
+      text-align: left; /* Вирівнювання тексту по лівому краю */
+      white-space: nowrap; /* Запобігання переносу тексту */
+      color: #333;
+      text-decoration: none;
+    }
+
+    /* Адаптивність */
+    @media (max-width: 1700px) {
+      .brends {
+        grid-template-columns: repeat(
+          6,
+          1fr
+        ); /* 5 елементів у ряд для ширини < 1700px */
+      }
+    }
+
+    @media (max-width: 1500px) {
+      .brends {
+        grid-template-columns: repeat(
+          5,
+          1fr
+        ); /* 3 елементи у ряд для ширини < 1200px */
+      }
+    }
+
+    @media (max-width: 1300px) {
+      .brends {
+        grid-template-columns: repeat(
+          4,
+          1fr
+        ); /* 3 елементи у ряд для ширини < 1200px */
+      }
+    }
+
+    @media (max-width: 768px) {
+      .brends {
+        grid-template-columns: repeat(
+          3,
+          1fr
+        ); /* 1 елемент у ряд для мобільних екранів */
+      }
+    }
+  }
+}

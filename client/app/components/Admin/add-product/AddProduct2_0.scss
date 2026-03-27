@@ -1,0 +1,242 @@
+/* Основні стилі для форми додавання товару */
+.update-product-form {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+
+  .add-product-title {
+    text-align: center;
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    color: #333;
+  }
+
+  /* Стилі для усіх інпутів і текстових полів */
+  .input {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 16px;
+    box-sizing: border-box;
+  }
+
+  .input:focus {
+    border-color: #007bff;
+    outline: none;
+  }
+
+  /* Заголовки для підрозділів */
+  .sub-title {
+    font-size: 20px;
+    font-weight: bold;
+    margin-top: 30px;
+    color: #333;
+  }
+
+  /* Кнопки */
+  button {
+    background-color: #28a745;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-top: 20px;
+    transition: background-color 0.3s;
+  }
+
+  button:hover {
+    background-color: #218838;
+  }
+
+  button[type='submit'] {
+    background-color: #007bff;
+  }
+
+  button[type='submit']:hover {
+    background-color: #0056b3;
+  }
+
+  /* Стилі для додавання характеристик */
+  .characteristics {
+    display: flex;
+    gap: 10px;
+  }
+
+  .characteristics input {
+    flex: 1;
+  }
+
+  /* Стилі для додавання обсягів */
+  .volume {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+
+  .volume input {
+    flex: 1;
+  }
+
+  /* Стили для select полів */
+  select {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 16px;
+    background-color: #fff;
+  }
+
+  /* Для кнопки додавання полів характеристик та обсягів */
+  button[type='button'] {
+    background-color: #ffc107;
+    color: white;
+  }
+
+  button[type='button']:hover {
+    background-color: #e0a800;
+  }
+
+  /* Загальний стиль для списків фільтрів */
+  h3 {
+    margin-top: 20px;
+    font-size: 18px;
+    color: #333;
+  }
+
+  input[type='file'] {
+    padding: 10px;
+    background-color: #f8f9fa;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+  }
+
+  /* Виведення фільтрів */
+  .filter-section {
+    margin-bottom: 30px;
+  }
+
+  /* Стилі для відображення фільтрів */
+  .filter-section h3 {
+    margin-bottom: 10px;
+    color: #333;
+  }
+
+  .filter-section input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    margin-bottom: 10px;
+  }
+  .quill-editor .ql-editor {
+    min-height: 200px; /* Мінімальна висота для текстового контейнера */
+  }
+  .row.check {
+    display: flex;
+    flex-direction: row;
+    margin-top: 10px;
+    p {
+      margin: 0;
+      width: 200px;
+    }
+  }
+  .avability {
+    margin-bottom: 15px;
+    .row {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      p {
+        margin: 10px 0;
+        width: 200px;
+      }
+    }
+  }
+  .pruznachenia {
+    display: flex;
+    flex-direction: column;
+    .title {
+      display: flex;
+      flex-direction: row;
+      gap: 10px;
+      align-items: center;
+      text-align: center;
+      svg {
+        &:hover {
+          fill: #fe680a;
+          cursor: pointer;
+        }
+      }
+    }
+    ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+      li {
+        margin: 0;
+        padding: 0;
+        cursor: pointer;
+        display: flex;
+        flex-direction: row;
+        gap: 5px;
+        p {
+          margin: 0;
+        }
+      }
+    }
+  }
+  .radio-button {
+    p {
+      cursor: pointer;
+    }
+  }
+  .title {
+    margin: 5px 0;
+  }
+
+  .dropdown-container {
+    .dropdown {
+      position: relative;
+      width: 100%;
+      background-color: #ffffff;
+      ul {
+        position: absolute;
+        max-height: 350px;
+        overflow-y: auto;
+        width: 100%;
+        background-color: #ffffff;
+        z-index: 3;
+        list-style: none;
+        display: flex;
+        flex-direction: column;
+        gap: 3px;
+        margin: 0;
+        li {
+          cursor: pointer;
+          p {
+            margin: 0;
+            padding: 7.5px;
+            padding-left: 12px;
+          }
+          &.active {
+            background-color: #fe680a;
+            color: #ffffff;
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,190 @@
+.review-container {
+  display: flex;
+  gap: 5%;
+  width: 100%;
+  margin: 20px 0;
+  @media (max-width: 590px) {
+    flex-direction: column;
+  }
+
+  .rating-and-additional-info {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    @media (max-width: 590px) {
+      flex-direction: row;
+    }
+    .date {
+      font-size: 10.88px;
+      font-weight: 500;
+      line-height: 11px;
+      text-align: left;
+      text-underline-position: from-font;
+      text-decoration-skip-ink: none;
+      color: #616161;
+      text-wrap: nowrap;
+    }
+    .basket-true {
+      margin-top: 3px;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      gap: 5px;
+
+      font-size: 11.25px;
+      font-weight: 500;
+      line-height: 12px;
+      text-align: left;
+      text-underline-position: from-font;
+      text-decoration-skip-ink: none;
+      color: #43b02a;
+    }
+  }
+  .review {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    h4 {
+      font-size: 14.38px;
+      font-weight: 700;
+      line-height: 20px;
+      text-align: left;
+      text-underline-position: from-font;
+      text-decoration-skip-ink: none;
+      color: #000000;
+      margin-top: 0;
+      margin-bottom: 10px;
+    }
+    p {
+      margin: 0;
+
+      font-size: 14px;
+      font-weight: 400;
+      line-height: 21px;
+      text-align: justify;
+      color: #333333;
+    }
+    .review-img {
+      object-fit: cover;
+      margin-top: 10px;
+    }
+    .disadvantages {
+      margin-top: 10px;
+
+      font-size: 12.58px;
+      font-weight: 700;
+      line-height: 17px;
+      text-align: left;
+      text-underline-position: from-font;
+      text-decoration-skip-ink: none;
+      color: #000000;
+      gap: 7.5px;
+      span {
+        font-size: 12.91px;
+        font-weight: 400;
+        line-height: 17px;
+        text-align: left;
+        text-underline-position: from-font;
+        text-decoration-skip-ink: none;
+      }
+    }
+    .reaction {
+      margin-top: 15px;
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      p {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+
+        font-size: 13.13px;
+        font-weight: 400;
+        line-height: 21px;
+        text-align: left;
+        text-underline-position: from-font;
+        text-decoration-skip-ink: none;
+        color: #999999;
+        cursor: pointer;
+      }
+      .reaction-thumbs {
+        display: flex;
+        flex-direction: row;
+        gap: 7.5px;
+        .line {
+          height: 16px;
+          width: 1px;
+          background-color: #e5e5e5;
+        }
+        svg {
+          cursor: pointer;
+        }
+      }
+    }
+    .respond-container {
+      width: 100%;
+      .resend-form {
+        display: flex;
+        flex-direction: column;
+        margin-top: 10px;
+        gap: 7.5px;
+        width: 100%;
+        textarea {
+          min-width: 100%;
+          max-width: 100%;
+          box-sizing: border-box;
+          height: 100px;
+          border-radius: 8px;
+          border: 1px solid #ccc;
+          padding: 10px;
+          font-size: 14px;
+          margin-bottom: 10px;
+        }
+        .captcha-cont {
+          display: flex;
+          flex-direction: row;
+          align-items: center;
+          justify-content: left;
+          width: 100%;
+          .captcha {
+            display: flex;
+            flex-direction: row;
+            gap: 10px;
+            align-items: center;
+          }
+          input {
+            margin-left: 20px;
+          }
+          @media (max-width: 768px) {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            margin-bottom: 20px;
+          }
+        }
+        .but-center {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          button {
+            width: 203px;
+            height: 40px;
+            border-radius: 8px;
+            border: none;
+            background-color: #d93a3f;
+            color: #ffffff;
+            font-size: 12.58px;
+            font-weight: 700;
+            cursor: pointer;
+          }
+        }
+      }
+    }
+    .list-child {
+      padding-left: 5%;
+    }
+  }
+  &.child {
+    flex-direction: row-reverse;
+  }
+}

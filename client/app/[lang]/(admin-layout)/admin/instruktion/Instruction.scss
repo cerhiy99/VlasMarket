@@ -1,0 +1,5 @@
+@import "../../../(basic-layout)/App.scss";
+
+.instruction-container {
+  @include admin-responsive-width;
+}

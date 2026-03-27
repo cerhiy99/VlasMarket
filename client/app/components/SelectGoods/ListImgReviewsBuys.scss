@@ -1,0 +1,58 @@
+.list-img-reviews-buys-container {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  .img-buys {
+    img {
+      object-fit: cover;
+    }
+  }
+  .show-img {
+    position: fixed;
+    background-color: #e0e1e260;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 15;
+    .show-img-container {
+      background-color: #f6f9fe;
+      position: relative;
+      display: flex;
+      align-items: center;
+      width: 90%;
+      justify-content: center;
+      height: 90%;
+      border-radius: 25px;
+
+      img {
+        object-fit: contain;
+        width: 80%;
+        height: 80%;
+        border-radius: 10px;
+      }
+      .close {
+        position: absolute;
+        top: 2%;
+        right: 25px;
+        bottom: 5px;
+        z-index: 16;
+        cursor: pointer;
+      }
+      .arrow {
+        position: absolute;
+        cursor: pointer;
+        z-index: 16;
+      }
+      .right {
+        right: 10%;
+      }
+      .left {
+        left: 10%;
+      }
+    }
+  }
+}

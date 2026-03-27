@@ -1,0 +1,102 @@
+.form-container {
+  margin-top: 40px;
+
+  .form-container {
+    max-width: 500px;
+    margin: 0 auto;
+    padding: 20px;
+    background: #f9f9f9;
+    border-radius: 12px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  }
+
+  h3 {
+    text-align: center;
+    color: #333;
+    font-size: 20px;
+    margin-bottom: 20px;
+  }
+
+  .form-group {
+    margin-bottom: 15px;
+  }
+
+  .form-group label {
+    display: block;
+    font-size: 16px;
+    color: #333;
+    font-weight: 600;
+    margin-bottom: 6px;
+
+    span {
+      color: red;
+    }
+  }
+
+  .form-group input,
+  .form-group textarea {
+    box-sizing: border-box;
+    width: 100%;
+    padding: 12px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    background: #fff;
+    transition: all 0.3s ease;
+  }
+
+  .form-group input:focus,
+  .form-group textarea:focus {
+    outline: none;
+    border-color: #007bff;
+    box-shadow: 0px 0px 6px rgba(0, 123, 255, 0.3);
+  }
+
+  .form-group textarea {
+    height: 120px;
+    resize: none;
+  }
+
+  .react-tel-input {
+    width: 100%;
+  }
+
+  .react-tel-input .form-control {
+    width: 100% !important;
+    height: 45px !important;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    padding-left: 50px !important;
+    font-size: 14px;
+  }
+
+  .react-tel-input .form-control:focus {
+    border-color: #007bff;
+    box-shadow: 0px 0px 6px rgba(0, 123, 255, 0.3);
+  }
+
+  button {
+    width: 100%;
+  }
+  button {
+    height: 42px;
+    border-radius: 30px;
+    background-color: #e2e2e2;
+    font-family: Arial;
+    font-weight: 700;
+    font-size: 16px;
+    line-height: 100%;
+    letter-spacing: 0%;
+    text-align: center;
+    vertical-align: middle;
+    color: #ffffff;
+    border: none;
+    outline: none;
+    margin-top: 15px;
+    cursor: default;
+  }
+  .but-active {
+    background-color: #339e36;
+    cursor: pointer;
+  }
+}

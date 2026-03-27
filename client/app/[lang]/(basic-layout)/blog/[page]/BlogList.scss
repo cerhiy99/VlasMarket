@@ -1,0 +1,25 @@
+@import "../../App.scss";
+
+.blog-container {
+  @include responsive-width;
+  margin: 0 auto;
+  padding: 0 20px;
+  box-sizing: border-box;
+
+  h1 {
+    font-family: 'Roboto', sans-serif;
+    font-weight: 500;
+    font-size: 40px;
+    line-height: 100%;
+    text-align: center;
+    color: #000000;
+    margin-bottom: 40px;
+  }
+
+  .blog-list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    gap: 20px;
+  }
+}

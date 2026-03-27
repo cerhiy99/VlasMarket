@@ -1,0 +1,29 @@
+@import '../../App.scss';
+
+.goods-container-discount2 {
+  @include responsive-width;
+  .bread-crumb {
+    margin: 0;
+    margin-top: 30px;
+  }
+  h1 {
+    margin-top: 0;
+    font-size: 24px;
+    font-weight: 550;
+    line-height: 30px;
+    text-align: left;
+    text-underline-position: from-font;
+    -webkit-text-decoration-skip-ink: none;
+    text-decoration-skip-ink: none;
+  }
+  .goods-main2 {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 40px;
+    gap: 40px;
+  }
+  .discount-pagination {
+    margin-bottom: 40px;
+  }
+}

@@ -1,0 +1,191 @@
+.price-selector-container {
+  position: relative;
+  border-radius: 8px;
+
+  .price-selector-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+
+    @media (max-width: 1024px) {
+      border: 1px solid #05172f;
+      padding: 10px 20px;
+      border-radius: 25px;
+      width: 80px;
+    }
+
+    h3 {
+      margin: 0;
+      font-family: Roboto;
+      font-size: 14px;
+      font-weight: 500;
+      line-height: 16px;
+      color: #303030;
+
+      @media (max-width: 1024px) {
+        font-family: Roboto;
+        font-size: 12px;
+        font-weight: 400;
+        line-height: 20px;
+        color: #05172f;
+      }
+    }
+
+    .arrow-icon {
+      font-size: 16px;
+      transition: transform 0.3s;
+
+      &.open {
+        transform: rotate(180deg);
+      }
+    }
+  }
+
+  .price-slider-container {
+    margin-top: 10px;
+
+    &.dropdown {
+      @media (max-width: 1024px) {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        width: 100%;
+        background-color: #fff;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        border-radius: 8px;
+        z-index: 10;
+      }
+    }
+
+    .price-slider {
+      .MuiSlider-root {
+        width: 100%;
+        color: #ff6a00;
+        margin-top: 15px;
+
+        .MuiSlider-track {
+          height: 4px;
+          border-radius: 4px;
+        }
+
+        .MuiSlider-rail {
+          height: 4px;
+          background-color: #e7e7e7;
+          border-radius: 4px;
+        }
+
+        .MuiSlider-thumb {
+          width: 20px;
+          height: 20px;
+          background-color: #ff6a00;
+          border-radius: 50%;
+          &:hover,
+          &.Mui-focusVisible,
+          &.Mui-active {
+            box-shadow: 0 0 0 8px rgba(255, 106, 0, 0.16);
+          }
+        }
+      }
+    }
+
+    .price-inputs {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 10px;
+
+      input {
+        width: calc(48% - 10px);
+        padding: 5px;
+        border: 1px solid #e7e7e7;
+        border-radius: 4px;
+        outline: none;
+        font-size: 13.46px;
+        font-weight: 400;
+        color: #77878f;
+      }
+    }
+  }
+
+  .price-options {
+    list-style: none;
+    padding: 0;
+    margin: 10px 0;
+
+    &.dropdown {
+      @media (max-width: 1024px) {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        width: 100%;
+        background-color: #fff;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        border-radius: 8px;
+        z-index: 10;
+      }
+    }
+
+    .price-option {
+      margin-bottom: 8px;
+      padding: 0 10px;
+
+      label {
+        position: relative;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        cursor: pointer;
+        padding-left: 30px;
+        @media (max-width: 768px) {
+          padding-left: 20px;
+        }
+
+        input[type='radio'] {
+          position: absolute;
+          opacity: 0;
+          cursor: pointer;
+          height: 0;
+          width: 0;
+        }
+
+        .custom-radio {
+          position: absolute;
+          left: 0;
+          top: 50%;
+          transform: translateY(-50%);
+          height: 16px;
+          width: 16px;
+          background-color: #fff;
+          border: 2px solid #e7e7e7;
+          border-radius: 50%;
+          transition:
+            background-color 0.2s,
+            border-color 0.2s;
+        }
+
+        input[type='radio']:checked + .custom-radio {
+          border-color: #ff6a00;
+        }
+
+        input[type='radio']:checked + .custom-radio::after {
+          content: '';
+          position: absolute;
+          left: 4px;
+          top: 4px;
+          width: 6px;
+          height: 6px;
+          background: #fff;
+          border-radius: 50%;
+        }
+
+        .price-option-text {
+          font-size: 13.46px;
+          font-weight: 400;
+          color: #475156;
+          margin-left: 5px;
+          white-space: nowrap;
+        }
+      }
+    }
+  }
+}

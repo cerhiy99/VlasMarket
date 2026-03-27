@@ -1,0 +1,25 @@
+.in-basket-container {
+  button {
+    cursor: pointer;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    border: none;
+    padding: 10px 35px;
+    border-radius: 30px;
+    background-color: #fe680a;
+    font-family: Roboto;
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 20px;
+    text-align: center;
+    text-underline-position: from-font;
+    text-decoration-skip-ink: none;
+    color: #ffffff;
+    &:hover {
+      background-color: #269569;
+    }
+  }
+}

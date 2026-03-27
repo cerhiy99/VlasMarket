@@ -1,0 +1,105 @@
+.filters-container {
+  min-width: 250px;
+  max-width: 250px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  position: relative;
+  @media (min-width: 1024px) {
+    background-color: #ffffff;
+    border-radius: 15px;
+    padding: 20px;
+    height: auto;
+  }
+  @media (max-width: 1024px) {
+    min-width: unset;
+    max-width: unset;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+  @media (max-width: 400px) {
+    gap: 5px;
+  }
+  .filter-scroll {
+    max-height: 232px;
+    overflow-y: auto;
+    &::-webkit-scrollbar {
+      width: 2px; /* ширина вертикального скролу */
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background-color: #a67b5b; /* колір "бігунка" */
+      border-radius: 4px; /* заокруглення */
+    }
+
+    &::-webkit-scrollbar-track {
+      background-color: #f0f0f0; /* фон треку */
+    }
+  }
+}
+
+/*
+    { id: 1, name: 'A Daily Concepts' },
+    { id: 2, name: 'A Dior' },
+    { id: 3, name: 'A Dolce & Gabbana' },
+    { id: 4, name: 'A Kerastase' },
+    { id: 5, name: 'A Armani' },
+    { id: 6, name: 'A Adidas' },
+    { id: 7, name: 'B Burberry' },
+    { id: 8, name: 'B Keratherapy' },
+    { id: 9, name: "B L'Oreal Professionnel" },
+    { id: 10, name: 'B Kezy' },
+    { id: 11, name: 'B Bvlgari' },
+    { id: 12, name: 'C Clinique' },
+    { id: 13, name: 'C Calvin Klein' },
+    { id: 14, name: 'C Dior' },
+    { id: 15, name: 'C Dolce & Gabbana' },
+    { id: 16, name: 'C Daily Concepts' },
+    { id: 17, name: 'D Dior Homme' },
+    { id: 18, name: 'D Kerastase' },
+    { id: 19, name: 'D Diesel' },
+    { id: 20, name: 'D DKNY' },
+    { id: 21, name: 'E Estee Lauder' },
+    { id: 22, name: 'E Elizabeth Arden' },
+    { id: 23, name: 'E Ermenegildo Zegna' },
+    { id: 24, name: 'F Fendi' },
+    { id: 25, name: 'F Ferragamo' },
+    { id: 26, name: 'F Furla' },
+    { id: 27, name: 'G Gucci' },
+    { id: 28, name: 'G Givenchy' },
+    { id: 29, name: 'G Giorgio Armani' },
+    { id: 30, name: 'H Hermes' },
+    { id: 31, name: 'H Hugo Boss' },
+    { id: 32, name: 'I Issey Miyake' },
+    { id: 33, name: 'J Jo Malone' },
+    { id: 34, name: 'J Jimmy Choo' },
+    { id: 35, name: 'K Kenzo' },
+    { id: 36, name: "K Kiehl's" },
+    { id: 37, name: 'L Lancome' },
+    { id: 38, name: 'L Louis Vuitton' },
+    { id: 39, name: 'M Montblanc' },
+    { id: 40, name: 'M Michael Kors' },
+    { id: 41, name: 'N Nina Ricci' },
+    { id: 42, name: 'O Oscar de la Renta' },
+    { id: 43, name: 'P Prada' },
+    { id: 44, name: 'P Paco Rabanne' },
+    { id: 45, name: 'R Ralph Lauren' },
+    { id: 46, name: 'S Saint Laurent' },
+    { id: 47, name: 'T Tom Ford' },
+    { id: 48, name: 'T Tiffany & Co.' },
+    { id: 49, name: 'V Valentino' },
+    { id: 50, name: 'V Versace' },
+    { id: 51, name: '1 First Brand' },
+    { id: 52, name: '2 Second Brand' },
+    { id: 53, name: '3 Another Brand' },
+    { id: 54, name: '4 Fourth Element' },
+    { id: 55, name: '5 Star Product' },
+    { id: 56, name: '6 Sixth Brand' },
+    { id: 57, name: '7 Seventy Co.' },
+    { id: 58, name: '8 Eighth Wonder' },
+    { id: 59, name: '9 Nine Elements' }
+*/

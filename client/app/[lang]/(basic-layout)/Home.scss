@@ -1,0 +1,63 @@
+@import "./App.scss";
+
+.home-container {
+  .home-goods {
+    @include responsive-width;
+    margin-top: 20px;
+    h2,
+    h1 {
+      font-size: 25px;
+      font-weight: 500;
+      line-height: 27px;
+      text-align: left;
+      text-underline-position: from-font;
+      text-decoration-skip-ink: none;
+      color: #000000;
+      margin-top: 0;
+    }
+    .main-text {
+      margin-top: 25px;
+      margin-bottom: 10px;
+    }
+    .row-blog {
+      display: flex;
+      flex-direction: column;
+      .row {
+        display: flex;
+        flex-direction: row;
+        gap: 15px;
+        align-items: center;
+        a {
+          text-decoration: none;
+        }
+      }
+      h2 {
+        margin: 0;
+        font-family: Roboto;
+      }
+      p {
+        font-family: Roboto;
+        font-weight: 500;
+        font-style: Medium;
+        font-size: 20px;
+        leading-trim: NONE;
+        letter-spacing: 0%;
+        vertical-align: middle;
+        color: #77878f;
+        margin: 0;
+        display: flex;
+        align-items: center;
+        &:hover {
+          color: #fe680a;
+        }
+      }
+      .list-blog {
+        margin: 20.75px 0;
+        display: flex;
+        gap: 20px;
+        flex-direction: row;
+        flex-wrap: wrap;
+      }
+    }
+  }
+}

@@ -1,0 +1,124 @@
+.about-form {
+  form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+
+    @media (max-width: 768px) {
+      gap: 8px;
+    }
+
+    button {
+      height: 42px;
+      border-radius: 30px;
+      background-color: #e2e2e2;
+      font-weight: 700;
+      font-size: 16px;
+      line-height: 100%;
+      letter-spacing: 0%;
+      text-align: center;
+      vertical-align: middle;
+      color: #ffffff;
+      border: none;
+      outline: none;
+      margin-top: 15px;
+
+      @media (max-width: 768px) {
+        height: 38px;
+        font-size: 14px;
+        margin-top: 10px;
+      }
+    }
+
+    .but-active {
+      background-color: #339e36;
+      cursor: pointer;
+    }
+  }
+
+  h2 {
+    margin: 0;
+    font-weight: 700;
+    font-size: 22px;
+    line-height: 24.42px;
+    vertical-align: middle;
+    color: #05172f;
+    margin-bottom: 20px;
+
+    @media (max-width: 768px) {
+      font-size: 18px;
+      line-height: 20px;
+      margin-bottom: 15px;
+    }
+  }
+
+  div {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+
+    .special-label {
+      display: none;
+    }
+
+    .input {
+      height: 42px;
+      width: 100%;
+      border-radius: 6px;
+      border: 1px solid #cccccc;
+      padding: 0;
+      padding-left: 7.5px;
+      box-sizing: border-box;
+
+      @media (max-width: 768px) {
+        height: 38px;
+        padding-left: 5px;
+      }
+    }
+
+    input {
+      height: 42px;
+      width: 100%;
+
+      @media (max-width: 768px) {
+        height: 38px;
+      }
+    }
+
+    textarea {
+      width: 100%;
+      box-sizing: border-box;
+      border-radius: 6px;
+      border: 1px solid #cccccc;
+      padding: 5px;
+
+      @media (max-width: 768px) {
+        padding: 3px;
+      }
+    }
+  }
+
+  label {
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 100%;
+    vertical-align: middle;
+    color: #333333;
+
+    @media (max-width: 768px) {
+      font-size: 14px;
+    }
+
+    span {
+      font-weight: 600;
+      font-size: 16px;
+      line-height: 100%;
+      vertical-align: middle;
+      color: #d93a3f;
+
+      @media (max-width: 768px) {
+        font-size: 14px;
+      }
+    }
+  }
+}

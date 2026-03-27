@@ -1,0 +1,183 @@
+@import "../App.scss";
+
+.list-brands-container {
+  @include responsive-width;
+  margin-bottom: 50px;
+  @media (max-width: 768px) {
+    margin-bottom: 30px;
+  }
+
+  .list-brands-title {
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+  h1 {
+    font-size: 28px;
+    font-weight: 400;
+    line-height: 28px;
+    font-size: 28px;
+    font-weight: 400;
+    line-height: 33.4px;
+    text-align: center;
+    text-underline-position: from-font;
+    text-decoration-skip-ink: none;
+    color: #1e1e1e;
+    margin-top: 0;
+    @media (max-width: 768px) {
+      font-size: 20px;
+      font-weight: 400;
+      line-height: 23.86px;
+    }
+  }
+  .list-letter-Brand-container {
+    max-width: 1100px;
+    margin: 0 auto;
+    margin-bottom: 20px;
+  }
+  .list-letter-Brand {
+    border-radius: 15px;
+    padding: 20px;
+    background-color: #ffffff;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    gap: 13px;
+    flex-wrap: wrap;
+    margin: 20px 0;
+    max-width: 1100px;
+    margin: 0 auto;
+    @media (max-width: 768px) {
+      gap: 7.5px;
+    }
+    .list-url {
+      background-color: #05172f;
+      width: 40px;
+      height: 36px;
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      font-size: 14px;
+      font-weight: 400;
+      line-height: 16.1px;
+      text-align: center;
+      text-underline-position: from-font;
+      text-decoration-skip-ink: none;
+      color: #ffffff;
+      text-decoration: none;
+    }
+  }
+
+  .list-brands {
+    display: flex;
+    flex-direction: column;
+    border-radius: 15px;
+    padding: 20px;
+    box-sizing: border-box;
+    @media (max-width: 768px) {
+      padding: 5px;
+    }
+    .brands-and-title-letter {
+      display: flex;
+      flex-direction: row;
+      width: 100%;
+      background-color: #ffffff;
+      margin: 10px 0;
+      padding: 20px;
+      box-sizing: border-box;
+      scroll-margin-top: 75px; // або скільки потрібно
+
+      p {
+        font-size: 18px;
+        font-weight: 700;
+        line-height: 20.7px;
+        text-align: left;
+        text-underline-position: from-font;
+        text-decoration-skip-ink: none;
+        color: #05172f;
+        width: 100px;
+        margin: 0;
+        grid-column: span 1; /* Займає одну колонку по ширині */
+        grid-row: span 2; /* Займає два рядки по висоті */
+        height: 100%; /* Розтягується на всю висоту двох рядків */
+        margin: 0;
+      }
+      .brands {
+        display: grid;
+        grid-template-columns: repeat(
+          7,
+          1fr
+        ); /* По замовчуванню 7 елементів у ряд */
+        justify-content: space-between; /* Розподіл елементів з самого лівого до правого краю */
+        gap: 20px; /* Відстань між елементами */
+        width: 100%; /* Контейнер на всю ширину */
+        padding: 0; /* Відсутність внутрішніх відступів */
+        margin: 0; /* Відсутність зовнішніх відступів */
+      }
+
+      .brand {
+        text-align: left; /* Вирівнювання тексту по лівому краю */
+        text-decoration: none;
+        cursor: pointer;
+        color: #000;
+        &:hover {
+          color: #fe680a;
+        }
+      }
+
+      /* Адаптивність */
+      @media (max-width: 1700px) {
+        .brands {
+          grid-template-columns: repeat(
+            6,
+            1fr
+          ); /* 5 елементів у ряд для ширини < 1700px */
+        }
+      }
+
+      @media (max-width: 1500px) {
+        .brands {
+          grid-template-columns: repeat(
+            5,
+            1fr
+          ); /* 3 елементи у ряд для ширини < 1200px */
+        }
+      }
+
+      @media (max-width: 1300px) {
+        .brands {
+          grid-template-columns: repeat(
+            4,
+            1fr
+          ); /* 3 елементи у ряд для ширини < 1200px */
+        }
+      }
+
+      @media (max-width: 768px) {
+        .brands {
+          grid-template-columns: repeat(
+            3,
+            1fr
+          ); /* 1 елемент у ряд для мобільних екранів */
+        }
+      }
+      @media (max-width: 600px) {
+        .brands {
+          grid-template-columns: repeat(
+            2,
+            1fr
+          ); /* 1 елемент у ряд для мобільних екранів */
+        }
+      }
+      @media (max-width: 500px) {
+        .brands {
+          grid-template-columns: repeat(
+            1,
+            1fr
+          ); /* 1 елемент у ряд для мобільних екранів */
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,98 @@
+@import '../../[lang]/(basic-layout)/App.scss';
+
+.list-goods-left-container93 {
+  display: flex;
+  align-items: center;
+  position: relative;
+  width: 100%; // Полная ширина
+  margin-bottom: 40px;
+  @media (max-width: 768px) {
+    margin-bottom: 20px;
+  }
+
+  .scroll-button {
+    border: none;
+    position: absolute;
+    cursor: pointer;
+    font-size: 20px;
+    z-index: 1;
+    padding: 0;
+
+    &.left {
+      left: -25px;
+    }
+
+    &.right {
+      right: -25px;
+    }
+    @media (max-width: 768px) {
+      &.left {
+        left: 0;
+      }
+
+      &.right {
+        right: 0;
+      }
+    }
+  }
+  .disabled {
+    opacity: 0.4;
+    cursor: unset;
+  }
+  .arrow-active {
+    svg {
+      transition:
+        transform 0.3s ease,
+        box-shadow 0.3s ease; // Плавний перехід для масштабу і тіні
+    }
+    &:hover {
+      svg {
+        transform: scale(1.05); // Збільшення на 5%
+        rect {
+          fill: #e6e3e3;
+          box-shadow:
+            0 4px 8px rgba(0, 0, 0, 0.1),
+            // Глибша основна тінь
+            0 2px 4px rgba(0, 0, 0, 0.06); //
+        }
+        g {
+          path {
+            fill: #000000;
+          }
+        }
+      }
+    }
+  }
+
+  .list-goods {
+    display: grid;
+    position: relative;
+    gap: 15px;
+    @media (max-width: 768px) {
+      min-width: unset;
+      max-width: 100%;
+    }
+    // @media (max-width: 768px) {
+    //   overflow-x: auto; // Добавляем горизонтальную прокрутку при необходимости
+    // }
+    &.limit-5 {
+      grid-template-columns: repeat(5, 1fr);
+    }
+
+    &.limit-4 {
+      grid-template-columns: repeat(4, 1fr);
+    }
+
+    &.limit-3 {
+      grid-template-columns: repeat(3, 1fr);
+    }
+
+    &.limit-2 {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+    }
+    &.limit-1 {
+      grid-template-columns: repeat(1, 1fr);
+    }
+  }
+}

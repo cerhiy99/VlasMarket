@@ -1,0 +1,106 @@
+.discount-level {
+  padding-top: 3px;
+  margin-bottom: 20px;
+  padding-bottom: 20px;
+
+  border-bottom: 1px solid #999999;
+
+  &__title {
+    font-size: 18px;
+    font-weight: 600;
+    margin: 0 0 8px 0;
+    color: #333;
+  }
+
+  &__subtitle {
+    margin: 0;
+    .highlight {
+      color: #d93a3f;
+    }
+  }
+
+  &__progress-container {
+    position: relative;
+    height: 80px; // Increased height to accommodate markers above and below
+    margin-top: 40px;
+    z-index: 0;
+    width: calc(100% - 30px);
+  }
+
+  &__progress-bar {
+    position: absolute;
+    top: 54px; // Adjusted top to align with dot
+    left: 0;
+    right: 0;
+    height: 4px;
+    border-radius: 2px;
+    background-color: #999; /* Grey for the inactive part */
+    overflow: hidden;
+  }
+
+  &__dot {
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    background: #999; /* Default grey for dots */
+    border: 1px solid white;
+    position: absolute; /* Added for positioning within marker */
+    bottom: -18px; /* Position below the line */
+    left: 50%;
+    transform: translateX(-50%);
+    transition: background-color 0.3s ease; /* Smooth transition for dot color */
+  }
+
+  &__progress {
+    height: 100%;
+    background-color: #d93a3f; /* Red for the active part */
+    border-radius: 2px;
+    transition: width 0.5s ease;
+  }
+
+  &__marker {
+    position: absolute;
+    top: 0; /* Position marker from the top of the container */
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: #999; /* Default grey for marker text */
+    z-index: 2;
+    transition: color 0.3s ease; /* Smooth transition for text color */
+
+    .discount-level__diamond {
+      color: #999; /* Default grey for diamond SVG */
+      transition: color 0.3s ease; /* Smooth transition for SVG color */
+    }
+
+    &--active {
+      color: #333; /* Darker text when active */
+
+      .discount-level__diamond {
+        color: #d93a3f; /* Red diamond when active */
+      }
+
+      .discount-level__dot {
+        background-color: #d93a3f; /* Red dot when active */
+      }
+    }
+  }
+
+  &__percent {
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 4px;
+  }
+
+  &__amount {
+    font-size: 12px;
+    white-space: nowrap;
+    position: absolute; /* Position amount below the dot */
+    top: 65px; /* Adjust as needed */
+  }
+  &__text {
+    color: #626262;
+    margin-top: 40px;
+  }
+}

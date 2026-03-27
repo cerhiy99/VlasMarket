@@ -1,0 +1,73 @@
+#set-language-container {
+  position: relative;
+  display: flex;
+  width: max-content;
+  padding: 4px 0;
+  background-color: transparent;
+  border-radius: 8px;
+  font-family: 'Roboto', sans-serif;
+  overflow: hidden;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  min-width: 110px;
+  max-width: 110px;
+
+  .lang-bg {
+    position: absolute;
+    top: 4px;
+    bottom: 4px;
+    width: 50px;
+    border-radius: 6px;
+    background-color: #05172f;
+    transition:
+      left 0.1s ease,
+      right 0.1s ease;
+    z-index: 0;
+  }
+
+  .lang-bg.left {
+    left: 0px;
+    //right: auto;
+  }
+
+  .lang-bg.right {
+    left: 60px;
+    //left: auto;
+  }
+
+  .lang-link {
+    position: relative;
+    z-index: 1;
+    width: 50px;
+    height: 30px;
+    font-size: 14px;
+    font-weight: 400;
+    color: #999;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    border-radius: 6px;
+    transition:
+      color 0.3s ease,
+      font-weight 0.3s ease;
+    cursor: pointer;
+    &:hover {
+      color: #000;
+    }
+
+    &.active {
+      color: #fff;
+      font-weight: 650;
+      cursor: default;
+    }
+    &.lang-left {
+      //background-color: red;
+    }
+  }
+  .lang-right {
+    //background-color: green;
+  }
+}

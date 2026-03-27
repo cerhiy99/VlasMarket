@@ -1,0 +1,18 @@
+.PageDiscount {
+  &__title {
+    font-weight: 600;
+    font-size: 30px;
+    margin-bottom: 39px;
+    @media (max-width: 842px) {
+      margin-top: 30px;
+      font-size: 16px;
+      margin-bottom: 0;
+    }
+  }
+
+  &__container {
+    display: flex;
+    flex-direction: column;
+    gap: 11px;
+  }
+}

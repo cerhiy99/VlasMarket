@@ -1,0 +1,190 @@
+@import "../../../(basic-layout)/App.scss";
+
+.admin-goods-container {
+  .filter-container {
+    display: flex;
+    align-items: center;
+    background-color: #05172fcc;
+    .filters {
+      padding: 10px 0;
+      @include admin-responsive-width;
+
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      height: 45px;
+      .filter {
+        font-size: 14px;
+        font-weight: 400;
+        line-height: 16px;
+        text-align: left;
+        text-underline-position: from-font;
+        text-decoration-skip-ink: none;
+        color: #ffffff;
+        padding: 0;
+        display: flex;
+        flex-wrap: nowrap;
+        white-space: nowrap;
+        gap: 5px;
+        align-items: center;
+      }
+      .select {
+      }
+    }
+    .admin-reviews-search {
+      display: flex;
+      width: 100%;
+
+      position: relative;
+      height: 35px;
+      input {
+        width: 100%;
+
+        margin-left: 15px;
+        border-radius: 5px;
+        height: 35px;
+        border: none;
+        outline: none;
+        padding-left: 10px;
+        box-sizing: border-box;
+      }
+      .search-svg {
+        position: absolute;
+        right: 0px;
+        height: 35px;
+        width: 52px;
+        background-color: #269569;
+        border-radius: 0 5px 5px 0;
+      }
+    }
+  }
+  .list-reviews {
+    @include admin-responsive-width;
+    display: flex;
+    flex-direction: column;
+    margin-top: 50px;
+    .review-header {
+      background-color: #a5a1a11a;
+      div {
+        font-weight: 700;
+        font-size: 16px;
+        line-height: 20.8px;
+        letter-spacing: 0%;
+        vertical-align: middle;
+        color: #05172f;
+      }
+      .time {
+        display: flex;
+        align-items: center;
+        flex-direction: row;
+        gap: 5px;
+        cursor: pointer;
+      }
+    }
+    .review {
+      display: flex;
+      flex-direction: row;
+      padding: 15px;
+      border-bottom: 1px solid #269569;
+      gap: 20px;
+      justify-content: space-between;
+      div {
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 1;
+        overflow: hidden;
+      }
+      .name {
+        width: 100%;
+        color: #5d8fc9;
+        cursor: pointer;
+      }
+      .time {
+        width: 130px;
+
+        & .sort-icon {
+          transition: transform 0.3ms ease-out;
+        }
+
+        & .rotated {
+          transform: rotate(180deg);
+        }
+      }
+      .mouth {
+        width: 110px;
+      }
+      .year {
+        width: 70px;
+      }
+      .all-time {
+        width: 160px;
+      }
+    }
+    .selects-adn-input {
+      margin-top: 20px;
+      border-top: 2px solid #269569;
+      padding-top: 10px;
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      width: 225px;
+      select {
+        background-color: #269569;
+        border-radius: 7px;
+        color: #ffffff;
+
+        font-size: 12px;
+        font-weight: 400;
+        line-height: 20.8px;
+        text-align: left;
+        text-underline-position: from-font;
+        text-decoration-skip-ink: none;
+        border: none;
+        outline: none;
+      }
+      button {
+        background-color: #2695694d;
+
+        font-size: 12px;
+        font-weight: 400;
+        line-height: 20.8px;
+        text-align: center;
+        text-underline-position: from-font;
+        text-decoration-skip-ink: none;
+        color: #ffffff;
+        border: none;
+        height: 26px;
+        width: 101px;
+        border-radius: 7px;
+      }
+    }
+  }
+  .emptyMessage {
+    padding: 20px;
+    text-align: center;
+    color: #6c757d;
+    font-style: italic;
+  }
+  .pagination {
+    margin-top: 30px;
+    padding-bottom: 40px;
+    display: flex;
+    justify-content: center;
+    flex-direction: row;
+    gap: 10px;
+    div {
+      width: 40px;
+      height: 40px;
+      border: 2px solid #269569;
+      border-radius: 100px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+    }
+    .select {
+      background-color: #269569;
+      color: #ffffff;
+    }
+  }
+}

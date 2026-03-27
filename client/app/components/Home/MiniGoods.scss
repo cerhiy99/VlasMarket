@@ -1,0 +1,284 @@
+.mini-goods-container {
+  text-decoration: none;
+  display: flex;
+  position: relative;
+  min-width: 167px;
+  .mini-goods-main1 {
+    border: 0.75px solid #e1e6ee;
+    min-width: 141px;
+    box-sizing: border-box;
+    width: 100%;
+    @media (max-width: 768px) {
+      min-width: unset;
+      max-width: 100%;
+    }
+    // @media (max-width: 520px) {
+    //   max-width: 248px;
+    // }
+    background-color: #ffffff;
+    padding: 10px;
+    border-radius: 15px;
+    transition:
+      box-shadow 0.2s ease,
+      outline 0.2s ease;
+    &:hover {
+      box-shadow:
+        0 4px 8px rgba(0, 0, 0, 0.2),
+        0 2px 4px rgba(0, 0, 0, 0.2);
+      outline: 2px solid rgba(0, 0, 0, 0.05);
+      h3 {
+        color: #f20a11;
+      }
+    }
+  }
+  .like-and-discount-or-other {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    position: relative;
+    width: 100%;
+    .like-svg-container {
+      position: absolute;
+      right: 3px;
+      .liked {
+        svg {
+          fill: #d93a3f;
+        }
+      }
+      @media (min-width: 768px) {
+        &:hover {
+          svg {
+            fill: #d93a3f;
+          }
+        }
+      }
+    }
+  }
+  .img-container {
+    position: relative;
+    width: 100%;
+    margin-top: 31px;
+    aspect-ratio: 1;
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+  }
+  h3 {
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 16.94px;
+    text-align: left;
+    text-underline-position: from-font;
+    text-decoration-skip-ink: none;
+    color: #000000;
+    cursor: pointer;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    max-width: 100%;
+    height: 51px;
+    margin-top: 6px;
+  }
+  .rating-and-reviews {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 5px;
+    .rating {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      gap: 5px;
+      span {
+        white-space: nowrap;
+      }
+      .MuiRating-decimal {
+        svg {
+          fill: #fe680a;
+          width: 14.82px;
+          height: 14.91px;
+        }
+      }
+      span {
+        font-size: 14px;
+        font-weight: 400;
+        line-height: 10.89px;
+        text-align: left;
+        text-underline-position: from-font;
+        text-decoration-skip-ink: none;
+        color: #797f8b;
+        @media (max-width: 500px) {
+          font-size: 12px;
+        }
+      }
+    }
+    .reviews {
+      font-size: 14px;
+      font-weight: 400;
+      line-height: 10.89px;
+      text-align: left;
+      text-underline-position: from-font;
+      text-decoration-skip-ink: none;
+      color: #797f8b;
+      display: flex;
+      flex-direction: row;
+      flex-wrap: nowrap;
+      @media (max-width: 500px) {
+        font-size: 12px;
+      }
+    }
+  }
+  .list-volume {
+    display: flex;
+    flex-direction: row;
+    // justify-content: center;
+    flex-wrap: wrap;
+    gap: 5px;
+    margin-top: 10px;
+    .volume {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      // width: 50px;
+      height: 20px;
+      font-size: 12px;
+      font-weight: 500;
+      // text-align: center;
+      text-underline-position: from-font;
+      text-decoration-skip-ink: none;
+      color: #6d6d6d;
+      border: 1px solid #6d6d6d;
+      padding: 3px;
+      border-radius: 10.92px;
+      cursor: pointer;
+      &:hover {
+        background-color: #2695691a;
+        border: 0.5px solid #269569;
+      }
+    }
+    .select-volume {
+      background-color: #2695691a;
+      border: 0.5px solid #269569;
+    }
+  }
+  .price-and-basket {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-top: 15px;
+    margin-bottom: 7.5px;
+    .price-container {
+      display: flex;
+      flex-direction: column;
+      .price-and-discount {
+        display: flex;
+        flex-direction: row;
+        gap: 5px;
+        align-items: center;
+        .price {
+          font-size: 13px;
+          font-weight: 500;
+          line-height: 15.73px;
+          text-align: left;
+          text-decoration-line: line-through;
+          text-underline-position: from-font;
+          text-decoration-skip-ink: none;
+          color: #a3aebd;
+        }
+        .discount {
+          font-size: 12px;
+          font-weight: 700;
+          line-height: 13px;
+          text-align: center;
+          text-underline-position: from-font;
+          text-decoration-skip-ink: none;
+          color: #ffffff;
+          background-color: #d93a3f;
+          border-radius: 10000px;
+          padding: 2px 5px;
+        }
+      }
+      .price-with-discount {
+        font-size: 23px;
+        font-weight: 700;
+        line-height: 25px;
+        text-align: left;
+        text-underline-position: from-font;
+        text-decoration-skip-ink: none;
+        color: #000000;
+        span {
+          font-size: 19px;
+          font-weight: 700;
+        }
+      }
+    }
+    .basket {
+      width: 52px;
+      height: 37px;
+      background-color: #fe680a;
+      border-radius: 5px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+      p {
+        display: none;
+        margin: 0;
+        color: #fff;
+      }
+      &:hover {
+        width: auto;
+        background-color: #269569;
+        p {
+          display: flex;
+          align-items: center;
+          display: flex;
+          margin-left: -7.5px;
+          margin-right: 7.5px;
+          text-align: center;
+          font-size: 14px;
+          line-height: 14px;
+          padding-bottom: 1px;
+        }
+      }
+    }
+    .in-basket {
+      width: 52px;
+      height: 37px;
+      border: 2px solid #fe680a;
+      background-color: white;
+      border-radius: 5px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+      p {
+        display: none;
+        margin: 0;
+        color: #fe680a;
+      }
+      @media (min-width: 768px) {
+        &:hover {
+          width: auto;
+          p {
+            display: flex;
+            align-items: center;
+            display: flex;
+            margin-left: -7.5px;
+            margin-right: 7.5px;
+            text-align: center;
+            font-size: 14px;
+            line-height: 14px;
+            padding-bottom: 1px;
+          }
+        }
+      }
+    }
+  }
+}

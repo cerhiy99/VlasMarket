@@ -1,0 +1,48 @@
+@import "../../../[lang]/(basic-layout)/App.scss";
+
+.admin-header-container {
+  background-color: #05172f;
+  box-sizing: border-box;
+  .admin-header {
+    padding: 20px 0;
+    @include admin-responsive-width;
+
+    .bread-crumb {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      a {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+
+        font-size: 14px;
+        font-weight: 400;
+        line-height: 20px;
+        text-align: left;
+        text-underline-position: from-font;
+        text-decoration-skip-ink: none;
+        color: #ffffff;
+        text-decoration: none;
+        svg {
+          path {
+            stroke: #ffffff;
+          }
+        }
+        &:hover {
+          color: #fe680a;
+        }
+      }
+    }
+    h1 {
+      // padding-left: 0.5px;
+      font-size: 30px;
+      font-weight: 400;
+      line-height: 36.31px;
+      text-underline-position: from-font;
+      text-decoration-skip-ink: none;
+      color: #ffffff;
+      margin: 10px 0;
+    }
+  }
+}

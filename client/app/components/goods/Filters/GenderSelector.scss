@@ -1,0 +1,127 @@
+.gender-selector-container {
+  position: relative;
+  border-radius: 8px;
+
+  .gender-selector-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+
+    @media (max-width: 1024px) {
+      border: 1px solid #05172f;
+      padding: 10px 20px;
+      border-radius: 25px;
+      width: 80px;
+    }
+
+    span {
+      font-family: Roboto;
+      font-size: 14px;
+      font-weight: 400;
+      line-height: 16px;
+      color: #303030;
+
+      @media (max-width: 1024px) {
+        font-family: Roboto;
+        font-size: 12px;
+        font-weight: 400;
+        line-height: 20px;
+        color: #05172f;
+      }
+    }
+
+    .arrow-icon {
+      font-size: 16px;
+      transition: transform 0.3s;
+
+      &.open {
+        transform: rotate(180deg);
+      }
+    }
+  }
+
+  .gender-list {
+    list-style: none;
+    padding: 0;
+    margin: 10px 0;
+
+    &.dropdown {
+      @media (max-width: 1024px) {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        width: 100px;
+        padding: 0 10px;
+        background-color: #fff;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        border-radius: 8px;
+        z-index: 10;
+        list-style: none;
+      }
+    }
+
+    .gender-item {
+      margin-bottom: 8px;
+
+      label {
+        position: relative;
+        display: flex;
+        align-items: center;
+        cursor: pointer;
+        font-size: 14px;
+        font-weight: 500;
+        padding-left: 30px; // Відступ для кастомного чекбоксу
+
+        input[type='checkbox'] {
+          position: absolute;
+          opacity: 0;
+          cursor: pointer;
+          height: 0;
+          width: 0;
+        }
+
+        .custom-checkbox {
+          position: absolute;
+          left: 0;
+          top: 50%;
+          transform: translateY(-50%);
+          height: 16px;
+          width: 16px;
+          background-color: #fff;
+          border: 2px solid #e7e7e7;
+          border-radius: 4px;
+          transition:
+            background-color 0.2s,
+            border-color 0.2s;
+        }
+
+        input[type='checkbox']:checked + .custom-checkbox {
+          background-color: #ff6a00;
+          border-color: #ff6a00;
+        }
+
+        input[type='checkbox']:checked + .custom-checkbox::after {
+          content: '';
+          position: absolute;
+          left: 4.5px;
+          top: 1px;
+          width: 5px;
+          height: 9px;
+          border: solid #fff;
+          border-width: 0 2px 2px 0;
+          transform: rotate(45deg);
+        }
+
+        .gender-name {
+          font-family: Roboto;
+          font-size: 13px;
+          font-weight: 400;
+          line-height: 19.23px;
+          color: #475156;
+          margin-left: 5px;
+        }
+      }
+    }
+  }
+}

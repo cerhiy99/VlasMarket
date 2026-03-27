@@ -1,0 +1,44 @@
+.notfound-container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  background: #111;
+  color: #fff;
+  padding: 2rem;
+}
+
+.notfound-title {
+  font-size: 10rem;
+  font-weight: 900;
+  color: #e11d48; // червоний
+  margin-bottom: 1rem;
+}
+
+.notfound-subtitle {
+  font-size: 1.5rem;
+  margin-bottom: 2rem;
+  color: #ccc;
+}
+
+.notfound-links {
+  display: flex;
+  gap: 1rem;
+
+  .btn {
+    display: inline-block;
+    padding: 0.75rem 1.5rem;
+    border: 2px solid #e11d48;
+    color: #e11d48;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.2s ease-in-out;
+
+    &:hover {
+      background: #e11d48;
+      color: #fff;
+    }
+  }
+}

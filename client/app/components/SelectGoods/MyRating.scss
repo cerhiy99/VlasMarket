@@ -1,0 +1,28 @@
+// MyRating.scss
+.my-rating {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  .stars-container {
+    display: flex;
+    gap: 2px;
+  }
+
+  .star-wrapper {
+    position: relative;
+    width: 20px;
+    height: 20px;
+
+    svg {
+      display: block;
+    }
+  }
+
+  p {
+    margin: 0;
+    font-size: 14px;
+    font-weight: 500;
+    color: #333;
+  }
+}

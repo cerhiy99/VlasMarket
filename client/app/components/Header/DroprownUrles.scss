@@ -1,0 +1,81 @@
+.header-dropdown-url {
+  position: relative;
+
+  p {
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 14.52px;
+    text-align: left;
+    text-underline-position: from-font;
+    text-decoration-skip-ink: none;
+    color: #000000;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    transition: color 0.3s ease;
+    &:hover {
+      color: #fe680a;
+      path {
+        stroke: #fe680a;
+      }
+    }
+    &.open {
+      color: #fe680a;
+    }
+
+    svg.arrow {
+      margin-left: 5px;
+      transition: transform 0.3s ease;
+    }
+
+    &.open svg.arrow {
+      transform: rotate(180deg);
+      path {
+        stroke: #fe680a;
+      }
+    }
+  }
+
+  .dropdown {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    display: none;
+    flex-direction: column;
+    background-color: #ffffff; // додаємо фон для dropdown
+    opacity: 0;
+    transform: translateY(-10px);
+    transition:
+      opacity 0.3s ease,
+      transform 0.3s ease;
+    padding: 5px 0;
+    z-index: 10; // щоб dropdown був зверху інших елементів
+    box-shadow: 0px 8px 40px 0px #0000001f;
+    border-radius: 5px;
+
+    &.show {
+      display: flex;
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    a {
+      font-size: 14px;
+      font-weight: 400;
+      line-height: 14.52px;
+      text-align: left;
+      text-underline-position: from-font;
+      text-decoration-skip-ink: none;
+      color: #000000;
+      text-decoration: none;
+      cursor: pointer;
+      padding: 8px 15px; // додаємо padding для посилань
+      transition: color 0.3s ease;
+      text-wrap: nowrap;
+      white-space: nowrap;
+      &:hover {
+        background-color: #f2f4f5;
+      }
+    }
+  }
+}

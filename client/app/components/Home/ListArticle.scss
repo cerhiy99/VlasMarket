@@ -1,0 +1,56 @@
+.list-article-container {
+  display: grid;
+  position: relative;
+  gap: 15px;
+  @media (max-width: 768px) {
+    min-width: unset;
+    max-width: 100%;
+  }
+  &.limit-5 {
+    grid-template-columns: repeat(5, 1fr);
+  }
+
+  &.limit-4 {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  &.limit-3 {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  &.limit-2 {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+  }
+  &.limit-1 {
+    grid-template-columns: repeat(1, 1fr);
+  }
+
+  .button-down {
+    position: absolute;
+    bottom: -50px;
+    width: 100%;
+    //background: linear-gradient(180deg, rgba(250, 251, 255, 0.5) 0%, #fafbff54);
+    height: 33px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    .downsvg-container {
+      cursor: pointer;
+      &:hover {
+        svg {
+          display: block; // Щоб уникнути зайвих відступів
+          margin: auto;
+          //box-shadow: 0 0 12px rgba(0, 0, 0, 0.2); // Рівномірна тінь
+          //background-color: #e5e5e5;
+          rect {
+            fill: #e5e5e5;
+          }
+        }
+      }
+    }
+  }
+
+  margin-bottom: 50px;
+}

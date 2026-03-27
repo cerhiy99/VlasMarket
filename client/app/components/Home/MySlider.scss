@@ -1,0 +1,77 @@
+@import '../../[lang]/(basic-layout)/App.scss';
+
+.my-swiper-container {
+  @include responsive-width;
+  //width: 100%;
+  height: 100%;
+  margin-top: 30px;
+  overflow: hidden;
+  position: relative;
+  aspect-ratio: 3;
+  @media (max-width: 768px) {
+    aspect-ratio: 14/9;
+  }
+
+  .swiper {
+    overflow: unset;
+    position: unset;
+    aspect-ratio: 3;
+    @media (max-width: 768px) {
+      aspect-ratio: 14/9;
+    }
+  }
+
+  .swiper-slide {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    max-width: 100%;
+    position: relative;
+    width: 100%;
+    aspect-ratio: 3;
+    @media (max-width: 768px) {
+      aspect-ratio: 14/9;
+    }
+
+    img {
+      width: 100%;
+      border-radius: 20px;
+      @media (max-width: 768px) {
+      }
+      object-fit: cover; // Масштабування зображення без спотворення
+      &.mob-img {
+        display: none;
+      }
+      @media (max-width: 768px) {
+        &.pc-img {
+          display: none;
+        }
+        &.mob-img {
+          display: block;
+        }
+      }
+    }
+  }
+
+  .swiper-pagination {
+    position: absolute;
+    z-index: 40;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    justify-content: center;
+    gap: 8px; // Відстань між кружками
+    z-index: 3;
+    .swiper-pagination-bullet {
+      width: 12px;
+      height: 12px;
+      background-color: #e0e0e0; // Колір кулі
+      border-radius: 50%;
+      content: '';
+      opacity: 1;
+    }
+    .swiper-pagination-bullet-active {
+      background-color: #fe680a; // Колір активної кулі
+    }
+  }
+}

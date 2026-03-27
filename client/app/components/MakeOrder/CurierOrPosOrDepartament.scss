@@ -1,0 +1,65 @@
+.curier-or-post-or-departament {
+  span {
+    color: red;
+  }
+  .title {
+    margin-top: 10px;
+    font-family: Roboto;
+    font-size: 15px;
+    line-height: 16px;
+    font-weight: 400;
+    color: #000;
+  }
+  p {
+    margin-top: 7.5px;
+  }
+  .post-or-departament {
+    ul {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      max-height: 30vh;
+      overflow-y: auto;
+      margin-top: 5px;
+      // Прибираємо стандартні стрілки
+      scrollbar-width: thin; /* Для Firefox */
+      scrollbar-color: #ccc transparent; /* Колір для Firefox */
+
+      // Для WebKit (Chrome, Edge, Safari)
+      &::-webkit-scrollbar {
+        width: 4px; /* Товщина скролу */
+      }
+
+      &::-webkit-scrollbar-track {
+        background: transparent; /* Фон треку скролу */
+      }
+
+      &::-webkit-scrollbar-thumb {
+        background-color: #ccc; /* Колір скролу */
+        border-radius: 8px; /* Закруглення */
+      }
+
+      &::-webkit-scrollbar-thumb:hover {
+        background-color: #aaa; /* Зміна кольору при наведенні */
+      }
+
+      &::-webkit-scrollbar-corner {
+        background: transparent; /* Прибираємо стрілки в кутах (якщо є) */
+      }
+      li {
+        display: flex;
+        align-items: center;
+        margin: 0;
+        padding: 0;
+        min-height: 43px;
+        border-bottom: 1px solid #ccc;
+        font-family: 'PT Root UI', sans-serif;
+        padding: 5px 0;
+        line-height: 18px;
+        max-height: unset;
+      }
+    }
+  }
+}

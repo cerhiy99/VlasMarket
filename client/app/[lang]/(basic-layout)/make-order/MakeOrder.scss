@@ -1,0 +1,6 @@
+@import "../App.scss";
+
+.make-order-container {
+  @include responsive-width;
+  margin: 40px auto;
+}

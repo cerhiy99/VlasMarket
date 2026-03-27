@@ -1,0 +1,108 @@
+@import "../../App.scss";
+
+.select-blog-container {
+  @include responsive-width;
+  .select-blog {
+    display: flex;
+    flex-direction: row;
+    gap: 15px;
+    width: 100%;
+    font-family: Roboto;
+    @media (max-width: 1024px) {
+      flex-direction: column;
+    }
+
+    .blog {
+      width: 70%;
+      @media (max-width: 1024px) {
+        width: 100%;
+      }
+      h1 {
+        font-family: Roboto;
+        font-weight: 500;
+        font-style: Medium;
+        font-size: 29px;
+        leading-trim: NONE;
+        line-height: 40px;
+        letter-spacing: 0%;
+        vertical-align: middle;
+        color: #32353f;
+        margin: 0;
+      }
+      .date {
+        font-family: Roboto;
+        font-weight: 400;
+        font-style: Regular;
+        font-size: 13.02px;
+        leading-trim: NONE;
+        line-height: 14px;
+        letter-spacing: 0%;
+        vertical-align: middle;
+        margin: 15px 0;
+      }
+      .img-container {
+        position: relative;
+        width: 100%;
+        img {
+          border-radius: 8px;
+          max-width: 100%;
+          height: auto;
+        }
+      }
+      .description {
+        margin-top: 20px;
+        img {
+          max-width: 100%;
+          height: auto;
+        }
+        table {
+          border-collapse: collapse; /* щоб рамки не подвоювались */
+          width: 100%;
+        }
+        table,
+        th,
+        td {
+          border: 1px solid #ccc; /* або чорний: #000 */
+        }
+        th,
+        td {
+          padding: 8px;
+          text-align: left;
+        }
+      }
+    }
+    .other-blog {
+      display: flex;
+      flex-direction: column;
+      width: 30%;
+      @media (max-width: 1024px) {
+        width: 100%;
+      }
+      .read-more {
+        font-family: Roboto;
+        font-weight: 500;
+        font-style: Medium;
+        font-size: 19.84px;
+        leading-trim: NONE;
+        line-height: 28px;
+        letter-spacing: 0%;
+        vertical-align: middle;
+        margin-bottom: 40px;
+        @media (max-width: 768px) {
+          margin-bottom: 15px;
+        }
+      }
+      .list-blog {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        gap: 20px;
+        margin-bottom: 40px;
+        @media (max-width: 1024px) {
+          flex-direction: row;
+          flex-wrap: wrap;
+        }
+      }
+    }
+  }
+}

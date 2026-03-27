@@ -1,0 +1,72 @@
+.goods-bread-crumbs-container {
+  display: flex;
+  flex-direction: row;
+  gap: 7.5px;
+  align-items: center;
+  margin: 20px 0;
+  overflow-x: auto;
+  padding-bottom: 7.5px;
+  &::-webkit-scrollbar {
+    height: 6px; /* Задаємо висоту для горизонтального скролу */
+    background-color: #f1f1f1; /* Світло-сірий фон */
+  }
+  &::-webkit-scrollbar-thumb {
+    background-color: #c0c0c0; /* Сірий колір "пальця" */
+    border-radius: 4px; /* Закруглені кути */
+    border: 1px solid #c0c0c0; /* Запобігає білим "полям" навколо скролу */
+  }
+  &::-webkit-scrollbar-thumb:hover {
+    background-color: #a0a0a0; /* Трохи темніший сірий при наведенні */
+  }
+  a {
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 14.5px;
+    white-space: nowrap;
+    //text-align: left;
+    //text-underline-position: from-font;
+    //text-decoration-skip-ink: none;
+    color: #788289;
+    //text-wrap: nowrap;
+    //word-wrap: nowrap;
+    &:hover {
+      color: #fe680a;
+    }
+    /*@media (max-width: 768px) {
+      display: -webkit-box;
+      -webkit-line-clamp: 1; // скільки рядків показати
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: normal; // важливо для багаторядковості
+    }*/
+  }
+  .list-urls {
+    display: flex;
+    flex-direction: row;
+    gap: 7.5px;
+    align-items: center;
+    white-space: nowrap; /* Запрещает перенос на новую строку */
+    //overflow: hidden; /* Скрывает выходящий за пределы текст */
+    //text-overflow: ellipsis; /* Показывает троеточие */
+    //text-decoration: none;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 14.5px;
+    //text-align: left;
+    //text-underline-position: from-font;
+    //text-decoration-skip-ink: none;
+    color: #788289;
+    //text-wrap: nowrap;
+    //word-wrap: nowrap;
+    flex-wrap: nowrap;
+    white-space: nowrap;
+    /*@media (max-width: 768px) {
+      display: -webkit-box;
+      -webkit-line-clamp: 1; // скільки рядків показати
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap; // важливо для багаторядковості
+    }*/
+  }
+}

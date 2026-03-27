@@ -1,0 +1,29 @@
+@import "../App.scss";
+
+.goods-container {
+  @include responsive-width;
+  .goods-main {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    margin: 20px 0;
+    gap: 40px;
+    @media (max-width: 1024px) {
+      display: flex;
+      flex-direction: column;
+    }
+    h1 {
+      margin-top: 0;
+      font-size: 24px;
+      font-weight: 550;
+      line-height: 30px;
+      text-align: left;
+      text-underline-position: from-font;
+      -webkit-text-decoration-skip-ink: none;
+      text-decoration-skip-ink: none;
+    }
+  }
+  .desc {
+    margin-bottom: 30px;
+  }
+}

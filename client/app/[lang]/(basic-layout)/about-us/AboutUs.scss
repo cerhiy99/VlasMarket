@@ -1,0 +1,72 @@
+@import '../App.scss';
+
+.about-us-cont {
+  @include responsive-width;
+  margin-bottom: 30px;
+
+  @media (max-width: 768px) {
+    // padding: 0 15px;
+  }
+
+  .about-us {
+    max-width: 1100px;
+    margin: 0 auto;
+
+    h1 {
+      font-weight: 500;
+      font-size: 30px;
+      line-height: 30px;
+      text-align: center;
+      vertical-align: middle;
+      color: #05172f;
+      margin: 20px;
+
+      @media (max-width: 768px) {
+        font-size: 24px;
+        margin: 15px;
+      }
+    }
+
+    .block {
+      padding: 20px;
+      margin: 20px 0;
+      background-color: #ffffff;
+      border-radius: 12px;
+      border: 1px solid #e1e6ee;
+
+      @media (max-width: 768px) {
+        padding: 15px;
+        margin: 15px 0;
+      }
+
+      p {
+        font-size: 17px;
+        font-weight: 400;
+        line-height: 25px;
+        text-align: justified;
+        text-underline-position: from-font;
+        text-decoration-skip-ink: none;
+        color: #333333;
+
+        @media (max-width: 768px) {
+          font-size: 15px;
+          line-height: 22px;
+        }
+      }
+    }
+
+    .map {
+      height: 40vh;
+
+      @media (max-width: 768px) {
+        height: 30vh;
+      }
+
+      iframe {
+        width: 100%;
+        height: 100%;
+        border: 0;
+      }
+    }
+  }
+}

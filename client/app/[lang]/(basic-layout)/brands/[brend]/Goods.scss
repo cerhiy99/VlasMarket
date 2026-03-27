@@ -1,0 +1,19 @@
+@import "../../App.scss";
+
+.goods-container {
+  @include responsive-width;
+  .goods-main {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    margin: 20px 0;
+    gap: 40px;
+    @media (max-width: 1024px) {
+      display: flex;
+      flex-direction: column;
+    }
+  }
+  h1 {
+    margin-top: 0;
+  }
+}
