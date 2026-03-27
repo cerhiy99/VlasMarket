@@ -69,9 +69,6 @@ const page = async ({ params }: Props) => {
           <h3>{cooperation.miniTitle}</h3>
           <p>
             {cooperation.description1}
-            <span style={{ display: 'block', marginTop: '5px' }}>
-              {cooperation.description2} {process.env.NEXT_PUBLIC_EMAIL}
-            </span>
             <span style={{ display: 'block', marginTop: '5px' }}>{cooperation.description3}</span>
             <span style={{ display: 'block', marginTop: '5px' }}>{cooperation.description4}</span>
           </p>

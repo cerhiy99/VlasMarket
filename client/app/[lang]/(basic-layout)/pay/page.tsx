@@ -54,7 +54,6 @@ const Page = async ({ params }: Props) => {
       <BreadCrumbs lang={lang} listUrles={[{ name: pay.title, url: 'pay' }]} />
       <div className="delivery-main">
         <div className="main-title">
-          <PaySVG />
           <h1>{pay.title}</h1>
         </div>
         <div className="block">

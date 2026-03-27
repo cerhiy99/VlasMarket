@@ -4,7 +4,6 @@
   @include responsive-width;
   display: flex;
   flex-direction: column;
-  max-width: 1100px;
   .delivery-main {
     margin-bottom: 60px;
     .block {
@@ -25,7 +24,7 @@
       flex-direction: row;
       align-items: flex-end;
       gap: 20px;
-      justify-content: center;
+      justify-content: left;
 
       font-size: 19px;
       font-weight: 450;
@@ -43,7 +42,7 @@
         text-align: right;
         text-underline-position: from-font;
         text-decoration-skip-ink: none;
-        color: #05172f;
+        color: #000000;
         margin: 0;
         word-wrap: none;
         text-wrap: nowrap;
@@ -70,7 +69,7 @@
       text-align: justified;
       text-underline-position: from-font;
       text-decoration-skip-ink: none;
-      color: #333333;
+      color: #000000;
       br {
         display: block; /* Забезпечує перенесення на новий рядок */
         margin-top: 5px; /* Відступ зверху у 5 пікселів */
@@ -87,7 +86,7 @@
       text-align: left;
       text-underline-position: from-font;
       text-decoration-skip-ink: none;
-      color: #05172f;
+      color: #000000;
     }
     ul {
       margin: 0;
@@ -113,7 +112,7 @@
         text-align: justified;
         text-underline-position: from-font;
         text-decoration-skip-ink: none;
-        color: #333333;
+        color: #000000;
       }
     }
     a {
