@@ -1,5 +1,19 @@
 @import '../../[lang]/(basic-layout)/App.scss';
 
+.footer-container{
+  background-color: #EBD8E4;
+  .footer-main{
+    padding: 30px auto;
+    @include responsive-width;
+    .logo{
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+  } 
+}  
+
+/*
 .footer-container {
   background-color: #05172f;
   .footer-main {
@@ -318,3 +332,4 @@
     }
   }
 }
+*/

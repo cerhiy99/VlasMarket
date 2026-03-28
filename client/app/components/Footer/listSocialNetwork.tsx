@@ -14,7 +14,6 @@ import {
   ViberURL,
   YouTubeURL
 } from '@/app/assest/listUrl'
-
 export const socialNetwork = [
   {
     url: FacebookURL,

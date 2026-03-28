@@ -1,7 +1,8 @@
 import React from 'react';
 import './Footer.scss';
 import { Locale } from '@/i18n.config';
-import LogoSVG from '../../assest/Footer/Logo.svg';
+//import LogoSVG from '../../assest/Footer/Logo.svg';
+import LogoSVG from '../../assest/Footer/LogoBlack.svg';
 import LogoMobileSVG from '../../assest/Footer/LogoMobile.svg';
 import { getDictionary } from '@/lib/dictionary';
 import Link from 'next/link';
@@ -12,6 +13,20 @@ const Footer = async ({ lang }: { lang: Locale }) => {
   const { footer } = await getDictionary(lang);
   return (
     <div className="footer-container">
+      <div className="footer-main">
+        <div className="logo">
+          <LogoSVG />
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default Footer;
+
+/*
+
+<div className="footer-container">
       <div className="footer-main">
         <div className="first">
           <div className="logo-and-graph">
@@ -97,7 +112,5 @@ const Footer = async ({ lang }: { lang: Locale }) => {
         </div>
       </div>
     </div>
-  );
-};
 
-export default Footer;
+*/
