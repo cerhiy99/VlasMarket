@@ -1,4 +1,4 @@
-@import "./App.scss";
+@import './App.scss';
 
 .home-container {
   .home-goods {
@@ -6,47 +6,43 @@
     margin-top: 20px;
     h2,
     h1 {
-      font-size: 25px;
-      font-weight: 500;
-      line-height: 27px;
-      text-align: left;
-      text-underline-position: from-font;
-      text-decoration-skip-ink: none;
+      font-weight: 600;
+      font-style: Semi Bold;
+      font-size: 26px;
+      line-height: 100%;
+      letter-spacing: 0%;
       color: #000000;
-      margin-top: 0;
-    }
-    .main-text {
-      margin-top: 25px;
-      margin-bottom: 10px;
+      margin-top: 80px;
     }
     .row-blog {
       display: flex;
       flex-direction: column;
       .row {
+        margin-top: 40px;
         display: flex;
         flex-direction: row;
         gap: 15px;
         align-items: center;
+        justify-content: space-between;
         a {
           text-decoration: none;
         }
       }
       h2 {
         margin: 0;
-        font-family: Roboto;
       }
       p {
-        font-family: Roboto;
-        font-weight: 500;
+        font-weight: 600;
         font-style: Medium;
         font-size: 20px;
-        leading-trim: NONE;
         letter-spacing: 0%;
         vertical-align: middle;
         color: #77878f;
         margin: 0;
         display: flex;
         align-items: center;
+        color: #000000;
+        gap: 8px;
         &:hover {
           color: #fe680a;
         }
@@ -54,10 +50,41 @@
       .list-blog {
         margin: 20.75px 0;
         display: flex;
-        gap: 20px;
+        gap: 10px;
         flex-direction: row;
-        flex-wrap: wrap;
+        //flex-wrap: wrap;
+        @media (max-width: 1200px) {
+          p:nth-child(n + 5) {
+            display: none;
+          }
+        }
+        @media (max-width: 1024px) {
+          flex-wrap: wrap;
+        }
       }
+    }
+  }
+  .main-text {
+    margin-top: 40px 0;
+    padding: 24px;
+    box-sizing: border-box;
+    background-color: #ffffff;
+    border: 1px solid #ebd8e4;
+    border-radius: 12px;
+
+    p {
+      margin-top: 12px;
+      margin-bottom: 16px;
+      font-weight: 400;
+      font-style: Regular;
+      font-size: 15px;
+      line-height: 100%;
+      letter-spacing: 0%;
+    }
+    button {
+      background-color: #ebd8e4;
+      border: 0.5px solid #000000;
+      width: 100%;
     }
   }
 }

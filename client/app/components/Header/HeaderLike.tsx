@@ -27,7 +27,10 @@ const HeaderLike = ({ lang }: Props) => {
   const { like } = useSelector((state: RootState) => state.BasketAndLike);
 
   const handleClickOutside = (event: MouseEvent) => {
-    if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+    if (
+      dropdownRef.current &&
+      !dropdownRef.current.contains(event.target as Node)
+    ) {
       setIsOpen(false);
     }
   };
@@ -61,7 +64,9 @@ const HeaderLike = ({ lang }: Props) => {
   }, [like]);
 
   const handlerAddToCart = (id: number) => {
-    const currentLike = like.filter((currentItem: any) => currentItem.id === id);
+    const currentLike = like.filter(
+      (currentItem: any) => currentItem.id === id
+    );
     dispatch(addToBasket({ ...currentLike[0], count: 1 }));
     dispatch(removeFromLike(id));
     setIsOpen(false);
@@ -94,7 +99,9 @@ const HeaderLike = ({ lang }: Props) => {
             <p>{t('headerLike.likedItems')}</p>
             {like.map((x) => (
               <div className="itemWrapper" key={x.id}>
-                <Link href={getLocalizedPath(`/${lang}/goods/${x.volume.id}`, lang)}></Link>
+                <Link
+                  href={getLocalizedPath(`/${lang}/goods/${x.volume.id}`, lang)}
+                ></Link>
                 <div className="liked-basket">
                   <div className="basket-goods-img">
                     <Image
@@ -114,11 +121,16 @@ const HeaderLike = ({ lang }: Props) => {
                       </div>
                       <div className="price-container">
                         {x.volume.price !== x.volume.priceWithDiscount && (
-                          <div style={{ color: '#000' }} className="price-no-discount">
+                          <div
+                            style={{ color: '#000' }}
+                            className="price-no-discount"
+                          >
                             {x.volume.price} ₴
                           </div>
                         )}
-                        <div className="price-with-discount">{x.volume.priceWithDiscount} ₴</div>
+                        <div className="price-with-discount">
+                          {x.volume.priceWithDiscount} ₴
+                        </div>
                       </div>
                     </div>
                   </div>

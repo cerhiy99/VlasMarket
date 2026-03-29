@@ -22,7 +22,7 @@ type Props = {
 };
 
 const AuthHeader = ({
-  iconColor = 'white',
+  iconColor = '#000000',
   dictionary,
   lang,
   onFormClose,

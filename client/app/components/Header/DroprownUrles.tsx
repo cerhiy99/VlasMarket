@@ -25,7 +25,7 @@ const DroprownUrles = ({ dictionary, lang }: Props) => {
     <div
       onMouseEnter={toggleOpen}
       onMouseLeave={toggleClose}
-      className="header-dropdown-url"
+      className="header-dropdown-url button-url"
       //ref={dropdownRef}
     >
       <p className={isOpen ? 'open' : ''}>
@@ -43,6 +43,9 @@ const DroprownUrles = ({ dictionary, lang }: Props) => {
           {dictionary.contact}
         </Link>
         <Link href={getLocalizedPath(`/${lang}/blog/1`, lang)}>Блог</Link>
+        <Link href={getLocalizedPath(`/${lang}/bonus`, lang)}>
+          {dictionary.bonus}
+        </Link>
         <Link href={getLocalizedPath(`/${lang}/delivery`, lang)}>
           {dictionary.delivery}
         </Link>

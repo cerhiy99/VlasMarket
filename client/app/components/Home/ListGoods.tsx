@@ -18,7 +18,7 @@ const ListArticle = ({ type, dictionary, lang, query, startGoods }: Props) => {
   const [limit, setLimit] = useState(5);
   const [countShow, setCountShow] = useState(1);
   const [listGoods, setListGoods] = useState<any[]>(
-    startGoods ? startGoods : [],
+    startGoods ? startGoods : []
   );
 
   useEffect(() => {
@@ -56,7 +56,7 @@ const ListArticle = ({ type, dictionary, lang, query, startGoods }: Props) => {
   const getListGoods = async () => {
     try {
       const res = await $host.get(
-        `goods/get?${query}=true&limit=${limit}&page=${countShow}`,
+        `goods/get?${query}=true&limit=${limit}&page=${countShow}`
       );
       setListGoods([...listGoods, ...res.data.goods]);
     } catch (err) {}

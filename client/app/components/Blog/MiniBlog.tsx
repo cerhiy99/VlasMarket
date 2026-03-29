@@ -38,16 +38,19 @@ const MiniBlog = ({ blog, lang, is100Procent }: Props) => {
         />
       </div>
       <div className="text">
-        <h2>{lang == 'ru' ? blog.nameru : blog.nameuk}</h2>
+        {' '}
+        <div className="date">{blog.createdAt.slice(0, 10)}</div>
+        <h2 className="mini-blog-title">
+          {lang == 'ru' ? blog.nameru : blog.nameuk}
+        </h2>
         <div
           className="description"
           dangerouslySetInnerHTML={{
             __html: clearHTML(
-              lang == 'ru' ? blog.descriptionru : blog.descriptionuk,
+              lang == 'ru' ? blog.descriptionru : blog.descriptionuk
             ),
           }}
         />
-        <div className="date">{blog.createdAt.slice(0, 10)}</div>
       </div>
     </Link>
   );

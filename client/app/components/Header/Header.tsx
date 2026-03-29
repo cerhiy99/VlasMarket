@@ -51,28 +51,51 @@ const Header = async ({ lang }: Props) => {
         <AdminLogo />
         <div className="list-url-and-logo-container">
           <div className="list-url-and-logo">
+            <div className="list-url">
+              <DroprownUrles lang={lang} dictionary={header.aboutShop} />
+              <Link
+                className="button-url"
+                href={getLocalizedPath(`/${lang}/brands`, lang)}
+              >
+                {header.brands}
+              </Link>
+              <Link
+                className="button-url"
+                href={getLocalizedPath(`/${lang}/cooperation`, lang)}
+              >
+                {header.cooperation}
+              </Link>
+              <div
+                style={{ backgroundColor: '#F80000' }}
+                className="discount button-url"
+              >
+                <Link href={getLocalizedPath(`/${lang}/discount/1`, lang)}>
+                  {header.discount}
+                </Link>
+              </div>
+            </div>
             <div className="logo-container">
               <Link href={`${lang != 'ru' ? '/' : '/ru'}`}>
                 <Logo />
               </Link>
             </div>
-            <div className="list-url">
-              <div className="discount">
-                <Link href={getLocalizedPath(`/${lang}/discount/1`, lang)}>{header.discount}</Link>
-              </div>
-              <DroprownUrles lang={lang} dictionary={header.aboutShop} />
-              <Link href={getLocalizedPath(`/${lang}/brands`, lang)}>{header.brands}</Link>
-              <Link href={getLocalizedPath(`/${lang}/cooperation`, lang)}>
-                {header.cooperation}
-              </Link>
-            </div>
             <div className="list-url-and-language-and-contact">
+              <Link
+                className="button-url"
+                href={getLocalizedPath(`/${lang}/partners`, lang)}
+              >
+                {header.partners}
+              </Link>
               <ContactWithUs lang={lang} dictionary={header.contact} />
               <SetLanguage lang={lang} />
             </div>
           </div>
         </div>
-        <CatalogSearchAndOther catalog={catalog} dictionary={header} lang={lang} />
+        <CatalogSearchAndOther
+          catalog={catalog}
+          dictionary={header}
+          lang={lang}
+        />
         {
           //<Update />
         }

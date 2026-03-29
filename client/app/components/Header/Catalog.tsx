@@ -69,7 +69,12 @@ const Catalog = ({ lang, dictionary, catalog }: Props) => {
                     className={`category ${selectCategory === x.id ? 'active' : ''}`}
                     onMouseEnter={() => setSelectCategory(x.id)}
                     onClick={() => {
-                      router.push(getLocalizedPath(`/${lang}/goods/${UkrToEng(x.nameru)}/1`, lang));
+                      router.push(
+                        getLocalizedPath(
+                          `/${lang}/goods/${UkrToEng(x.nameru)}/1`,
+                          lang
+                        )
+                      );
                       setIsHovered(false);
                     }} // Оновлюємо стан підкатегорії при кліку
                   >
@@ -111,15 +116,24 @@ const Catalog = ({ lang, dictionary, catalog }: Props) => {
                           <div className="title-list-category-title">
                             {categoryTitle && categoryTitle?.img && (
                               <Image
-                                src={process.env.NEXT_PUBLIC_SERVER + categoryTitle.img}
-                                alt={lang == 'ru' ? categoryTitle.nameru : categoryTitle.nameuk}
+                                src={
+                                  process.env.NEXT_PUBLIC_SERVER +
+                                  categoryTitle.img
+                                }
+                                alt={
+                                  lang == 'ru'
+                                    ? categoryTitle.nameru
+                                    : categoryTitle.nameuk
+                                }
                                 width={30}
                                 height={30}
                                 style={{ objectFit: 'contain' }}
                               />
                             )}
                             <span>
-                              {lang == 'ru' ? categoryTitle.nameru : categoryTitle.nameuk}
+                              {lang == 'ru'
+                                ? categoryTitle.nameru
+                                : categoryTitle.nameuk}
                             </span>
                           </div>
                         </div>

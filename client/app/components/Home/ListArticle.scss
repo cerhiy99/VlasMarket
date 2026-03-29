@@ -38,14 +38,22 @@
 
     .downsvg-container {
       cursor: pointer;
+      background-color: #f3e8ef;
+      width: 100px;
+      border-radius: 100px;
+      height: 35px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       &:hover {
+        background-color: #ff8e8e;
         svg {
           display: block; // Щоб уникнути зайвих відступів
           margin: auto;
           //box-shadow: 0 0 12px rgba(0, 0, 0, 0.2); // Рівномірна тінь
           //background-color: #e5e5e5;
-          rect {
-            fill: #e5e5e5;
+          path {
+            stroke: #ffffff;
           }
         }
       }

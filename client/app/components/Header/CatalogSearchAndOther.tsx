@@ -10,6 +10,7 @@ import Burger from './Burger/Burger';
 import { Locale } from '@/i18n.config';
 import MobileMenu from './mobile/MobileMenu';
 import Logo from '../../assest/LogoMob.svg';
+import ComparisonSVG from '../../assest/comparison.svg';
 import Link from 'next/link';
 
 type Props = {
@@ -42,10 +43,16 @@ const CatalogSearchAndOther = ({ dictionary, lang, catalog }: Props) => {
   }, []);
   return (
     <div className="catalog-search-and-other-container-static">
-      <div className={`catalog-search-and-other-container ${scrolled ? 'fixed' : ''}`}>
+      <div
+        className={`catalog-search-and-other-container ${scrolled ? 'fixed' : ''}`}
+      >
         <div className="catalog-search-and-other">
           <div className="catalog">
-            <Catalog catalog={catalog} lang={lang} dictionary={dictionary.catalog} />
+            <Catalog
+              catalog={catalog}
+              lang={lang}
+              dictionary={dictionary.catalog}
+            />
           </div>
 
           <div className={`mob16`}>
@@ -70,10 +77,11 @@ const CatalogSearchAndOther = ({ dictionary, lang, catalog }: Props) => {
           <div className="search-with-list-icon">
             <Search dictionary={dictionary.search} lang={lang} />
             <div className="list-icon-header">
+              <div className="comparison">
+                <ComparisonSVG />
+              </div>
               <AuthHeader dictionary={dictionary.Auth} lang={lang} />
-              <div className="line-vertically" />
               <HeaderLike lang={lang} />
-              <div className="line-vertically" />
               <HeaderBasket lang={lang} />
             </div>
           </div>

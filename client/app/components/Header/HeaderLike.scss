@@ -6,33 +6,33 @@
   height: 100%;
   .title {
     position: relative;
-    width: 60px;
-    height: 40px;
+    width: 50px;
+    height: 50px;
     border-radius: 5px;
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
     transition: background-color 0.3s ease;
-
+    background-color: #ffffff;
     &:hover {
-      background-color: #ffffff15;
+      background-color: #ff8e8e;
     }
 
     .count {
       position: absolute;
-      right: 6px;
-      bottom: 6px;
+      right: -5px;
+      top: -5px;
       box-sizing: border-box;
-      width: 13px;
-      height: 13px;
-      background-color: #fe680a;
+      width: 17px;
+      height: 17px;
+      background-color: #f80000;
 
       display: flex;
       justify-content: center;
       align-items: center;
       // text-align: center;
-      font-size: 8px;
+      font-size: 12px;
       font-weight: 600;
       color: #ffffff;
       border-radius: 100%;

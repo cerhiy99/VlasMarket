@@ -26,7 +26,10 @@ const ContactWithUs = ({ lang, dictionary }: Props) => {
   };
 
   const handleClickOutside = (event: MouseEvent) => {
-    if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+    if (
+      dropdownRef.current &&
+      !dropdownRef.current.contains(event.target as Node)
+    ) {
       setIsOpen(false);
     }
   };
@@ -78,8 +81,12 @@ const ContactWithUs = ({ lang, dictionary }: Props) => {
           <div className="icon2">
             <PhoneSVG color={'#fe680a'} stroke={'white'} />
             <p>
-              <a href={process.env.NEXT_PUBLIC_PHONE_URL_1}>{process.env.NEXT_PUBLIC_PHONE_1}</a>
-              <a href={process.env.NEXT_PUBLIC_PHONE_URL_2}>{process.env.NEXT_PUBLIC_PHONE_2}</a>
+              <a href={process.env.NEXT_PUBLIC_PHONE_URL_1}>
+                {process.env.NEXT_PUBLIC_PHONE_1}
+              </a>
+              <a href={process.env.NEXT_PUBLIC_PHONE_URL_2}>
+                {process.env.NEXT_PUBLIC_PHONE_2}
+              </a>
             </p>
           </div>
           <div className="list__item">

@@ -45,7 +45,7 @@ const Search = ({ lang, dictionary }: Props) => {
     }
     try {
       const res = await $host.get<SearchResults>(
-        'search/search?query=' + query,
+        'search/search?query=' + query
       );
       setSuggestions(res.data);
       setShowSuggestions(true); // Показуємо підказки після отримання даних
@@ -90,8 +90,8 @@ const Search = ({ lang, dictionary }: Props) => {
       router.push(
         getLocalizedPath(
           `/${lang}/goods/1?search=${encodeURIComponent(searchValue.trim())}`,
-          lang,
-        ),
+          lang
+        )
       );
       //setSearchValue('') // Очищаємо поле пошуку
       setSuggestions(null); // Приховуємо підказки

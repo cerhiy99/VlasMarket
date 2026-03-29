@@ -29,7 +29,9 @@ const HeaderBasket = ({ lang }: Props) => {
   const [count, setCount] = useState(0);
 
   const dispatch = useDispatch();
-  const { basket, isOpenBasket } = useSelector((state: RootState) => state.BasketAndLike);
+  const { basket, isOpenBasket } = useSelector(
+    (state: RootState) => state.BasketAndLike
+  );
 
   const toggleDropdownOpen = () => {
     if (window.outerWidth < 768) return;
@@ -42,13 +44,16 @@ const HeaderBasket = ({ lang }: Props) => {
 
   const handleClickOutside = (event: MouseEvent) => {
     if (window.outerWidth < 768) return;
-    if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+    if (
+      dropdownRef.current &&
+      !dropdownRef.current.contains(event.target as Node)
+    ) {
       dispatch(setIsOpenBasket(false));
     }
   };
 
-  useEffect(() => {
-    if (isOpenBasket) {
+  /*useEffect(() => {
+    (if (isOpenBasket) {
       document.addEventListener('mousedown', handleClickOutside);
     } else {
       document.removeEventListener('mousedown', handleClickOutside);
@@ -57,7 +62,7 @@ const HeaderBasket = ({ lang }: Props) => {
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
-  }, [isOpenBasket]);
+  }, [isOpenBasket]);*/
 
   useEffect(() => {
     setCount(basket.length);
@@ -107,7 +112,9 @@ const HeaderBasket = ({ lang }: Props) => {
             </div>
           )}
         </div>
-        <p>{t('headerBasket.cart')}</p>
+        {
+          //<p>{t('headerBasket.cart')}</p>
+        }
       </div>
       <div
         onClick={(e) => {
@@ -126,7 +133,12 @@ const HeaderBasket = ({ lang }: Props) => {
             <p>{t('headerBasket.cart')}</p>
             {basket.map((x) => (
               <div key={x.id} className="itemWrapper">
-                <Link href={getLocalizedPath(`/${lang}/goods/${x.volume.url}`, lang)}>
+                <Link
+                  href={getLocalizedPath(
+                    `/${lang}/goods/${x.volume.url}`,
+                    lang
+                  )}
+                >
                   <div className="basket-goods2">
                     <div className="basket-goods-img">
                       <Image
@@ -155,7 +167,11 @@ const HeaderBasket = ({ lang }: Props) => {
                               fill="none"
                               xmlns="http://www.w3.org/2000/svg"
                             >
-                              <path d="M0 1H14" stroke="white" strokeWidth="2" />
+                              <path
+                                d="M0 1H14"
+                                stroke="white"
+                                strokeWidth="2"
+                              />
                             </svg>
                           </div>
                           <div className="count">{x.count}</div>
@@ -174,8 +190,16 @@ const HeaderBasket = ({ lang }: Props) => {
                               fill="none"
                               xmlns="http://www.w3.org/2000/svg"
                             >
-                              <path d="M0 7L14 7" stroke="white" strokeWidth="2" />
-                              <path d="M7 0L7 14" stroke="white" strokeWidth="2" />
+                              <path
+                                d="M0 7L14 7"
+                                stroke="white"
+                                strokeWidth="2"
+                              />
+                              <path
+                                d="M7 0L7 14"
+                                stroke="white"
+                                strokeWidth="2"
+                              />
                             </svg>
                           </div>
                         </div>
@@ -198,11 +222,16 @@ const HeaderBasket = ({ lang }: Props) => {
                         </div>
                         <div className="price-container">
                           {x.volume.price !== x.volume.priceWithDiscount && (
-                            <div style={{ color: '#000' }} className="price-no-discount">
+                            <div
+                              style={{ color: '#000' }}
+                              className="price-no-discount"
+                            >
                               {x.volume.price} ₴
                             </div>
                           )}
-                          <div className="price-with-discount">{x.volume.priceWithDiscount} ₴</div>
+                          <div className="price-with-discount">
+                            {x.volume.priceWithDiscount} ₴
+                          </div>
                         </div>
                       </div>
                     </div>

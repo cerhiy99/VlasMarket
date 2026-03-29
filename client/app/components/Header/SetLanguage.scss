@@ -1,73 +1,61 @@
 #set-language-container {
   position: relative;
   display: flex;
+  align-items: center;
+  gap: 4px; // Відступ між кнопками
   width: max-content;
-  padding: 4px 0;
-  background-color: transparent;
-  border-radius: 8px;
-  font-family: 'Roboto', sans-serif;
-  overflow: hidden;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  min-width: 110px;
-  max-width: 110px;
+  padding: 0;
+  background-color: transparent; // Фон контейнера прозорий
+  font-family: 'Inter', sans-serif; // Або Roboto, як у вас було
+  width: 88px;
 
   .lang-bg {
     position: absolute;
-    top: 4px;
-    bottom: 4px;
-    width: 50px;
-    border-radius: 6px;
-    background-color: #05172f;
-    transition:
-      left 0.1s ease,
-      right 0.1s ease;
+    top: 0;
+    width: 42px; // Трохи ширше за текст
+    height: 38px;
+    border-radius: 12px; // Закруглені кути як на фото
+    transition: transform 0.2s ease-in-out;
     z-index: 0;
-  }
+    background-color: #ebd8e4;
+    box-sizing: border-box;
 
-  .lang-bg.left {
-    left: 0px;
-    //right: auto;
-  }
+    &.left {
+      transform: translateX(0);
+    }
 
-  .lang-bg.right {
-    left: 60px;
-    //left: auto;
+    &.right {
+      // Розрахунок: ширина плашки + gap (48px + 8px)
+      transform: translateX(46px);
+    }
   }
 
   .lang-link {
     position: relative;
     z-index: 1;
-    width: 50px;
-    height: 30px;
-    font-size: 14px;
-    font-weight: 400;
-    color: #999;
+    width: 42px;
+    height: 38px;
+    font-size: 15px; // Більший шрифт як на макеті
+    font-weight: 600; // Жирний шрифт
+    color: #000000; // Чорний колір для всіх
     text-decoration: none;
     display: flex;
     align-items: center;
     justify-content: center;
-    text-align: center;
-    border-radius: 6px;
-    transition:
-      color 0.3s ease,
-      font-weight 0.3s ease;
     cursor: pointer;
-    &:hover {
-      color: #000;
-    }
+    transition: color 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
 
     &.active {
-      color: #fff;
-      font-weight: 650;
       cursor: default;
+      // Колір тексту залишається чорним, змінюється лише фон під ним (lang-bg)
     }
-    &.lang-left {
-      //background-color: red;
+
+    &:not(.active):hover {
+      opacity: 0.7;
     }
-  }
-  .lang-right {
-    //background-color: green;
   }
 }

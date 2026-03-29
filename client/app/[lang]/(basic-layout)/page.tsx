@@ -5,7 +5,6 @@ import { getDictionary } from '@/lib/dictionary';
 import MySlider from '@/app/components/Home/MySlider';
 import ListArticle from '@/app/components/Home/ListGoods';
 import './Home.scss';
-import UserWatched from '@/app/components/utils/UserWatched';
 import MiniBlog from '@/app/components/Blog/MiniBlog';
 import { getLocalizedPath } from '@/app/components/utils/getLocalizedPath';
 import Link from 'next/link';
@@ -54,9 +53,12 @@ export async function generateMetadata({ params }: Props) {
 
 const getBlog = async (lang: Locale) => {
   try {
-    const res = await fetch(process.env.NEXT_PUBLIC_API_SERVER + `blog/get?page=1&limit=4`, {
-      next: { revalidate: 600 },
-    });
+    const res = await fetch(
+      process.env.NEXT_PUBLIC_API_SERVER + `blog/get?page=1&limit=5`,
+      {
+        next: { revalidate: 600 },
+      }
+    );
     if (!res.ok) {
       return { blog: [] };
     }
@@ -65,7 +67,8 @@ const getBlog = async (lang: Locale) => {
       id: x.id,
       img: x.img,
       url: x.url,
-      [`name${lang == 'ru' ? 'ru' : 'uk'}`]: x[`name${lang == 'ru' ? 'ru' : 'uk'}`],
+      [`name${lang == 'ru' ? 'ru' : 'uk'}`]:
+        x[`name${lang == 'ru' ? 'ru' : 'uk'}`],
       [`description${lang == 'ru' ? 'ru' : 'uk'}`]: x[
         `description${lang == 'ru' ? 'ru' : 'uk'}`
       ].slice(0, 600),
@@ -95,7 +98,8 @@ const getBaners = async () => {
 const getGoods = async (query: string, delLeng: 'uk' | 'ru', lang: Locale) => {
   try {
     const res = await fetch(
-      process.env.NEXT_PUBLIC_API_SERVER + `goods/get?page=1&limit=5&delLeng=${delLeng}&${query}`,
+      process.env.NEXT_PUBLIC_API_SERVER +
+        `goods/get?page=1&limit=5&delLeng=${delLeng}&${query}`,
       { cache: 'no-cache' }
     );
     if (!res.ok) {
@@ -104,13 +108,15 @@ const getGoods = async (query: string, delLeng: 'uk' | 'ru', lang: Locale) => {
     const data = await res.json();
     const goods = data.goods.map((x: any) => ({
       id: x.id,
-      [`name${lang == 'ru' ? 'ru' : 'uk'}`]: x[`name${lang == 'ru' ? 'ru' : 'uk'}`],
+      [`name${lang == 'ru' ? 'ru' : 'uk'}`]:
+        x[`name${lang == 'ru' ? 'ru' : 'uk'}`],
       isDiscount: x.isDiscount,
       isBestseller: x.isBestseller,
       isNovetly: x.isNovetly,
       isHit: x.isHit,
       isFreeDelivery: x.isFreeDelivery,
-      [`nameType${lang == 'ru' ? 'ru' : 'uk'}`]: x[`nameType${lang == 'ru' ? 'ru' : 'uk'}`],
+      [`nameType${lang == 'ru' ? 'ru' : 'uk'}`]:
+        x[`nameType${lang == 'ru' ? 'ru' : 'uk'}`],
       volumes: x.volumes.map((j: any) => ({
         id: j.id,
         nameVolume: j.nameVolume,
@@ -136,9 +142,17 @@ const page = async ({ params }: Props) => {
   const { home, miniGoods } = await getDictionary(lang);
   const blog = await getBlog(lang);
   const slides = await getBaners();
-  const discount = await getGoods('isDiscount=true', lang == 'ru' ? 'uk' : 'ru', lang);
+  const discount = await getGoods(
+    'isDiscount=true',
+    lang == 'ru' ? 'uk' : 'ru',
+    lang
+  );
   const hit = await getGoods('isHit=true', lang == 'ru' ? 'uk' : 'ru', lang);
-  const novetly = await getGoods('isNovetly=true', lang == 'ru' ? 'uk' : 'ru', lang);
+  const novetly = await getGoods(
+    'isNovetly=true',
+    lang == 'ru' ? 'uk' : 'ru',
+    lang
+  );
 
   return (
     <div className="home-container">
@@ -153,7 +167,13 @@ const page = async ({ params }: Props) => {
           startGoods={discount}
         />
         <h2>{home.title2}</h2>
-        <ListArticle lang={lang} dictionary={miniGoods} type="top" query="isHit" startGoods={hit} />
+        <ListArticle
+          lang={lang}
+          dictionary={miniGoods}
+          type="top"
+          query="isHit"
+          startGoods={hit}
+        />
         <h2>{home.title3}</h2>
         <ListArticle
           lang={lang}
@@ -169,18 +189,18 @@ const page = async ({ params }: Props) => {
               <p>
                 {lang == 'ru' ? 'Все статьи' : 'Всі статті'}
                 <svg
-                  width="24"
-                  height="24"
-                  viewBox="0 0 24 24"
+                  width="15"
+                  height="15"
+                  viewBox="0 0 15 15"
                   fill="none"
                   xmlns="http://www.w3.org/2000/svg"
                 >
                   <path
-                    d="M9 18L15 12L9 6"
-                    stroke="#77878F"
-                    strokeWidth={2}
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
+                    d="M5.625 11.25L9.375 7.5L5.625 3.75"
+                    stroke="black"
+                    stroke-width="1.25"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
                   />
                 </svg>
               </p>
@@ -193,11 +213,12 @@ const page = async ({ params }: Props) => {
           </div>
         </div>
         <div className="main-text">
-          <h1>{home.titleMain}</h1>
+          <h1 style={{ margin: 0 }}>{home.titleMain}</h1>
           <p>{home.description}</p>
+          <Link href={getLocalizedPath(`/${lang}/goods/1`, lang)}>
+            <button>{home.watchCatalog}</button>
+          </Link>
         </div>
-
-        <UserWatched lang={lang} dictionary={miniGoods} type="" title={home.youWatching} />
       </div>
     </div>
   );

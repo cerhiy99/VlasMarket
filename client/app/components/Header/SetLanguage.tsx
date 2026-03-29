@@ -44,13 +44,13 @@ const SetLanguage = ({ lang }: Props) => {
         className={`lang-link ${activeLang === 'ua' ? 'active' : ''}`}
         onClick={() => handleLangClick('ua')}
       >
-        УКР
+        UA
       </div>
       <div
         className={`lang-link ${activeLang === 'ru' ? 'active' : ''}`}
         onClick={() => handleLangClick('ru')}
       >
-        РУС
+        RU
       </div>
     </div>
   );

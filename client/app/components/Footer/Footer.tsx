@@ -4,7 +4,6 @@ import { Locale } from '@/i18n.config';
 //import LogoSVG from '../../assest/Footer/Logo.svg';
 import LogoSVG from '../../assest/Footer/LogoBlack.svg';
 import PhonesSVG from '../../assest/Footer/Phones.svg';
-import LogoMobileSVG from '../../assest/Footer/LogoMobile.svg';
 import { getDictionary } from '@/lib/dictionary';
 import Link from 'next/link';
 import {
