@@ -9,7 +9,7 @@
     margin: 20px 0;
     gap: 40px;
     @media (max-width: 1024px) {
-      display: flex;
+      display: left;
       flex-direction: column;
     }
   }
