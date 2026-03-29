@@ -6,6 +6,12 @@
   margin-bottom: 0;
 }
 
+h1 {
+  font-size: 40px !important;
+  margin-bottom: 20px !important;
+  margin-top: 20px !important;
+}
+
 .form-container {
   margin-top: 0;
   padding: 20px;
@@ -366,7 +372,6 @@
     .form-group {
       margin-bottom: 12px;
     }
-    
 
     .form-group input,
     .react-tel-input .form-control {
