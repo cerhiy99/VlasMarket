@@ -56,7 +56,7 @@ const page = async ({ params }: Props) => {
         lang={lang}
         listUrles={[
           {
-            name: lang == 'ru' ? 'Сотрудничество' : 'Співробітництво',
+            name: lang == 'ru' ? 'Поставщикам' : 'Постачальникам',
             url: 'cooperation',
           },
         ]}
@@ -69,8 +69,12 @@ const page = async ({ params }: Props) => {
           <h3>{cooperation.miniTitle}</h3>
           <p>
             {cooperation.description1}
-            <span style={{ display: 'block', marginTop: '5px' }}>{cooperation.description3}</span>
-            <span style={{ display: 'block', marginTop: '5px' }}>{cooperation.description4}</span>
+            <span style={{ display: 'block', marginTop: '5px' }}>
+              {cooperation.description3}
+            </span>
+            <span style={{ display: 'block', marginTop: '5px' }}>
+              {cooperation.description4}
+            </span>
           </p>
         </div>
         <FormCooperation dictionary={cooperation.form} />
