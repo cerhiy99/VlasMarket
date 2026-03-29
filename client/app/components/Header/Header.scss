@@ -100,239 +100,246 @@
       display: none;
     }
   }
-  .catalog-search-and-other-container-static {
-    //height: 60px;
+}
+.catalog-search-and-other-container-static {
+  position: sticky;
+  z-index: 15;
+  top: 0px;
+  left: 0;
+  &.fixed-container {
+    height: 60px;
+  }
+  //height: 60px;
+  @media (max-width: 768px) {
+    height: unset;
+  }
+
+  .catalog-search-and-other-container {
+    background-color: #ebd8e4;
+    //height: 120px;
+    display: flex;
+    align-items: center;
+
     @media (max-width: 768px) {
-      height: unset;
+      background-color: unset;
     }
-
-    .catalog-search-and-other-container {
-      background-color: #ebd8e4;
-      height: 120px;
-      display: flex;
-      align-items: center;
-
-      @media (max-width: 768px) {
-        background-color: unset;
-      }
-      @media (min-width: 525px) {
+    /*@media (min-width: 768px) {
         &.fixed {
-          position: fixed;
+          position: sticky;
           width: 100%;
           z-index: 15;
           top: 0;
           left: 0;
         }
+      }*/
+    .catalog-search-and-other {
+      @media (max-width: 768px) {
+        //height: 60px;
+        display: none;
       }
-      .catalog-search-and-other {
-        @media (max-width: 768px) {
-          //height: 60px;
+      @include responsive-width;
+      position: relative;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      .burger {
+        display: none;
+      }
+      @media (max-width: 1024px) {
+        gap: 15px;
+      }
+      @media (max-width: 768px) {
+        gap: 0px;
+        .catalog {
           display: none;
         }
-        @include responsive-width;
-        position: relative;
+        .burger {
+          border: none;
+          background: transparent;
+          // color:
+          display: block;
+          margin-right: 15px;
+          @media (max-width: 584px) {
+            margin-left: 10px;
+
+            @media (max-width: 768px) {
+              margin-left: 0px;
+              margin-right: 0;
+            }
+          }
+        }
+      }
+      .list-icon-header {
         display: flex;
         flex-direction: row;
         align-items: center;
-        justify-content: space-between;
         gap: 20px;
-        .burger {
-          display: none;
+        .comparison {
+          width: 50px;
+          height: 50px;
+          background-color: #ffffff;
+          border-radius: 6px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          cursor: pointer;
+          &:hover {
+            background-color: #ff8e8e;
+          }
         }
-        @media (max-width: 1024px) {
-          gap: 15px;
+        .line-vertically {
+          display: flex;
+          height: 40px;
+          width: 1px;
+          margin: 10px 0;
+          background-color: #ffffff;
+          content: ' ';
         }
+
         @media (max-width: 768px) {
-          gap: 0px;
-          .catalog {
+          display: none;
+          .auth-header-container {
             display: none;
           }
-          .burger {
-            border: none;
-            background: transparent;
-            // color:
-            display: block;
-            margin-right: 15px;
-            @media (max-width: 584px) {
-              margin-left: 10px;
-
-              @media (max-width: 768px) {
-                margin-left: 0px;
-                margin-right: 0;
-              }
-            }
-          }
-        }
-        .list-icon-header {
-          display: flex;
-          flex-direction: row;
-          align-items: center;
-          gap: 20px;
-          .comparison {
-            width: 50px;
-            height: 50px;
-            background-color: #ffffff;
-            border-radius: 6px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            &:hover {
-              background-color: #ff8e8e;
-            }
+          .header-like-container {
+            display: none;
           }
           .line-vertically {
-            display: flex;
-            height: 40px;
-            width: 1px;
-            margin: 10px 0;
-            background-color: #ffffff;
-            content: ' ';
-          }
-
-          @media (max-width: 768px) {
-            display: none;
-            .auth-header-container {
-              display: none;
-            }
-            .header-like-container {
-              display: none;
-            }
-            .line-vertically {
-              display: none;
-            }
-            #header-basket-container {
-              margin-left: 5px;
-            }
-          }
-          @media (max-width: 1024px) {
-            margin-right: 20px;
-          }
-
-          // @media (max-width: 1024px) {
-          //   gap: 0px;
-          // }
-        }
-        .search-with-list-icon {
-          display: flex;
-          flex-direction: row;
-          width: 100%;
-          align-items: center;
-          gap: 20px;
-          @media (max-width: 768px) {
             display: none;
           }
+          #header-basket-container {
+            margin-left: 5px;
+          }
         }
+        @media (max-width: 1024px) {
+          margin-right: 20px;
+        }
+
+        // @media (max-width: 1024px) {
+        //   gap: 0px;
+        // }
+      }
+      .search-with-list-icon {
+        display: flex;
+        flex-direction: row;
+        width: 100%;
+        align-items: center;
+        gap: 20px;
         @media (max-width: 768px) {
-          width: 100%;
+          display: none;
         }
+      }
+      @media (max-width: 768px) {
+        width: 100%;
       }
     }
-    .mob16 {
+  }
+  .mob16 {
+    display: none;
+    @media (max-width: 768px) {
+      display: flex;
+    }
+    .mob-logo-container {
       display: none;
-      @media (max-width: 768px) {
-        display: flex;
-      }
-      .mob-logo-container {
-        display: none;
-      }
-      .bask23 {
-        display: none;
-      }
-      .sea42 {
-        display: none;
-      }
-      @media (max-width: 768px) {
-        display: flex;
-        flex-direction: column;
+    }
+    .bask23 {
+      display: none;
+    }
+    .sea42 {
+      display: none;
+    }
+    @media (max-width: 768px) {
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+      height: 120px;
+
+      .head53 {
+        position: fixed;
+        top: 0;
+        left: 0;
         width: 100%;
+        z-index: 100;
+        background-color: #ebd8e4;
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 15px;
+        box-sizing: border-box;
         height: 120px;
+        // Прибираємо overflow: hidden, щоб не різало анімацію масштабування
+        transition: height 0.3s ease-out;
 
-        .head53 {
-          position: fixed;
-          top: 0;
-          left: 0;
-          width: 100%;
-          z-index: 100;
-          background-color: #ebd8e4;
+        .burger,
+        .bask23 {
+          flex: 0 0 40px;
+          height: 60px;
           display: flex;
-          flex-wrap: wrap;
           align-items: center;
-          justify-content: space-between;
-          padding: 0 15px;
-          box-sizing: border-box;
-          height: 120px;
-          // Прибираємо overflow: hidden, щоб не різало анімацію масштабування
-          transition: height 0.3s ease-out;
+          z-index: 10;
+        }
 
-          .burger,
-          .bask23 {
-            flex: 0 0 40px;
-            height: 60px;
-            display: flex;
-            align-items: center;
-            z-index: 10;
-          }
+        .mob-logo-container {
+          flex: 1;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          height: 60px;
+          transition:
+            opacity 0.2s ease,
+            transform 0.2s ease;
+        }
+
+        .sea42 {
+          flex: 0 0 100%;
+          display: flex;
+          height: 60px;
+          align-items: center;
+          justify-content: center;
+          padding-bottom: 10px;
+          // Початкова анімація: плавна, але без великих зсувів
+          transition:
+            opacity 0.2s ease,
+            transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        // --- СТАН ПРИ СКРОЛІ (ЗАПРИГУВАННЯ) ---
+        &.fixed {
+          height: 60px;
 
           .mob-logo-container {
-            flex: 1;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            height: 60px;
-            transition:
-              opacity 0.2s ease,
-              transform 0.2s ease;
+            opacity: 0;
+            transform: scale(0.8); // Лого трохи стискається і зникає
+            pointer-events: none;
           }
 
           .sea42 {
-            flex: 0 0 100%;
-            display: flex;
-            height: 60px;
-            align-items: center;
-            justify-content: center;
-            padding-bottom: 10px;
-            // Початкова анімація: плавна, але без великих зсувів
-            transition:
-              opacity 0.2s ease,
-              transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-          }
-
-          // --- СТАН ПРИ СКРОЛІ (ЗАПРИГУВАННЯ) ---
-          &.fixed {
-            height: 60px;
-
-            .mob-logo-container {
-              opacity: 0;
-              transform: scale(0.8); // Лого трохи стискається і зникає
-              pointer-events: none;
-            }
-
-            .sea42 {
-              // Замість translateY(-60px) ми робимо ефект "вистрибування" на місці
-              transform: translateY(-60px) scale(1.05); // Трохи збільшуємо в момент стрибка
-              //flex: 1;
-              width: auto;
-              padding: 0 60px; // Робимо відступи від кнопок меншими, щоб він "заплив"
-              padding-bottom: 0;
-              box-sizing: border-box;
-              // Додаємо різку анімацію появи
-              animation: jumpIn 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
-            }
+            // Замість translateY(-60px) ми робимо ефект "вистрибування" на місці
+            transform: translateY(-60px) scale(1.05); // Трохи збільшуємо в момент стрибка
+            //flex: 1;
+            width: auto;
+            padding: 0 60px; // Робимо відступи від кнопок меншими, щоб він "заплив"
+            padding-bottom: 0;
+            box-sizing: border-box;
+            // Додаємо різку анімацію появи
+            animation: jumpIn 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
           }
         }
       }
     }
+  }
 
-    @keyframes jumpIn {
-      0% {
-        opacity: 0;
-        transform: translateY(-60px) scale(0.8); // Починає з того ж місця, де лого, але маленьким
-      }
-      100% {
-        opacity: 1;
-        transform: translateY(-60px) scale(1); // Стає нормальним
-      }
+  @keyframes jumpIn {
+    0% {
+      opacity: 0;
+      transform: translateY(-60px) scale(0.8); // Починає з того ж місця, де лого, але маленьким
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(-60px) scale(1); // Стає нормальним
     }
   }
 }

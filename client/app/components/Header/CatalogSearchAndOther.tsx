@@ -42,10 +42,8 @@ const CatalogSearchAndOther = ({ dictionary, lang, catalog }: Props) => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
   return (
-    <div className="catalog-search-and-other-container-static">
-      <div
-        className={`catalog-search-and-other-container ${scrolled ? 'fixed' : ''}`}
-      >
+    <div className={`catalog-search-and-other-container-static`}>
+      <div className={`catalog-search-and-other-container`}>
         <div className="catalog-search-and-other">
           <div className="catalog">
             <Catalog

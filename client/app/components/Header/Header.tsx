@@ -47,59 +47,62 @@ const Header = async ({ lang }: Props) => {
   const catalog = await getData(lang);
   return (
     <>
-      <div className="header-container">
-        <AdminLogo />
-        <div className="list-url-and-logo-container">
-          <div className="list-url-and-logo">
-            <div className="list-url">
-              <DroprownUrles lang={lang} dictionary={header.aboutShop} />
-              <Link
-                className="button-url"
-                href={getLocalizedPath(`/${lang}/brands`, lang)}
-              >
-                {header.brands}
-              </Link>
-              <Link
-                className="button-url"
-                href={getLocalizedPath(`/${lang}/cooperation`, lang)}
-              >
-                {header.cooperation}
-              </Link>
-              <div
-                style={{ backgroundColor: '#F80000' }}
-                className="discount button-url"
-              >
-                <Link href={getLocalizedPath(`/${lang}/discount/1`, lang)}>
-                  {header.discount}
+      <header>
+        <div className="header-container">
+          <AdminLogo />
+          <div className="list-url-and-logo-container">
+            <div className="list-url-and-logo">
+              <div className="list-url">
+                <DroprownUrles lang={lang} dictionary={header.aboutShop} />
+                <Link
+                  className="button-url"
+                  href={getLocalizedPath(`/${lang}/brands`, lang)}
+                >
+                  {header.brands}
+                </Link>
+                <Link
+                  className="button-url"
+                  href={getLocalizedPath(`/${lang}/cooperation`, lang)}
+                >
+                  {header.cooperation}
+                </Link>
+                <div
+                  style={{ backgroundColor: '#F80000' }}
+                  className="discount button-url"
+                >
+                  <Link href={getLocalizedPath(`/${lang}/discount/1`, lang)}>
+                    {header.discount}
+                  </Link>
+                </div>
+              </div>
+              <div className="logo-container">
+                <Link href={`${lang != 'ru' ? '/' : '/ru'}`}>
+                  <Logo />
                 </Link>
               </div>
-            </div>
-            <div className="logo-container">
-              <Link href={`${lang != 'ru' ? '/' : '/ru'}`}>
-                <Logo />
-              </Link>
-            </div>
-            <div className="list-url-and-language-and-contact">
-              <Link
-                className="button-url"
-                href={getLocalizedPath(`/${lang}/partners`, lang)}
-              >
-                {header.partners}
-              </Link>
-              <ContactWithUs lang={lang} dictionary={header.contact} />
-              <SetLanguage lang={lang} />
+              <div className="list-url-and-language-and-contact">
+                <Link
+                  className="button-url"
+                  href={getLocalizedPath(`/${lang}/partners`, lang)}
+                >
+                  {header.partners}
+                </Link>
+                <ContactWithUs lang={lang} dictionary={header.contact} />
+                <SetLanguage lang={lang} />
+              </div>
             </div>
           </div>
+          {
+            //<Update />
+          }
         </div>
-        <CatalogSearchAndOther
-          catalog={catalog}
-          dictionary={header}
-          lang={lang}
-        />
-        {
-          //<Update />
-        }
-      </div>
+      </header>
+
+      <CatalogSearchAndOther
+        catalog={catalog}
+        dictionary={header}
+        lang={lang}
+      />
     </>
   );
 };

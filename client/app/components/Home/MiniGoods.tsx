@@ -11,6 +11,7 @@ import { GoodInterface } from '@/app/interfaces/goods';
 import { getLocalizedPath } from '../utils/getLocalizedPath';
 import { useTranslation } from '@/context/TranslationProvider';
 import ComparisonSVG from '../../assest/Goods/comparison.svg';
+import BonusSVG from '../../assest/Goods/Bonus.svg';
 
 type Props = {
   goods: GoodInterface;
@@ -19,6 +20,7 @@ type Props = {
 };
 
 const MiniGoods = ({ goods, dictionary, lang }: Props) => {
+  const countBonus = 100;
   const [selectVolumeIdx, setSelectVolumeIdx] = useState(0);
 
   const [clickedVolumeIdx, setClickedVolumeIdx] = useState(0);
@@ -82,6 +84,16 @@ const MiniGoods = ({ goods, dictionary, lang }: Props) => {
             />
           </div>
         </div>
+
+        <div className="bonus-container bonus-container-mob">
+          <div className="bonus">
+            <div className="svg">
+              <BonusSVG />
+            </div>
+            <span>+ {countBonus}</span>
+            {lang == 'ru' ? 'бонусов' : 'бонусів '}
+          </div>
+        </div>
         <h3>{lang == 'ru' ? goods.nameru : goods.nameuk}</h3>
         <div className="rating-and-art">
           <div className="rating">
@@ -132,6 +144,15 @@ const MiniGoods = ({ goods, dictionary, lang }: Props) => {
             </div>
           ))}
         </div>
+        <div className="bonus-container bonus-container-pc">
+          <div className="bonus">
+            <div className="svg">
+              <BonusSVG />
+            </div>
+            <span>+ {countBonus}</span>
+            {lang == 'ru' ? 'бонусов' : 'бонусів '}
+          </div>
+        </div>
         <div className="price-and-basket">
           <div className="price-container">
             {goods.volumes[selectVolumeIdx].discount != 0 && (
@@ -147,6 +168,7 @@ const MiniGoods = ({ goods, dictionary, lang }: Props) => {
                 </div>
               </>
             )}
+
             <div className="price-with-discount">
               {goods.volumes[selectVolumeIdx].priceWithDiscount} <span>₴</span>
             </div>

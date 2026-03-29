@@ -15,9 +15,7 @@ export default async function RootLayout({
   const { lang } = await params;
   return (
     <>
-      <header>
-        <Header lang={lang} />
-      </header>
+      <Header lang={lang} />
       <main>{children}</main>
       <footer>
         <Footer lang={lang} />
