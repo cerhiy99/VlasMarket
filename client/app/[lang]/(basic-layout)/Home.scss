@@ -1,6 +1,16 @@
 @import './App.scss';
 
 .home-container {
+  .slider-with-catalog {
+    @include responsive-width;
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    gap: 10px;
+    margin-top: 30px;
+    margin-bottom: 40px;
+    position: relative;
+  }
   .home-goods {
     @include responsive-width;
     margin-top: 20px;
@@ -60,6 +70,51 @@
         }
         @media (max-width: 1024px) {
           flex-wrap: wrap;
+        }
+      }
+    }
+  }
+  .category-list {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    .category {
+      width: 100%;
+      text-decoration: none;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      .img-category-container {
+        aspect-ratio: 1;
+        background-color: #ffffff;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 12px;
+        border: 1px solid #ebd8e4;
+        img {
+          width: 80%;
+          height: 80%;
+          object-fit: contain;
+          aspect-ratio: 1;
+        }
+      }
+      h3 {
+        font-weight: 600;
+        font-style: Semi Bold;
+        font-size: 18px;
+        line-height: 100%;
+        letter-spacing: 0%;
+        text-align: center;
+        color: #000000;
+        margin: 0;
+      }
+      &:hover {
+        .img-category-container {
+          border: 1px solid #ebd8e4;
+        }
+        h3 {
+          color: #ff8e8e;
         }
       }
     }

@@ -1,3 +1,4 @@
+'use client';
 import React, { useRef, useState } from 'react';
 import './Catalog.scss';
 import CatalogSVG from '../../assest/Header/Catalog.svg';

@@ -144,17 +144,17 @@ const MiniGoods = ({ goods, dictionary, lang }: Props) => {
             </div>
           ))}
         </div>
-        <div className="bonus-container bonus-container-pc">
-          <div className="bonus">
-            <div className="svg">
-              <BonusSVG />
-            </div>
-            <span>+ {countBonus}</span>
-            {lang == 'ru' ? 'бонусов' : 'бонусів '}
-          </div>
-        </div>
         <div className="price-and-basket">
           <div className="price-container">
+            <div className="bonus-container bonus-container-pc">
+              <div className="bonus">
+                <div className="svg">
+                  <BonusSVG />
+                </div>
+                <span>+ {countBonus}</span>
+                {lang == 'ru' ? 'бонусов' : 'бонусів '}
+              </div>
+            </div>
             {goods.volumes[selectVolumeIdx].discount != 0 && (
               <>
                 <div className="price-and-discount">

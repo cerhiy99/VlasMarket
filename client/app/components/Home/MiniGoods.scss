@@ -237,6 +237,7 @@
     flex-direction: row;
     justify-content: space-between;
     margin-bottom: 7.5px;
+    align-items: flex-end;
     .price-container {
       display: flex;
       flex-direction: column;
@@ -285,7 +286,7 @@
     .basket {
       width: 52px;
       height: 37px;
-      background-color: #fe680a;
+      background-color: #04c421;
       border-radius: 5px;
       display: flex;
       justify-content: center;
@@ -298,7 +299,7 @@
       }
       &:hover {
         width: auto;
-        background-color: #269569;
+        background-color: #04c421;
         p {
           display: flex;
           align-items: center;
@@ -315,7 +316,7 @@
     .in-basket {
       width: 52px;
       height: 37px;
-      border: 2px solid #fe680a;
+      border: 2px solid #04c421;
       background-color: white;
       border-radius: 5px;
       display: flex;
@@ -325,7 +326,7 @@
       p {
         display: none;
         margin: 0;
-        color: #fe680a;
+        color: #04c421;
       }
       @media (min-width: 768px) {
         &:hover {

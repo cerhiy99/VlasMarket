@@ -8,6 +8,9 @@ import './Home.scss';
 import MiniBlog from '@/app/components/Blog/MiniBlog';
 import { getLocalizedPath } from '@/app/components/utils/getLocalizedPath';
 import Link from 'next/link';
+import { UkrToEng } from '@/app/components/utils/UkrToEng';
+import Catalog from '@/app/components/Header/Catalog';
+import CatalogHome from '@/app/components/Home/CatalogHome';
 
 type Props = {
   params: Promise<{ lang: Locale }>;
@@ -80,6 +83,31 @@ const getBlog = async (lang: Locale) => {
   }
 };
 
+const getCategory = async () => {
+  try {
+    const res = await fetch(
+      process.env.NEXT_PUBLIC_API_SERVER + `category/get`,
+      {
+        next: { revalidate: 600 },
+      }
+    );
+    if (!res.ok) {
+      return { blog: [] };
+    }
+    const data = await res.json();
+    const category = data.res.map((x: any) => ({
+      id: x.id,
+      img: x.img,
+      nameuk: x.nameuk,
+      nameru: x.nameru,
+      svg: x.svg,
+    }));
+    return category;
+  } catch (err) {
+    return { blog: [] };
+  }
+};
+
 const getBaners = async () => {
   try {
     const res = await fetch(process.env.NEXT_PUBLIC_API_SERVER + 'slides/get', {
@@ -137,9 +165,37 @@ const getGoods = async (query: string, delLeng: 'uk' | 'ru', lang: Locale) => {
   }
 };
 
+const getFullCatalog = async (lang: Locale) => {
+  try {
+    const res = await fetch(
+      process.env.NEXT_PUBLIC_API_SERVER +
+        'category/getCategoryAndSubcategoryWithProduct?lang=' +
+        lang,
+      {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        next: { revalidate: 60 * 60 * 12 }, // якщо використовуєш Next.js 13+ (app router) з кешуванням
+      }
+    );
+
+    if (!res.ok) {
+      throw new Error('Помилка при завантаженні категорій');
+    }
+
+    const data = await res.json();
+    return data.category;
+  } catch (err) {
+    console.error('Помилка запиту getFull:', err);
+    return null;
+  }
+};
+
 const page = async ({ params }: Props) => {
   const { lang } = await params;
-  const { home, miniGoods } = await getDictionary(lang);
+  const { home, miniGoods, header } = await getDictionary(lang);
+  const category = await getCategory();
   const blog = await getBlog(lang);
   const slides = await getBaners();
   const discount = await getGoods(
@@ -147,6 +203,7 @@ const page = async ({ params }: Props) => {
     lang == 'ru' ? 'uk' : 'ru',
     lang
   );
+  const fullCatalog = await getFullCatalog(lang);
   const hit = await getGoods('isHit=true', lang == 'ru' ? 'uk' : 'ru', lang);
   const novetly = await getGoods(
     'isNovetly=true',
@@ -156,8 +213,35 @@ const page = async ({ params }: Props) => {
 
   return (
     <div className="home-container">
-      {slides.length > 0 && <MySlider lang={lang} images={slides} />}
+      <div className="slider-with-catalog">
+        <CatalogHome
+          lang={lang}
+          dictionary={header.catalog}
+          catalog={fullCatalog}
+        />
+        {slides.length > 0 && <MySlider lang={lang} images={slides} />}
+      </div>
       <div className="home-goods">
+        <div className="category-list">
+          {category.map((x: any) => (
+            <Link
+              href={getLocalizedPath(
+                `/${lang}/goods/${UkrToEng(x.nameru)}/1`,
+                lang
+              )}
+              key={x.id}
+              className="category"
+            >
+              <div className="img-category-container">
+                <img
+                  src={process.env.NEXT_PUBLIC_SERVER + x.svg}
+                  alt={lang == 'ru' ? x.nameru : x.nameuk}
+                />
+              </div>
+              <h3>{lang == 'ru' ? x.nameru : x.nameuk}</h3>
+            </Link>
+          ))}
+        </div>
         <h2>{home.title1}</h2>
         <ListArticle
           lang={lang}
