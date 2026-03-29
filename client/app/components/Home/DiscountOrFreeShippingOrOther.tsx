@@ -2,6 +2,7 @@
 import React from 'react';
 import './DiscountOrFreeShippingOrOther.scss';
 import { useTranslation } from '@/context/TranslationProvider';
+import DeliverySVG from '../../assest/FreeDelivery.svg';
 
 type Props = {
   isDiscount: boolean;
@@ -22,26 +23,25 @@ const DiscountOrFreeShippingOrOther = ({
   return (
     <div className="discount-or-free-container">
       {isFreeShipping && (
-        <div style={{ backgroundColor: 'green' }} className="discount">
-          {t('miniGoods2.freeDelivery')}
+        <div
+          style={{
+            backgroundColor: '#FFFFFF',
+            border: '1.8px solid #09C926',
+            color: '#000000',
+            display: 'flex',
+            flexDirection: 'row',
+            gap: '5px',
+            alignItems: 'center',
+          }}
+          className="discount"
+        >
+          <DeliverySVG /> {t('miniGoods2.freeDelivery')}
         </div>
       )}
-      {isDiscount && (
-        <div style={{ backgroundColor: 'red' }} className="discount">
-          {t('miniGoods2.discount')}
-        </div>
-      )}
+      {isDiscount && <div className="discount">{t('miniGoods2.discount')}</div>}
 
-      {isNovetly && (
-        <div style={{ backgroundColor: 'red' }} className="discount">
-          Новинка
-        </div>
-      )}
-      {isHit && (
-        <div style={{ backgroundColor: 'red' }} className="discount">
-          Топ
-        </div>
-      )}
+      {isNovetly && <div className="discount">Новинка</div>}
+      {isHit && <div className="discount">Топ</div>}
     </div>
   );
 };

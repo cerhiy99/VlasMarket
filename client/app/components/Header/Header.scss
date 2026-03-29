@@ -108,7 +108,7 @@
 
     .catalog-search-and-other-container {
       background-color: #ebd8e4;
-      height: 90px;
+      height: 120px;
       display: flex;
       align-items: center;
 
@@ -311,11 +311,11 @@
             .sea42 {
               // Замість translateY(-60px) ми робимо ефект "вистрибування" на місці
               transform: translateY(-60px) scale(1.05); // Трохи збільшуємо в момент стрибка
-              flex: 1;
+              //flex: 1;
               width: auto;
-              margin: 0 45px; // Робимо відступи від кнопок меншими, щоб він "заплив"
+              padding: 0 60px; // Робимо відступи від кнопок меншими, щоб він "заплив"
               padding-bottom: 0;
-
+              box-sizing: border-box;
               // Додаємо різку анімацію появи
               animation: jumpIn 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
             }

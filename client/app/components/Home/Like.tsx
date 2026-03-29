@@ -24,7 +24,7 @@ const Like = ({ goods, selectVolumeIdx }: Props) => {
   const getGoods = async (idVolume: number, idGoods: number) => {
     try {
       const res = await $host.get(
-        `goods/GetForBasketOrLike?idVolume=${idVolume}&idGoods=${idGoods}`,
+        `goods/GetForBasketOrLike?idVolume=${idVolume}&idGoods=${idGoods}`
       );
       return res.data;
     } catch (err) {
@@ -37,7 +37,7 @@ const Like = ({ goods, selectVolumeIdx }: Props) => {
     if (!isInLike) {
       const selectGoods: any = await getGoods(
         goods.volumes[selectVolumeIdx].id,
-        goods.id,
+        goods.id
       );
       const goodToLike = {
         id: selectGoods.id,
@@ -66,18 +66,18 @@ const Like = ({ goods, selectVolumeIdx }: Props) => {
       className={`like-container ${isInLike ? 'liked' : ''}`}
     >
       <svg
-        width="30"
-        height="26"
-        viewBox="0 0 30 26"
+        width="22"
+        height="22"
+        viewBox="0 0 22 22"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
       >
         <path
-          d="M8.5 2C4.9107 2 2 4.73373 2 8.10648C2 10.8291 3.1375 17.2909 14.3344 23.8229C14.535 23.9387 14.7652 24 15 24C15.2348 24 15.465 23.9387 15.6656 23.8229C26.8625 17.2909 28 10.8291 28 8.10648C28 4.73373 25.0893 2 21.5 2C17.9107 2 15 5.70089 15 5.70089C15 5.70089 12.0893 2 8.5 2Z"
-          stroke="#D93A3F"
-          strokeWidth="1"
-          strokeLinecap="round"
-          strokeLinejoin="round"
+          d="M20.1667 8.70882C20.1667 7.68875 19.8573 6.69269 19.2793 5.85218C18.7013 5.01167 17.8819 4.36625 16.9294 4.00118C15.9769 3.63611 14.9361 3.56856 13.9444 3.80744C12.9527 4.04632 12.0568 4.58041 11.375 5.33915C11.327 5.3905 11.2689 5.43143 11.2044 5.45942C11.1399 5.4874 11.0704 5.50184 11.0001 5.50184C10.9298 5.50184 10.8602 5.4874 10.7957 5.45942C10.7312 5.43143 10.6732 5.3905 10.6252 5.33915C9.94551 4.57548 9.04939 4.0369 8.05608 3.79512C7.06277 3.55333 6.01938 3.6198 5.06478 3.98568C4.11018 4.35155 3.28965 4.99948 2.71239 5.84323C2.13514 6.68697 1.82854 7.68651 1.83341 8.70882C1.83341 10.808 3.20841 12.3755 4.58341 13.7505L9.61775 18.6207C9.78855 18.8169 9.99915 18.9745 10.2355 19.083C10.4719 19.1915 10.7287 19.2485 10.9888 19.2502C11.2489 19.2518 11.5064 19.1981 11.7442 19.0926C11.9819 18.987 12.1945 18.8321 12.3677 18.6382L17.4167 13.7505C18.7917 12.3755 20.1667 10.8172 20.1667 8.70882Z"
+          stroke="#7F7F7F"
+          stroke-width="1.83333"
+          stroke-linecap="round"
+          stroke-linejoin="round"
         />
       </svg>
     </div>
