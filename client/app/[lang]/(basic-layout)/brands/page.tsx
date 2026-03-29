@@ -14,7 +14,9 @@ type Props = {
 
 // Функція для отримання даних
 const getData = async () => {
-  const res = await fetch(process.env.NEXT_PUBLIC_API_SERVER + 'brend/getForListBrends');
+  const res = await fetch(
+    process.env.NEXT_PUBLIC_API_SERVER + 'brend/getForListBrends'
+  );
   if (!res.ok) return notFound();
   const data = await res.json();
   return data.res;
@@ -78,16 +80,21 @@ const page = async ({ params }: Props) => {
   return (
     <div className="list-brands-container">
       <div className="list-brands-title">
-        <BreadCrumbs listUrles={[{ url: `brands`, name: listBrends.title }]} lang={lang} />
+        <BreadCrumbs
+          listUrles={[{ url: `brands`, name: listBrends.title }]}
+          lang={lang}
+        />
         <h1>{listBrends.title}</h1>
       </div>
       <div className="list-letter-Brand-container">
         <div className="list-letter-Brand">
-          {[...trueAlphabet /*...englishAlphabet,...alphabets[lang]*/].map((x) => (
-            <Link className="list-url" key={x} href={'#' + x}>
-              {x}
-            </Link>
-          ))}
+          {[...trueAlphabet /*...englishAlphabet,...alphabets[lang]*/].map(
+            (x) => (
+              <Link className="list-url" key={x} href={'#' + x}>
+                {x}
+              </Link>
+            )
+          )}
         </div>
       </div>
       <div className="list-brands">
@@ -97,7 +104,10 @@ const page = async ({ params }: Props) => {
             <div className="brands">
               {x.brends.map((brend: any) => (
                 <Link
-                  href={getLocalizedPath(`/${lang}/brands/${toSlug(brend.name)}/1`, lang)}
+                  href={getLocalizedPath(
+                    `/${lang}/brands/${toSlug(brend.name)}/1`,
+                    lang
+                  )}
                   key={brend.id}
                   className="brand"
                 >

@@ -1,4 +1,4 @@
-@import "../App.scss";
+@import '../App.scss';
 
 .list-brands-container {
   @include responsive-width;
@@ -8,17 +8,14 @@
   }
 
   .list-brands-title {
-    max-width: 1100px;
-    margin: 0 auto;
   }
   h1 {
-    font-size: 28px;
-    font-weight: 400;
-    line-height: 28px;
-    font-size: 28px;
-    font-weight: 400;
-    line-height: 33.4px;
-    text-align: center;
+    font-weight: 600;
+    font-size: 26px;
+    line-height: 100%;
+    letter-spacing: 0%;
+
+    text-align: left;
     text-underline-position: from-font;
     text-decoration-skip-ink: none;
     color: #1e1e1e;
@@ -30,7 +27,7 @@
     }
   }
   .list-letter-Brand-container {
-    max-width: 1100px;
+    //max-width: 1100px;
     margin: 0 auto;
     margin-bottom: 20px;
   }
@@ -50,7 +47,7 @@
       gap: 7.5px;
     }
     .list-url {
-      background-color: #FF8E8E;
+      background-color: #ff8e8e;
       width: 40px;
       height: 36px;
       border-radius: 4px;
