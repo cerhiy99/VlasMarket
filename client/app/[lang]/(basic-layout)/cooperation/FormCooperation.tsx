@@ -31,7 +31,9 @@ const FormCooperation = ({ dictionary }: { dictionary: any }) => {
     setIsFormValid(isValid);
   }, [formData]);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
     const { name, value } = e.target;
 
     setFormData((prev) => ({
@@ -57,18 +59,21 @@ const FormCooperation = ({ dictionary }: { dictionary: any }) => {
 
     try {
       const message = `
-Приветствую, VlasMarket! 🙌
-С вашей компанией хотят сотрудничать. 🤑
-🏢 Им'я поставщика: ${formData.name}
-📲 Номер телефона: +${formData.phone}
-📧 E-mail: ${formData.email}
-✍️ Сообщение: ${formData.message}
+${dictionary?.telegramTitle || 'Приветствую, VlasMarket! 🙌'}
+${dictionary?.telegramSubtitle || 'С вашей компанией хотят сотрудничать. 🤑'}
+${dictionary?.telegramName || "🏢 Ім'я поставщика:"} ${formData.name}
+${dictionary?.telegramPhone || '📲 Номер телефона:'} +${formData.phone}
+${dictionary?.telegramEmail || '📧 E-mail:'} ${formData.email}
+${dictionary?.telegramMessage || '✍️ Сообщение:'} ${formData.message}
       `;
 
       const res = await $host.post('order/sendMessage', { message });
 
       if (res.data.ok) {
-        setSuccessMessage('Дякуємо, Ваше запитання надіслалось!');
+        setSuccessMessage(
+          dictionary?.successMessage || 'Дякуємо, Ваше запитання надіслалось!'
+        );
+
         setFormData({
           name: '',
           email: '',
@@ -80,23 +85,29 @@ const FormCooperation = ({ dictionary }: { dictionary: any }) => {
           setSuccessMessage(null);
         }, 3000);
       } else {
-        setErrorMessage('Сталася помилка, спробуйте пізніше');
+        setErrorMessage(
+          dictionary?.errorMessage || 'Сталася помилка, спробуйте пізніше'
+        );
       }
     } catch (err) {
       console.error('Помилка при відправці форми:', err);
-      setErrorMessage('Сталася помилка, спробуйте пізніше');
+      setErrorMessage(
+        dictionary?.errorMessage || 'Сталася помилка, спробуйте пізніше'
+      );
     }
   };
 
   return (
     <div className="form-container block">
-      <h3>{dictionary?.title || 'Заповніть форму, щоб розпочати співпрацю як постачальник'}</h3>
+      <h3>
+        {dictionary?.title || 'Заповніть форму, щоб розпочати співпрацю як постачальник'}
+      </h3>
 
       <form onSubmit={handleSubmit}>
         <div className="form-row">
           <div className="form-group">
             <label htmlFor="name">
-              Ім&apos;я <span>*</span>
+              {dictionary?.nameLabel || "Ім'я"} <span>*</span>
             </label>
             <input
               type="text"
@@ -104,14 +115,14 @@ const FormCooperation = ({ dictionary }: { dictionary: any }) => {
               name="name"
               value={formData.name}
               onChange={handleChange}
-              placeholder="Введіть ім'я"
+              placeholder={dictionary?.namePlaceholder || "Введіть ім'я"}
               required
             />
           </div>
 
           <div className="form-group phone-group">
             <label htmlFor="phone">
-              Номер телефону <span>*</span>
+              {dictionary?.phoneLabel || 'Номер телефону'} <span>*</span>
             </label>
 
             <PhoneInput
@@ -121,7 +132,7 @@ const FormCooperation = ({ dictionary }: { dictionary: any }) => {
               enableSearch={true}
               disableSearchIcon={true}
               countryCodeEditable={false}
-              searchPlaceholder="Пошук"
+              searchPlaceholder={dictionary?.phoneSearchPlaceholder || 'Пошук'}
               specialLabel=""
               inputProps={{
                 name: 'phone',
@@ -134,7 +145,7 @@ const FormCooperation = ({ dictionary }: { dictionary: any }) => {
 
         <div className="form-group full-width">
           <label htmlFor="email">
-            Електронна пошта <span>*</span>
+            {dictionary?.emailLabel || 'Електронна пошта'} <span>*</span>
           </label>
           <input
             type="email"
@@ -142,21 +153,25 @@ const FormCooperation = ({ dictionary }: { dictionary: any }) => {
             name="email"
             value={formData.email}
             onChange={handleChange}
-            placeholder="Введіть електронну пошту"
+            placeholder={
+              dictionary?.emailPlaceholder || 'Введіть електронну пошту'
+            }
             required
           />
         </div>
 
         <div className="form-group full-width">
           <label htmlFor="message">
-            Повідомлення <span>*</span>
+            {dictionary?.messageLabel || 'Повідомлення'} <span>*</span>
           </label>
           <textarea
             id="message"
             name="message"
             value={formData.message}
             onChange={handleChange}
-            placeholder="Введіть повідомлення"
+            placeholder={
+              dictionary?.messagePlaceholder || 'Введіть повідомлення'
+            }
             required
           />
         </div>
@@ -171,11 +186,15 @@ const FormCooperation = ({ dictionary }: { dictionary: any }) => {
       </form>
 
       {successMessage && (
-        <p className="success-message success-message--success">{successMessage}</p>
+        <p className="success-message success-message--success">
+          {successMessage}
+        </p>
       )}
 
       {errorMessage && (
-        <p className="success-message success-message--error">{errorMessage}</p>
+        <p className="success-message success-message--error">
+          {errorMessage}
+        </p>
       )}
     </div>
   );
