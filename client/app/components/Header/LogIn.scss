@@ -12,16 +12,18 @@
   z-index: 70;
   .log-in {
     box-sizing: border-box;
-    font-family: 'Onest', sans-serif;
     border-radius: 12px;
     background-color: #ffffff;
-    padding: 20px;
+    padding: 60px;
     display: flex;
     flex-direction: column;
     min-width: 300px;
-    max-width: 390px;
+    max-width: 574px;
     width: 100%;
     margin: 15px;
+    @media (max-width: 768px) {
+      padding: 30px;
+    }
 
     .row {
       display: flex;
@@ -34,6 +36,11 @@
         font-size: 16px;
         line-height: 20.4px;
         text-align: left;
+        font-weight: 600;
+        font-style: Semi Bold;
+        font-size: 26px;
+        line-height: 100%;
+        letter-spacing: 0%;
       }
       svg {
         cursor: pointer;
@@ -44,16 +51,24 @@
     font-weight: 400;
     font-size: 12px;
     line-height: 19.6px;
-    color: #999999;
+    color: #6d676b;
+    font-weight: 500;
+    font-style: Medium;
+    font-size: 17px;
+    line-height: 130%;
+    letter-spacing: 0%;
+    span {
+      color: #f80000;
+    }
   }
   input[type='text'],
   input[type='password'] {
-    height: 40px;
     width: 100%;
     box-sizing: border-box;
     border: 1px solid #e1e1e1;
     margin-top: 3px;
     padding-left: 10px;
+    height: 50px;
   }
   input[type='checkbox'] {
     margin: 0;
@@ -63,10 +78,31 @@
     height: 16px;
   }
   span {
-    font-weight: 400;
+    font-weight: 500;
+    font-style: Medium;
+    font-size: 15px;
+    line-height: 100%;
+    letter-spacing: 0%;
+    color: #000000;
+  }
+  input[type='checkbox'] {
+    appearance: none;
+    width: 16px;
+    height: 16px;
+    border: 1px solid #ebd8e4;
+    background: #fff;
+    cursor: pointer;
+  }
+
+  input[type='checkbox']:checked {
+    background: #ebd8e4;
+  }
+  input[type='checkbox']:checked::after {
+    content: '✔';
+    display: block;
+    text-align: center;
     font-size: 12px;
-    line-height: 19.6px;
-    color: #1e1e1e;
+    color: #000;
   }
   .line {
     width: 100%;
@@ -82,40 +118,38 @@
     text-align: center;
   }
   .button-log-in {
-    background-color: #3960ff;
-    color: #ffffff;
-    font-family: Helvetica;
-    font-weight: 400;
-    font-size: 12px;
-    line-height: 19.6px;
-    border: none;
-    text-align: center;
-    border-radius: 3px;
-    width: 125px;
-    cursor: pointer;
-    height: 34px;
-  }
-  .register {
-    font-weight: 600;
-    font-size: 14px;
-    line-height: 15.3px;
-    color: #1e1e1e;
-    cursor: pointer;
-    text-align: center;
-    border: none;
+    background-color: #04c421;
+    height: 40px;
     width: 100%;
-    box-sizing: border-box;
-    height: 41px;
-    border-radius: 3px;
-    margin-top: 10px;
-    margin-bottom: 5px;
-
-    box-sizing: border-box;
-    background: white;
-    // border: 1px solid #3960ff;
-    border: 1px solid #1e1e1e;
-    // color: #3960ff;
-    color: #1e1e1e;
+    color: #ffffff;
+    font-weight: 500;
+    font-style: Medium;
+    font-size: 19px;
+    line-height: 100%;
+    letter-spacing: 0%;
+  }
+  .no-account {
+    margin-top: 16px;
+    display: inline;
+    text-align: center;
+    font-weight: 500;
+    font-style: Medium;
+    font-size: 15px;
+    line-height: 100%;
+    letter-spacing: 0%;
+    color: #000000;
+    .register {
+      background-color: transparent;
+      border: none;
+      outline: none;
+      font-weight: 600;
+      font-style: Semi Bold;
+      font-size: 15px;
+      line-height: 100%;
+      letter-spacing: 0%;
+      color: #2277ad;
+      cursor: pointer;
+    }
   }
   .logInWhichUser {
     font-weight: 400;

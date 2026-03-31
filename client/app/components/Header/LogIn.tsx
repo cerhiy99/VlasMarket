@@ -2,13 +2,10 @@
 import React, { useState } from 'react';
 import CloseSVG from '../../assest/Goods/Close.svg';
 import './LogIn.scss';
-import FacebookSVG from '../../assest/Header/Facebook.svg';
 import { Locale } from '@/i18n.config';
 import { $authHost } from '@/app/http';
 import { useDispatch } from 'react-redux';
 import { setToken } from '@/app/store/reducers/userReducers';
-import { GoogleOAuthProvider } from '@react-oauth/google';
-import GoogleLoginButton from './GoogleAuth';
 
 export type FormLoginProps = {
   email: string;
@@ -98,7 +95,10 @@ const LogIn = ({
             <CloseSVG />
           </div>
         </div>
-        <label>Електронна пошта</label>
+        <label>
+          {lang == 'ru' ? 'Электронная почта' : 'Електронна пошта'}{' '}
+          <span>*</span>
+        </label>
         <input
           type="text"
           name="email"
@@ -106,49 +106,55 @@ const LogIn = ({
           onChange={handleChange}
         />
         <br />
-        <label>Пароль</label>
+        <label>
+          Пароль <span>*</span>
+        </label>
         <input
           type="password"
           name="password"
           value={formData.password}
           onChange={handleChange}
         />
-        <div
-          style={{
-            margin: '12.5px 0',
-            gap: '5px',
-            justifyContent: 'left',
-          }}
-          className="row"
-        >
-          <input
-            type="checkbox"
-            name="rememberMe"
-            checked={formData.rememberMe}
-            onChange={handleChange}
-          />
-          <span>Запам’ятати мене</span>
-        </div>
-        <div className="line" />
-        {error && (
-          <div style={{ marginTop: '10px', color: 'red' }}>{error}</div>
-        )}
-        <div
-          style={{
-            margin: '12.5px 0',
-          }}
-          className="row"
-        >
-          <div className="forgot-password" onClick={setIsForgorPassword}>
-            Забули пароль?
+        <div className="row">
+          <div
+            style={{
+              margin: '12.5px 0',
+              gap: '5px',
+              justifyContent: 'left',
+            }}
+            className="row"
+          >
+            <input
+              type="checkbox"
+              name="rememberMe"
+              checked={formData.rememberMe}
+              onChange={handleChange}
+            />
+            <span>{lang == 'ru' ? 'Запомнить меня' : "Запам'ятати мене"}</span>
           </div>
-          <button className="button-log-in" onClick={handleSubmitLogin}>
-            Увійти
+          {error && (
+            <div style={{ marginTop: '10px', color: 'red' }}>{error}</div>
+          )}
+          <div
+            style={{
+              margin: '12.5px 0',
+            }}
+            className="row"
+          >
+            <div className="forgot-password" onClick={setIsForgorPassword}>
+              {lang == 'ru' ? 'Забыли пароль?' : 'Забули пароль?'}
+            </div>
+          </div>
+        </div>
+        <button className="button-log-in" onClick={handleSubmitLogin}>
+          {lang == 'ru' ? 'Войти' : 'Увійти'}
+        </button>
+        <div className="no-account">
+          {lang == 'ru' ? 'Еще нет аккаунта' : 'Ще немає акаунту'}
+          <button className="register" onClick={onRegisterModal}>
+            {lang == 'ru' ? 'Зарегистрироваться' : 'Зареєструватися'}
           </button>
         </div>
-        <button className="register" onClick={onRegisterModal}>
-          Зареєструватися
-        </button>
         {/*<GoogleOAuthProvider
           clientId={process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID as string}
         >

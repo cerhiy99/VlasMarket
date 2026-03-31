@@ -20,7 +20,7 @@
     font-family: 'Onest', sans-serif;
     box-sizing: border-box;
     background-color: white;
-    max-width: 415px;
+    max-width: 574px;
     min-width: 300px;
     width: 100%;
     margin: 15px;
@@ -42,9 +42,10 @@
       h3 {
         margin: 0;
         font-weight: 600;
-        font-size: 16px;
-        line-height: 20.4px;
-        text-align: left;
+        font-style: Semi Bold;
+        font-size: 26px;
+        line-height: 100%;
+        letter-spacing: 0%;
       }
       svg {
         cursor: pointer;
@@ -58,10 +59,12 @@
       label {
         display: block;
         width: 100%;
-        margin-bottom: 5px;
-        font-size: 14px;
-        color: #999999;
-        font-weight: 400;
+        font-weight: 500;
+        font-style: Medium;
+        font-size: 17px;
+        line-height: 130%;
+        letter-spacing: 0%;
+        color: #6d676b;
 
         .required {
           color: #ff0000;
@@ -77,6 +80,12 @@
         font-size: 14px;
         outline: none;
         transition: border-color 0.2s;
+        height: 50px;
+        font-weight: 500;
+        font-style: Medium;
+        font-size: 17px;
+        line-height: 130%;
+        letter-spacing: 0%;
 
         &:focus {
           border-color: #4169e1;
@@ -135,10 +144,9 @@
       cursor: pointer;
       transition: background-color 0.2s;
       margin-top: 10px;
-
-      &:hover {
-        background-color: #3a5ecc;
-      }
+      height: 50px;
+      border-radius: 6px;
+      background-color: #04c421;
     }
   }
 }

@@ -33,6 +33,11 @@
       background-color: #ffffff;
       &:hover {
         background-color: #ff8e8e;
+        svg {
+          path {
+            fill: #ffffff;
+          }
+        }
       }
 
       .count {

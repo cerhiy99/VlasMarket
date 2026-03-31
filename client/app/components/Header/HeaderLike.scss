@@ -17,6 +17,11 @@
     background-color: #ffffff;
     &:hover {
       background-color: #ff8e8e;
+      svg {
+        path {
+          stroke: #ffffff;
+        }
+      }
     }
 
     .count {

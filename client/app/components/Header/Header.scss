@@ -187,8 +187,14 @@
           cursor: pointer;
           &:hover {
             background-color: #ff8e8e;
+            svg {
+              path {
+                stroke: #ffffff;
+              }
+            }
           }
         }
+
         .line-vertically {
           display: flex;
           height: 40px;

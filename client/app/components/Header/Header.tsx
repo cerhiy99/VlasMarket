@@ -60,14 +60,8 @@ const Header = async ({ lang }: Props) => {
                 >
                   {header.brands}
                 </Link>
-                <Link
-                  className="button-url"
-                  href={getLocalizedPath(`/${lang}/cooperation`, lang)}
-                >
-                  {header.cooperation}
-                </Link>
                 <div
-                  style={{ backgroundColor: '#F80000' }}
+                  style={{ backgroundColor: '#F80000', borderRadius: '6px' }}
                   className="discount button-url"
                 >
                   <Link href={getLocalizedPath(`/${lang}/discount/1`, lang)}>
@@ -83,9 +77,9 @@ const Header = async ({ lang }: Props) => {
               <div className="list-url-and-language-and-contact">
                 <Link
                   className="button-url"
-                  href={getLocalizedPath(`/${lang}/partners`, lang)}
+                  href={getLocalizedPath(`/${lang}/cooperation`, lang)}
                 >
-                  {header.partners}
+                  {header.cooperation}
                 </Link>
                 <ContactWithUs lang={lang} dictionary={header.contact} />
                 <SetLanguage lang={lang} />
