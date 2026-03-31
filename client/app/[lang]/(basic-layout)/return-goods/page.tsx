@@ -3,8 +3,6 @@ import { getDictionary } from '@/lib/dictionary';
 import React from 'react';
 import '../delivery/Delivery.scss';
 import BreadCrumbs from '@/app/components/utils/BreadCrumbs';
-import ReturnSVG from '@/app/assest/DeliveryCookiesAndOther/Return.svg';
-//import BreadCrumbs from '@/app/components/utils/BreadCrumbs'
 
 type Props = {
   params: Promise<{ lang: Locale }>;
@@ -55,7 +53,6 @@ const page = async ({ params }: Props) => {
       <BreadCrumbs listUrles={[{ url: `return-goods`, name: returnGoods.name }]} lang={lang} />
       <div className="delivery-main">
         <div className="main-title">
-          <ReturnSVG />
           <h1>{returnGoods.title}</h1>
         </div>
         <div className="block">
