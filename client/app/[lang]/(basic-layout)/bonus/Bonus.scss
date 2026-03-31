@@ -1,0 +1,7 @@
+@import '../App.scss';
+
+.bonus-container {
+  @include responsive-width;
+  h1 {
+  }
+}

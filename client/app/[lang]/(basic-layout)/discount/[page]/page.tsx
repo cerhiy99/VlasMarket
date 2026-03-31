@@ -53,7 +53,11 @@ export async function generateMetadata({ params }: Props) {
 
 const limit = 20;
 
-const getData = async (page: string, limit: number = 20, delLeng: 'uk' | 'ru') => {
+const getData = async (
+  page: string,
+  limit: number = 20,
+  delLeng: 'uk' | 'ru'
+) => {
   try {
     const res = await fetch(
       `${process.env.NEXT_PUBLIC_API_SERVER}goods/get?page=${page}&limit=${limit}&isDiscount=true&delLang=${delLeng}`,
@@ -91,14 +95,19 @@ const page = async ({ params }: Props) => {
         lang={lang}
         listUrles={[
           {
-            name: lang == 'ru' ? 'Акции' : 'Акції',
+            name: lang == 'ru' ? 'Акционные товары' : 'Акційні товари',
             url: `discount/${page}`,
           },
         ]}
       />
-      <h1>{lang == 'ru' ? 'Акции' : 'Акції'}</h1>
+      <h1>{lang == 'ru' ? 'Акционные товары' : 'Акційні товари'}</h1>
       <div className="goods-main2">
-        <ListGoods data={data} isFilter={false} lang={lang} dictionary={miniGoods} />
+        <ListGoods
+          data={data}
+          isFilter={false}
+          lang={lang}
+          dictionary={miniGoods}
+        />
         {totalPages !== 1 ? (
           <MyPagination
             totalPages={totalPages}
