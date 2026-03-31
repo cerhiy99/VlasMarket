@@ -2,7 +2,6 @@ import { Locale } from '@/i18n.config';
 import '../delivery/Delivery.scss';
 import { getDictionary } from '@/lib/dictionary';
 import BreadCrumbs from '@/app/components/utils/BreadCrumbs';
-import OfferAgreementSVG from '@/app/assest/DeliveryCookiesAndOther/offerAgreement.svg';
 
 type Props = {
   params: Promise<{ lang: Locale }>;
@@ -56,7 +55,6 @@ const Page = async ({ params }: Props) => {
       />
       <div className="delivery-main">
         <div className="main-title">
-          <OfferAgreementSVG />
           <h1>{offerAgreement.title}</h1>
         </div>
         <div className="block">
@@ -114,7 +112,7 @@ const Page = async ({ params }: Props) => {
         </div>
         <div className="block">
           <h3>{offerAgreement.miniTitle8}</h3>
-          <p dangerouslySetInnerHTML={{ __html: offerAgreement.nanoTitle1 }} />
+          <p dangerouslySetInnerHTML={{ __html: offerAgreement.miniTitle1 }} />
           <p dangerouslySetInnerHTML={{ __html: offerAgreement.description8 }} />
         </div>
         <div className="block">
