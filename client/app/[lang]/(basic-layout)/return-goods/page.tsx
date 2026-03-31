@@ -1,7 +1,7 @@
 import { Locale } from '@/i18n.config';
 import { getDictionary } from '@/lib/dictionary';
 import React from 'react';
-import '../delivery/Delivery.scss';
+import './ReturnGoods.scss';
 import BreadCrumbs from '@/app/components/utils/BreadCrumbs';
 
 type Props = {
@@ -10,18 +10,18 @@ type Props = {
 
 export async function generateMetadata({ params }: Props) {
   const { lang } = await params;
-  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || '';
   const urlPath = lang === 'ua' ? '' : '/ru';
   const canonicalUrl = `${baseUrl}${urlPath}/return-goods`;
 
   const titles = {
-    ua: 'Повернення товарів — Baylap',
-    ru: 'Возврат товаров — Baylap',
+    ua: 'Повернення товарів — VlasMarket',
+    ru: 'Возврат товаров — VlasMarket',
   };
 
   const descriptions = {
-    ua: 'Інформація про повернення товарів в інтернет-магазині Baylap.',
-    ru: 'Информация о возврате товаров в интернет-магазине Baylap.',
+    ua: 'Інформація про повернення товарів в інтернет-магазині VlasMarket.',
+    ru: 'Информация о возврате товаров в интернет-магазине VlasMarket.',
   };
 
   return {
@@ -40,41 +40,51 @@ export async function generateMetadata({ params }: Props) {
       description: descriptions[lang] || descriptions.ua,
       url: canonicalUrl,
       type: 'website',
-      siteName: 'Baylap',
+      siteName: 'VlasMarket',
     },
   };
 }
 
-const page = async ({ params }: Props) => {
+const Page = async ({ params }: Props) => {
   const { lang } = await params;
-  const { returnGoods, urls } = await getDictionary(lang);
+  const { returnGoods } = await getDictionary(lang);
+
   return (
-    <div className="delivery-container">
-      <BreadCrumbs listUrles={[{ url: `return-goods`, name: returnGoods.name }]} lang={lang} />
-      <div className="delivery-main">
+    <div className="return-goods-container">
+      <BreadCrumbs
+        listUrles={[{ url: 'return-goods', name: returnGoods.name }]}
+        lang={lang}
+      />
+
+      <div className="return-goods-main">
         <div className="main-title">
           <h1>{returnGoods.title}</h1>
         </div>
+
         <div className="block">
           <p dangerouslySetInnerHTML={{ __html: returnGoods.description1 }} />
         </div>
+
         <div className="block">
           <h3>{returnGoods.minititle2}</h3>
-          <ul>
-            {returnGoods.ul.map((x, idx) => (
-              <li key={idx} dangerouslySetInnerHTML={{ __html: x }} />
-            ))}
-          </ul>
-        </div>{' '}
-        <div className="block">
-          <h3>{returnGoods.minititle3}</h3>
-          <p dangerouslySetInnerHTML={{ __html: returnGoods.description3 }} />
-          <ul>
-            {returnGoods.ul2.map((x, idx) => (
-              <li key={idx}>{x}</li>
+          <ul className="return-rules-list">
+            {returnGoods.ul.map((item, idx) => (
+              <li key={idx} dangerouslySetInnerHTML={{ __html: item }} />
             ))}
           </ul>
         </div>
+
+        <div className="block">
+          <h3>{returnGoods.minititle3}</h3>
+          <p dangerouslySetInnerHTML={{ __html: returnGoods.description3 }} />
+
+          <ul className="non-return-list">
+            {returnGoods.ul2.map((item, idx) => (
+              <li key={idx}>{item}</li>
+            ))}
+          </ul>
+        </div>
+
         <div className="block">
           <div className="add-info">{returnGoods.additionalInfo}</div>
         </div>
@@ -83,4 +93,4 @@ const page = async ({ params }: Props) => {
   );
 };
 
-export default page;
+export default Page;

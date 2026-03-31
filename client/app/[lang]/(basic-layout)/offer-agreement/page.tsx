@@ -14,13 +14,13 @@ export async function generateMetadata({ params }: Props) {
   const canonicalUrl = `${baseUrl}${urlPath}/offer-agreement`;
 
   const titles = {
-    ua: 'Оферта — Baylap',
-    ru: 'Оферта — Baylap',
+    ua: 'Оферта — VlasMarket',
+    ru: 'Оферта — VlasMarket',
   };
 
   const descriptions = {
-    ua: 'Умови оферти інтернет-магазину Baylap.',
-    ru: 'Условия оферты интернет-магазина Baylap.',
+    ua: 'Умови оферти інтернет-магазину VlasMarket.',
+    ru: 'Условия оферты интернет-магазина VlasMarket.',
   };
 
   return {
@@ -39,7 +39,7 @@ export async function generateMetadata({ params }: Props) {
       description: descriptions[lang] || descriptions.ua,
       url: canonicalUrl,
       type: 'website',
-      siteName: 'Baylap',
+      siteName: 'VlasMarket',
     },
   };
 }

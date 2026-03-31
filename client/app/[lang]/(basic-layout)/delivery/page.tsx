@@ -2,7 +2,6 @@ import { Locale } from '@/i18n.config';
 import './Delivery.scss';
 import { getDictionary } from '@/lib/dictionary';
 import BreadCrumbs from '@/app/components/utils/BreadCrumbs';
-import DeliverySVG from '@/app/assest/DeliveryCookiesAndOther/Delivery.svg';
 import NewPostSVG from '@/app/assest/DeliveryCookiesAndOther/NewPost.svg';
 import UkrPostSVG from '@/app/assest/DeliveryCookiesAndOther/UkrPost.svg';
 
@@ -18,13 +17,13 @@ export async function generateMetadata({ params }: Props) {
 
   // Локалізовані тексти
   const titles = {
-    ua: 'Доставка — Baylap',
-    ru: 'Доставка — Baylap',
+    ua: 'Доставка — VlasMarket',
+    ru: 'Доставка — VlasMarket',
   };
 
   const descriptions = {
-    ua: 'Інформація про доставку замовлень в інтернет-магазині Baylap.',
-    ru: 'Информация о доставке заказов в интернет-магазине Baylap.',
+    ua: 'Інформація про доставку замовлень в інтернет-магазині VlasMarket.',
+    ru: 'Информация о доставке заказов в интернет-магазине VlasMarket.',
   };
 
   return {
@@ -43,7 +42,7 @@ export async function generateMetadata({ params }: Props) {
       description: descriptions[lang] || descriptions.ua,
       url: canonicalUrl,
       type: 'website',
-      siteName: 'Baylap',
+      siteName: 'VlasMarket',
     },
   };
 }
@@ -56,7 +55,6 @@ const Page = async ({ params }: Props) => {
       <BreadCrumbs lang={lang} listUrles={[{ name: delivery.title, url: 'delivery' }]} />
       <div className="delivery-main">
         <div className="main-title">
-          <DeliverySVG />
           <h1>{delivery.title}</h1>
         </div>
         <div className="block">
