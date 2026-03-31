@@ -17,13 +17,13 @@ export async function generateMetadata({ params }: Props) {
 
   // Локалізовані тексти
   const titles = {
-    ua: 'Співпраця — Baylap',
-    ru: 'Сотрудничество — Baylap',
+    ua: 'Постачальникам — VlasMarket',
+    ru: 'Поставщикам — VlasMarket',
   };
 
   const descriptions = {
-    ua: 'Дізнайтесь, як почати співпрацю з інтернет-магазином Baylap.',
-    ru: 'Узнайте, как начать сотрудничество с интернет-магазином Baylap.',
+    ua: 'Дізнайтесь, як почати співпрацю з інтернет-магазином VlasMarket.',
+    ru: 'Узнайте, как начать сотрудничество с интернет-магазином VlasMarket.',
   };
 
   return {
@@ -42,7 +42,7 @@ export async function generateMetadata({ params }: Props) {
       description: descriptions[lang] || descriptions.ua,
       url: canonicalUrl,
       type: 'website',
-      siteName: 'Baylap',
+      siteName: 'VlasMarket',
     },
   };
 }

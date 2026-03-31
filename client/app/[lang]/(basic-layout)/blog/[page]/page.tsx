@@ -71,7 +71,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
         description: plainDescription,
         url: canonicalUrl,
         type: 'article',
-        siteName: 'Baylap',
+        siteName: 'VlasMarket',
         images: imageUrl
           ? [
               {
@@ -91,13 +91,13 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     const ruUrl = `${baseUrl}/ru/blog/${page}`;
 
     const titles = {
-      ua: `Блог сторінка ${page} | Baylap`,
-      ru: `Блог страница ${page} | Baylap`,
+      ua: `Блог сторінка ${page} | VlasMarket`,
+      ru: `Блог страница ${page} | VlasMarket`,
     };
 
     const descriptions = {
-      ua: `Читайте статті нашого блогу. Сторінка ${page} інтернет-магазину Baylap.`,
-      ru: `Читайте статьи нашего блога. Страница ${page} Интернет-магазина Baylap.`,
+      ua: `Читайте статті нашого блогу. Сторінка ${page} інтернет-магазину VlasMarket.`,
+      ru: `Читайте статьи нашего блога. Страница ${page} Интернет-магазина VlasMarket.`,
     };
 
     return {
@@ -116,7 +116,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
         description: descriptions[lang] || descriptions.ua,
         url: canonicalUrl,
         type: 'website',
-        siteName: 'Baylap',
+        siteName: 'VlasMarket',
       },
     };
   }

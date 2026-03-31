@@ -21,13 +21,13 @@ export async function generateMetadata({ params }: Props) {
   const canonicalUrl = `${baseUrl}${urlPath}/discount/${page}`;
 
   const titles = {
-    ua: `Акційні товари від інтернет-магазину Baylap`,
-    ru: `Акционные товары —  от интернет-магазина Baylap`,
+    ua: `Акційні товари від інтернет-магазину VlasMarket`,
+    ru: `Акционные товары —  от интернет-магазина VlasMarket`,
   };
 
   const descriptions = {
-    ua: `Каталог акційних товарів та спецпропозицій від інтернет-магазину Baylap.`,
-    ru: `Каталог акционных товаров и спецпредложений от интернет-магазина Baylap.`,
+    ua: `Каталог акційних товарів та спецпропозицій від інтернет-магазину VlasMarket.`,
+    ru: `Каталог акционных товаров и спецпредложений от интернет-магазина VlasMarket.`,
   };
 
   return {
@@ -46,7 +46,7 @@ export async function generateMetadata({ params }: Props) {
       description: descriptions[lang] || descriptions.ua,
       url: canonicalUrl,
       type: 'website',
-      siteName: 'Baylap',
+      siteName: 'VlasMarket',
     },
   };
 }

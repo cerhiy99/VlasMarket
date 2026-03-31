@@ -30,13 +30,13 @@ export async function generateMetadata({ params }: Props) {
 
   // Тексти для кожної мови
   const titles = {
-    ua: 'Бренди від інтернет-магазину Baylap',
-    ru: 'Бренды от интернет-магазина Baylap',
+    ua: 'Бренди від інтернет-магазину VlasMarket',
+    ru: 'Бренды от интернет-магазина VlasMarket',
   };
 
   const descriptions = {
-    ua: 'Каталог представлених брендів від інтернет-магазину Baylap. Великий асортимент продукції від різних виробників',
-    ru: ' Каталог представленных брендов от интернет-магазина Baylap. Большой ассортимент продукции от разных производителей',
+    ua: 'Каталог представлених брендів від інтернет-магазину VlasMarket. Великий асортимент продукції від різних виробників',
+    ru: ' Каталог представленных брендов от интернет-магазина VlasMarket. Большой ассортимент продукции от разных производителей',
   };
 
   return {
@@ -55,7 +55,7 @@ export async function generateMetadata({ params }: Props) {
       description: descriptions[lang] || descriptions.ua,
       url: canonicalUrl,
       type: 'website',
-      siteName: 'Baylap',
+      siteName: 'VlasMarket',
     },
   };
 }

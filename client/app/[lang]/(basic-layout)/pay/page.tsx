@@ -16,13 +16,13 @@ export async function generateMetadata({ params }: Props) {
   const canonicalUrl = `${baseUrl}${urlPath}/pay`;
 
   const titles = {
-    ua: 'Оплата — Baylap',
-    ru: 'Оплата — Baylap',
+    ua: 'Оплата — VlasMarket',
+    ru: 'Оплата — VlasMarket',
   };
 
   const descriptions = {
-    ua: 'Інформація про способи оплати в інтернет-магазині Baylap.',
-    ru: 'Информация о способах оплаты в интернет-магазине Baylap.',
+    ua: 'Інформація про способи оплати в інтернет-магазині VlasMarket.',
+    ru: 'Информация о способах оплаты в интернет-магазине VlasMarket.',
   };
 
   return {
@@ -41,7 +41,7 @@ export async function generateMetadata({ params }: Props) {
       description: descriptions[lang] || descriptions.ua,
       url: canonicalUrl,
       type: 'website',
-      siteName: 'Baylap',
+      siteName: 'VlasMarket',
     },
   };
 }
