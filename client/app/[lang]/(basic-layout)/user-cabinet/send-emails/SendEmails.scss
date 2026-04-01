@@ -1,2 +1,109 @@
 .send-emailes-container {
+  width: 100%;
+  font-family: 'Inter', sans-serif;
+}
+
+.send-emailes-title {
+  margin: 0 0 12px 0;
+  font-size: 26px;
+  font-weight: 700;
+  line-height: 1.2;
+  color: #151515;
+}
+
+.send-emailes-info {
+  margin-bottom: 160px;
+}
+
+.send-emailes-label {
+  display: block;
+  margin-bottom: 6px;
+  font-size: 18px;
+  font-weight: 400;
+  line-height: 1.2;
+  color: #1f1f1f;
+}
+
+.send-emailes-email {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 1.2;
+  color: #151515;
+}
+
+.send-emailes-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px 12px;
+}
+
+.send-emailes-card {
+  min-height: 84px;
+  background: #ffffff;
+  border: 1px solid #f0e1ea;
+  border-radius: 16px;
+  padding: 20px 22px;
+  box-sizing: border-box;
+  display: flex;
+  align-items: flex-start;
+  gap: 18px;
+  cursor: pointer;
+  position: relative;
+}
+
+.send-emailes-card input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.send-emailes-checkmark {
+  width: 20px;
+  height: 20px;
+  min-width: 20px;
+  border: 1.5px solid #a8a8a8;
+  border-radius: 4px;
+  box-sizing: border-box;
+  margin-top: 1px;
+  position: relative;
+  background: #ffffff;
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.send-emailes-card input:checked + .send-emailes-checkmark {
+  background: #f58f8f;
+  border-color: #f58f8f;
+}
+
+.send-emailes-card input:checked + .send-emailes-checkmark::after {
+  content: '';
+  position: absolute;
+  top: 4px;
+  left: 6px;
+  width: 4px;
+  height: 8px;
+  border: solid #ffffff;
+  border-width: 0 1.8px 1.8px 0;
+  transform: rotate(45deg);
+}
+
+.send-emailes-card-content {
+  h3 {
+    margin: 0 0 6px 0;
+    font-size: 18px;
+    font-weight: 700;
+    line-height: 1.2;
+    color: #151515;
+  }
+
+  p {
+    margin: 0;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1.35;
+    color: #2d2d2d;
+  }
 }

@@ -10,8 +10,8 @@ type Props = {
 
 type BonusCard = {
   title: string;
-  subtitle: string;
-  text: string;
+  subtitle?: string;
+  text?: string;
 };
 
 type BonusDictionary = {
@@ -69,42 +69,59 @@ const Page = async ({ params }: Props) => {
   ];
 
   return (
-    <div className="bonus-container">
-      <BreadCrumbs
-        lang={lang}
-        listUrles={[{ url: 'bonus', name: bonus.title }]}
-      />
+    <div className="bonus-page">
+      <div className="bonus-page__inner">
+        <BreadCrumbs
+          lang={lang}
+          listUrles={[{ url: 'bonus', name: bonus.title }]}
+        />
 
-      <h1>{bonus.title}</h1>
+        <h1 className="bonus-page__title">{bonus.title}</h1>
 
-      <section className="bonus-hero">
-        <div className="bonus-hero__content">
-          <h2>{bonus.heroTitle}</h2>
-          <p className="bonus-hero__description">{bonus.heroDescription}</p>
-          <p className="bonus-hero__rate">{bonus.heroRate}</p>
-          <p className="bonus-hero__note">{bonus.heroNote}</p>
-        </div>
+        <section className="bonus-hero">
+          <div className="bonus-hero__content">
+            <h2 className="bonus-hero__title">{bonus.heroTitle}</h2>
 
-        <div className="bonus-hero__image">
-          <img src="/images/bonus/bonus-main.png" alt={bonus.heroTitle} />
-        </div>
-      </section>
+            <p className="bonus-hero__description">{bonus.heroDescription}</p>
 
-      <section className="bonus-grid">
-        {cards.map((card) => (
-          <article className="bonus-card" key={card.key}>
-            <div className="bonus-card__icon">
-              <img src={card.icon} alt={card.data.title} />
+            <div className="bonus-hero__info">
+              <p className="bonus-hero__rate">{bonus.heroRate}</p>
+              <p className="bonus-hero__note">{bonus.heroNote}</p>
             </div>
+          </div>
 
-            <div className="bonus-card__content">
-              <h3>{card.data.title}</h3>
-              <p className="bonus-card__subtitle">{card.data.subtitle}</p>
-              <p className="bonus-card__text">{card.data.text}</p>
-            </div>
-          </article>
-        ))}
-      </section>
+          <div className="bonus-hero__image">
+            <img src="/images/bonus/bonus-main.png" alt={bonus.heroTitle} />
+          </div>
+        </section>
+
+        <section className="bonus-grid">
+          {cards.map((card) => {
+            const hasSubtitle = card.data.subtitle?.trim();
+            const hasText = card.data.text?.trim();
+
+            return (
+              <article className="bonus-card" key={card.key}>
+                <div className="bonus-card__icon">
+                  <img src={card.icon} alt={card.data.title} />
+                </div>
+
+                <div className="bonus-card__content">
+                  <h3 className="bonus-card__title">{card.data.title}</h3>
+
+                  {hasSubtitle && (
+                    <p className="bonus-card__subtitle">{card.data.subtitle}</p>
+                  )}
+
+                  {hasText && (
+                    <p className="bonus-card__text">{card.data.text}</p>
+                  )}
+                </div>
+              </article>
+            );
+          })}
+        </section>
+      </div>
     </div>
   );
 };
