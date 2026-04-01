@@ -37,7 +37,7 @@ const LeftPanel = ({ lang, dictionary }: { lang: Locale; dictionary: any }) => {
     },
     {
       id: 6,
-      label: 'Відгуки та коментар',
+      label: 'Відгуки та коментарі',
       icon: '/images/reviews-icon.svg',
       url: '/coments',
     },
