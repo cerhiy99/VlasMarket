@@ -1,2 +1,46 @@
 .watched-container {
+  h1 {
+    margin: 0;
+    margin-bottom: 10px;
+  }
+  .pagination {
+    margin-top: 10px;
+    margin-bottom: 40px;
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+    align-items: center;
+
+    .but {
+      min-width: 40px;
+      height: 40px;
+      border: 1px solid #ebd8e4;
+      background: #fff;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s;
+
+      &.active {
+        background-color: #ff8e8e; // Колір зі скріншота
+        color: white;
+        border-color: #ff8e8e;
+      }
+
+      &:disabled {
+        cursor: default;
+        color: #ccc;
+        border-color: #eee;
+      }
+    }
+    .butNoSelect {
+      background-color: transparent;
+      border: none;
+      display: flex;
+      align-items: center;
+    }
+  }
 }

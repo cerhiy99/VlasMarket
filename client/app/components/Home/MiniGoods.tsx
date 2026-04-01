@@ -15,7 +15,7 @@ import BonusSVG from '../../assest/Goods/Bonus.svg';
 
 type Props = {
   goods: GoodInterface;
-  dictionary: any;
+  dictionary?: any;
   lang: Locale;
 };
 

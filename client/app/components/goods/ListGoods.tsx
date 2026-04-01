@@ -1,19 +1,19 @@
-import React from 'react'
-import MiniGoods from '../Home/MiniGoods'
-import { Locale } from '@/i18n.config'
-import './ListGoods.scss'
-import { GoodInterface } from '@/app/interfaces/goods'
+import React from 'react';
+import MiniGoods from '../Home/MiniGoods';
+import { Locale } from '@/i18n.config';
+import './ListGoods.scss';
+import { GoodInterface } from '@/app/interfaces/goods';
 
 const ListGoods = ({
   lang,
   dictionary,
   isFilter,
-  data
+  data,
 }: {
-  lang: Locale
-  dictionary: any
-  isFilter: boolean
-  data: GoodInterface[]
+  lang: Locale;
+  dictionary?: any;
+  isFilter: boolean;
+  data: GoodInterface[];
 }) => {
   return (
     <div
@@ -22,7 +22,7 @@ const ListGoods = ({
       }`}
     >
       {data.map(
-        x =>
+        (x) =>
           x.volumes.length > 0 && (
             <MiniGoods
               lang={lang}
@@ -33,7 +33,7 @@ const ListGoods = ({
           )
       )}
     </div>
-  )
-}
+  );
+};
 
-export default ListGoods
+export default ListGoods;

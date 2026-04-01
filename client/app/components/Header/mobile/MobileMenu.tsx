@@ -50,7 +50,10 @@ const MobileMenu = ({ isOpen, onClose, dictionary, lang }: MobileMenuProps) => {
   const [isFavOpen, setFavOpen] = useState(false);
   const [isFormClosed, setFormClosed] = useState(false);
   const dispatch = useDispatch();
-  const { basket, like } = useSelector((state: RootState) => state.BasketAndLike);
+  const { isAuthorize } = useSelector((state: RootState) => state.user);
+  const { basket, like } = useSelector(
+    (state: RootState) => state.BasketAndLike
+  );
 
   const toggleForm = useCallback(() => {
     setFormClosed(!isFormClosed);
@@ -154,7 +157,10 @@ const MobileMenu = ({ isOpen, onClose, dictionary, lang }: MobileMenuProps) => {
   if (!shouldRender) return null;
 
   return (
-    <div className={`mobile-menu-overlay ${isClosing ? 'closing' : ''}`} onClick={handleClose}>
+    <div
+      className={`mobile-menu-overlay ${isClosing ? 'closing' : ''}`}
+      onClick={handleClose}
+    >
       <div
         className={`mobile-menu ${isClosing ? 'closing' : ''}`}
         onClick={(e) => e.stopPropagation()}
@@ -175,7 +181,12 @@ const MobileMenu = ({ isOpen, onClose, dictionary, lang }: MobileMenuProps) => {
             <SetLanguage lang={lang} />
           </div>
           <div className="basic-content">
-            <div onClick={onClose} className="auth432">
+            <div
+              onClick={() => {
+                if (isAuthorize) onClose();
+              }}
+              className="auth432"
+            >
               <AuthHeader
                 dictionary={dictionary.Auth}
                 lang={lang}
@@ -184,7 +195,10 @@ const MobileMenu = ({ isOpen, onClose, dictionary, lang }: MobileMenuProps) => {
               />
             </div>
             <div className="line-vertically" />
-            <div className="svg__wrapper" onClick={() => toggleAccordion('favorite')}>
+            <div
+              className="svg__wrapper"
+              onClick={() => toggleAccordion('favorite')}
+            >
               <LikeSVG />
               {countFav > 0 && (
                 <div className="count">
@@ -193,7 +207,10 @@ const MobileMenu = ({ isOpen, onClose, dictionary, lang }: MobileMenuProps) => {
               )}
             </div>
             <div className="line-vertically" />
-            <div className="svg__wrapper last" onClick={() => toggleAccordion('basket')}>
+            <div
+              className="svg__wrapper last"
+              onClick={() => toggleAccordion('basket')}
+            >
               <BasketSVG />
               {countBasket > 0 && (
                 <div className="count">
@@ -207,7 +224,9 @@ const MobileMenu = ({ isOpen, onClose, dictionary, lang }: MobileMenuProps) => {
             {/* Favorites Accordion */}
             <AccordionMenu
               isOpen={isFavOpen}
-              emptyMessage={lang == 'ru' ? 'Ваше вподобане пусте' : 'Ваше вподобане пусте'}
+              emptyMessage={
+                lang == 'ru' ? 'Ваше вподобане пусте' : 'Ваше вподобане пусте'
+              }
               isEmpty={like.length === 0}
               innerMessage="Обране"
             >
@@ -215,7 +234,14 @@ const MobileMenu = ({ isOpen, onClose, dictionary, lang }: MobileMenuProps) => {
                 {like.map((x: LikeItem) => (
                   <>
                     <div className="itemWrapper" key={x.id}>
-                      <Link href={getLocalizedPath(`/${lang}/goods/${x.volume.url}`, lang)}> </Link>
+                      <Link
+                        href={getLocalizedPath(
+                          `/${lang}/goods/${x.volume.url}`,
+                          lang
+                        )}
+                      >
+                        {' '}
+                      </Link>
                       <div className="liked-basket">
                         <div className="basket-goods-img">
                           <Image
@@ -230,11 +256,17 @@ const MobileMenu = ({ isOpen, onClose, dictionary, lang }: MobileMenuProps) => {
                           <div className="price-count-volume">
                             <div className="volume-and-count">
                               <div className="volume">
-                                {x.volume.volume.split('||')[lang == 'ru' ? 1 : 0]}
+                                {
+                                  x.volume.volume.split('||')[
+                                    lang == 'ru' ? 1 : 0
+                                  ]
+                                }
                               </div>
                             </div>
                             <div className="price-container">
-                              <div className="price-no-discount">{x.volume.price} ₴</div>
+                              <div className="price-no-discount">
+                                {x.volume.price} ₴
+                              </div>
                               <div className="price-with-discount">
                                 {x.volume.priceWithDiscount} ₴
                               </div>
@@ -275,13 +307,20 @@ const MobileMenu = ({ isOpen, onClose, dictionary, lang }: MobileMenuProps) => {
             <AccordionMenu
               innerMessage={lang == 'ru' ? 'Ваша корзина' : 'Ваш кошик'}
               isOpen={isBasketOpen}
-              emptyMessage={lang == 'ru' ? 'Ваша корзина пуста' : 'Ваша корзина пуста'}
+              emptyMessage={
+                lang == 'ru' ? 'Ваша корзина пуста' : 'Ваша корзина пуста'
+              }
               isEmpty={basket.length === 0}
             >
               <ul className="basket-list">
                 {basket.map((x: BasketItem) => (
                   <div key={x.id} className="itemWrapper">
-                    <Link href={getLocalizedPath(`/${lang}/goods/${x.volume.url}`, lang)}>
+                    <Link
+                      href={getLocalizedPath(
+                        `/${lang}/goods/${x.volume.url}`,
+                        lang
+                      )}
+                    >
                       <div className="basket-goods">
                         <div className="basket-goods-img">
                           <Image
@@ -310,7 +349,11 @@ const MobileMenu = ({ isOpen, onClose, dictionary, lang }: MobileMenuProps) => {
                                   fill="none"
                                   xmlns="http://www.w3.org/2000/svg"
                                 >
-                                  <path d="M0 1H14" stroke="white" strokeWidth="2" />
+                                  <path
+                                    d="M0 1H14"
+                                    stroke="white"
+                                    strokeWidth="2"
+                                  />
                                 </svg>
                               </div>
                               <div className="count">{x.count}</div>
@@ -329,8 +372,16 @@ const MobileMenu = ({ isOpen, onClose, dictionary, lang }: MobileMenuProps) => {
                                   fill="none"
                                   xmlns="http://www.w3.org/2000/svg"
                                 >
-                                  <path d="M0 7L14 7" stroke="white" strokeWidth="2" />
-                                  <path d="M7 0L7 14" stroke="white" strokeWidth="2" />
+                                  <path
+                                    d="M0 7L14 7"
+                                    stroke="white"
+                                    strokeWidth="2"
+                                  />
+                                  <path
+                                    d="M7 0L7 14"
+                                    stroke="white"
+                                    strokeWidth="2"
+                                  />
                                 </svg>
                               </div>
                             </div>
@@ -338,11 +389,17 @@ const MobileMenu = ({ isOpen, onClose, dictionary, lang }: MobileMenuProps) => {
                           <div className="price-count-volume">
                             <div className="volume-and-count">
                               <div className="count">
-                                {x.volume.volume.split('||')[lang == 'ru' ? 1 : 0]}
+                                {
+                                  x.volume.volume.split('||')[
+                                    lang == 'ru' ? 1 : 0
+                                  ]
+                                }
                               </div>
                             </div>
                             <div className="price-container">
-                              <div className="price-no-discount">{x.volume.price} ₴</div>
+                              <div className="price-no-discount">
+                                {x.volume.price} ₴
+                              </div>
                               <div className="price-with-discount">
                                 {x.volume.priceWithDiscount} ₴
                               </div>
@@ -375,7 +432,9 @@ const MobileMenu = ({ isOpen, onClose, dictionary, lang }: MobileMenuProps) => {
                     <button
                       onClick={() => {
                         handleClose();
-                        router.push(getLocalizedPath(`/${lang}/make-order`, lang));
+                        router.push(
+                          getLocalizedPath(`/${lang}/make-order`, lang)
+                        );
                       }}
                     >
                       {dictionary.mobileMenu.formDelivery}
@@ -471,7 +530,9 @@ const MobileMenu = ({ isOpen, onClose, dictionary, lang }: MobileMenuProps) => {
                 <button
                   className="navigationBtn"
                   onClick={() => {
-                    router.push(getLocalizedPath(`/${lang}/return-goods`, lang));
+                    router.push(
+                      getLocalizedPath(`/${lang}/return-goods`, lang)
+                    );
                     handleClose();
                   }}
                 >
@@ -483,7 +544,9 @@ const MobileMenu = ({ isOpen, onClose, dictionary, lang }: MobileMenuProps) => {
                 <button
                   className="navigationBtn"
                   onClick={() => {
-                    router.push(getLocalizedPath(`/${lang}/offer-agreement`, lang));
+                    router.push(
+                      getLocalizedPath(`/${lang}/offer-agreement`, lang)
+                    );
                     handleClose();
                   }}
                 >
