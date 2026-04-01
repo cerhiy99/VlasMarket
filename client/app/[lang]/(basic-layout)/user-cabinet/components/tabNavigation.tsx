@@ -38,7 +38,7 @@ const TabNavigation = ({ lang }: { lang: Locale }) => {
             <Link
               href={getLocalizedPath(
                 `/${lang}/user-cabinet/personal-info`,
-                lang,
+                lang
               )}
             ></Link>
             <div className="tab__svg">
@@ -78,7 +78,7 @@ const TabNavigation = ({ lang }: { lang: Locale }) => {
             <Link
               href={getLocalizedPath(
                 `/${lang}/user-cabinet/selected-products`,
-                lang,
+                lang
               )}
             ></Link>
             <div className="tab__svg">

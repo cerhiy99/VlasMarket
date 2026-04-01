@@ -4,7 +4,11 @@ import { Locale } from '@/i18n.config';
 import TabNavigation from './components/tabNavigation';
 import { getDictionary } from '@/lib/dictionary';
 
-export default async function page({ params }: { params: Promise<{ lang: Locale }> }) {
+export default async function page({
+  params,
+}: {
+  params: Promise<{ lang: Locale }>;
+}) {
   const { lang } = await params;
   const { cabinetPage } = await getDictionary(lang);
 

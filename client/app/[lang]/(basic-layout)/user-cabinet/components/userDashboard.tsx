@@ -53,7 +53,9 @@ const UserDashboard = ({ lang }: { lang: Locale }) => {
         <div className="styled__wrapper">
           <div className="header--avatar">
             <div className="avatarWrapper">
-              <span style={{ whiteSpace: 'nowrap' }}>{userData.name[0].toUpperCase()}</span>
+              <span style={{ whiteSpace: 'nowrap' }}>
+                {userData.name[0].toUpperCase()}
+              </span>
             </div>
             <div className="userDetails">
               <div>
@@ -62,7 +64,10 @@ const UserDashboard = ({ lang }: { lang: Locale }) => {
               <div>
                 <Link
                   style={{ whiteSpace: 'nowrap' }}
-                  href={getLocalizedPath(`/${lang}/user-cabinet/personal-info`, lang)}
+                  href={getLocalizedPath(
+                    `/${lang}/user-cabinet/personal-info`,
+                    lang
+                  )}
                 >
                   {t('userDashboard.editInfo')}
                 </Link>
@@ -76,7 +81,9 @@ const UserDashboard = ({ lang }: { lang: Locale }) => {
             <div className="userDiscount__total">{discount}%</div>
           </div>
           <div className="exit23">
-            <button onClick={handlerLogOut}>{lang == 'ru' ? 'Вийти' : 'Выйти'}</button>
+            <button onClick={handlerLogOut}>
+              {lang == 'ru' ? 'Вийти' : 'Выйти'}
+            </button>
           </div>
         </div>
         <div className="header--stats">
@@ -128,7 +135,12 @@ const UserDashboard = ({ lang }: { lang: Locale }) => {
           <DataSvg />
           <div className="nav__item">
             <div className="nav__text">
-              <Link href={getLocalizedPath(`/${lang}/user-cabinet/personal-info`, lang)}>
+              <Link
+                href={getLocalizedPath(
+                  `/${lang}/user-cabinet/personal-info`,
+                  lang
+                )}
+              >
                 {t('userDashboard.personalData')}
               </Link>
             </div>
@@ -138,7 +150,9 @@ const UserDashboard = ({ lang }: { lang: Locale }) => {
           <OrdersSVG width={27} />
           <div className="nav__item">
             <div className="nav__text">
-              <Link href={getLocalizedPath(`/${lang}/user-cabinet/orders`, lang)}>
+              <Link
+                href={getLocalizedPath(`/${lang}/user-cabinet/orders`, lang)}
+              >
                 {t('userDashboard.myOrders')}
               </Link>
             </div>
@@ -148,7 +162,12 @@ const UserDashboard = ({ lang }: { lang: Locale }) => {
           <FavoritiesSVG width={28} />
           <div className="nav__item">
             <div className="nav__text">
-              <Link href={getLocalizedPath(`/${lang}/user-cabinet/selected-products`, lang)}>
+              <Link
+                href={getLocalizedPath(
+                  `/${lang}/user-cabinet/selected-products`,
+                  lang
+                )}
+              >
                 {t('userDashboard.favoriteProducts')}
               </Link>
             </div>
@@ -158,7 +177,9 @@ const UserDashboard = ({ lang }: { lang: Locale }) => {
           <Discounts width={32} height={32} />
           <div className="nav__item">
             <div className="nav__text">
-              <Link href={getLocalizedPath(`/${lang}/user-cabinet/discount`, lang)}>
+              <Link
+                href={getLocalizedPath(`/${lang}/user-cabinet/discount`, lang)}
+              >
                 {t('userDashboard.personalDiscountNav')}
               </Link>
             </div>
