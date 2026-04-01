@@ -10,7 +10,12 @@ import { usePathname } from 'next/navigation';
 
 const LeftPanel = ({ lang, dictionary }: { lang: Locale; dictionary: any }) => {
   const menuItems = [
-    { id: 1, label: 'Профіль', icon: '/images/profile-icon.svg', url: '' },
+    {
+      id: 1,
+      label: 'Профіль',
+      icon: '/images/profile-icon.svg',
+      url: '/profile',
+    },
     {
       id: 2,
       label: 'Історія замовлень',
@@ -68,7 +73,7 @@ const LeftPanel = ({ lang, dictionary }: { lang: Locale; dictionary: any }) => {
     const url = pathname.split('user-cabinet')[1] || '';
     const selectMenu = menuItems.find((x) => x.url == url);
 
-    setSelectId(selectMenu?.id || 1);
+    setSelectId(selectMenu?.id || 0);
   }, [pathname]);
 
   return (
@@ -82,6 +87,14 @@ const LeftPanel = ({ lang, dictionary }: { lang: Locale; dictionary: any }) => {
             href={getLocalizedPath(`/${lang}/user-cabinet/personal-info`, lang)}
           >
             Редагувати інформацію
+            {/*<div className="home-goods">
+        <UserWatched
+          title={home.youWatching}
+          lang={lang}
+          dictionary={miniGoods}
+          type=""
+        />
+      </div>*/}
           </Link>
         </div>
       </div>
