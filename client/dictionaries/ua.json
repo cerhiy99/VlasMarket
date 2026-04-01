@@ -456,21 +456,24 @@
     "toPayWithoutDelivery": "До оплати без доставки:",
     "submitButton": "Оформити замовлення"
   },
+  
   "OrderTrue": {
-    "thankYouTitle": "Дякуємо за покупку!",
-    "successTitle": "Замовлення успішно оформлено",
-    "description": "Кожне замовлення - це внесок в економіку України та підтримка українських підприємців.",
-    "orderNumberPrefix": "Замовлення №",
-    "itemCount": "товар",
-    "unitAbbreviation": "шт.",
-    "priceSuffixPerPiece": "₴/шт.",
-    "oldPriceSuffixPerPiece": "₴/шт.",
-    "toPayWithoutDelivery": "До оплати без доставки:",
-    "deliveryTitle": "Доставка",
-    "paymentTitle": "Оплата",
-    "contactsTitle": "Контакти покупця",
-    "continueShoppingButton": "Продовжити покупки"
-  },
+  "thankYouTitle": "Дякуємо за замовлення!",
+  "successTitle": "Ваше замовлення успішно оформлено",
+  "description": "Кожне оформлене замовлення сприяє розвитку економіки України та підтримці українського бізнесу.",
+  "whatNextTitle": "Що далі?",
+  "whatNextDescription": "Найближчим часом з вами зв’яжеться менеджер для уточнення деталей замовлення (за умови наявності товару). У разі відсутності позиції інформацію буде надіслано на вашу електронну пошту. Переглянути статус та деталі замовлення ви можете у своєму особистому кабінеті після авторизації на сайті.",
+  "orderNumberPrefix": "Замовлення №",
+  "itemCount": "товарів",
+  "toPayTitle": "Сума до оплати",
+  "toPayWithoutDelivery": "(без вартості доставки)",
+  "deliveryTitle": "Доставка",
+  "paymentTitle": "Оплата",
+  "paymentDescription": "Очікуйте дзвінок для уточнення деталей",
+  "contactsTitle": "Контакти",
+  "continueShoppingButton": "Продовжити покупки"
+},
+
   "selectGoods": {
     "edit": "Редагувати",
     "watchMore": "Подивіться ще",
