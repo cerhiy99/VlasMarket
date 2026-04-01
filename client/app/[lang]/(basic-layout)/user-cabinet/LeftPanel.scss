@@ -1,7 +1,6 @@
 .left-panel-container {
   width: 361px;
   height: 665px;
-  margin-top: 20px;
   margin-bottom: 80px;
   background: #ffffff;
   border-radius: 20px;
@@ -10,113 +9,122 @@
   display: flex;
   flex-direction: column;
   font-family: 'Inter', sans-serif;
-}
 
-.left-panel-user {
-  display: flex;
-  align-items: center;
-  gap: 15px;
-  padding-left: 30px;
-  padding-right: 30px;
-  margin-bottom: 26px;
-  box-sizing: border-box;
-  white-space: nowrap;
-}
-
-.left-panel-avatar {
-  width: 80px;
-  height: 80px;
-  min-width: 80px;
-  border-radius: 50%;
-  background: #EBD8E4;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-family: 'Inter', sans-serif;
-  font-size: 36px;
-  font-weight: 600;
-  line-height: 1;
-  color: #000000;
-}
-
-.left-panel-user-info {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-  padding-top: 4px;
-
-  h3 {
-    margin: 0 0 10px 0;
-    font-family: 'Inter', sans-serif;
-    font-size: 16px;
-    font-weight: 600;
-    line-height: 1.25;
-    color: #000000;
+  .left-panel-user {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding-left: 30px;
+    padding-right: 30px;
+    margin-bottom: 26px;
+    box-sizing: border-box;
     white-space: nowrap;
   }
 
-  button {
-    margin: 0;
-    padding: 0;
+  .left-panel-avatar {
+    width: 80px;
+    height: 80px;
+    min-width: 80px;
+    border-radius: 50%;
+    background: #ebd8e4;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Inter', sans-serif;
+    font-size: 36px;
+    font-weight: 600;
+    line-height: 1;
+    color: #000000;
+  }
+
+  .left-panel-user-info {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    padding-top: 4px;
+
+    h3 {
+      margin: 0;
+      margin-bottom: 10px;
+      font-family: 'Inter', sans-serif;
+      font-size: 16px;
+      font-weight: 600;
+      line-height: 1.25;
+      color: #000000;
+      white-space: nowrap;
+      text-align: left;
+    }
+
+    a {
+      margin: 0;
+      padding: 0;
+      border: none;
+      background: transparent;
+      font-family: 'Inter', sans-serif;
+      font-size: 15px;
+      font-weight: 400;
+      line-height: 1.2;
+      color: #000000;
+      text-underline-offset: 3px;
+      cursor: pointer;
+      text-decoration: underline;
+    }
+  }
+
+  .left-panel-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .left-panel-nav-item {
+    width: calc(100% - 20px);
     border: none;
     background: transparent;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 0 20px;
+    margin: 0 10px;
+    min-height: 44px;
+    cursor: pointer;
+    text-align: left;
+    box-sizing: border-box;
+    justify-content: flex-start;
+    text-decoration: none;
+    box-sizing: border-box;
+    border-radius: 6px;
+    &:hover,
+    &.active {
+      background-color: #f9f3f7;
+      border: 1.5px solid #000000;
+    }
+  }
+
+  .left-panel-icon {
+    width: 40px;
+    height: 40px;
+    min-width: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+
+    img {
+      width: 40px;
+      height: 40px;
+      object-fit: contain;
+      display: block;
+    }
+  }
+
+  .left-panel-label {
     font-family: 'Inter', sans-serif;
-    font-size: 15px;
+    font-size: 16px;
     font-weight: 400;
     line-height: 1.2;
     color: #000000;
-    text-decoration: underline;
-    text-underline-offset: 3px;
-    cursor: pointer;
+    text-align: left;
+    max-width: 220px;
   }
 }
-
-.left-panel-nav {
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
-}
-
-.left-panel-nav-item {
-  width: 100%;
-  border: none;
-  background: transparent;
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 0 30px;
-  min-height: 44px;
-  cursor: pointer;
-  text-align: left;
-  box-sizing: border-box;
-  justify-content: flex-start;
-}
-
-.left-panel-icon {
-  width: 40px;
-  height: 40px;
-  min-width: 40px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-
-  img {
-    width: 40px;
-    height: 40px;
-    object-fit: contain;
-    display: block;
-  }
-}
-
-.left-panel-label {
-  font-family: 'Inter', sans-serif;
-  font-size: 16px;
-  font-weight: 400;
-  line-height: 1.2;
-  color: #000000;
-  text-align: left;
-  max-width: 220px;
-}
-

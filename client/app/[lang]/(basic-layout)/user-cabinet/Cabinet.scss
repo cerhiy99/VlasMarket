@@ -1,14 +1,16 @@
 .mainContent__wrapper {
   display: flex;
   flex-direction: column;
+  justify-content: center;
   gap: 22px;
   align-items: center;
+  padding-left: 25px;
   @media (max-width: 1024px) {
     width: 100%;
     justify-content: center;
+    padding-left: 0;
   }
   .mainContnent {
-    max-width: 660px;
     width: 100%;
     margin-bottom: 15px;
     @media (max-width: 1024px) {
@@ -16,17 +18,29 @@
     }
     &__title {
       display: flex;
-      justify-content: center;
-      align-items: center;
       margin: 0;
       font-weight: 500;
-      text-align: center;
       font-size: 24px;
+      text-align: center;
+      justify-content: center;
+      width: 100%;
     }
     &__text {
+      display: flex;
+      width: 100%;
       margin: 0;
       margin-top: 12px;
       text-align: center;
+      justify-content: center;
+    }
+  }
+  .image__svg {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    img {
+      width: 100%;
+      max-height: 580px;
     }
   }
 }

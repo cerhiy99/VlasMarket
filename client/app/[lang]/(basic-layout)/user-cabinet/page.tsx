@@ -1,8 +1,9 @@
 import './Cabinet.scss';
-import MainImage from '@/public/svgs/userNavigation/mainImage.svg';
+import MainImage from '@/app/assest/Cabinet/main.webp';
 import { Locale } from '@/i18n.config';
 import TabNavigation from './components/tabNavigation';
 import { getDictionary } from '@/lib/dictionary';
+import Image from 'next/image';
 
 export default async function page({
   params,
@@ -15,7 +16,7 @@ export default async function page({
   return (
     <div className="mainContent__wrapper">
       <div className="image__svg">
-        <MainImage />
+        <Image src={MainImage} alt="Головна картинка кабінета" />
       </div>
       <div className="mainContnent">
         <h2 className="mainContnent__title">{cabinetPage.title}</h2>
