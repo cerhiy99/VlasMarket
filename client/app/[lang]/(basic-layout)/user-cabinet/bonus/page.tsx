@@ -1,4 +1,5 @@
 import React from 'react';
+import Link from 'next/link';
 import './Bonus.scss';
 
 type Props = {};
@@ -51,10 +52,15 @@ const page = (props: Props) => {
             повної оплати наступних замовлень.
           </p>
 
-          <button type="button" className="bonus-link-btn">
-            Детальніше про бонусну програму
-            <span>→</span>
-          </button>
+          <Link
+  href="/bonus"
+  className="bonus-link-btn"
+  target="_blank"
+  rel="noopener noreferrer"
+>
+  Детальніше про бонусну програму
+  <span>→</span>
+</Link>
         </div>
 
         <div className="bonus-more-card">
