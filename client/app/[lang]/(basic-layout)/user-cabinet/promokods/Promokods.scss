@@ -1,2 +1,99 @@
 .promokods-container {
+  font-family: 'Inter', sans-serif;
+  color: #1e1e1e;
+}
+
+.promokods-title {
+  margin: 0 0 12px;
+  font-size: 26px;
+  font-weight: 700;
+  line-height: 1.2;
+  color: #000000;
+}
+
+.promokods-card {
+  width: 1050px;
+  height: 350px;
+  background: #ffffff;
+  border-radius: 14px;
+  padding: 22px 22px 34px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+}
+
+.promokods-form-block {
+  width: 100%;
+}
+
+.promokods-label {
+  display: block;
+  margin-bottom: 10px;
+  font-size: 18px;
+  font-weight: 400;
+  line-height: 1.2;
+  color: #8d8d8d;
+}
+
+.promokods-form-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.promokods-input {
+  width: 332px;
+  height: 40px;
+  border: 1px solid #ead9e1;
+  border-radius: 6px;
+  background: #ffffff;
+  padding: 0 14px;
+  box-sizing: border-box;
+  outline: none;
+  font-size: 16px;
+  font-weight: 400;
+  color: #1e1e1e;
+
+  &::placeholder {
+    color: #a3a3a3;
+  }
+}
+
+.promokods-button {
+  width: 195px;
+  height: 40px;
+  border: none;
+  border-radius: 6px;
+  background: #81E190;
+  color: #ffffff;
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.promokods-empty-state {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding-top: 40px;
+  text-align: center;
+}
+
+.promokods-image {
+  margin-top: -550px;
+  width: 1200px;
+  height: 1200px;
+  display: block;
+}
+
+.promokods-empty-text {
+  margin: 0;
+  font-size: 19px;
+  font-weight: 600;
+  line-height: 1.35;
+  color: #2F2F30;
+  margin-top: -520px;
 }
