@@ -90,7 +90,7 @@ const AuthHeader = ({
     setLogIsOpen(false);
     if (onFormClose) onFormClose();
     // Add your registration logic here
-    //router.push(`/${lang}/user-cabinet`)
+    router.push(`/${lang}/user-cabinet`);
   };
 
   useEffect(() => {

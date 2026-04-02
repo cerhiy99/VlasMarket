@@ -1,16 +1,20 @@
+import { useRouter } from 'next/navigation';
 import React from 'react';
 
 interface PaginationProps {
   currentPage: number;
   totalPages: number;
   onPageChange: (page: number) => void;
+  to?: string;
 }
 
 const PaginationDynamic: React.FC<PaginationProps> = ({
   currentPage,
   totalPages,
   onPageChange,
+  to,
 }) => {
+  const router = useRouter();
   const getPages = () => {
     const pages: (number | string)[] = [];
 
@@ -39,12 +43,19 @@ const PaginationDynamic: React.FC<PaginationProps> = ({
     return pages;
   };
 
+  const changePage = (page: number) => {
+    onPageChange(page);
+    if (to) {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  };
+
   return (
     <div className="pagination">
       <button
         className="butNoSelect"
         disabled={currentPage === 1}
-        onClick={() => onPageChange(currentPage - 1)}
+        onClick={() => changePage(currentPage - 1)}
       >
         <svg
           width="15"
@@ -67,7 +78,7 @@ const PaginationDynamic: React.FC<PaginationProps> = ({
         <button
           key={index}
           className={currentPage === p ? 'but active' : 'but'}
-          onClick={() => typeof p === 'number' && onPageChange(p)}
+          onClick={() => typeof p === 'number' && changePage(p)}
           disabled={p === '...'}
         >
           {p}
@@ -76,7 +87,7 @@ const PaginationDynamic: React.FC<PaginationProps> = ({
 
       <button
         disabled={currentPage === totalPages}
-        onClick={() => onPageChange(currentPage + 1)}
+        onClick={() => changePage(currentPage + 1)}
         className="butNoSelect"
       >
         <svg

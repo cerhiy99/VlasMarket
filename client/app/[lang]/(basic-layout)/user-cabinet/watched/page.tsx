@@ -38,7 +38,9 @@ const page = ({ params }: Props) => {
 
   return (
     <div className="watched-container">
-      <h1>{lang == 'ru' ? 'Просмотренные товары' : 'Переглянуті товари'}</h1>
+      <h1 id="watched-page">
+        {lang == 'ru' ? 'Просмотренные товары' : 'Переглянуті товари'}
+      </h1>
       <ListGoods
         data={watched.slice((currentPage - 1) * limit, currentPage * limit)}
         isFilter={true}
@@ -47,6 +49,7 @@ const page = ({ params }: Props) => {
       <div className="pagination">
         {countPages > 1 && (
           <PaginationDynamic
+            to="watched-page"
             currentPage={currentPage}
             totalPages={countPages}
             onPageChange={setCurrentPage}

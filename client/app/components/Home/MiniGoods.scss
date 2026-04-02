@@ -48,18 +48,20 @@
         right: 3px;
         bottom: -20px;
         z-index: 4;
-        /*.liked {
-          svg {
-            fill: #d93a3f;
-          }
-        }
-        @media (min-width: 768px) {
-          &:hover {
+        .like-container {
+          &.liked {
             svg {
               fill: #d93a3f;
             }
           }
-        }*/
+          @media (min-width: 768px) {
+            &:hover {
+              svg {
+                fill: #d93a3f;
+              }
+            }
+          }
+        }
       }
     }
     .img-container {
@@ -321,7 +323,7 @@
       border-radius: 5px;
       display: flex;
       justify-content: center;
-      align-items: flex-end;
+      align-items: center;
       cursor: pointer;
       p {
         display: none;
