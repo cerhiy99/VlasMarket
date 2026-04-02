@@ -39,32 +39,32 @@ const Page = async ({ params }: Props) => {
     {
       key: 'accrual',
       data: bonus.cards.accrual,
-      icon: '/images/bonus/bonus-1.png',
+      icon: '/images/bonus/bonus-1.svg',
     },
     {
       key: 'activation',
       data: bonus.cards.activation,
-      icon: '/images/bonus/bonus-2.png',
+      icon: '/images/bonus/bonus-2.svg',
     },
     {
       key: 'noAccrual',
       data: bonus.cards.noAccrual,
-      icon: '/images/bonus/bonus-3.png',
+      icon: '/images/bonus/bonus-3.svg',
     },
     {
       key: 'cancel',
       data: bonus.cards.cancel,
-      icon: '/images/bonus/bonus-4.png',
+      icon: '/images/bonus/bonus-4.svg',
     },
     {
       key: 'return',
       data: bonus.cards.return,
-      icon: '/images/bonus/bonus-5.png',
+      icon: '/images/bonus/bonus-5.svg',
     },
     {
       key: 'term',
       data: bonus.cards.term,
-      icon: '/images/bonus/bonus-6.png',
+      icon: '/images/bonus/bonus-6.svg',
     },
   ];
 
@@ -91,7 +91,7 @@ const Page = async ({ params }: Props) => {
           </div>
 
           <div className="bonus-hero__image">
-            <img src="/images/bonus/bonus-main.png" alt={bonus.heroTitle} />
+            <img src="/images/bonus/bonus-main.svg" alt={bonus.heroTitle} />
           </div>
         </section>
 
