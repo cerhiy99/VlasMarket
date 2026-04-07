@@ -70,7 +70,7 @@ const Comparison = ({ goods, selectVolumeIdx }: Props) => {
   return (
     <div
       onClick={inLike}
-      className={`like-container ${isInLike ? 'liked' : ''}`}
+      className={`comparison-container ${isInLike ? 'liked' : ''}`}
     >
       <svg
         width="22"

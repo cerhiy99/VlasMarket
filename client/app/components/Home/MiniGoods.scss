@@ -48,16 +48,40 @@
         right: 3px;
         bottom: -20px;
         z-index: 4;
-        .like-container {
+
+        .comparison-container {
           &.liked {
             svg {
-              fill: #d93a3f;
+              path {
+                stroke: #f80000;
+              }
             }
           }
           @media (min-width: 768px) {
             &:hover {
               svg {
-                fill: #d93a3f;
+                path {
+                  stroke: #f80000;
+                }
+              }
+            }
+          }
+        }
+        .like-container {
+          &.liked {
+            svg {
+              fill: #f80000;
+              path {
+                stroke: #f80000;
+              }
+            }
+          }
+          @media (min-width: 768px) {
+            &:hover {
+              svg {
+                path {
+                  stroke: #f80000;
+                }
               }
             }
           }
