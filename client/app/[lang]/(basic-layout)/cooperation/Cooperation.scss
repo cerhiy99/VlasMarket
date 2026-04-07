@@ -1,34 +1,68 @@
 .block {
-  margin-bottom: 10px;
+  margin-bottom: 16px;
+  padding: 20px;
+  background: #f9f9f9;
+  border-radius: 12px;
+  box-sizing: border-box;
+  overflow: hidden;
+  box-shadow: none;
 }
 
 .block:last-child {
   margin-bottom: 0;
 }
 
+.block h3 {
+  margin: 0 0 10px 0 !important;
+  font-size: 18px !important;
+  font-weight: 700;
+  line-height: 1.3;
+  color: #000000;
+}
+
+.block p {
+  margin: 0 !important;
+  font-size: 15px !important;
+  line-height: 1.6 !important;
+  color: #000000 !important;
+}
+
 h1 {
-  font-size: 30px !important;
-  margin-bottom: 10px !important;
-  margin-top: 10px !important;
+  font-size: 24px !important;
+  margin: 0 !important;
+}
+
+p {
+  font-size: 15px !important;
+  line-height: 1.6 !important;
+  color: #000 !important;
+  margin: 0 !important;
 }
 
 .form-container {
-  margin-top: 0;
+  margin-top: 0 !important;
+  margin-bottom: 0 !important;
   padding: 20px;
   background: #f9f9f9;
   border-radius: 12px;
-  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  box-sizing: border-box;
+  height: auto !important;
+  min-height: unset !important;
+  overflow: hidden;
+  box-shadow: none;
 
   h3 {
+    margin: 0 0 18px 0 !important;
     color: #000000;
-    font-size: 20px;
+    font-size: 18px !important;
     font-weight: 700;
     line-height: 1.3;
-    margin-bottom: 18px;
   }
 
   form {
     width: 100%;
+    margin: 0 !important;
+    padding: 0 !important;
   }
 
   .form-row {
@@ -39,11 +73,17 @@ h1 {
     .form-group {
       flex: 1;
       margin-bottom: 0;
+      min-width: 0;
     }
   }
 
   .form-group {
     margin-bottom: 12px;
+    min-width: 0;
+  }
+
+  .form-group:last-child {
+    margin-bottom: 0;
   }
 
   .full-width {
@@ -53,7 +93,7 @@ h1 {
   .form-group label {
     display: block;
     margin-bottom: 8px;
-    font-size: 16px;
+    font-size: 14px;
     line-height: 1.3;
     font-weight: 600;
     color: #6d676b;
@@ -95,7 +135,7 @@ h1 {
   .form-group textarea::placeholder {
     color: #7f7f7f;
     opacity: 1;
-    font-size: 14px;
+    font-size: 13px;
     font-weight: 400;
     font-family: inherit;
   }
@@ -205,22 +245,6 @@ h1 {
     z-index: 5;
   }
 
-  .react-tel-input .selected-flag:hover::after,
-  .react-tel-input .flag-dropdown:hover .selected-flag::after {
-    content: '';
-    position: absolute;
-    left: 31px;
-    top: 50%;
-    transform: translateY(-35%);
-    width: 0;
-    height: 0;
-    border-left: 4px solid transparent;
-    border-right: 4px solid transparent;
-    border-top: 6px solid #6d676b;
-    pointer-events: none;
-    z-index: 5;
-  }
-
   .react-tel-input.open .selected-flag::after {
     transform: translateY(-65%) rotate(180deg);
   }
@@ -306,18 +330,20 @@ h1 {
   .submit-btn {
     width: 100%;
     height: 42px;
+    display: block;
     margin-top: 12px;
-    margin-bottom: 16px;
+    margin-bottom: 0 !important;
     border: none;
     border-radius: 8px;
     outline: none;
     background-color: #ebd8e4;
     color: #6e6e6e;
-    font-size: 19px;
+    font-size: 16px;
     font-weight: 700;
     text-align: center;
     cursor: not-allowed;
     transition: background-color 0.3s ease, color 0.3s ease, opacity 0.3s ease;
+    box-sizing: border-box;
   }
 
   .submit-btn.active {
@@ -333,6 +359,7 @@ h1 {
 
   .success-message {
     margin-top: 14px;
+    margin-bottom: 0 !important;
     font-size: 14px;
     font-weight: 500;
   }
@@ -346,57 +373,178 @@ h1 {
   }
 }
 
+html,
+body {
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+main {
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
 @media (max-width: 768px) {
-  .block {
-    margin-bottom: 10px;
+  html,
+  body,
+  main {
+    margin: 0 !important;
+    padding: 0 !important;
   }
 
+  .container,
+  .about-us-cont,
+  .about-us,
+  .supplier-page {
+    margin: 0 !important;
+    padding-top: 8px !important;
+    padding-bottom: 0 !important;
+  }
+
+  /* КРИХТИ */
+  .breadcrumbs,
+  .bread-crumbs,
+  .breadcrumb,
+  .BreadCrumbs {
+    display: inline-flex !important;
+    align-items: center !important;
+    flex-wrap: wrap !important;
+    gap: 6px !important;
+    margin: 0 0 8px 0 !important; /* ЄДИНИЙ відступ вниз */
+    padding: 0 !important;
+    line-height: 1 !important;
+    min-height: unset !important;
+  }
+
+  .breadcrumbs a,
+  .bread-crumbs a,
+  .breadcrumb a,
+  .BreadCrumbs a,
+  .breadcrumbs span,
+  .bread-crumbs span,
+  .breadcrumb span,
+  .BreadCrumbs span {
+    font-size: 13px !important;
+    line-height: 1 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    display: inline-flex !important;
+    align-items: center !important;
+  }
+
+  .breadcrumbs svg,
+  .bread-crumbs svg,
+  .breadcrumb svg,
+  .BreadCrumbs svg,
+  .breadcrumbs img,
+  .bread-crumbs img,
+  .breadcrumb img,
+  .BreadCrumbs img {
+    width: 18px !important;
+    height: 18px !important;
+    display: block !important;
+    flex-shrink: 0 !important;
+  }
+
+  /* ЗАГОЛОВОК */
+  h1 {
+    margin: 0 0 12px 0 !important; /* зверху 0 */
+    padding: 0 !important;
+    font-size: 20px !important;
+    font-weight: 700 !important;
+    line-height: 1.15 !important;
+    display: block !important;
+  }
+
+  /* БЛОК */
+  .block {
+    margin: 0 0 12px 0 !important;
+    padding: 16px !important;
+    border-radius: 14px !important;
+  }
+
+  .block h3 {
+    margin: 0 0 10px 0 !important;
+    font-size: 16px !important;
+    line-height: 1.25 !important;
+  }
+
+  .block p {
+    margin: 0 !important;
+    font-size: 14px !important;
+    line-height: 1.5 !important;
+  }
+
+  /* ФОРМА */
   .form-container {
-    padding: 16px;
+    margin: 0 !important;
+    padding: 16px !important;
+    border-radius: 14px !important;
+  }
 
-    h3 {
-      font-size: 18px;
-      margin-bottom: 16px;
-    }
+  .form-container h3 {
+    margin: 0 0 14px 0 !important;
+    font-size: 16px !important;
+    line-height: 1.25 !important;
+  }
 
-    .form-row {
-      flex-direction: column;
-      gap: 12px;
-      margin-bottom: 12px;
+  .form-container .form-row {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 0 !important;
+    margin: 0 !important;
+  }
 
-      .form-group {
-        width: 100%;
-      }
-    }
+  .form-container .form-group {
+    width: 100% !important;
+    margin: 0 0 12px 0 !important;
+  }
 
-    .form-group {
-      margin-bottom: 12px;
-    }
+  .form-container .form-group label {
+    display: block !important;
+    margin: 0 0 6px 0 !important;
+    font-size: 13px !important;
+    line-height: 1.3 !important;
+  }
 
-    .form-group input,
-    .react-tel-input .form-control {
-      height: 46px !important;
-    }
+  .form-container input,
+  .form-container textarea {
+    width: 100% !important;
+    font-size: 14px !important;
+    border-radius: 10px !important;
+    box-sizing: border-box !important;
+  }
 
-    .form-group input {
-      line-height: 46px;
-    }
+  .form-container input {
+    height: 46px !important;
+    padding: 0 14px !important;
+    line-height: 46px !important;
+  }
 
-    .react-tel-input .form-control {
-      padding-left: 54px !important;
-    }
+  .form-container textarea {
+    min-height: 120px !important;
+    padding: 14px !important;
+    line-height: 1.45 !important;
+  }
 
-    .react-tel-input .selected-flag {
-      height: 46px !important;
-    }
+  .react-tel-input .form-control {
+    height: 46px !important;
+    padding-left: 54px !important;
+    font-size: 14px !important;
+  }
 
-    .react-tel-input .country-list {
-      width: 100% !important;
-    }
+  .react-tel-input .flag-dropdown {
+    width: 46px !important;
+  }
 
-    .submit-btn {
-      height: 42px;
-      font-size: 17px;
-    }
+  .react-tel-input .selected-flag {
+    height: 46px !important;
+  }
+
+  .submit-btn {
+    height: 46px !important;
+    margin-top: 12px !important;
+    font-size: 14px !important;
+    border-radius: 10px !important;
   }
 }
