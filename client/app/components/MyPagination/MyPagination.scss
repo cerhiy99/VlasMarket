@@ -8,6 +8,10 @@
   @media (max-width: 768px) {
     margin: 20px auto;
   }
+  max-width: 100%;
+  height: auto;
+  overflow-x: auto;
+  overflow-y: clip;
   .pagination-list {
     display: flex;
     flex-direction: row;
@@ -19,6 +23,7 @@
       align-items: flex-end;
       padding-bottom: 5px;
     }
+
     li {
       list-style: none;
       width: 40px;
