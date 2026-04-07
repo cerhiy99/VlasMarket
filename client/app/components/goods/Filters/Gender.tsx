@@ -47,21 +47,6 @@ const Gender: React.FC<CategoriesProps> = ({
   const [isMobile, setIsMobile] = useState<boolean>(isMob); // Ініціалізуємо false, оновлюємо в useEffect
   const scrollContainerRef = useRef<HTMLUListElement | null>(null);
 
-  // Визначення мобільної версії
-  useEffect(() => {
-    const handleResize = () => {
-      setIsDropdownOpen(window.innerWidth >= 1024);
-      setIsMobile(window.innerWidth < 1024);
-    };
-
-    window.addEventListener('resize', handleResize);
-    handleResize(); // Викликаємо одразу при монтуванні
-
-    return () => {
-      window.removeEventListener('resize', handleResize);
-    };
-  }, []);
-
   // Ініціалізація та оновлення selectedCategories з URL-параметрів
   useEffect(() => {
     const currentCategoryIdInUrl = searchParams.get('isForMan');
@@ -110,11 +95,7 @@ const Gender: React.FC<CategoriesProps> = ({
 
   return (
     <div className="brands-container categories-container">
-      <div
-        style={{ width: '75px' }}
-        className="brands-header categories-header"
-        onClick={toggleDropdown}
-      >
+      <div className="brands-header" onClick={toggleDropdown}>
         <span>{lang == 'ru' ? 'ПОЛ' : 'СТАТЬ'}</span>
         <span className={`arrow-icon ${isDropdownOpen ? 'open' : ''}`}>
           {isDropdownOpen ? <UpSVG /> : <DownSVG />}

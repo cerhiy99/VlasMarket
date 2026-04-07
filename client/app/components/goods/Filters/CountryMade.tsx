@@ -41,26 +41,13 @@ const CountryMade: React.FC<Props> = ({
   const searchParams = useSearchParams();
 
   // Стан для відстеження вибраних країн (може бути кілька)
-  const [selectedCountries, setSelectedCountries] = useState<Record<number, boolean>>({});
+  const [selectedCountries, setSelectedCountries] = useState<
+    Record<number, boolean>
+  >({});
   const [selectedLetter, setSelectedLetter] = useState<string>(''); // Порожній рядок за замовчуванням
   const [isDropdownOpen, setIsDropdownOpen] = useState<boolean>(true);
   const [isMobile, setIsMobile] = useState<boolean>(isMob);
   const scrollContainerRef = useRef<HTMLUListElement | null>(null);
-
-  // Визначення мобільної версії
-  useEffect(() => {
-    const handleResize = () => {
-      setIsDropdownOpen(window.innerWidth >= 1024);
-      setIsMobile(window.innerWidth < 1024);
-    };
-
-    window.addEventListener('resize', handleResize);
-    handleResize();
-
-    return () => {
-      window.removeEventListener('resize', handleResize);
-    };
-  }, []);
 
   // Ініціалізація та оновлення selectedCountries з URL-параметрів
   useEffect(() => {
@@ -77,7 +64,10 @@ const CountryMade: React.FC<Props> = ({
       const ids = currentCountryIdsInUrl
         .split(',')
         .map((idStr) => parseInt(idStr.trim()))
-        .filter((id) => !isNaN(id) && realCountries.some((country) => country.id === id)); // Перевірка на валідність ID
+        .filter(
+          (id) =>
+            !isNaN(id) && realCountries.some((country) => country.id === id)
+        ); // Перевірка на валідність ID
 
       ids.forEach((id) => {
         newSelectedState[id] = true;
@@ -140,7 +130,8 @@ const CountryMade: React.FC<Props> = ({
   const dynamicAlphabet = useMemo(() => {
     const firstLetters = new Set<string>();
     realCountries.forEach((country) => {
-      const nameToUse = lang !== 'ru' ? country.nameuk.trim() : country.nameru.trim();
+      const nameToUse =
+        lang !== 'ru' ? country.nameuk.trim() : country.nameru.trim();
       const firstChar = nameToUse.charAt(0);
       if (firstChar) {
         if (/\d/.test(firstChar)) {
@@ -162,8 +153,12 @@ const CountryMade: React.FC<Props> = ({
 
   // --- Сортовані країни з вибраними на початку ---
   const sortedCountriesWithSelectedFirst = useMemo(() => {
-    const selected = realCountries.filter((country) => selectedCountries[country.id]);
-    const unselected = realCountries.filter((country) => !selectedCountries[country.id]);
+    const selected = realCountries.filter(
+      (country) => selectedCountries[country.id]
+    );
+    const unselected = realCountries.filter(
+      (country) => !selectedCountries[country.id]
+    );
 
     // Сортуємо вибрані країни за алфавітом
     selected.sort((a, b) => {
@@ -193,31 +188,37 @@ const CountryMade: React.FC<Props> = ({
       let targetCountryId: number | undefined;
 
       // 1. Спробуємо знайти ID першої НЕВИБРАНОЇ країни, що відповідає літері
-      const unselectedTargetCountry = sortedCountriesWithSelectedFirst.find((country) => {
-        const isSelected = selectedCountries[country.id];
-        if (isSelected) return false; // Пропускаємо вибрані країни
+      const unselectedTargetCountry = sortedCountriesWithSelectedFirst.find(
+        (country) => {
+          const isSelected = selectedCountries[country.id];
+          if (isSelected) return false; // Пропускаємо вибрані країни
 
-        const nameToCompare = lang !== 'ru' ? country.nameuk.trim() : country.nameru.trim();
-        const firstChar = nameToCompare.charAt(0);
-        if (!firstChar) return false;
+          const nameToCompare =
+            lang !== 'ru' ? country.nameuk.trim() : country.nameru.trim();
+          const firstChar = nameToCompare.charAt(0);
+          if (!firstChar) return false;
 
-        if (letter === '0-9') return /\d/.test(firstChar);
-        return firstChar.toUpperCase() === letter;
-      });
+          if (letter === '0-9') return /\d/.test(firstChar);
+          return firstChar.toUpperCase() === letter;
+        }
+      );
 
       if (unselectedTargetCountry) {
         targetCountryId = unselectedTargetCountry.id;
       } else {
         // 2. Якщо невибрана країна не знайдена (тобто всі країни на цю літеру вже вибрані),
         // шукаємо ID першої (будь-якої) країни, що відповідає літері
-        const anyTargetCountry = sortedCountriesWithSelectedFirst.find((country) => {
-          const nameToCompare = lang !== 'ru' ? country.nameuk.trim() : country.nameru.trim();
-          const firstChar = nameToCompare.charAt(0);
-          if (!firstChar) return false;
+        const anyTargetCountry = sortedCountriesWithSelectedFirst.find(
+          (country) => {
+            const nameToCompare =
+              lang !== 'ru' ? country.nameuk.trim() : country.nameru.trim();
+            const firstChar = nameToCompare.charAt(0);
+            if (!firstChar) return false;
 
-          if (letter === '0-9') return /\d/.test(firstChar);
-          return firstChar.toUpperCase() === letter;
-        });
+            if (letter === '0-9') return /\d/.test(firstChar);
+            return firstChar.toUpperCase() === letter;
+          }
+        );
         if (anyTargetCountry) {
           targetCountryId = anyTargetCountry.id;
         }
@@ -257,7 +258,10 @@ const CountryMade: React.FC<Props> = ({
         </span>
       </div>
       {((isDropdownOpen && !isMobile) || nameOpen == open) && (
-        <div style={{ left: '15px' }} className={isMobile ? 'dropdownFilterMobile dropdown' : ''}>
+        <div
+          style={{ left: '15px' }}
+          className={isMobile ? 'dropdownFilterMobile dropdown' : ''}
+        >
           {' '}
           {realCountries.length > 10 && (
             <div className="brands-alphabet">
@@ -280,7 +284,11 @@ const CountryMade: React.FC<Props> = ({
               (
                 country // Використовуємо новий відсортований масив
               ) => (
-                <li key={country.id} className="brand-item" data-country-id={country.id}>
+                <li
+                  key={country.id}
+                  className="brand-item"
+                  data-country-id={country.id}
+                >
                   {' '}
                   {/* Додано data-country-id */}
                   <label

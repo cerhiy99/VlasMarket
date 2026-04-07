@@ -50,21 +50,6 @@ const PriceSelector = ({
   // Референс для таймера дебаунсу
   const debounceTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
-  // Визначення мобільної версії
-  useEffect(() => {
-    const handleResize = () => {
-      setIsOpen(window.innerWidth >= 1024);
-      setIsMobile(window.innerWidth < 1024);
-    };
-
-    window.addEventListener('resize', handleResize);
-    handleResize();
-
-    return () => {
-      window.removeEventListener('resize', handleResize);
-    };
-  }, []);
-
   // Ініціалізація priceRange з URL або доступних цін при першому рендері
   // та при зміні minAvailablePrice/maxAvailablePrice або searchParams
   useEffect(() => {

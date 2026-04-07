@@ -61,21 +61,6 @@ const Categories: React.FC<CategoriesProps> = ({
   const [isMobile, setIsMobile] = useState<boolean>(isMob); // Ініціалізуємо false, оновлюємо в useEffect
   const scrollContainerRef = useRef<HTMLUListElement | null>(null);
 
-  // Визначення мобільної версії
-  useEffect(() => {
-    const handleResize = () => {
-      setIsDropdownOpen(window.innerWidth >= 1024);
-      setIsMobile(window.innerWidth < 1024);
-    };
-
-    window.addEventListener('resize', handleResize);
-    handleResize(); // Викликаємо одразу при монтуванні
-
-    return () => {
-      window.removeEventListener('resize', handleResize);
-    };
-  }, []);
-
   // Ініціалізація та оновлення selectedCategories з URL-параметрів
   useEffect(() => {
     const currentCategoryIdInUrl = searchParams.get('category');
@@ -143,7 +128,7 @@ const Categories: React.FC<CategoriesProps> = ({
   };
 
   const toggleDropdown = () => {
-    setIsDropdownOpen((prevState) => !prevState);
+    //setIsDropdownOpen((prevState) => !prevState);
     setOpen(nameOpen);
   };
 

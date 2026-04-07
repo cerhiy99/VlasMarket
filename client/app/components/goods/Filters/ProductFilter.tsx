@@ -45,24 +45,12 @@ const ProductFilter: React.FC<ProductFilterProps> = ({
 
   // Стан для відстеження вибраних значень фільтра (може бути кілька)
   // Ключем буде саме значення, оскільки ID у values немає
-  const [selectedValues, setSelectedValues] = useState<Record<string, boolean>>({});
+  const [selectedValues, setSelectedValues] = useState<Record<string, boolean>>(
+    {}
+  );
   const [isDropdownOpen, setIsDropdownOpen] = useState<boolean>(false);
   const [isMobile, setIsMobile] = useState<boolean>(isMob);
   const scrollContainerRef = useRef<HTMLUListElement | null>(null);
-
-  // Визначення мобільної версії
-  useEffect(() => {
-    const handleResize = () => {
-      setIsMobile(window.innerWidth < 1024);
-    };
-
-    window.addEventListener('resize', handleResize);
-    handleResize();
-
-    return () => {
-      window.removeEventListener('resize', handleResize);
-    };
-  }, []);
 
   // Ініціалізація та оновлення selectedValues з URL-параметрів
   useEffect(() => {
@@ -72,7 +60,10 @@ const ProductFilter: React.FC<ProductFilterProps> = ({
     const newSelectedState: Record<string, boolean> = {};
 
     // Ініціалізуємо всі можливі значення як не вибрані
-    const allPossibleValues = new Set([...filterData.valuesuk, ...filterData.valuesru]);
+    const allPossibleValues = new Set([
+      ...filterData.valuesuk,
+      ...filterData.valuesru,
+    ]);
     allPossibleValues.forEach((value) => {
       newSelectedState[value] = false;
     });
@@ -87,7 +78,10 @@ const ProductFilter: React.FC<ProductFilterProps> = ({
       values.forEach((val) => {
         // Перевіряємо, чи значення з URL дійсно присутнє в списку доступних значень
         // (для поточної мови або обох, залежить від вашої вимоги до валідації)
-        if (filterData.valuesuk.includes(val) || filterData.valuesru.includes(val)) {
+        if (
+          filterData.valuesuk.includes(val) ||
+          filterData.valuesru.includes(val)
+        ) {
           newSelectedState[val] = true;
         }
       });
@@ -112,7 +106,9 @@ const ProductFilter: React.FC<ProductFilterProps> = ({
 
     if (isCurrentlySelected) {
       // Якщо значення вже вибрано, знімаємо вибір
-      currentSelectedValues = currentSelectedValues.filter((val) => val !== value);
+      currentSelectedValues = currentSelectedValues.filter(
+        (val) => val !== value
+      );
     } else {
       // Якщо значення не вибрано, додаємо його
       currentSelectedValues.push(value);
@@ -146,7 +142,8 @@ const ProductFilter: React.FC<ProductFilterProps> = ({
     setOpen(nameOpen);
   };
   // Вибираємо список значень відповідно до поточної мови
-  const valuesToDisplay = lang !== 'ru' ? filterData.valuesuk : filterData.valuesru;
+  const valuesToDisplay =
+    lang !== 'ru' ? filterData.valuesuk : filterData.valuesru;
 
   return (
     <div className="brands-container product-filter-container">
@@ -164,13 +161,18 @@ const ProductFilter: React.FC<ProductFilterProps> = ({
         </span>
       </div>
       {((isDropdownOpen && !isMobile) || nameOpen == open) && (
-        <div style={{ left: '5px' }} className={isMobile ? 'dropdownFilterMobile dropdown' : ''}>
+        <div
+          style={{ left: '5px' }}
+          className={isMobile ? 'dropdownFilterMobile dropdown' : ''}
+        >
           <ul className="brands-list filter-scroll" ref={scrollContainerRef}>
             {valuesToDisplay.map((value, index) => (
               <li key={value} className="brand-item">
                 {' '}
                 {/* Використовуємо значення як key */}
-                <label style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <label
+                  style={{ display: 'flex', alignItems: 'center', gap: '8px' }}
+                >
                   <input
                     type="checkbox"
                     checked={selectedValues[value] || false}

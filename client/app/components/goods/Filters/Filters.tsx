@@ -12,6 +12,10 @@ import Pruznachenia from './Pruznachenia';
 import Linies from './Linies';
 import Gender from './Gender';
 import Brands2 from './Brends2';
+import MobFilterSVG from '../../../assest/Filters/Filter.svg';
+import CloseSVG from '../../../assest/Filters/Close.svg';
+import { useRouter, useSearchParams } from 'next/navigation';
+import Sort from '../Sort/Sort';
 
 type Category = {
   id: number;
@@ -26,7 +30,7 @@ type Props = {
   brand?: string;
   currentPathname?: string;
   realName?: string;
-  isMob: boolean;
+  isMob?: boolean;
 };
 
 const Filters = ({
@@ -37,33 +41,47 @@ const Filters = ({
   brand,
   currentPathname,
   realName,
-  isMob,
+  //isMob
 }: Props) => {
+  const isMob = false;
   const [isMobile, setIsMobile] = useState(isMob);
   const [openFilter, setOpenFilter] = useState<string>('');
-  const [isOpen, setIsOpen] = useState(false);
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const isOpen = searchParams.get('filter') === 'open';
+
   // Визначення мобільної версії
-  useEffect(() => {
-    const handleResize = () => {
-      setIsMobile(window.innerWidth < 1024);
-    };
 
-    window.addEventListener('resize', handleResize);
-    handleResize(); // Викликаємо одразу при монтуванні
+  const setOpen = (value: string) => {};
 
-    return () => {
-      window.removeEventListener('resize', handleResize);
-    };
-  }, []);
-  const setOpen = (value: string) => {
-    if (isMobile) {
-      if (value == openFilter) setOpenFilter('');
-      else setOpenFilter(value);
+  const filterOpenOrClose = (isOpen: boolean) => {
+    const params = new URLSearchParams(searchParams.toString());
+
+    if (isOpen) {
+      params.set('filter', 'open');
+    } else {
+      params.delete('filter');
     }
+
+    router.replace(`?${params.toString()}`, { scroll: false });
   };
+
   return (
     <div className="filters-parent">
-      <div className="filters-container">
+      <div className="mob-open-filter-and-sort">
+        <div onClick={() => filterOpenOrClose(!isOpen)} className="mob-is-open">
+          <MobFilterSVG />
+          {lang == 'ru' ? 'Фильтры' : 'Фільтри'}
+        </div>
+        <Sort lang={lang} />
+      </div>
+      <div className={`filters-container ${isOpen ? 'open' : 'close'}`}>
+        <div className="filter-main-title">
+          <h4>{lang == 'ru' ? 'Фильтры' : 'Фільтри'}</h4>
+          <div onClick={() => filterOpenOrClose(false)} className="close">
+            <CloseSVG />
+          </div>
+        </div>
         {filters.categories && (
           <Categories
             lang={lang}

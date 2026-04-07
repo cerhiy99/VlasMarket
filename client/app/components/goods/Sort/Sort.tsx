@@ -1,10 +1,12 @@
 'use client'; // Це важливо, оскільки ми використовуємо клієнтські хуки Next.js
 
 import { Locale } from '@/i18n.config';
-import React from 'react';
+import React, { useState } from 'react';
 import { useRouter, useSearchParams, usePathname } from 'next/navigation'; // Імпортуємо необхідні хуки
 import './Sort.scss';
 import { getLocalizedPath } from '../../utils/getLocalizedPath';
+import SortSVG from '../../../assest/Filters/SortDown.svg';
+import CloseSVG from '../../../assest/Filters/Close.svg';
 
 type Props = {
   lang: Locale;
@@ -28,7 +30,7 @@ const Sort = ({ lang, brend }: Props) => {
       value: 'price_asc',
     }, // За замовчуванням зростання ціни. Можна додати логіку перемикання на price_desc.
     {
-      label: lang != 'ru' ? 'ціні (за спаданням)' : 'цене (по убыванию)',
+      label: lang != 'ru' ? 'Дорожчі спочатку' : 'Дороже сначала',
       value: 'price_desc',
     }, // За замовчуванням зростання ціни. Можна додати логіку перемикання на price_desc.
     {
@@ -69,20 +71,39 @@ const Sort = ({ lang, brend }: Props) => {
   // Визначаємо активний варіант сортування з URL або встановлюємо 'popularity' за замовчуванням
   const currentSort = searchParams.get('sort') || '';
 
+  const [isOpen, setIsOpen] = useState(false);
+
   return (
     <div className="sort-container">
-      <p>{lang == 'ru' ? 'Сортировать по:' : 'Сортувати по:'}</p>
-      <div className="list-sort-for">
-        {sortOptions.map((option) => (
-          <span
-            key={option.value}
-            // Динамічно застосовуємо клас 'active', якщо це поточний варіант сортування
-            className={currentSort === option.value ? 'active' : ''}
-            onClick={() => handleSortClick(option.value)}
-          >
-            {option.label}
-          </span>
-        ))}
+      <div
+        className="title-sort"
+        style={{ display: 'flex', flexDirection: 'row' }}
+        onClick={() => setIsOpen(true)}
+      >
+        {lang == 'ru' ? 'Сортировка' : 'Сортування'}
+        <div id="svg-mob1">
+          <SortSVG />
+        </div>
+      </div>
+      <div className={`list-sort-for-container ${isOpen ? 'open' : 'close'}`}>
+        <div className={`list-sort-for ${isOpen ? 'open' : ''}`}>
+          <div className="mob-title">
+            {lang == 'ru' ? 'Сортировка' : 'Сортування'}
+            <div onClick={() => setIsOpen(false)} className="close">
+              <CloseSVG />
+            </div>
+          </div>
+          {sortOptions.map((option) => (
+            <span
+              key={option.value}
+              // Динамічно застосовуємо клас 'active', якщо це поточний варіант сортування
+              className={currentSort === option.value ? 'active' : ''}
+              onClick={() => handleSortClick(option.value)}
+            >
+              {option.label}
+            </span>
+          ))}
+        </div>
       </div>
     </div>
   );

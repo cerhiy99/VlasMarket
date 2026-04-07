@@ -40,26 +40,13 @@ const Brands2: React.FC<Props> = ({
   const searchParams = useSearchParams();
 
   // Стан для відстеження вибраних брендів (може бути кілька)
-  const [selectedBrands, setSelectedBrands] = useState<Record<number, boolean>>({});
+  const [selectedBrands, setSelectedBrands] = useState<Record<number, boolean>>(
+    {}
+  );
   const [selectedLetter, setSelectedLetter] = useState<string>(''); // Порожній рядок за замовчуванням
   const [isDropdownOpen, setIsDropdownOpen] = useState<boolean>(true);
   const [isMobile, setIsMobile] = useState<boolean>(isMob);
   const scrollContainerRef = useRef<HTMLUListElement | null>(null);
-
-  // Визначення мобільної версії
-  useEffect(() => {
-    const handleResize = () => {
-      setIsDropdownOpen(window.innerWidth >= 1024);
-      setIsMobile(window.innerWidth < 1024);
-    };
-
-    window.addEventListener('resize', handleResize);
-    handleResize();
-
-    return () => {
-      window.removeEventListener('resize', handleResize);
-    };
-  }, []);
 
   // Ініціалізація та оновлення selectedBrands з URL-параметрів
   useEffect(() => {
@@ -76,7 +63,9 @@ const Brands2: React.FC<Props> = ({
       const ids = currentBrandIdsInUrl
         .split(',')
         .map((idStr) => parseInt(idStr.trim()))
-        .filter((id) => !isNaN(id) && realBrands.some((brand) => brand.id === id)); // Перевірка на валідність ID
+        .filter(
+          (id) => !isNaN(id) && realBrands.some((brand) => brand.id === id)
+        ); // Перевірка на валідність ID
 
       ids.forEach((id) => {
         newSelectedState[id] = true;
@@ -185,7 +174,9 @@ const Brands2: React.FC<Props> = ({
         const brandId = parseInt((child as HTMLElement).dataset.brandId || ''); // Отримуємо ID бренду з data-brand-id
         if (isNaN(brandId) || selectedBrands[brandId]) return false; // Пропускаємо, якщо вже вибраний
 
-        const brandNameElement = (child as HTMLElement).querySelector('.brand-name');
+        const brandNameElement = (child as HTMLElement).querySelector(
+          '.brand-name'
+        );
         if (!brandNameElement) return false;
 
         const brandName = brandNameElement.textContent?.trim() || '';
@@ -199,7 +190,9 @@ const Brands2: React.FC<Props> = ({
       // Якщо невибраний елемент не знайдено, шукаємо перший (будь-який) елемент, що відповідає літері
       if (!targetElement) {
         targetElement = Array.from(list.children).find((child) => {
-          const brandNameElement = (child as HTMLElement).querySelector('.brand-name');
+          const brandNameElement = (child as HTMLElement).querySelector(
+            '.brand-name'
+          );
           if (!brandNameElement) return false;
 
           const brandName = brandNameElement.textContent?.trim() || '';
@@ -233,7 +226,10 @@ const Brands2: React.FC<Props> = ({
         </span>
       </div>
       {((isDropdownOpen && !isMobile) || nameOpen == open) && (
-        <div style={{ left: '15px' }} className={isMobile ? 'dropdownFilterMobile dropdown' : ''}>
+        <div
+          style={{ left: '15px' }}
+          className={isMobile ? 'dropdownFilterMobile dropdown' : ''}
+        >
           {realBrands.length > 10 && (
             <div className="brands-alphabet">
               {dynamicAlphabet.map((letter) => (
@@ -251,8 +247,14 @@ const Brands2: React.FC<Props> = ({
             <li className="brand-item">
               {' '}
               {/* Додано data-brand-id */}
-              <label style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                <input type="checkbox" checked={true} style={{ display: 'none' }} />
+              <label
+                style={{ display: 'flex', alignItems: 'center', gap: '8px' }}
+              >
+                <input
+                  type="checkbox"
+                  checked={true}
+                  style={{ display: 'none' }}
+                />
                 <span className="custom-checkbox"></span>
                 <span className="brand-name">{brend}</span>
               </label>

@@ -66,7 +66,9 @@ export async function generateMetadata({ params, searchParams }: Props) {
       '';
 
     // Обрізаємо description до 200 символів без HTML тегів
-    const plainDescription = rawDescription.replace(/<[^>]+>/g, '').slice(0, 200);
+    const plainDescription = rawDescription
+      .replace(/<[^>]+>/g, '')
+      .slice(0, 200);
 
     const canonicalUrl = `${baseUrl}${lang === 'ru' ? 'ru/' : ''}goods/${id}`;
 
@@ -80,7 +82,8 @@ export async function generateMetadata({ params, searchParams }: Props) {
     const brandName = product.brend?.name || '';
 
     // Категорія
-    const categoryName = lang === 'ru' ? product.category.nameru : product.category.nameuk;
+    const categoryName =
+      lang === 'ru' ? product.category.nameru : product.category.nameuk;
 
     // Ціна
     const price = (volume.priceWithDiscount?.toString() as number | null) || 0;
@@ -90,7 +93,8 @@ export async function generateMetadata({ params, searchParams }: Props) {
       description: plainDescription,
       metadataBase: new URL(baseUrl), // Переконайтеся, що це об'єкт URL
       alternates: {
-        canonical: lang == 'ru' ? `${baseUrl}ru/goods/${id}` : `${baseUrl}goods/${id}`,
+        canonical:
+          lang == 'ru' ? `${baseUrl}ru/goods/${id}` : `${baseUrl}goods/${id}`,
         languages: {
           'x-default': `${baseUrl}goods/${id}`,
           uk: `${baseUrl}goods/${id}`,
@@ -176,9 +180,16 @@ export async function generateMetadata({ params, searchParams }: Props) {
       searchParams2 as Record<string, string>
     ).toString();
 
-    const canonicalUrl = `${baseUrl}${urlPath}/goods/${slug.join('/')}/1`.replace('//1', '/1');
-    const uaUrl = `${baseUrl}/goods/${slug.join('/')}/${page}`.replace(`//${page}`, `/${page}`);
-    const ruUrl = `${baseUrl}/ru/goods/${slug.join('/')}/${page}`.replace(`//${page}`, `/${page}`);
+    const canonicalUrl =
+      `${baseUrl}${urlPath}/goods/${slug.join('/')}/1`.replace('//1', '/1');
+    const uaUrl = `${baseUrl}/goods/${slug.join('/')}/${page}`.replace(
+      `//${page}`,
+      `/${page}`
+    );
+    const ruUrl = `${baseUrl}/ru/goods/${slug.join('/')}/${page}`.replace(
+      `//${page}`,
+      `/${page}`
+    );
 
     const getName = (item: any, lang: 'ua' | 'ru') =>
       item ? item[`name${lang == 'ru' ? 'ru' : 'uk'}`] : '';
@@ -287,13 +298,15 @@ const getData = async (
 
     const goods = data.goods.map((x: any) => ({
       id: x.id,
-      [`name${lang == 'ru' ? 'ru' : 'uk'}`]: x[`name${lang == 'ru' ? 'ru' : 'uk'}`],
+      [`name${lang == 'ru' ? 'ru' : 'uk'}`]:
+        x[`name${lang == 'ru' ? 'ru' : 'uk'}`],
       isDiscount: x.isDiscount,
       isBestseller: x.isBestseller,
       isNovetly: x.isNovetly,
       isHit: x.isHit,
       isFreeDelivery: x.isFreeDelivery,
-      [`nameType${lang == 'ru' ? 'ru' : 'uk'}`]: x[`nameType${lang == 'ru' ? 'ru' : 'uk'}`],
+      [`nameType${lang == 'ru' ? 'ru' : 'uk'}`]:
+        x[`nameType${lang == 'ru' ? 'ru' : 'uk'}`],
       volumes: x.volumes.map((volume: any) => ({
         id: volume.id,
         nameVolume: volume.nameVolume,
@@ -330,7 +343,9 @@ const Page = async ({ params, searchParams }: Props) => {
   const searchParams2 = await searchParams;
   if (slug.length == 0) return notFound();
   else if (isNaN(parseInt(slug[0])) && slug.length == 1) {
-    return <SelectGoods params={{ lang: lang, id: slug[0] }} searchParams={{}} />;
+    return (
+      <SelectGoods params={{ lang: lang, id: slug[0] }} searchParams={{}} />
+    );
   }
   const pageStr = slug.pop() as string;
   const { miniGoods } = await getDictionary(lang);
@@ -390,7 +405,10 @@ const Page = async ({ params, searchParams }: Props) => {
   if (selectCategory && selectCategory[`name${lang == 'ru' ? 'ru' : 'uk'}`]) {
     listUrles.push({
       name: selectCategory[`name${lang == 'ru' ? 'ru' : 'uk'}`],
-      url: getLocalizedPath(`/${lang}/goods/${UkrToEng(selectCategory.nameru)}/1`, lang),
+      url: getLocalizedPath(
+        `/${lang}/goods/${UkrToEng(selectCategory.nameru)}/1`,
+        lang
+      ),
     });
   }
   1;
@@ -428,7 +446,12 @@ const Page = async ({ params, searchParams }: Props) => {
           )}
           <Sort lang={lang} />
           <br />
-          <ListGoods data={data} isFilter={true} lang={lang} dictionary={miniGoods} />
+          <ListGoods
+            data={data}
+            isFilter={true}
+            lang={lang}
+            dictionary={miniGoods}
+          />
           {totalPages > 1 && (
             <MyPagination
               totalPages={totalPages}
@@ -440,7 +463,6 @@ const Page = async ({ params, searchParams }: Props) => {
           )}
         </div>
       </div>
-
       {!selectSubcategory &&
         selectCategory &&
         page == 1 &&
@@ -448,7 +470,8 @@ const Page = async ({ params, searchParams }: Props) => {
           <p
             className="desc"
             dangerouslySetInnerHTML={{
-              __html: selectCategory[`description${lang == 'ru' ? 'ru' : 'uk'}`],
+              __html:
+                selectCategory[`description${lang == 'ru' ? 'ru' : 'uk'}`],
             }}
           />
         )}
@@ -458,7 +481,8 @@ const Page = async ({ params, searchParams }: Props) => {
           <p
             className="desc"
             dangerouslySetInnerHTML={{
-              __html: selectSubcategory[`description${lang == 'ru' ? 'ru' : 'uk'}`],
+              __html:
+                selectSubcategory[`description${lang == 'ru' ? 'ru' : 'uk'}`],
             }}
           />
         )}

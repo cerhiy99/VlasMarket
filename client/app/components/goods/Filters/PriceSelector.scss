@@ -9,27 +9,18 @@
     cursor: pointer;
 
     @media (max-width: 1024px) {
-      border: 1px solid #05172f;
-      padding: 10px 20px;
-      border-radius: 25px;
-      width: 80px;
+      padding-top: 16px;
+      border-top: 1px solid #e7e9f0;
     }
 
     h3 {
       margin: 0;
-      font-family: Roboto;
-      font-size: 14px;
-      font-weight: 500;
-      line-height: 16px;
-      color: #303030;
 
-      @media (max-width: 1024px) {
-        font-family: Roboto;
-        font-size: 12px;
-        font-weight: 400;
-        line-height: 20px;
-        color: #05172f;
-      }
+      font-weight: 600;
+      font-style: Semi Bold;
+      font-size: 16px;
+      line-height: 100%;
+      letter-spacing: 0%;
     }
 
     .arrow-icon {
@@ -128,6 +119,9 @@
     .price-option {
       margin-bottom: 8px;
       padding: 0 10px;
+      @media (max-width: 768px) {
+        padding: 0;
+      }
 
       label {
         position: relative;
@@ -185,6 +179,9 @@
           color: #475156;
           margin-left: 5px;
           white-space: nowrap;
+        }
+        .brand-name {
+          padding-left: 10px;
         }
       }
     }

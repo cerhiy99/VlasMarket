@@ -60,21 +60,6 @@ const Subcategories: React.FC<SubcategoriesProps> = ({
   const [isMobile, setIsMobile] = useState<boolean>(isMob);
   const scrollContainerRef = useRef<HTMLUListElement | null>(null);
 
-  // Визначення мобільної версії
-  useEffect(() => {
-    const handleResize = () => {
-      setIsDropdownOpen(window.innerWidth >= 1024);
-      setIsMobile(window.innerWidth < 1024);
-    };
-
-    window.addEventListener('resize', handleResize);
-    handleResize();
-
-    return () => {
-      window.removeEventListener('resize', handleResize);
-    };
-  }, []);
-
   // Ініціалізація та оновлення selectedSubcategories з URL-параметрів
   useEffect(() => {
     const currentSubcategoryIdsInUrl = searchParams.get('subcategory');

@@ -8,14 +8,18 @@
   gap: 14px;
 
   padding-bottom: 20px;
-  @media (max-width: 768px) {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 10px;
+  @media (max-width: 1024px) {
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #000000;
+    border-radius: 6px;
+    height: 50px;
+    background-color: unset;
   }
-  p {
+  .title-sort {
     margin: 0;
-    font-family: Roboto;
     font-size: 18px;
     line-height: 20px;
     font-style: normal;
@@ -23,36 +27,134 @@
     line-height: normal;
     color: #616e82;
     white-space: nowrap;
-  }
-  .list-sort-for {
     display: flex;
     flex-direction: row;
-    gap: 35px;
-    width: auto;
-    @media (max-width: 768px) {
-      flex-direction: column;
-      gap: 5px;
-      align-items: flex-start;
+
+    #svg-mob1 {
+      display: none;
     }
-    span {
-      height: 38px;
-      background-color: #f9f3f7;
-      box-sizing: border-box;
-      padding: 10px;
-      font-weight: 500;
-      font-style: Medium;
-      font-size: 15px;
+    @media (max-width: 1024px) {
+      font-weight: 600;
+      font-style: Semi Bold;
+      font-size: 18px;
       line-height: 100%;
       letter-spacing: 0%;
       color: #000000;
-      cursor: pointer;
-      white-space: nowrap;
-      &:hover {
-        background: #ebd8e4;
+      margin: 0;
+      gap: 3px;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      #svg-mob1 {
+        display: flex;
       }
     }
-    .active {
-      background-color: #ebd8e4;
+  }
+  .list-sort-for-container {
+    .list-sort-for {
+      display: flex;
+      flex-direction: row;
+      gap: 12px;
+      width: auto;
+      flex-wrap: wrap;
+      .mob-title {
+        display: none;
+      }
+      span {
+        height: 38px;
+        background-color: #f9f3f7;
+        box-sizing: border-box;
+        padding: 10px;
+        font-weight: 500;
+        font-style: Medium;
+        font-size: 15px;
+        line-height: 100%;
+        letter-spacing: 0%;
+        color: #000000;
+        cursor: pointer;
+        white-space: nowrap;
+        &:hover {
+          background: #ebd8e4;
+        }
+      }
+      .active {
+        background-color: #ebd8e4;
+      }
+    }
+    @media (max-width: 1024px) {
+      position: fixed;
+      z-index: 100;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5); // затемнення
+      display: flex;
+      justify-content: center;
+      align-items: flex-end; // контент буде знизу
+      transition: opacity 0.3s ease;
+      opacity: 0;
+      pointer-events: none; // неактивний коли закритий
+
+      &.open {
+        opacity: 1;
+        pointer-events: all;
+      }
+
+      &.close {
+        opacity: 0;
+        pointer-events: none;
+      }
+
+      .list-sort-for {
+        width: 100%;
+        max-height: 33vh; // третина екрану
+        background-color: #fff;
+        border-top-left-radius: 12px;
+        border-top-right-radius: 12px;
+        transform: translateY(100%); // спочатку схований
+        transition: transform 0.3s ease;
+
+        &.open {
+          transform: translateY(0); // висувається вгору
+        }
+
+        /* додатково можна внутрішні елементи прокручувати */
+        overflow-y: auto;
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: 6px;
+        padding: 22px;
+        border-radius: 0;
+        .mob-title {
+          display: flex;
+          flex-direction: row;
+          justify-content: space-between;
+          align-items: center;
+          width: 100%;
+          font-weight: 600;
+          font-style: Semi Bold;
+          font-size: 22px;
+          line-height: 100%;
+          letter-spacing: 0%;
+          color: #000000;
+          border-bottom: 1px solid #ebd8e4;
+          padding-bottom: 16px;
+          margin-bottom: 16px;
+        }
+      }
+    }
+  }
+  @media (max-width: 1024px) {
+    width: 50%;
+    .list-sort-for {
+      display: none;
+      .sort-container {
+        display: flex;
+        flex-direction: row;
+        padding: 0;
+      }
     }
   }
 }

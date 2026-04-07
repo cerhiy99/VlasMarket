@@ -8,13 +8,14 @@
     justify-content: space-between;
     align-items: center;
     cursor: pointer;
-    @media (max-width: 1024px) {
+    width: 100%;
+    /*@media (max-width: 1024px) {
       border: 1px solid #303030;
       padding: 10px 20px;
       border-radius: 25px;
       gap: 5px;
       width: auto;
-    }
+    }*/
     span {
       font-weight: 600;
       font-style: Semi Bold;
@@ -37,9 +38,16 @@
         transform: rotate(180deg);
       }
     }
+    @media (max-width: 768px) {
+      border-top: 1px solid #ebd8e4;
+      padding-top: 16px;
+    }
+    @media (max-width: 1024px) {
+      margin-bottom: 7px;
+    }
   }
   .dropdown {
-    @media (max-width: 1024px) {
+    /*@media (max-width: 1024px) {
       position: absolute;
       margin-top: 50px;
       left: 0;
@@ -49,7 +57,7 @@
       border-radius: 8px;
       z-index: 10;
       list-style: none;
-    }
+    }*/
   }
 
   .brands-alphabet {
@@ -75,6 +83,10 @@
         color: #ff6a00;
       }
     }
+    @media (max-width: 1024px) {
+      margin-top: 0;
+      margin-bottom: 14px;
+    }
   }
 
   .brands-list {
@@ -86,11 +98,12 @@
     margin: 10px 0 0;
     @media (max-width: 768px) {
       margin: 0;
-      padding: 5px;
+      padding: 0px;
+      gap: 0;
     }
     .brand-item {
       @media (max-width: 1024px) {
-        padding: 8px 20px;
+        padding: 8px 0;
       }
 
       label {
@@ -147,6 +160,11 @@
           line-height: 19.23px;
           color: #000000;
           margin-left: 5px;
+          //white-space: nowrap;
+          width: 100%;
+          @media (max-width: 768px) {
+            margin-left: 0;
+          }
         }
       }
     }

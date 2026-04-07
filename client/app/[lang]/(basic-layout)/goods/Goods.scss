@@ -22,8 +22,55 @@
       -webkit-text-decoration-skip-ink: none;
       text-decoration-skip-ink: none;
     }
+    @media (max-width: 1024px) {
+      display: grid;
+      margin: 0;
+      padding: 0;
+      gap: 0;
+      margin-top: -15px;
+      h1 {
+        margin: 0;
+      }
+      /* Робимо так, щоб проміжні контейнери не заважали позиціюванню */
+      .filters-parent,
+      .sore-and-goods {
+        gap: 0;
+        display: contents;
+      }
+
+      /* Задаємо порядок */
+      .sore-and-goods h1 {
+        order: 1; /* Перший */
+      }
+
+      .mob-open-filter-and-sort {
+        order: 2; /* Другий */
+      }
+
+      .mob-open-filter-and-sort {
+        margin: 20px 0;
+      }
+
+      /* Решта елементів всередині sore-and-goods */
+      .sort-container,
+      .list-goods-container4,
+      .pagination-container2 {
+        order: 3; /* Третіми */
+      }
+    }
   }
   .desc {
-    margin-bottom: 30px;
+    margin: 0;
+    margin-bottom: 32px;
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 12px;
+  }
+  .sore-and-goods {
+    @media (max-width: 1024px) {
+      .sort-container {
+        display: none;
+      }
+    }
   }
 }
