@@ -2,7 +2,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import './Brends.scss'; // Залишаємо Brends.scss, якщо він містить загальні стилі
 import { useRouter, useSearchParams } from 'next/navigation'; // Імпортуємо useRouter та useSearchParams
-import './Subcategories.scss'; // Додаємо окремий файл стилів для Subcategories
 import UpSVG from '../../../assest/Filters/Up.svg';
 import DownSVG from '../../../assest/Filters/Down.svg';
 import { Locale } from '@/i18n.config'; // Імпортуємо Locale для lang
@@ -54,7 +53,9 @@ const Subcategories: React.FC<SubcategoriesProps> = ({
   });
 
   // Стан для відстеження вибраних підкатегорій (може бути кілька)
-  const [selectedSubcategories, setSelectedSubcategories] = useState<Record<number, boolean>>({});
+  const [selectedSubcategories, setSelectedSubcategories] = useState<
+    Record<number, boolean>
+  >({});
   const [isDropdownOpen, setIsDropdownOpen] = useState<boolean>(true);
   const [isMobile, setIsMobile] = useState<boolean>(isMob);
   const scrollContainerRef = useRef<HTMLUListElement | null>(null);
@@ -89,7 +90,10 @@ const Subcategories: React.FC<SubcategoriesProps> = ({
       const ids = currentSubcategoryIdsInUrl
         .split(',')
         .map((idStr) => parseInt(idStr.trim()))
-        .filter((id) => !isNaN(id) && listSubcategories.some((subcat) => subcat.id === id));
+        .filter(
+          (id) =>
+            !isNaN(id) && listSubcategories.some((subcat) => subcat.id === id)
+        );
 
       ids.forEach((id) => {
         newSelectedState[id] = true;
@@ -99,7 +103,10 @@ const Subcategories: React.FC<SubcategoriesProps> = ({
   }, [searchParams, listSubcategories]); // Залежимо від searchParams та listSubcategories
 
   // Обробник зміни чекбоксу
-  const handleCheckboxChange = (subcategoryId: number, subcategoryUrl: string) => {
+  const handleCheckboxChange = (
+    subcategoryId: number,
+    subcategoryUrl: string
+  ) => {
     const newSearchParams = new URLSearchParams(searchParams.toString());
     let currentSubcategoryIds = searchParams.get('subcategory')
       ? searchParams
@@ -113,13 +120,16 @@ const Subcategories: React.FC<SubcategoriesProps> = ({
 
     if (isCurrentlySelected) {
       // Якщо підкатегорія вже вибрана, знімаємо вибір
-      currentSubcategoryIds = currentSubcategoryIds.filter((id) => id !== subcategoryId);
+      currentSubcategoryIds = currentSubcategoryIds.filter(
+        (id) => id !== subcategoryId
+      );
     } else {
       // Якщо підкатегорія не вибрана, додаємо її
       currentSubcategoryIds.push(subcategoryId);
     }
     if (currentSubcategoryIds.length > 0) {
-      if (brand) newSearchParams.set('subcategory', currentSubcategoryIds.join(','));
+      if (brand)
+        newSearchParams.set('subcategory', currentSubcategoryIds.join(','));
     } else {
       newSearchParams.delete('subcategory'); // Видаляємо параметр, якщо немає вибраних підкатегорій
     }
@@ -153,7 +163,10 @@ const Subcategories: React.FC<SubcategoriesProps> = ({
 
       // Формуємо новий шлях
       const newPathname =
-        '/' + parts.join('/') + '/1?' + sortSearchParams(newSearchParams).toString();
+        '/' +
+        parts.join('/') +
+        '/1?' +
+        sortSearchParams(newSearchParams).toString();
 
       // Редирект
       router.push(getLocalizedPath(newPathname, lang), { scroll: false });
@@ -178,26 +191,36 @@ const Subcategories: React.FC<SubcategoriesProps> = ({
         </span>
       </div>
       {((isDropdownOpen && !isMobile) || nameOpen == open) && (
-        <div style={{ left: '5px' }} className={isMobile ? 'dropdownFilterMobile dropdown' : ''}>
+        <div
+          style={{ left: '5px' }}
+          className={isMobile ? 'dropdownFilterMobile dropdown' : ''}
+        >
           <ul className="brands-list filter-scroll" ref={scrollContainerRef}>
             {sortedSubcategories.map((subcategory) => (
-              <li key={subcategory.id} className="subcategories-item">
-                <label style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <li key={subcategory.id} className="brand-item">
+                <label
+                  style={{ display: 'flex', alignItems: 'center', gap: '8px' }}
+                >
                   <input
                     type="checkbox"
                     checked={
                       selectedSubcategories[subcategory.id] ||
-                      currentPathname?.includes(`${UkrToEng(subcategory.nameru)}`) ||
+                      currentPathname?.includes(
+                        `${UkrToEng(subcategory.nameru)}`
+                      ) ||
                       false
                     }
                     onChange={() =>
-                      handleCheckboxChange(subcategory.id, UkrToEng(subcategory.nameru))
+                      handleCheckboxChange(
+                        subcategory.id,
+                        UkrToEng(subcategory.nameru)
+                      )
                     }
                     style={{ display: 'none' }}
                   />
                   <span className="custom-checkbox"></span>
                   {/* Відображаємо назву відповідно до поточної мови */}
-                  <span className="subcategory-name">
+                  <span className="brand-name">
                     {lang !== 'ru' ? subcategory.nameuk : subcategory.nameru}
                   </span>
                 </label>

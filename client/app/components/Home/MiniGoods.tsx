@@ -12,6 +12,7 @@ import { getLocalizedPath } from '../utils/getLocalizedPath';
 import { useTranslation } from '@/context/TranslationProvider';
 import ComparisonSVG from '../../assest/Goods/comparison.svg';
 import BonusSVG from '../../assest/Goods/Bonus.svg';
+import Comparison from './Comparison';
 
 type Props = {
   goods: GoodInterface;
@@ -55,9 +56,7 @@ const MiniGoods = ({ goods, dictionary, lang }: Props) => {
             />
             <div className="like-svg-container">
               <Like selectVolumeIdx={selectVolumeIdx} goods={goods} />
-              <div className="comparison">
-                <ComparisonSVG />
-              </div>
+              <Comparison goods={goods} selectVolumeIdx={selectVolumeIdx} />
             </div>
           </div>
           <div className="img-container">

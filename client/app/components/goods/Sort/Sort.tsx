@@ -20,19 +20,25 @@ const Sort = ({ lang, brend }: Props) => {
   // Визначимо варіанти сортування та їхні відповідні значення для URL
   const sortOptions = [
     {
-      label: lang == 'ru' ? 'популярности' : 'популярності',
+      label: lang != 'ru' ? 'Популярні товари' : 'Популярные товары',
       value: 'popularity',
     },
     {
-      label: lang == 'ru' ? 'цене (по возрастанию)' : 'ціні (за зростанням)',
+      label: lang == 'ru' ? 'Дешевые сначала' : 'Дешевші спочатку',
       value: 'price_asc',
     }, // За замовчуванням зростання ціни. Можна додати логіку перемикання на price_desc.
     {
-      label: lang == 'ru' ? 'цене (по убыванию)' : 'ціні (за спаданням)',
+      label: lang != 'ru' ? 'ціні (за спаданням)' : 'цене (по убыванию)',
       value: 'price_desc',
     }, // За замовчуванням зростання ціни. Можна додати логіку перемикання на price_desc.
-    { label: lang == 'ru' ? 'названии' : 'назві', value: `name_${lang}` }, // За замовчуванням за назвою (А-Я)
-    { label: 'рейтингу', value: 'rating_desc' }, // За замовчуванням спадання рейтингу (від найвищого)
+    {
+      label: lang != 'ru' ? 'За алфавітом' : 'По алфавиту',
+      value: `name_${lang}`,
+    }, // За замовчуванням за назвою (А-Я)
+    {
+      label: lang != 'ru' ? 'Найкращі відгуки' : 'Лучшие отзывы',
+      value: 'rating_desc',
+    }, // За замовчуванням спадання рейтингу (від найвищого)
   ];
 
   // Функція обробки кліку на опцію сортування
@@ -51,12 +57,12 @@ const Sort = ({ lang, brend }: Props) => {
       router.push(
         getLocalizedPath(
           `/${lang}/brands/${brend}/1?${params.toString()}`,
-          lang,
-        ),
+          lang
+        )
       );
     else
       router.push(
-        getLocalizedPath(`/${lang}/goods/1?${params.toString()}`, lang),
+        getLocalizedPath(`/${lang}/goods/1?${params.toString()}`, lang)
       );
   };
 

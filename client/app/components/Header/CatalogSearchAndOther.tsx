@@ -12,6 +12,8 @@ import MobileMenu from './mobile/MobileMenu';
 import Logo from '../../assest/LogoMob.svg';
 import ComparisonSVG from '../../assest/comparison.svg';
 import Link from 'next/link';
+import { getLocalizedPath } from '../utils/getLocalizedPath';
+import HeaderComprision from './HeaderComprision';
 
 type Props = {
   dictionary: any;
@@ -75,9 +77,7 @@ const CatalogSearchAndOther = ({ dictionary, lang, catalog }: Props) => {
           <div className="search-with-list-icon">
             <Search dictionary={dictionary.search} lang={lang} />
             <div className="list-icon-header">
-              <div className="comparison">
-                <ComparisonSVG />
-              </div>
+              <HeaderComprision lang={lang} />
               <AuthHeader dictionary={dictionary.Auth} lang={lang} />
               <HeaderLike lang={lang} />
               <HeaderBasket lang={lang} />

@@ -1,7 +1,7 @@
 .list-goods-container4 {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 15px;
+  gap: 10px;
   justify-content: space-between;
   @media (max-width: 1500px) {
     grid-template-columns: repeat(4, 1fr);
@@ -24,7 +24,7 @@
 .list-goods-container4-no-filter {
   display: grid;
   grid-template-columns: repeat(5, 1fr);
-  gap: 15px;
+  gap: 10px;
 
   @media (max-width: 1400px) {
     grid-template-columns: repeat(4, 1fr);

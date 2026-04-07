@@ -1,9 +1,7 @@
 import { Locale } from '@/i18n.config';
-import React from 'react';
 import '../delivery/Delivery.scss';
 import { getDictionary } from '@/lib/dictionary';
 import BreadCrumbs from '@/app/components/utils/BreadCrumbs';
-import PaySVG from '@/app/assest/DeliveryCookiesAndOther/Pay.svg';
 
 type Props = {
   params: Promise<{ lang: Locale }>;

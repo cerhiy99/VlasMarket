@@ -2,7 +2,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation'; // Імпортуємо useRouter та useSearchParams
 import './Brends.scss'; // Залишаємо Brends.scss, якщо він містить загальні стилі
-import './Categories.scss'; // Додаємо окремий файл стилів для Categories
 import UpSVG from '../../../assest/Filters/Up.svg';
 import DownSVG from '../../../assest/Filters/Down.svg';
 import { Locale } from '@/i18n.config'; // Імпортуємо Locale для lang
@@ -55,7 +54,9 @@ const Categories: React.FC<CategoriesProps> = ({
   });
 
   // Стан для відстеження вибраних категорій (оскільки category - це один ID, це буде сингл-вибір)
-  const [selectedCategories, setSelectedCategories] = useState<Record<number, boolean>>({});
+  const [selectedCategories, setSelectedCategories] = useState<
+    Record<number, boolean>
+  >({});
   const [isDropdownOpen, setIsDropdownOpen] = useState<boolean>(true);
   const [isMobile, setIsMobile] = useState<boolean>(isMob); // Ініціалізуємо false, оновлюємо в useEffect
   const scrollContainerRef = useRef<HTMLUListElement | null>(null);
@@ -159,27 +160,39 @@ const Categories: React.FC<CategoriesProps> = ({
         </span>
       </div>
       {((isDropdownOpen && !isMobile) || nameOpen == open) && (
-        <div style={{ left: '5px' }} className={isMobile ? 'dropdownFilterMobile dropdown' : ''}>
+        <div
+          style={{ left: '5px' }}
+          className={isMobile ? 'dropdownFilterMobile dropdown' : ''}
+        >
           {/* Алфавітний фільтр видалено */}
           <ul className="brands-list filter-scroll" ref={scrollContainerRef}>
             {sortedCategories.map((category) => (
-              <li key={category.id} className="category-item">
+              <li key={category.id} className="brand-item">
                 {' '}
                 {/* Змінено class на category-item */}
-                <label style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <label
+                  style={{ display: 'flex', alignItems: 'center', gap: '8px' }}
+                >
                   <input
                     type="checkbox"
                     checked={
                       selectedCategories[category.id] ||
-                      currentPathname?.includes(`${UkrToEng(category.nameru)}`) ||
+                      currentPathname?.includes(
+                        `${UkrToEng(category.nameru)}`
+                      ) ||
                       false
                     }
-                    onChange={() => handleCheckboxChange(category.id, UkrToEng(category.nameru))}
+                    onChange={() =>
+                      handleCheckboxChange(
+                        category.id,
+                        UkrToEng(category.nameru)
+                      )
+                    }
                     style={{ display: 'none' }}
                   />
                   <span className="custom-checkbox"></span>
                   {/* Відображаємо назву відповідно до поточної мови */}
-                  <span className="category-name">
+                  <span className="brand-name">
                     {' '}
                     {/* Змінено class на category-name */}
                     {lang !== 'ru' ? category.nameuk : category.nameru}

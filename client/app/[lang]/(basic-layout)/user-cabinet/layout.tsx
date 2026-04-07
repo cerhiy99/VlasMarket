@@ -2,12 +2,9 @@ import { Locale } from '@/i18n.config';
 import '@/app/[lang]/(basic-layout)/App.scss';
 import './userCabinet.scss';
 import { getDictionary } from '@/lib/dictionary';
-import ListGoodsLeft from '@/app/components/Home/ListGoodsLeft';
 import { ReactNode } from 'react';
-import Image from 'next/image';
-import UserDashboard from './components/userDashboard';
-import UserWatched from '@/app/components/utils/UserWatched';
 import LeftPanel from './LeftPanel';
+import ScrollToTop from './ScrollToTop';
 
 export async function generateMetadata() {
   return {
@@ -31,15 +28,8 @@ export default async function CabinetLayout({
         <LeftPanel dictionary={leftPanel} lang={lang} />
 
         <div className="cabinetLayout--contnet">{children}</div>
+        <ScrollToTop />
       </div>
-      {/*<div className="home-goods">
-        <UserWatched
-          title={home.youWatching}
-          lang={lang}
-          dictionary={miniGoods}
-          type=""
-        />
-      </div>*/}
     </div>
   );
 }

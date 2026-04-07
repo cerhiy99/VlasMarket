@@ -1,7 +1,10 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { use, useEffect, useState } from 'react';
 import './coments-cabinet-container.scss';
+import { $authHost } from '@/app/http';
+import { Locale } from '@/i18n.config';
+import PaginationDynamic from '@/app/components/utils/PaginationDynamic';
 
 type ReviewItem = {
   id: number;
@@ -67,7 +70,7 @@ const reviews: ReviewItem[] = [
     date: '12 березня 2024',
   },
 
-   {
+  {
     id: 5,
     image: '/images/product-review-1.png',
     title:
@@ -130,8 +133,7 @@ const reviews: ReviewItem[] = [
     reviewsCount: 34,
     text: 'Хороша маска для відновлення волосся. Після кількох використань волосся стало більш гладким і легко розчісується. Має приємний аромат та економно витрачається.',
     date: '12 березня 2024',
-  }
-
+  },
 ];
 
 const comments: CommentItem[] = [
@@ -172,8 +174,97 @@ const renderStars = (count: number) => {
   return '★'.repeat(count) + '☆'.repeat(5 - count);
 };
 
-const Page = () => {
+const reviewsLimit = 15;
+
+type Props = {
+  params: Promise<{ lang: Locale }>;
+};
+
+const Page = ({ params }: Props) => {
+  const { lang } = use(params);
   const [activeTab, setActiveTab] = useState<'reviews' | 'comments'>('reviews');
+  const [reviews, setReviews] = useState([]);
+
+  const [pageReviews, setPageReviews] = useState(1);
+  const [countPagesReviews, setCountPagesReviews] = useState(1);
+
+  const getReviews = async () => {
+    try {
+      const res = await $authHost.get(
+        `review/getMyReview?page=${pageReviews}&limit=${reviewsLimit}`
+      );
+      setReviews(res.data.reviews);
+      setCountPagesReviews(res.data.countPages);
+      console.log(9324234, res.data.reviews);
+    } catch (err) {
+      console.log(524234, err);
+    }
+  };
+
+  const [comments, setComments] = useState([]);
+  const [pageComments, setPageComments] = useState(1);
+  const [countPagesComments, setCountPagesComments] = useState(1);
+
+  useEffect(() => {
+    if (activeTab == 'reviews') {
+      getReviews();
+    } else getComments();
+  }, [activeTab]);
+
+  useEffect(() => {
+    if (activeTab == 'reviews') {
+      getReviews();
+    }
+  }, [pageReviews]);
+
+  useEffect(() => {
+    if (activeTab != 'reviews') {
+      getComments();
+    }
+  }, [pageComments]);
+
+  const getComments = async () => {
+    try {
+      const res = await $authHost.get(
+        `review/getMyComment?page=${pageComments}&limit=${reviewsLimit}`
+      );
+      setComments(res.data.reviews);
+      setCountPagesComments(res.data.countPages);
+      console.log(653234234, res.data.reviews);
+    } catch (err) {
+      console.log(524234, err);
+    }
+  };
+
+  const deleteMyComent = async (orderId: number) => {
+    try {
+      const res = await $authHost.post('review/deleteMyOrder', { orderId });
+
+      if (activeTab == 'reviews') {
+        getReviews();
+      } else getComments();
+    } catch (err) {
+      alert('Помилка');
+    }
+  };
+
+  const editReview = async () => {
+    try {
+      const res = await $authHost.post('review/update/' + editId, {
+        newDescription: editValue,
+      });
+      setEditId(0);
+      setEditValue('');
+      if (activeTab == 'reviews') {
+        getReviews();
+      } else getComments();
+    } catch (err) {
+      alert('Помилка');
+    }
+  };
+
+  const [editId, setEditId] = useState(0);
+  const [editValue, setEditValue] = useState('');
 
   return (
     <div className="coments-cabinet-container">
@@ -199,31 +290,66 @@ const Page = () => {
 
       {activeTab === 'reviews' && (
         <div className="coments-cabinet-list">
-          {reviews.map((item) => (
+          {reviews.map((item: any) => (
             <div className="review-card" key={item.id}>
               <div className="review-card-left">
                 <div className="review-card-image">
-                  <img src={item.image} alt={item.title} />
+                  <img
+                    src={
+                      process.env.NEXT_PUBLIC_SERVER +
+                      item.good.volumes[0].imgs[0].img
+                    }
+                    alt={lang == 'ru' ? item.good.nameru : item.good.nameuk}
+                  />
                 </div>
               </div>
 
               <div className="review-card-center">
-                <h3>{item.title}</h3>
+                <h3>{lang == 'ru' ? item.good.nameru : item.good.nameuk}</h3>
 
                 <div className="review-card-rating">
                   <div className="stars">{renderStars(item.rating)}</div>
-                  <span>({item.reviewsCount}) Відгуків</span>
+                  <span>({item.good.reviews.length}) Відгуків</span>
                 </div>
 
-                <p>{item.text}</p>
+                <p>
+                  {editId == item.id ? (
+                    <textarea
+                      style={{ width: '100%', resize: 'none', height: '100px' }}
+                      value={editValue}
+                      onChange={(e) => setEditValue(e.target.value)}
+                    />
+                  ) : (
+                    item.description
+                  )}
+                </p>
 
                 <div className="review-card-actions">
-                  <button type="button" className="review-action-btn">
+                  <button
+                    onClick={() => {
+                      if (item.id != editId) {
+                        setEditValue(item.description);
+                        setEditId(item.id);
+                      } else {
+                        editReview();
+                      }
+                    }}
+                    style={{
+                      backgroundColor:
+                        item.id == editId ? 'greenyellow' : 'transparent',
+                    }}
+                    type="button"
+                    className="review-action-btn"
+                  >
                     <img src="/images/edit-review-icon.svg" alt="" />
                     Редагувати
                   </button>
 
-                  <button type="button" className="review-action-btn">
+                  <button
+                    onClick={() => deleteMyComent(item.id)}
+                    type="button"
+                    className="review-action-btn"
+                  >
                     <img src="/images/delete-review-icon.svg" alt="" />
                     Видалити
                   </button>
@@ -238,22 +364,57 @@ const Page = () => {
 
       {activeTab === 'comments' && (
         <div className="coments-cabinet-list">
-          {comments.map((item) => (
+          {comments.map((item: any) => (
             <div className="comment-card" key={item.id}>
               <div className="comment-card-top">
                 <div className="comment-card-main">
                   <div className="comment-author-row">
-                    <span className="comment-author">{item.author}</span>
-                    <span className="stars">{renderStars(item.rating)}</span>
+                    <span className="comment-author">
+                      {item.Parent.user.name} {item.Parent.user.surname[0]}.
+                    </span>
+                    <span className="stars">
+                      {renderStars(item.Parent.rating)}
+                    </span>
                   </div>
 
-                  <p className="comment-review-text">{item.reviewText}</p>
+                  <p className="comment-review-text">
+                    {item.Parent.description}
+                  </p>
 
                   <div className="my-comment-title">↳ Ваш коментар:</div>
-                  <p className="comment-my-text">{item.myComment}</p>
+                  <p className="comment-my-text">
+                    {editId == item.id ? (
+                      <textarea
+                        style={{
+                          width: '100%',
+                          resize: 'none',
+                          height: '100px',
+                        }}
+                        value={editValue}
+                        onChange={(e) => setEditValue(e.target.value)}
+                      />
+                    ) : (
+                      item.description
+                    )}
+                  </p>
 
                   <div className="review-card-actions">
-                    <button type="button" className="review-action-btn">
+                    <button
+                      onClick={() => {
+                        if (item.id != editId) {
+                          setEditValue(item.description);
+                          setEditId(item.id);
+                        } else {
+                          editReview();
+                        }
+                      }}
+                      style={{
+                        backgroundColor:
+                          item.id == editId ? 'greenyellow' : 'transparent',
+                      }}
+                      type="button"
+                      className="review-action-btn"
+                    >
                       <img src="/images/edit-review-icon.svg" alt="" />
                       Редагувати
                     </button>
@@ -274,32 +435,16 @@ const Page = () => {
           ))}
         </div>
       )}
-
-      <div className="cabinet-pagination">
-        <button type="button" className="pagination-arrow">
-          ←
-        </button>
-        <button type="button" className="pagination-btn">
-          1
-        </button>
-        <button type="button" className="pagination-btn">
-          2
-        </button>
-        <button type="button" className="pagination-btn active">
-          3
-        </button>
-        <button type="button" className="pagination-btn">
-          4
-        </button>
-        <button type="button" className="pagination-btn dots">
-          ...
-        </button>
-        <button type="button" className="pagination-btn">
-          6
-        </button>
-        <button type="button" className="pagination-arrow">
-          →
-        </button>
+      <div className="pagination-cont">
+        <PaginationDynamic
+          currentPage={activeTab == 'reviews' ? pageReviews : pageComments}
+          onPageChange={
+            activeTab == 'reviews' ? setPageReviews : setPageComments
+          }
+          totalPages={
+            activeTab == 'reviews' ? countPagesReviews : countPagesComments
+          }
+        />
       </div>
     </div>
   );

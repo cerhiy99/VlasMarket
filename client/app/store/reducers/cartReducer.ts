@@ -35,6 +35,7 @@ export interface BasketItem {
 interface CartState {
   basket: BasketItem[];
   like: LikeItem[];
+  comparison: LikeItem[];
   isCartVisible: boolean; // Стан для керування видимістю кошика
   isLikeVisible: boolean; // Стан для керування видимістю "подобаних"
   isOpenBasket: boolean;
@@ -47,6 +48,7 @@ const initialState: CartState = {
   isCartVisible: false,
   isLikeVisible: false,
   isOpenBasket: false,
+  comparison: [],
 };
 
 const saveToLocalStorage = (key: string, value: any) => {
@@ -63,12 +65,19 @@ const cartSlice = createSlice({
       if (typeof window !== 'undefined') {
         const basket = JSON.parse(localStorage.getItem('basket') || '[]');
         const like = JSON.parse(localStorage.getItem('like') || '[]');
+        const comparison = JSON.parse(
+          localStorage.getItem('comparison') || '[]'
+        );
+
         state.basket = basket;
         state.like = like;
+        state.comparison = comparison;
       }
     },
     addToBasket: (state, action: PayloadAction<BasketItem>) => {
-      const itemIndex = state.basket.findIndex((item) => item.id === action.payload.id);
+      const itemIndex = state.basket.findIndex(
+        (item) => item.id === action.payload.id
+      );
       if (itemIndex >= 0) {
         state.basket[itemIndex].count += action.payload.count;
       } else {
@@ -78,7 +87,9 @@ const cartSlice = createSlice({
       state.isOpenBasket = true;
     },
     removeFromBasket: (state, action: PayloadAction<number>) => {
-      const itemIndex = state.basket.findIndex((item) => item.id === action.payload);
+      const itemIndex = state.basket.findIndex(
+        (item) => item.id === action.payload
+      );
 
       if (itemIndex >= 0) {
         state.basket.splice(itemIndex, 1);
@@ -86,21 +97,27 @@ const cartSlice = createSlice({
       saveToLocalStorage('basket', state.basket);
     },
     incrementItemCount: (state, action: PayloadAction<number>) => {
-      const itemIndex = state.basket.findIndex((item) => item.id === action.payload);
+      const itemIndex = state.basket.findIndex(
+        (item) => item.id === action.payload
+      );
       if (itemIndex >= 0) {
         state.basket[itemIndex].count += 1;
         saveToLocalStorage('basket', state.basket);
       }
     },
     decrementItemCount: (state, action: PayloadAction<number>) => {
-      const itemIndex = state.basket.findIndex((item) => item.id === action.payload);
+      const itemIndex = state.basket.findIndex(
+        (item) => item.id === action.payload
+      );
       if (itemIndex >= 0 && state.basket[itemIndex].count > 1) {
         state.basket[itemIndex].count -= 1;
         saveToLocalStorage('basket', state.basket);
       }
     },
     addToLike: (state, action: PayloadAction<LikeItem>) => {
-      const itemIndex = state.like.findIndex((item) => item.id === action.payload.id);
+      const itemIndex = state.like.findIndex(
+        (item) => item.id === action.payload.id
+      );
       if (itemIndex === -1) {
         state.like.push(action.payload);
       }
@@ -129,6 +146,27 @@ const cartSlice = createSlice({
     setIsOpenBasket: (state, action: PayloadAction<boolean>) => {
       state.isOpenBasket = action.payload;
     },
+    addToComparisont: (state, action: PayloadAction<LikeItem>) => {
+      const itemIndex = state.comparison.findIndex(
+        (item) => item.id === action.payload.id
+      );
+      if (itemIndex >= 0) {
+      } else {
+        state.comparison.push(action.payload);
+      }
+      saveToLocalStorage('comparison', state.comparison);
+      //state.isOpenBasket = true;
+    },
+    removeFromComparisont: (state, action: PayloadAction<number>) => {
+      const itemIndex = state.comparison.findIndex(
+        (item) => item.id === action.payload
+      );
+
+      if (itemIndex >= 0) {
+        state.comparison.splice(itemIndex, 1);
+      }
+      saveToLocalStorage('comparison', state.comparison);
+    },
     /*    isInLike: (state, action: PayloadAction<number>) => {
       return state.like.findIndex(x => x.id == action.payload) != -1
     }*/
@@ -149,6 +187,8 @@ export const {
   closeLike,
   setBasket,
   setIsOpenBasket,
+  addToComparisont,
+  removeFromComparisont,
 } = cartSlice.actions;
 
 export default cartSlice.reducer;

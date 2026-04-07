@@ -3,6 +3,7 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import './PriceSelector.scss';
+import './Brends.scss';
 import UpSVG from '../../../assest/Filters/Up.svg';
 import DownSVG from '../../../assest/Filters/Down.svg';
 import { Slider } from '@mui/material';
@@ -41,7 +42,10 @@ const PriceSelector = ({
   const [isMobile, setIsMobile] = useState<boolean>(isMob);
 
   // Внутрішній стан для діапазону цін, який відображається на слайдері та в полях
-  const [priceRange, setPriceRange] = useState<number[]>([minAvailablePrice, maxAvailablePrice]);
+  const [priceRange, setPriceRange] = useState<number[]>([
+    minAvailablePrice,
+    maxAvailablePrice,
+  ]);
 
   // Референс для таймера дебаунсу
   const debounceTimeoutRef = useRef<NodeJS.Timeout | null>(null);
@@ -105,7 +109,10 @@ const PriceSelector = ({
       const roundedMax = parseFloat(maxVal.toFixed(2));
 
       // Якщо діапазон відповідає повному доступному діапазону, видаляємо параметри
-      if (roundedMin === minAvailablePrice && roundedMax === maxAvailablePrice) {
+      if (
+        roundedMin === minAvailablePrice &&
+        roundedMax === maxAvailablePrice
+      ) {
         newSearchParams.delete('minprice');
         newSearchParams.delete('maxprice');
       } else {
@@ -148,7 +155,10 @@ const PriceSelector = ({
   };
 
   // Обробник зміни вхідних полів (з дебаунсом)
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>, type: 'min' | 'max') => {
+  const handleInputChange = (
+    e: React.ChangeEvent<HTMLInputElement>,
+    type: 'min' | 'max'
+  ) => {
     const value = parseFloat(e.target.value);
     let newMin = priceRange[0];
     let newMax = priceRange[1];
@@ -203,17 +213,25 @@ const PriceSelector = ({
       min: 5000,
       max: maxAvailablePrice,
     },
-  ].filter((option) => option.min <= maxAvailablePrice && option.max >= minAvailablePrice); // Фільтруємо неактуальні опції
+  ].filter(
+    (option) =>
+      option.min <= maxAvailablePrice && option.max >= minAvailablePrice
+  ); // Фільтруємо неактуальні опції
 
   // Визначення, яка радіокнопка активна
   const getSelectedRangeName = () => {
-    const currentMin = parseFloat(searchParams.get('minprice') || minAvailablePrice.toString());
-    const currentMax = parseFloat(searchParams.get('maxprice') || maxAvailablePrice.toString());
+    const currentMin = parseFloat(
+      searchParams.get('minprice') || minAvailablePrice.toString()
+    );
+    const currentMax = parseFloat(
+      searchParams.get('maxprice') || maxAvailablePrice.toString()
+    );
 
     const foundOption = priceOptions.find((option) => {
       // Порівнюємо з округленням, щоб уникнути проблем з плаваючою точкою
       return (
-        parseFloat(option.min.toFixed(2)) === parseFloat(currentMin.toFixed(2)) &&
+        parseFloat(option.min.toFixed(2)) ===
+          parseFloat(currentMin.toFixed(2)) &&
         parseFloat(option.max.toFixed(2)) === parseFloat(currentMax.toFixed(2))
       );
     });
@@ -222,7 +240,7 @@ const PriceSelector = ({
   };
 
   return (
-    <div className="price-selector-container">
+    <div className="brands-container price-selector-container">
       <div className="price-selector-header" onClick={toggleOpen}>
         <h3>{lang == 'ru' ? 'ЦЕНА' : 'ЦІНА'}</h3>
         <span className={`arrow-icon ${isOpen ? 'open' : ''}`}>
@@ -260,19 +278,23 @@ const PriceSelector = ({
               />
             </div>
           </div>
-          <ul className={`price-options ${isMobile ? 'dropdownFilterMobile dropdown' : ''}`}>
+          <ul
+            className={`price-options ${isMobile ? 'dropdownFilterMobile dropdown' : ''}`}
+          >
             {priceOptions.map((option, index) => (
-              <li key={index} className="price-option">
+              <li key={index} className="price-option brand-item">
                 <label>
                   <input
                     type="radio"
                     name="price"
                     value={option.name}
                     checked={getSelectedRangeName() === option.name} // Використовуємо функцію для визначення checked
-                    onChange={() => handleRangeOptionChange(option.min, option.max)}
+                    onChange={() =>
+                      handleRangeOptionChange(option.min, option.max)
+                    }
                   />
                   <span className="custom-radio"></span>
-                  <span className="price-option-text">{option.name}</span>
+                  <span className="brand-name">{option.name}</span>
                 </label>
               </li>
             ))}

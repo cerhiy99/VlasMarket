@@ -16,16 +16,16 @@
       width: auto;
     }
     span {
-      font-family: Roboto;
-      font-size: 14px;
-      font-weight: 500;
-      line-height: 16px;
-      color: #303030;
+      font-weight: 600;
+      font-style: Semi Bold;
+      font-size: 16px;
+      line-height: 100%;
+      letter-spacing: 0%;
+      color: #000000;
+      white-space: nowrap;
       @media (max-width: 1024px) {
-        font-family: Roboto;
-        font-size: 12px;
-        font-weight: 400;
-        line-height: 20px;
+        font-size: 16px;
+        white-space: nowrap;
       }
     }
 
@@ -124,8 +124,8 @@
         }
 
         input[type='checkbox']:checked + .custom-checkbox {
-          background-color: #ff6a00;
-          border-color: #ff6a00;
+          background-color: #ebd8e4;
+          border-color: #ebd8e4;
         }
 
         input[type='checkbox']:checked + .custom-checkbox::after {
@@ -135,17 +135,17 @@
           top: 1px;
           width: 5px;
           height: 9px;
-          border: solid #fff;
+          border: solid #000000;
           border-width: 0 2px 2px 0;
           transform: rotate(45deg);
         }
 
         .brand-name {
-          font-family: Roboto;
-          font-size: 13px;
+          font-size: 15px;
           font-weight: 400;
+          font-style: Regular;
           line-height: 19.23px;
-          color: #475156;
+          color: #000000;
           margin-left: 5px;
         }
       }

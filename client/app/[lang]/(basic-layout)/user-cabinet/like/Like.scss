@@ -1,2 +1,83 @@
 .like-page-container {
+  h1 {
+    font-weight: 600;
+    font-style: Semi Bold;
+    font-size: 26px;
+    line-height: 100%;
+    letter-spacing: 0%;
+    color: #000000;
+  }
+  .footer-like {
+    margin-top: 10px;
+    background-color: #ffffff;
+    height: 110px;
+    display: flex;
+    align-items: center;
+    justify-content: right;
+    flex-direction: row;
+    gap: 20px;
+    border-radius: 12px;
+    padding: 0 5%;
+    margin-bottom: 40px;
+    @media (max-width: 768px) {
+      justify-content: space-between;
+      flex-wrap: wrap;
+      box-sizing: border-box;
+      padding: 20px;
+      height: unset;
+    }
+    .info {
+      font-weight: 600;
+      font-style: Semi Bold;
+      font-size: 24px;
+      line-height: 100%;
+      letter-spacing: 0%;
+      color: #000000;
+      @media (max-width: 768px) {
+        font-size: 18px;
+      }
+    }
+    .sum {
+      font-weight: 600;
+      font-style: Semi Bold;
+      font-size: 32px;
+      line-height: 100%;
+      letter-spacing: 0%;
+      color: #000000;
+      span {
+        font-weight: 600;
+        font-style: Semi Bold;
+        font-size: 32px;
+        line-height: 100%;
+        letter-spacing: 0%;
+        color: #000000;
+      }
+      @media (max-width: 768px) {
+        font-size: 26px;
+        span {
+          font-size: 26px;
+        }
+      }
+    }
+    button {
+      height: 50px;
+      width: 334px;
+      background-color: #04c421;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 500;
+      font-style: Medium;
+      font-size: 19px;
+      line-height: 100%;
+      letter-spacing: 0%;
+      text-align: center;
+      color: #ffffff;
+      @media (max-width: 768px) {
+        width: 100%;
+      }
+      border: none;
+      border-radius: 6px;
+    }
+  }
 }

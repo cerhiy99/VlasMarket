@@ -1,0 +1,141 @@
+@import '../App.scss';
+
+.comparison-container {
+  @include responsive-width;
+  h1 {
+    font-weight: 600;
+    font-style: Semi Bold;
+    font-size: 26px;
+    line-height: 100%;
+    letter-spacing: 0%;
+    color: #000000;
+  }
+  .list-goods-comparison {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 40px;
+    @media (max-width: 768px) {
+      margin-bottom: 30px;
+    }
+    .col {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      width: 100%;
+      max-width: 400px;
+      @media (max-width: 768px) {
+        gap: 5px;
+      }
+      .info-for-good {
+        background-color: #ffffff;
+        padding: 24px 16px;
+        max-width: 100%;
+        border-radius: 12px;
+        h3 {
+          margin: 0;
+          font-weight: 600;
+          font-size: 15px;
+          line-height: 1.2;
+          color: #000000;
+        }
+
+        .desc-container {
+          position: relative;
+          overflow: hidden;
+          transition: max-height 0.4s ease-in-out;
+
+          &.closed {
+            max-height: 150px; // Бажана висота згорнутого блоку
+          }
+
+          &.open {
+            max-height: 2000px; // Достатньо велике значення для повного контенту
+          }
+
+          .desc-content {
+            img {
+              display: none;
+            }
+          }
+
+          .fade-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 60px;
+            background: linear-gradient(
+              to bottom,
+              rgba(255, 255, 255, 0),
+              rgba(255, 255, 255, 1)
+            );
+            pointer-events: none; // Щоб маска не заважала клікам
+          }
+        }
+        .toggle-btn {
+          width: 100%;
+          border-radius: 6px;
+          background-color: transparent;
+          height: 40px;
+          border: 1px solid #ebd8e4;
+          cursor: pointer;
+          display: flex;
+          align-items: center;
+          gap: 5px;
+          justify-content: center;
+        }
+        .list-charackteristik {
+          margin-top: 24px;
+          ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            li {
+              margin: 0;
+              padding: 0;
+              display: flex;
+              flex-direction: row;
+              justify-content: space-between;
+              background-color: #f9f3f7;
+              height: 38px;
+              align-items: center;
+              box-sizing: border-box;
+              padding: 10px;
+
+              // Стиль для НЕПАРНИХ (1, 3, 5...)
+              &:nth-child(odd) {
+                background-color: #f9f3f7;
+              }
+
+              // Стиль для ПАРНИХ (2, 4, 6...)
+              &:nth-child(even) {
+                background-color: #ffffff; // замініть на потрібний колір
+              }
+              p {
+                font-weight: 400;
+                font-style: Regular;
+                font-size: 15px;
+                line-height: 100%;
+                letter-spacing: 0%;
+                margin: 0;
+              }
+              span {
+                font-weight: 600;
+                font-style: Semi Bold;
+                font-size: 15px;
+                line-height: 100%;
+                letter-spacing: 0%;
+                text-align: right;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

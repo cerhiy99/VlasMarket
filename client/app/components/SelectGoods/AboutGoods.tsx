@@ -52,17 +52,21 @@ const AboutGoods = ({
     (sectionName: string) => {
       // Определяем отступ сверху (для учета фиксированных элементов)
       const listTitleContainerHeight =
-        document.querySelector('.list-title-info-header')?.getBoundingClientRect().height || 60;
+        document
+          .querySelector('.list-title-info-header')
+          ?.getBoundingClientRect().height || 60;
       const mainHeaderHeight =
-        document.querySelector('.catalog-search-and-other-container')?.getBoundingClientRect()
-          .height || 50;
+        document
+          .querySelector('.catalog-search-and-other-container')
+          ?.getBoundingClientRect().height || 50;
       const headerOffset = listTitleContainerHeight + mainHeaderHeight; // Приблизительная высота всех фиксированных элементов
       // Функция для выполнения скролла с учетом отступа
       const scrollWithOffset = (element: HTMLElement | null) => {
         if (!element) return;
 
         const elementPosition = element.getBoundingClientRect().top;
-        const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+        const offsetPosition =
+          elementPosition + window.pageYOffset - headerOffset;
 
         window.scrollTo({
           top: offsetPosition,
@@ -102,7 +106,8 @@ const AboutGoods = ({
     scrollToSection(sectionName);
   }, [sectionName, scrollToSection]);
   const [textExpanded, setTextExpanded] = useState(true);
-  const [isCharacteristicsExpanded, setCharacteristicsExpanded] = useState(true);
+  const [isCharacteristicsExpanded, setCharacteristicsExpanded] =
+    useState(true);
   const [reviewsExpanded, setReviewsExpanded] = useState(false);
 
   function parseCharacteristics(html: string, lang: 'ru' | 'ua') {
@@ -149,7 +154,8 @@ const AboutGoods = ({
     return characteristics;
   }
 
-  const html = lang == 'ru' ? selectGoods.characteristicru : selectGoods.characteristicuk;
+  const html =
+    lang == 'ru' ? selectGoods.characteristicru : selectGoods.characteristicuk;
   const characteristics = parseCharacteristics(html, lang);
   const displayedCharacteristics = isCharacteristicsExpanded
     ? characteristics
@@ -175,7 +181,9 @@ const AboutGoods = ({
     selectGoods.video ? convertYoutubeUrlToIframe(selectGoods.video) : null
   ); //
   const showWithStar = (countStar: number) => {
-    const newShowReviews = revie.listReviews.filter((x: any) => x.countStar == countStar);
+    const newShowReviews = revie.listReviews.filter(
+      (x: any) => x.countStar == countStar
+    );
     setDisplayedReviews(newShowReviews);
   };
 
@@ -199,7 +207,9 @@ const AboutGoods = ({
 
             <div className="button-container">
               <button onClick={() => setTextExpanded(!textExpanded)}>
-                {textExpanded ? t('selectGoods.unShow') : t('selectGoods.showAll')}
+                {textExpanded
+                  ? t('selectGoods.unShow')
+                  : t('selectGoods.showAll')}
                 {textExpanded ? <span>-</span> : <span>+</span>}
               </button>
             </div>
@@ -231,8 +241,14 @@ const AboutGoods = ({
                 </li>*/}
               </ul>
               <div className="button-show-other">
-                <button onClick={() => setCharacteristicsExpanded(!isCharacteristicsExpanded)}>
-                  {isCharacteristicsExpanded ? t('selectGoods.unShow') : t('selectGoods.showAll')}
+                <button
+                  onClick={() =>
+                    setCharacteristicsExpanded(!isCharacteristicsExpanded)
+                  }
+                >
+                  {isCharacteristicsExpanded
+                    ? t('selectGoods.unShow')
+                    : t('selectGoods.showAll')}
                   {isCharacteristicsExpanded ? <span>-</span> : <span>+</span>}
                 </button>
               </div>
@@ -294,13 +310,20 @@ const AboutGoods = ({
                         <div className="rating-interest">
                           <div
                             style={{
-                              width: (revie[`count${x}`] / revie.countReviews) * 100 + '%',
+                              width:
+                                (revie[`count${x}`] / revie.countReviews) *
+                                  100 +
+                                '%',
                             }}
                             className="interest-select"
                           />
                           <div
                             style={{
-                              width: 100 - (revie[`count${x}`] / revie.countReviews) * 100 + '%',
+                              width:
+                                100 -
+                                (revie[`count${x}`] / revie.countReviews) *
+                                  100 +
+                                '%',
                             }}
                             className="interest-no-select"
                           />
@@ -318,7 +341,11 @@ const AboutGoods = ({
               <div className="list-star-and-star">
                 <div className="list-star">
                   {[5, 4, 3, 2, 1].map((x) => (
-                    <div key={x} onClick={() => showWithStar(x)} className="sort-in-star">
+                    <div
+                      key={x}
+                      onClick={() => showWithStar(x)}
+                      className="sort-in-star"
+                    >
                       <MyClientRating value={1} />
                       <p>{x}</p>
                     </div>
@@ -338,7 +365,11 @@ const AboutGoods = ({
             <div className="review">
               {displayedReviews.length > 0 ? (
                 displayedReviews.map((review: any, index: any) => (
-                  <Review goodsId={selectGoods.id} key={review.id} review={review} />
+                  <Review
+                    goodsId={selectGoods.id}
+                    key={review.id}
+                    review={review}
+                  />
                 ))
               ) : (
                 <div className=""></div>
@@ -350,7 +381,9 @@ const AboutGoods = ({
                 className="button-all-reviews"
                 onClick={() => setReviewsExpanded(!reviewsExpanded)}
               >
-                {reviewsExpanded ? t('selectGoods.unShow') : t('selectGoods.showReview')}
+                {reviewsExpanded
+                  ? t('selectGoods.unShow')
+                  : t('selectGoods.showReview')}
                 <ArrowRightSVG />
               </div>
             )}
@@ -387,7 +420,10 @@ const AboutGoods = ({
         dictionary={{ reviews: t('selectGoods.review') }}
         type=""
       />
-      <AddToYouWatched userWatch={selectGoods.id} idVolume={selectGoods.volumes[0].id} />
+      <AddToYouWatched
+        userWatch={selectGoods.id}
+        idVolume={selectGoods.volumes[0].id}
+      />
     </div>
   );
 };

@@ -83,9 +83,7 @@ const LeftPanel = ({ lang, dictionary }: { lang: Locale; dictionary: any }) => {
 
         <div className="left-panel-user-info">
           <h3>Вітаємо, {user?.name} 👋</h3>
-          <Link
-            href={getLocalizedPath(`/${lang}/user-cabinet/personal-info`, lang)}
-          >
+          <Link href={getLocalizedPath(`/${lang}/user-cabinet/profile`, lang)}>
             Редагувати інформацію
             {/*<div className="home-goods">
         <UserWatched

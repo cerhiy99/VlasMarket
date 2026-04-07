@@ -46,7 +46,7 @@ const page = ({ params }: Props) => {
         isFilter={true}
         lang={lang}
       />
-      <div className="pagination">
+      <div className="pagination-cont">
         {countPages > 1 && (
           <PaginationDynamic
             to="watched-page"

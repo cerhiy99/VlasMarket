@@ -11,7 +11,7 @@ type Props = {
   lang: Locale;
 };
 
-const BreadCrumbs = async ({ listUrles, lang }: Props) => {
+const BreadCrumbs = ({ listUrles, lang }: Props) => {
   return (
     <div className="bread-crumbs-container">
       <div className="bread-crumb">
