@@ -28,13 +28,16 @@
       transition: transform 0.3s;
 
       &.open {
-        transform: rotate(180deg);
+        transform: rotate(360deg);
       }
     }
   }
 
   .price-slider-container {
     margin-top: 10px;
+    @media (max-width: 1024px) {
+      margin: 0;
+    }
 
     &.dropdown {
       @media (max-width: 1024px) {
@@ -50,6 +53,10 @@
     }
 
     .price-slider {
+      @media (max-width: 1024px) {
+        margin-top: -10px;
+        height: 50px;
+      }
       .MuiSlider-root {
         width: 100%;
         color: #ebd8e4;

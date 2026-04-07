@@ -35,7 +35,7 @@
       transition: transform 0.2s ease;
 
       &.open {
-        transform: rotate(180deg);
+        transform: rotate(360deg);
       }
     }
     @media (max-width: 768px) {
@@ -64,6 +64,9 @@
     display: flex;
     flex-wrap: wrap;
     margin: 10px 0;
+    @media (max-width: 768px) {
+      display: none;
+    }
     .alphabet-button {
       background: none;
       border: none;
