@@ -7,7 +7,7 @@
     margin-bottom: 30px;
   }
 
- /* .list-brands-title {
+  /* .list-brands-title {
   }
  */
 
@@ -28,6 +28,42 @@
       font-size: 20px;
       font-weight: 400;
       line-height: 23.86px;
+    }
+  }
+  @media (max-width: 1024px) {
+    display: grid;
+    margin: 0;
+    padding: 0;
+    gap: 0;
+    margin-top: -15px;
+    h1 {
+      margin: 0;
+    }
+    /* Робимо так, щоб проміжні контейнери не заважали позиціюванню */
+    .filters-parent,
+    .sore-and-goods {
+      gap: 0;
+      display: contents;
+    }
+
+    /* Задаємо порядок */
+    .sore-and-goods h1 {
+      order: 1; /* Перший */
+    }
+
+    .mob-open-filter-and-sort {
+      order: 2; /* Другий */
+    }
+
+    .mob-open-filter-and-sort {
+      margin: 20px 0;
+    }
+
+    /* Решта елементів всередині sore-and-goods */
+    .sort-container,
+    .list-goods-container4,
+    .pagination-container2 {
+      order: 3; /* Третіми */
     }
   }
   .list-letter-Brand-container {
@@ -123,7 +159,7 @@
         cursor: pointer;
         color: #000;
         &:hover {
-          color: #FF8E8E;
+          color: #ff8e8e;
         }
       }
 

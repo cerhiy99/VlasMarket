@@ -452,13 +452,18 @@ const Page = async ({ params, searchParams }: Props) => {
             lang={lang}
             dictionary={miniGoods}
           />
-          {totalPages > 1 && (
+          {totalPages > 1 ? (
             <MyPagination
               totalPages={totalPages}
               currentPage={parseInt(pageStr)}
               currentPathname={`/${lang}/goods/${slug.join('/')}`}
               currentSearchParams={currentSearchParams} // Передаємо очищені searchParams
               lang={lang}
+            />
+          ) : (
+            <div
+              style={{ margin: '10px 0 0 0' }}
+              className="pagination-container2"
             />
           )}
         </div>

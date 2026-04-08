@@ -60,10 +60,14 @@
   }
   .desc {
     margin: 0;
-    margin-bottom: 32px;
+    margin-bottom: 40px;
     background-color: #ffffff;
     padding: 20px;
     border-radius: 12px;
+    margin-top: 10px;
+    @media (max-width: 1024px) {
+      margin-bottom: 30px;
+    }
   }
   .sore-and-goods {
     @media (max-width: 1024px) {
