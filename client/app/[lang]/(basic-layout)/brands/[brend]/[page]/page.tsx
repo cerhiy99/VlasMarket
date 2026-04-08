@@ -19,7 +19,10 @@ type Props = {
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 };
 
-export async function generateMetadata({ params, searchParams }: Props): Promise<Metadata> {
+export async function generateMetadata({
+  params,
+  searchParams,
+}: Props): Promise<Metadata> {
   //const { lang } = await params;
   const resolvedSearchParams = await searchParams; // Це тепер реальний об'єкт
   // Перетворюємо searchParams в URLSearchParams для зручності
@@ -47,7 +50,14 @@ export async function generateMetadata({ params, searchParams }: Props): Promise
     totalPages: number;
     filters: any;
     realNameBrend: string;
-  } = await getData(page, limit, currentSearchParams, brend, lang == 'ru' ? 'uk' : 'ru', lang);
+  } = await getData(
+    page,
+    limit,
+    currentSearchParams,
+    brend,
+    lang == 'ru' ? 'uk' : 'ru',
+    lang
+  );
 
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
   const urlPath = lang === 'ua' ? '' : '/ru';
@@ -129,16 +139,24 @@ const getData = async (
     }
 
     const data = await res.json();
-    const { totalGoods, totalPages, filters, realNameBrend, realDescriptionBrend } = data;
+    const {
+      totalGoods,
+      totalPages,
+      filters,
+      realNameBrend,
+      realDescriptionBrend,
+    } = data;
     const goods = data.goods.map((x: any) => ({
       id: x.id,
-      [`name${lang == 'ru' ? 'ru' : 'uk'}`]: x[`name${lang == 'ru' ? 'ru' : 'uk'}`],
+      [`name${lang == 'ru' ? 'ru' : 'uk'}`]:
+        x[`name${lang == 'ru' ? 'ru' : 'uk'}`],
       isDiscount: x.isDiscount,
       isBestseller: x.isBestseller,
       isNovetly: x.isNovetly,
       isHit: x.isHit,
       isFreeDelivery: x.isFreeDelivery,
-      [`nameType${lang == 'ru' ? 'ru' : 'uk'}`]: x[`nameType${lang == 'ru' ? 'ru' : 'uk'}`],
+      [`nameType${lang == 'ru' ? 'ru' : 'uk'}`]:
+        x[`nameType${lang == 'ru' ? 'ru' : 'uk'}`],
       volumes: x.volumes.map((j: any) => ({
         id: j.id,
         nameVolume: j.nameVolume,
@@ -204,7 +222,14 @@ const Page = async ({ params, searchParams }: Props) => {
     filters: any;
     realNameBrend: string;
     realDescriptionBrend: string | null;
-  } = await getData(page, limit, currentSearchParams, brend, lang == 'ru' ? 'uk' : 'ru', lang); // Передаємо currentSearchParams
+  } = await getData(
+    page,
+    limit,
+    currentSearchParams,
+    brend,
+    lang == 'ru' ? 'uk' : 'ru',
+    lang
+  ); // Передаємо currentSearchParams
 
   const headersList = await headers();
   const userAgent = headersList.get('user-agent') || '';
@@ -244,15 +269,18 @@ const Page = async ({ params, searchParams }: Props) => {
           <IsAdmin>
             <div style={{ fontSize: '15px', fontWeight: '400' }}>
               {totalGoods} товаров
-              <br />
-              <br />
             </div>
           </IsAdmin>
           <Sort brend={brend} lang={lang} />
           <br />
 
-          <ListGoods data={data} isFilter={true} lang={lang} dictionary={miniGoods} />
-          {totalPages > 1 && (
+          <ListGoods
+            data={data}
+            isFilter={true}
+            lang={lang}
+            dictionary={miniGoods}
+          />
+          {totalPages > 1 ? (
             <MyPagination
               totalPages={totalPages}
               currentPage={parseInt(page)}
@@ -260,11 +288,19 @@ const Page = async ({ params, searchParams }: Props) => {
               currentSearchParams={currentSearchParams} // Передаємо очищені searchParams
               lang={lang}
             />
+          ) : (
+            <div
+              style={{ margin: '10px 0 0 0' }}
+              className="pagination-container2"
+            />
           )}
         </div>
       </div>
       {realDescriptionBrend && page == '1' && (
-        <p className="desc" dangerouslySetInnerHTML={{ __html: realDescriptionBrend }} />
+        <p
+          className="desc"
+          dangerouslySetInnerHTML={{ __html: realDescriptionBrend }}
+        />
       )}
     </div>
   );
