@@ -1,4 +1,4 @@
-@import "../App.scss";
+@import '../App.scss';
 
 .delivery-container {
   @include responsive-width;
@@ -71,6 +71,7 @@
       text-underline-position: from-font;
       text-decoration-skip-ink: none;
       color: #000000;
+      margin-bottom: 0;
       br {
         display: block; /* Забезпечує перенесення на новий рядок */
         margin-top: 5px; /* Відступ зверху у 5 пікселів */
