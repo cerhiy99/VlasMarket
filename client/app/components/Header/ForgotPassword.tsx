@@ -11,10 +11,15 @@ const ForgotPassword = ({ close }: Props) => {
   const [email, setEmail] = useState('');
   const [message, setMeessage] = useState('');
   const [error, setError] = useState('');
+
   const send = async (e: any) => {
     e.preventDefault();
+    setError('');
+    setMeessage('');
+
     try {
       const res = await $host.post('user/forgotPassword', { email });
+
       if (res.status == 239) {
         setError('email не знайдено.');
       } else {
@@ -24,6 +29,7 @@ const ForgotPassword = ({ close }: Props) => {
       setError('Сталася помилка, спробуйте пізніше.');
     }
   };
+
   return (
     <div className="forgot-password-container">
       <form onSubmit={send} className="forgot-password">
@@ -33,36 +39,32 @@ const ForgotPassword = ({ close }: Props) => {
             <CloseSVG />
           </div>
         </div>
-        <label>
-          Електронна пошта <span>*</span>
-        </label>
-        <input
-          type="email"
-          name="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
-          placeholder="email"
-        />
 
-        <br />
-        <span>
+        <div className="form-group">
+          <label>
+            Електронна пошта <span>*</span>
+          </label>
+
+          <input
+            type="email"
+            name="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+            placeholder="Введіть електронну пошту"
+          />
+        </div>
+
+        <p className="forgot-password-text">
           Вам надійде смс з посиланням для оновлення паролю, він буде дійсний
           годину.
-        </span>
-        <br />
-        {message && (
-          <>
-            <div style={{ color: 'green' }}>{message}</div> <br />
-          </>
-        )}
-        {error && (
-          <>
-            <div style={{ color: 'red' }}>{error}</div> <br />
-          </>
-        )}
+        </p>
+
+        {message && <div className="success-message">{message}</div>}
+        {error && <div className="error-message">{error}</div>}
+
         <div className="button-right">
-          <button>Надіслати</button>
+          <button type="submit">Надіслати</button>
         </div>
       </form>
     </div>

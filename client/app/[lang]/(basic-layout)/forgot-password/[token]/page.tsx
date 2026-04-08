@@ -6,9 +6,14 @@ import React, { use, useEffect, useState } from 'react';
 import '../ForgotPassword.scss';
 import { useTranslation } from '@/context/TranslationProvider';
 
-const ResetPasswordPage = ({ params }: { params: Promise<{ token: string }> }) => {
+const ResetPasswordPage = ({
+  params,
+}: {
+  params: Promise<{ token: string }>;
+}) => {
   const { token } = use(params);
   const { t } = useTranslation();
+
   const [expired, setExpired] = useState(false);
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
@@ -20,6 +25,7 @@ const ResetPasswordPage = ({ params }: { params: Promise<{ token: string }> }) =
     try {
       const decoded: any = jwtDecode(token);
       const now = Date.now() / 1000;
+
       if (decoded.exp < now) {
         setExpired(true);
       }
@@ -39,10 +45,12 @@ const ResetPasswordPage = ({ params }: { params: Promise<{ token: string }> }) =
 
     try {
       setLoading(true);
+
       await $host.post('user/reset-password', {
         token,
         password,
       });
+
       setSubmitted(true);
     } catch (err: any) {
       setError(t('error') as string);
@@ -53,54 +61,65 @@ const ResetPasswordPage = ({ params }: { params: Promise<{ token: string }> }) =
 
   if (expired) {
     return (
-      <div className="reset-password-container expired">
-        <h1>{t('forgorPass.falseUrl')}</h1>
-        <p>{t('forgorPass.falseUrlDescription')}</p>
+      <div className="reset-password-page">
+        <div className="reset-password-container expired">
+          <h1>{t('forgorPass.falseUrl')}</h1>
+          <p>{t('forgorPass.falseUrlDescription')}</p>
+        </div>
       </div>
     );
   }
 
   if (submitted) {
     return (
-      <div className="reset-password-container success">
-        <h1>{t('forgorPass.trueTitle')}</h1>
-        <p>{t('forgorPass.trueDescription')}</p>
+      <div className="reset-password-page">
+        <div className="reset-password-container success">
+          <h1>{t('forgorPass.trueTitle')}</h1>
+          <p>{t('forgorPass.trueDescription')}</p>
+        </div>
       </div>
     );
   }
 
   return (
-    <div className="reset-password-container">
-      <h1>{t('forgorPass.title')}</h1>
-      <form onSubmit={handleSubmit} className="reset-password-form">
-        <label>
-          {t('forgorPass.newPassword')}
-          <input
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-            placeholder={t('forgorPass.writeNew') as string}
-          />
-        </label>
+    <div className="reset-password-page">
+      <div className="reset-password-container">
+        <h1>{t('forgorPass.title')}</h1>
 
-        <label>
-          {t('forgorPass.comfirmPass')}
-          <input
-            type="password"
-            value={confirmPassword}
-            onChange={(e) => setConfirmPassword(e.target.value)}
-            required
-            placeholder={t('forgorPass.writeNew2') as string}
-          />
-        </label>
+        <form onSubmit={handleSubmit} className="reset-password-form">
+          <div className="form-group">
+            <label>
+              {t('forgorPass.newPassword')} <span>*</span>
+            </label>
+            <input
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+              placeholder={t('forgorPass.writeNew') as string}
+            />
+          </div>
 
-        {error && <p className="error-message">{error}</p>}
+          <div className="form-group">
+            <label>
+              {t('forgorPass.comfirmPass')} <span>*</span>
+            </label>
+            <input
+              type="password"
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+              required
+              placeholder={t('forgorPass.writeNew2') as string}
+            />
+          </div>
 
-        <button type="submit" disabled={loading}>
-          {loading ? t('forgorPass.downoload') : t('forgorPass.savePassword')}
-        </button>
-      </form>
+          {error && <p className="error-message">{error}</p>}
+
+          <button type="submit" disabled={loading}>
+            {loading ? t('forgorPass.downoload') : t('forgorPass.savePassword')}
+          </button>
+        </form>
+      </div>
     </div>
   );
 };

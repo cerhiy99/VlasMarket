@@ -29,11 +29,13 @@ const LogIn = ({
   setIsForgorPassword,
 }: Props) => {
   const dispatch = useDispatch();
+
   const [formData, setFormData] = useState<FormLoginProps>({
     email: '',
     password: '',
     rememberMe: false,
   });
+
   const [error, setError] = useState('');
   const [errors, setErrors] = useState<{
     email?: string;
@@ -42,6 +44,7 @@ const LogIn = ({
 
   const handleSubmitLogin = async () => {
     setError('');
+
     if (validateForm()) {
       try {
         const res = await $authHost.post('user/login', {
@@ -49,117 +52,143 @@ const LogIn = ({
           password: formData.password,
           isRemember: formData.rememberMe,
         });
-        if (res.status == 200) {
+
+        if (res.status === 200) {
           dispatch(setToken(res.data.token));
           onSubmit(formData);
           close();
         } else {
-          setError('error');
+          setError('Сталася помилка');
         }
       } catch (err: any) {
-        setError(err.response.data.message.message);
+        setError(err?.response?.data?.message?.message || 'Сталася помилка');
       }
     }
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value, type, checked } = e.target;
-    setFormData({
-      ...formData,
+
+    setFormData((prev) => ({
+      ...prev,
       [name]: type === 'checkbox' ? checked : value,
-    });
-    console.log(formData);
-    // Clear error when user types
+    }));
+
     if (errors[name as keyof typeof errors]) {
-      setErrors({
-        ...errors,
+      setErrors((prev) => ({
+        ...prev,
         [name]: undefined,
-      });
+      }));
     }
+
+    if (error) setError('');
   };
 
   const validateForm = () => {
-    const errors: { email?: string; password?: string } = {};
-    if (!formData.email) errors.email = 'Електронна пошта обов’язкова';
-    if (!formData.password) errors.password = 'Пароль обов’язковий';
-    setErrors(errors);
-    return Object.keys(errors).length === 0;
+    const newErrors: { email?: string; password?: string } = {};
+
+    if (!formData.email.trim()) {
+      newErrors.email =
+        lang === 'ru'
+          ? 'Электронная почта обязательна'
+          : "Електронна пошта обов’язкова";
+    }
+
+    if (!formData.password.trim()) {
+      newErrors.password =
+        lang === 'ru' ? 'Пароль обязателен' : "Пароль обов’язковий";
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
   };
 
   return (
     <div className="logIn-container">
       <div className="log-in">
-        <div className="row">
-          <h3>Увійти</h3>
-          <div onClick={close} className="close">
+        <div className="login-header">
+          <h3>{lang === 'ru' ? 'Войти' : 'Увійти'}</h3>
+
+          <button type="button" onClick={close} className="close-button">
             <CloseSVG />
-          </div>
+          </button>
         </div>
-        <label>
-          {lang == 'ru' ? 'Электронная почта' : 'Електронна пошта'}{' '}
-          <span>*</span>
-        </label>
-        <input
-          type="text"
-          name="email"
-          value={formData.email}
-          onChange={handleChange}
-        />
-        <br />
-        <label>
-          Пароль <span>*</span>
-        </label>
-        <input
-          type="password"
-          name="password"
-          value={formData.password}
-          onChange={handleChange}
-        />
-        <div className="row">
-          <div
-            style={{
-              margin: '12.5px 0',
-              gap: '5px',
-              justifyContent: 'left',
-            }}
-            className="row"
-          >
+
+        <div className="form-group">
+          <label htmlFor="login-email">
+            {lang === 'ru' ? 'Электронная почта' : 'Електронна пошта'}{' '}
+            <span>*</span>
+          </label>
+
+          <input
+            id="login-email"
+            type="text"
+            name="email"
+            placeholder={
+              lang === 'ru'
+                ? 'Введите электронную почту'
+                : 'Введіть електронну пошту'
+            }
+            value={formData.email}
+            onChange={handleChange}
+          />
+
+          {errors.email && <div className="field-error">{errors.email}</div>}
+        </div>
+
+        <div className="form-group">
+          <label htmlFor="login-password">
+            {lang === 'ru' ? 'Пароль' : 'Пароль'} <span>*</span>
+          </label>
+
+          <input
+            id="login-password"
+            type="password"
+            name="password"
+            placeholder={lang === 'ru' ? 'Введите пароль' : 'Введіть пароль'}
+            value={formData.password}
+            onChange={handleChange}
+          />
+
+          {errors.password && (
+            <div className="field-error">{errors.password}</div>
+          )}
+        </div>
+
+        <div className="remember-forgot-row">
+          <label className="remember-me">
             <input
               type="checkbox"
               name="rememberMe"
               checked={formData.rememberMe}
               onChange={handleChange}
             />
-            <span>{lang == 'ru' ? 'Запомнить меня' : "Запам'ятати мене"}</span>
-          </div>
-          {error && (
-            <div style={{ marginTop: '10px', color: 'red' }}>{error}</div>
-          )}
-          <div
-            style={{
-              margin: '12.5px 0',
-            }}
-            className="row"
+            <span>
+              {lang === 'ru' ? 'Запомнить меня' : "Запам'ятати мене"}
+            </span>
+          </label>
+
+          <button
+            type="button"
+            className="forgot-password"
+            onClick={setIsForgorPassword}
           >
-            <div className="forgot-password" onClick={setIsForgorPassword}>
-              {lang == 'ru' ? 'Забыли пароль?' : 'Забули пароль?'}
-            </div>
-          </div>
-        </div>
-        <button className="button-log-in" onClick={handleSubmitLogin}>
-          {lang == 'ru' ? 'Войти' : 'Увійти'}
-        </button>
-        <div className="no-account">
-          {lang == 'ru' ? 'Еще нет аккаунта' : 'Ще немає акаунту'}
-          <button className="register" onClick={onRegisterModal}>
-            {lang == 'ru' ? 'Зарегистрироваться' : 'Зареєструватися'}
+            {lang === 'ru' ? 'Забыли пароль?' : 'Забули пароль?'}
           </button>
         </div>
-        {/*<GoogleOAuthProvider
-          clientId={process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID as string}
-        >
-          <GoogleLoginButton />
-        </GoogleOAuthProvider>*/}
+
+        {error && <div className="main-error">{error}</div>}
+
+        <button className="button-log-in" onClick={handleSubmitLogin}>
+          {lang === 'ru' ? 'Войти' : 'Увійти'}
+        </button>
+
+        <div className="no-account">
+          {lang === 'ru' ? 'Еще нет аккаунта?' : 'Ще немає акаунту?'}
+          <button className="register" onClick={onRegisterModal}>
+            {lang === 'ru' ? 'Зарегистрироваться' : 'Зареєструватися'}
+          </button>
+        </div>
       </div>
     </div>
   );
