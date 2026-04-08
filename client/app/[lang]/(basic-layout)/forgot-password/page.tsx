@@ -3,15 +3,15 @@
 import { $host } from '@/app/http';
 import { jwtDecode } from 'jwt-decode';
 import React, { use, useEffect, useState } from 'react';
-import '../ForgotPassword.scss';
+import './ForgotPassword.scss';
 import { useTranslation } from '@/context/TranslationProvider';
+import NotFound from '@/app/not-found';
+import { useSearchParams, useParams } from 'next/navigation';
 
-const ResetPasswordPage = ({
-  params,
-}: {
-  params: Promise<{ token: string }>;
-}) => {
-  const { token } = use(params);
+const ResetPasswordPage = ({}: {}) => {
+  const searchParams = useSearchParams();
+  const token = searchParams.get('token');
+
   const { t } = useTranslation();
 
   const [expired, setExpired] = useState(false);
@@ -23,6 +23,7 @@ const ResetPasswordPage = ({
 
   useEffect(() => {
     try {
+      if (!token) return;
       const decoded: any = jwtDecode(token);
       const now = Date.now() / 1000;
 
@@ -58,6 +59,8 @@ const ResetPasswordPage = ({
       setLoading(false);
     }
   };
+
+  if (!token) return NotFound(); //тимчасово
 
   if (expired) {
     return (
