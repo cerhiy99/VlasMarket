@@ -16,6 +16,7 @@
   grid-template-columns: repeat(4, 1fr);
   gap: 14px;
   margin-bottom: 14px;
+  overflow: visible;
 }
 
 .bonus-stat-card {
@@ -25,6 +26,8 @@
   border-radius: 16px;
   padding: 22px 20px 18px 20px;
   box-sizing: border-box;
+  overflow: visible;
+  position: relative;
 
   p {
     margin: 16px 0 0 0;
@@ -39,6 +42,7 @@
   display: flex;
   align-items: center;
   gap: 8px;
+  overflow: visible;
 
   h3 {
     margin: 0;
@@ -54,6 +58,63 @@
     object-fit: contain;
     display: block;
     flex-shrink: 0;
+  }
+}
+
+.bonus-tooltip {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  flex-shrink: 0;
+
+  img {
+    width: 22px;
+    height: 22px;
+    object-fit: contain;
+    display: block;
+    cursor: pointer;
+  }
+
+  &:hover .bonus-tooltip-text {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+  }
+}
+
+.bonus-tooltip-text {
+  position: absolute;
+  bottom: calc(100% + 12px);
+  left: 50%;
+  transform: translateX(-50%);
+  background: #2f2f2f;
+  color: #ffffff;
+  border-radius: 8px;
+  padding: 10px 14px;
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 1.25;
+  white-space: nowrap;
+  box-sizing: border-box;
+  z-index: 50;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition:
+    opacity 0.18s ease,
+    visibility 0.18s ease;
+
+  &::after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 0;
+    border-left: 7px solid transparent;
+    border-right: 7px solid transparent;
+    border-top: 7px solid #2f2f2f;
   }
 }
 
