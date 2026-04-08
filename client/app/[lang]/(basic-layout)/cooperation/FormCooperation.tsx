@@ -98,11 +98,11 @@ ${dictionary?.telegramMessage || '✍️ Сообщение:'} ${formData.messag
   };
 
   return (
-    <div className="form-container block">
+    <div className="formcooperation">
+    <div className="form-container">
       <h3>
         {dictionary?.title || 'Заповніть форму, щоб розпочати співпрацю як постачальник'}
       </h3>
-
       <form onSubmit={handleSubmit}>
         <div className="form-row">
           <div className="form-group">
@@ -197,6 +197,7 @@ ${dictionary?.telegramMessage || '✍️ Сообщение:'} ${formData.messag
         </p>
       )}
     </div>
+     </div>
   );
 };
 

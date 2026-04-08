@@ -5,7 +5,7 @@
   display: flex;
   flex-direction: column;
   .delivery-main {
-    margin-bottom: 60px;
+    margin-bottom: 40px;
     .block {
       padding: 20px;
       margin: 20px 0;
@@ -36,9 +36,9 @@
         margin: 10px 0;
       }
       h1 {
-        font-size: 30px;
-        margin-top: 10px;
-        margin-bottom: 10px;
+        font-size: 24px;
+        margin-top: 0px;
+        margin-bottom: 0px;
         font-weight: 500;
         line-height: 30px;
         text-align: right;
@@ -55,7 +55,7 @@
       align-items: center;
       margin: 0;
       padding-top: 5px;
-      font-size: 24px;
+      font-size: 18px;
       font-weight: 550;
       line-height: 27.42px;
       text-align: left;
@@ -64,7 +64,7 @@
       color: #05172f;
     }
     p {
-      font-size: 17px;
+      font-size: 14px;
       font-weight: 400;
       line-height: 25px;
       text-align: justified;
@@ -81,14 +81,17 @@
       }
     }
     h3 {
-      font-size: 22px;
+      font-size: 18px;
       font-weight: 550;
       line-height: 24.42px;
       text-align: left;
       text-underline-position: from-font;
       text-decoration-skip-ink: none;
       color: #000000;
+      margin-top: 0px;
+      margin-bottom: 0px;
     }
+
     ul {
       margin: 0;
       padding: 0;
