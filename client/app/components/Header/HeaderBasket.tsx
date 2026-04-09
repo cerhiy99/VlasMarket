@@ -1,30 +1,17 @@
 'use client';
-import React, { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import './HeaderBasket.scss';
 import BasketSVG from '../../assest/Header/Basket.svg';
-import DelSVG from '../../assest/Header/Del.svg';
-import LikeSVG from '../../assest/Header/Like.svg';
 import { Locale } from '@/i18n.config';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '@/app/store';
-import Image from 'next/image';
-import {
-  addToLike,
-  BasketItem,
-  decrementItemCount,
-  incrementItemCount,
-  removeFromBasket,
-  removeFromLike,
-  setIsOpenBasket,
-} from '@/app/store/reducers/cartReducer';
-import Link from 'next/link';
+import { setIsOpenBasket } from '@/app/store/reducers/cartReducer';
 import { useRouter } from 'next/navigation';
 import { getLocalizedPath } from '../utils/getLocalizedPath';
 import { useTranslation } from '@/context/TranslationProvider';
 import BonusSVG from '../../assest/Bonus.svg';
-import MinusSVG from '../../assest/Header/Basket/Minus.svg';
-import PlusSVG from '../../assest/Header/Basket/Plus.svg';
 import CloseSVG from '../../assest/Header/close.svg';
+import BasketItemComponent from './BasketItem';
 
 type Props = {
   lang: Locale;
@@ -33,32 +20,12 @@ type Props = {
 const HeaderBasket = ({ lang }: Props) => {
   const { t } = useTranslation();
   const router = useRouter();
-  const dropdownRef = useRef<HTMLDivElement>(null);
   const [count, setCount] = useState(0);
 
   const dispatch = useDispatch();
-  const { basket, isOpenBasket, like } = useSelector(
+  const { basket, isOpenBasket } = useSelector(
     (state: RootState) => state.BasketAndLike
   );
-
-  const toggleDropdownOpen = () => {
-    if (window.outerWidth < 768) return;
-    dispatch(setIsOpenBasket(true));
-  };
-  const toggleDropdownClose = () => {
-    if (window.outerWidth < 768) return;
-    dispatch(setIsOpenBasket(false));
-  };
-
-  const handleClickOutside = (event: MouseEvent) => {
-    if (window.outerWidth < 768) return;
-    if (
-      dropdownRef.current &&
-      !dropdownRef.current.contains(event.target as Node)
-    ) {
-      dispatch(setIsOpenBasket(false));
-    }
-  };
 
   /*useEffect(() => {
     (if (isOpenBasket) {
@@ -76,18 +43,6 @@ const HeaderBasket = ({ lang }: Props) => {
     setCount(basket.length);
   }, [basket]);
 
-  const delWithBasket = (id: number) => {
-    dispatch(removeFromBasket(id));
-  };
-
-  const plus = (id: number) => {
-    dispatch(incrementItemCount(id));
-  };
-
-  const minus = (id: number) => {
-    dispatch(decrementItemCount(id));
-  };
-
   const [sum, setSum] = useState(0);
   useEffect(() => {
     let tempSum = 0;
@@ -98,15 +53,6 @@ const HeaderBasket = ({ lang }: Props) => {
   useEffect(() => {
     if (isOpenBasket) dispatch(setIsOpenBasket(true));
   }, [isOpenBasket]);
-
-  const clickLike = (product: BasketItem) => {
-    if (like.some((x) => x.id == product.id)) {
-      dispatch(removeFromLike(product.id));
-    } else {
-      const { count, ...productWithoutCount } = product;
-      dispatch(addToLike(productWithoutCount));
-    }
-  };
 
   return (
     <div onClick={() => setIsOpenBasket(true)} id="header-basket-container">
@@ -152,121 +98,7 @@ const HeaderBasket = ({ lang }: Props) => {
                   <CloseSVG />
                 </div>
               </h2>
-              <div className="itemWrapper">
-                {basket.map((x) => (
-                  <Link
-                    key={x.id}
-                    href={getLocalizedPath(
-                      `/${lang}/goods/${x.volume.url}`,
-                      lang
-                    )}
-                  >
-                    <div className="basket-goods2">
-                      <div className="basket-goods-img">
-                        <Image
-                          src={`${process.env.NEXT_PUBLIC_SERVER}${x.volume.img}`}
-                          width={82}
-                          height={82}
-                          alt={lang == 'ru' ? x.nameRU : x.nameUA}
-                        />
-                      </div>
-                      <div className="basket-goods-text23">
-                        <h3>{lang == 'ru' ? x.nameRU : x.nameUA}</h3>
-                        <div className="bonus">
-                          <BonusSVG /> <span>+15</span>{' '}
-                          {
-                            lang == 'ru'
-                              ? 'бонусов' /* за покупку*/
-                              : 'бонусів' /* за покупку*/
-                          }
-                        </div>
-                        <div className="art">Артикул: fdsfsdf</div>
-                      </div>
-                      <div
-                        onClick={(e) => {
-                          e.preventDefault();
-                          e.stopPropagation();
-                          return false;
-                        }}
-                        className="add-or-minus-or-basket"
-                      >
-                        <div className="add-or-minus">
-                          <div
-                            className="arrow plus"
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              e.preventDefault();
-                              plus(x.id);
-                            }}
-                          >
-                            <PlusSVG />
-                          </div>
-                          <div className="count">{x.count}</div>
-                          <div
-                            className="arrow minus"
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              e.preventDefault();
-                              if (x.count > 1) minus(x.id);
-                            }}
-                          >
-                            <MinusSVG />
-                          </div>
-                        </div>
-                      </div>
-
-                      <div className="like-and-del-and-price">
-                        <div className="like-and-del">
-                          <div
-                            onClick={(e) => {
-                              e.preventDefault();
-                              e.stopPropagation();
-                              clickLike(x);
-                            }}
-                            className={`like ${like.some((j) => j.id == x.id) ? 'liked' : ''}`}
-                          >
-                            <LikeSVG />
-                          </div>
-                          <div
-                            onClick={(e) => {
-                              e.preventDefault();
-                              e.stopPropagation();
-                              delWithBasket(x.id);
-                            }}
-                            className="del"
-                          >
-                            <DelSVG />
-                          </div>
-                        </div>
-                        <div className="price-container">
-                          {x.volume.price != x.volume.priceWithDiscount && (
-                            <div className="old-price-and-discount">
-                              <div className="old-price">
-                                {x.volume.price} ₴
-                              </div>
-                              <div className="discount">
-                                -
-                                {(
-                                  100 -
-                                  (x.volume.priceWithDiscount * 100) /
-                                    x.volume.price
-                                )
-                                  .toFixed(1)
-                                  .toString()
-                                  .replace('.', ',')}
-                                %
-                              </div>
-                            </div>
-                          )}
-                          <div className="price-with-discount">
-                            {x.volume.priceWithDiscount} <span>₴</span>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </Link>
-                ))}
-              </div>
+              <BasketItemComponent lang={lang} />
             </div>
           )}
           {basket.length > 0 && (
@@ -310,7 +142,7 @@ const HeaderBasket = ({ lang }: Props) => {
                   <button
                     onClick={() => {
                       router.push(getLocalizedPath(`/${lang}/basket`, lang));
-                      setIsOpenBasket(false);
+                      dispatch(setIsOpenBasket(false));
                     }}
                     className="in-basket"
                   >
