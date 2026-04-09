@@ -22,7 +22,9 @@ export default async function page({
         <h2 className="mainContnent__title">{cabinetPage.title}</h2>
         <p className="mainContnent__text">{cabinetPage.text}</p>
       </div>
-      <TabNavigation lang={lang} />
+      {
+        //<TabNavigation lang={lang} />
+      }
     </div>
   );
 }

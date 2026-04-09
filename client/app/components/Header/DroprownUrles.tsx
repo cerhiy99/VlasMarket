@@ -39,9 +39,9 @@ const DroprownUrles = ({ dictionary, lang }: Props) => {
         <Link href={getLocalizedPath(`/${lang}/about-us`, lang)}>
           {dictionary.aboutUs}
         </Link>
-        <Link href={getLocalizedPath(`/${lang}/contact`, lang)}>
+        {/*<Link href={getLocalizedPath(`/${lang}/contact`, lang)}>
           {dictionary.contact}
-        </Link>
+        </Link>*/}
         <Link href={getLocalizedPath(`/${lang}/blog/1`, lang)}>Блог</Link>
         <Link href={getLocalizedPath(`/${lang}/bonus`, lang)}>
           {dictionary.bonus}

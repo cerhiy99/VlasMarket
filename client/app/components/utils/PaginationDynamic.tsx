@@ -52,7 +52,7 @@ const PaginationDynamic: React.FC<PaginationProps> = ({
   };
 
   return (
-    <div className="pagination">
+    <div className="pagination-dynamic">
       <button
         className="butNoSelect"
         disabled={currentPage === 1}

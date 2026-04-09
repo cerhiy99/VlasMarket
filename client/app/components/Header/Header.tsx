@@ -56,9 +56,9 @@ const Header = async ({ lang }: Props) => {
                 <DroprownUrles lang={lang} dictionary={header.aboutShop} />
                 <Link
                   className="button-url"
-                  href={getLocalizedPath(`/${lang}/brands`, lang)}
+                  href={getLocalizedPath(`/${lang}/cooperation`, lang)}
                 >
-                  {header.brands}
+                  {header.cooperation}
                 </Link>
                 <div
                   style={{ backgroundColor: '#F80000', borderRadius: '6px' }}
@@ -77,9 +77,9 @@ const Header = async ({ lang }: Props) => {
               <div className="list-url-and-language-and-contact">
                 <Link
                   className="button-url"
-                  href={getLocalizedPath(`/${lang}/cooperation`, lang)}
+                  href={getLocalizedPath(`/${lang}/brands`, lang)}
                 >
-                  {header.cooperation}
+                  {header.brands}
                 </Link>
                 <ContactWithUs lang={lang} dictionary={header.contact} />
                 <SetLanguage lang={lang} />

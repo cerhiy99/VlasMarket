@@ -1,7 +1,10 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { use, useEffect, useState } from 'react';
 import './History.scss';
+import { $authHost } from '@/app/http';
+import PaginationDynamic from '@/app/components/utils/PaginationDynamic';
+import { Locale } from '@/i18n.config';
 
 type OrderItem = {
   id: number;
@@ -90,8 +93,13 @@ const mockOrders: Order[] = [
   },
 ];
 
-const HistoryPage = () => {
+const limit = 5;
+
+const HistoryPage = ({ params }: { params: Promise<{ lang: Locale }> }) => {
+  const { lang } = use(params);
+  const [page, setPage] = useState(1);
   const [orders, setOrders] = useState<Order[]>(mockOrders);
+  const [countPages, setCountPages] = useState(1);
 
   const toggleOrder = (id: number) => {
     setOrders((prev) =>
@@ -100,6 +108,50 @@ const HistoryPage = () => {
       )
     );
   };
+
+  const getOrders = async () => {
+    try {
+      const res = await $authHost.get(
+        `order/getMyOrdersWithPagination?page=${page}&limit=${limit}`
+      );
+      const fotmatCreatedAt = (date: any) => {
+        const createdAt = new Date(date);
+        const formattedDate = new Intl.DateTimeFormat('uk-UA', {
+          day: 'numeric',
+          month: 'long',
+          year: 'numeric',
+        }).format(createdAt);
+        return formattedDate;
+      };
+      setOrders(
+        res.data.orders.map((x: any) => ({
+          id: x.id,
+          date: fotmatCreatedAt(x.createdAt),
+          status: x.status,
+          paymentLabel: x.typePay.replaceAll('⚪', ''),
+          deliveryType: x.deliveryType,
+          deliveryLabel: x.deliveryType,
+          total: x.sum,
+          opened: false,
+          items: JSON.parse(x.basket).map((x: any) => ({
+            id: x.id,
+            title: lang == 'ru' ? x.nameru : x.nameuk,
+            image: process.env.NEXT_PUBLIC_SERVER + x.volumes[0].imgs[0].img,
+            quantity: x.count,
+            price: x.priceWithDiscount,
+          })),
+        }))
+      );
+      setCountPages(Math.ceil(res.data.count / limit));
+    } catch (err) {
+      console.log(err);
+      return alert('Помилка');
+    }
+  };
+
+  useEffect(() => {
+    getOrders();
+  }, [page]);
 
   const handleRepeatOrder = (order: Order) => {
     console.log('Repeat order:', order);
@@ -121,24 +173,30 @@ const HistoryPage = () => {
               >
                 <div className="history-order-summary">
                   <div className="history-order-left">
-                    <h3 className="history-order-number">{order.orderNumber}</h3>
+                    <h3 className="history-order-number">
+                      {order.orderNumber}
+                    </h3>
                     <p className="history-order-date">{order.date}</p>
 
                     <div className="history-order-meta">
                       <div className="history-order-row">
                         <span
                           className={`history-status ${
-                            order.status === 'received' ? 'received' : 'processing'
+                            order.status === 'received'
+                              ? 'received'
+                              : 'processing'
                           }`}
                         >
-                          {order.status === 'received' ? 'Отримано' : 'В обробці'}
+                          {order.status === 'received'
+                            ? 'Отримано'
+                            : 'В обробці'}
                         </span>
 
                         <div className="history-inline-info">
-                          <img
+                          {/*<img
                             src="/images/payment-card-icon.svg"
                             alt="payment"
-                          />
+                          />*/}
                           <span>{order.paymentLabel}</span>
                         </div>
                       </div>
@@ -147,7 +205,8 @@ const HistoryPage = () => {
                         <div className="history-inline-info delivery">
                           <img
                             src={
-                              order.deliveryType === 'nova'
+                              order.deliveryType.includes('Нов') ||
+                              order.deliveryType.includes('нов')
                                 ? '/images/nova-poshta-icon.svg'
                                 : '/images/ukrposhta-icon.svg'
                             }
@@ -204,19 +263,29 @@ const HistoryPage = () => {
                               <img src={item.image} alt={item.title} />
                             </div>
 
-                            <div className="history-product-title">{item.title}</div>
+                            <div className="history-product-title">
+                              {item.title}
+                            </div>
                           </div>
 
-                          <div className="history-product-qty">x{item.quantity}</div>
+                          <div className="history-product-qty">
+                            x{item.quantity}
+                          </div>
 
-                          <div className="history-product-price">{item.price} ₴</div>
+                          <div className="history-product-price">
+                            {item.price} ₴
+                          </div>
                         </div>
                       ))}
                     </div>
 
                     <div className="history-total-row">
-                      <span className="history-total-label">Сума до оплати:</span>
-                      <strong className="history-total-value">{order.total} ₴</strong>
+                      <span className="history-total-label">
+                        Сума до оплати:
+                      </span>
+                      <strong className="history-total-value">
+                        {order.total} ₴
+                      </strong>
                     </div>
 
                     <div className="history-bottom-info">
@@ -236,7 +305,8 @@ const HistoryPage = () => {
                         <div className="history-bottom-delivery">
                           <img
                             src={
-                              order.deliveryType === 'nova'
+                              order.deliveryType.includes('Нов') ||
+                              order.deliveryType.includes('нов')
                                 ? '/images/nova-poshta-icon.svg'
                                 : '/images/ukrposhta-icon.svg'
                             }
@@ -252,34 +322,12 @@ const HistoryPage = () => {
             ))}
           </div>
 
-          <div className="history-pagination">
-            <button type="button" className="history-pagination-arrow">
-              ←
-            </button>
-
-            <button type="button" className="history-pagination-btn">
-              1
-            </button>
-            <button type="button" className="history-pagination-btn">
-              2
-            </button>
-            <button type="button" className="history-pagination-btn active">
-              3
-            </button>
-            <button type="button" className="history-pagination-btn">
-              4
-            </button>
-            <button type="button" className="history-pagination-btn">
-              ...
-            </button>
-            <button type="button" className="history-pagination-btn">
-              6
-            </button>
-
-            <button type="button" className="history-pagination-arrow">
-              →
-            </button>
-          </div>
+          <PaginationDynamic
+            totalPages={countPages}
+            currentPage={page}
+            onPageChange={setPage}
+            to="true"
+          />
         </div>
       </main>
     </div>

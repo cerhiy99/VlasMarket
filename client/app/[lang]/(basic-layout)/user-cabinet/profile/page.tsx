@@ -1,9 +1,34 @@
-import React from 'react';
+'use client';
+import React, { useEffect, useState } from 'react';
 import './Profile.scss';
+import { useSelector } from 'react-redux';
+import { RootState } from '@/app/store';
 
 type Props = {};
 
 const page = (props: Props) => {
+  const { user } = useSelector((state: RootState) => state.user);
+  const [formData, setFormData] = useState({
+    name: '',
+    surname: '',
+    birthday: '',
+    phone: '',
+    email: '',
+    city: '',
+    password: '',
+  });
+  useEffect(() => {
+    if (user)
+      setFormData({
+        name: user.name,
+        surname: user.surname,
+        birthday: '',
+        phone: user.phone,
+        email: user.email,
+        city: '',
+        password: '',
+      });
+  }, [user]);
   return (
     <div className="profile-container">
       <h1 className="profile-title">Профіль</h1>
@@ -14,14 +39,22 @@ const page = (props: Props) => {
             <label>
               Ім&apos;я <span>*</span>
             </label>
-            <input type="text" placeholder="Введіть ім'я" />
+            <input
+              value={formData.name}
+              type="text"
+              placeholder="Введіть ім'я"
+            />
           </div>
 
           <div className="profile-field">
             <label>
               Прізвище <span>*</span>
             </label>
-            <input type="text" placeholder="Введіть прізвище" />
+            <input
+              value={formData.surname}
+              type="text"
+              placeholder="Введіть прізвище"
+            />
           </div>
 
           <div className="profile-field profile-field-birthday">
@@ -50,7 +83,12 @@ const page = (props: Props) => {
                 <img src="/images/arrow-down-icon.svg" alt="open" />
               </button>
 
-              <input type="text" value="+380" readOnly />
+              <input
+                value={formData.phone}
+                type="text"
+                defaultValue={'+380'}
+                readOnly
+              />
             </div>
           </div>
 
@@ -58,7 +96,11 @@ const page = (props: Props) => {
             <label>
               Електронна пошта <span>*</span>
             </label>
-            <input type="email" placeholder="Введіть електронну пошту" />
+            <input
+              type="email"
+              value={formData.email}
+              placeholder="Введіть електронну пошту"
+            />
           </div>
 
           <div className="profile-field">
