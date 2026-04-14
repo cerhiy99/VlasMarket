@@ -6,6 +6,7 @@ import Image from 'next/image';
 import { ImgInterface } from '@/app/interfaces/goods';
 import { Locale } from '@/i18n.config';
 import { useTranslation } from '@/context/TranslationProvider';
+import DeliverySVG from '../../assest/FreeDelivery2.svg';
 
 type Props = {
   listImg: ImgInterface[];
@@ -56,7 +57,9 @@ const ImgContainer = ({
         )}
         {isHit && <div className="is-hit">Топ продаж</div>}
         {isFreeDelivery && (
-          <div className="is-free-delivery">{t('miniGoods2.freeDelivery')}</div>
+          <div className="is-free-delivery">
+            <DeliverySVG /> {t('miniGoods2.freeDelivery')}
+          </div>
         )}
         {isNovetly && <div className="is-hit">Новинка</div>}
       </div>

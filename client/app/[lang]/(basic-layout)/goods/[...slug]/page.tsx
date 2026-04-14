@@ -320,6 +320,8 @@ const getData = async (
         art: volume.art,
         imgs: volume.imgs,
       })),
+      reviews: x.reviews,
+      averageRating: x.averageRating,
     }));
 
     return {

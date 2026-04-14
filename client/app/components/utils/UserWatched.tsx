@@ -79,7 +79,10 @@ const UserWatched = ({ lang, dictionary, type, title }: Props) => {
   return (
     <div className="list-goods-left-container-main">
       {' '}
-      <p className="h2">{title}</p>
+      <p className="h2">
+        {/*title*/}
+        {lang == 'ru' ? 'Просмотренные товары' : 'Переглянуті товари'}
+      </p>
       <div className="list-goods-left-container" id="listGoodsLeft">
         <div
           className={`scroll-button left ${

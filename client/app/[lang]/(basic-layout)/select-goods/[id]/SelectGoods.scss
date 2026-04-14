@@ -1,20 +1,23 @@
-@import "../../App.scss";
+@import '../../App.scss';
 
 .select-goods-container {
   @include responsive-width;
   margin-bottom: 60px;
   h1 {
-    font-size: 24px;
-    font-weight: 550;
-    line-height: 30px;
-    // letter-spacing: -0.531000018119812px;
-    text-align: left;
-    text-underline-position: from-font;
-    text-decoration-skip-ink: none;
+    font-weight: 600;
+    font-style: Semi Bold;
+    font-size: 26px;
+    line-height: 100%;
+    letter-spacing: 0%;
+    color: #000000;
     @media (max-width: 768px) {
-      font-size: 18px;
+      font-size: 26px;
       line-height: 24px;
       margin-bottom: 0;
+      text-align: center;
+      @media (max-width: 400px) {
+        font-size: 22px;
+      }
     }
   }
 }

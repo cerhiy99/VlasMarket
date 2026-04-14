@@ -13,6 +13,7 @@ import { useTranslation } from '@/context/TranslationProvider';
 import ComparisonSVG from '../../assest/Goods/comparison.svg';
 import BonusSVG from '../../assest/Goods/Bonus.svg';
 import Comparison from './Comparison';
+import MyRating from '../SelectGoods/MyRating';
 
 type Props = {
   goods: GoodInterface;
@@ -39,6 +40,9 @@ const MiniGoods = ({ goods, dictionary, lang }: Props) => {
     setSelectVolumeIdx(clickedVolumeIdx);
   };
   const { t } = useTranslation();
+  if (goods.id == 26388) {
+    console.log(goods);
+  }
   return (
     <Link
       href={getLocalizedPath(`/${lang}/goods/${goods.volumes[0].url}`, lang)}
@@ -96,33 +100,14 @@ const MiniGoods = ({ goods, dictionary, lang }: Props) => {
         <h3>{lang == 'ru' ? goods.nameru : goods.nameuk}</h3>
         <div className="rating-and-art">
           <div className="rating">
-            <div style={{ display: 'flex', gap: '2px' }}>
-              {[1, 2, 3, 4, 5].map((star) => (
-                <svg
-                  width="10"
-                  height="10"
-                  viewBox="0 0 10 10"
-                  fill={
-                    star <= Math.round(parseFloat(goods.averageRating))
-                      ? '#fe680a'
-                      : '#ffffff'
-                  }
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    d="M4.44348 0.621094C4.59077 0.325891 5.01298 0.32589 5.16028 0.621094L6.03235 2.37109C6.20708 2.72138 6.54167 2.96462 6.92883 3.02246L8.86243 3.31152C9.18851 3.36061 9.31844 3.76097 9.08313 3.99219L7.6886 5.3623C7.40949 5.63668 7.28225 6.02998 7.3468 6.41602L7.66907 8.34473C7.72317 8.67003 7.38259 8.917 7.08997 8.76465L5.35559 7.8623C5.00849 7.68175 4.59527 7.68175 4.24817 7.8623L2.51379 8.76465C2.22117 8.91699 1.88059 8.67003 1.93469 8.34473L2.25696 6.41602C2.32151 6.02998 2.19427 5.63668 1.91516 5.3623L0.52063 3.99219C0.285323 3.76097 0.415249 3.36061 0.741333 3.31152L2.67493 3.02246C3.06209 2.96462 3.39668 2.72138 3.57141 2.37109L4.44348 0.621094Z"
-                    stroke="#7F7F7F"
-                    stroke-width="0.8"
-                  />
-                </svg>
-              ))}
-            </div>
+            <MyRating rating={parseFloat(goods.averageRating)} />
             <span>
-              ({goods.reviews?.length || 0}) {t('miniGoods.reviews')}
+              ({goods.reviews?.length || 0}){' '}
+              {lang == 'ru' ? 'Отзивов' : 'Відгуків'}
               {/*goods.countReview*/}
             </span>
           </div>
-          <div className="art">
+          <div className="art-mini-goods">
             Артикул: {goods.volumes[selectVolumeIdx].art}
           </div>
         </div>

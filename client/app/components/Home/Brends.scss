@@ -1,0 +1,113 @@
+.brends-wrapper {
+  position: relative;
+  margin-top: 60px;
+  width: 100%;
+  @media (max-width: 768px) {
+    margin-top: 10px;
+  }
+
+  .brends-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(167px, 1fr));
+    gap: 10px;
+    max-height: 87px;
+    overflow: hidden;
+
+    a {
+      text-decoration: none;
+      .brend {
+        background: white;
+        height: 85px;
+        border-radius: 12px;
+        border: 1px solid #ebd8e4;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #000;
+        transition: 0.3s;
+        &:hover {
+          border-color: #f80000;
+        }
+      }
+    }
+  }
+
+  .slider-arrow,
+  .pagination-dots {
+    display: none;
+  }
+
+  @media (max-width: 1024px) {
+    .slider-arrow {
+      display: flex;
+      position: absolute;
+      top: 20px;
+      transform: translateY(-50%);
+      z-index: 10;
+      width: 28px;
+      height: 28px;
+      background: white;
+      border: 1px solid #eee;
+      border-radius: 50%;
+      align-items: center;
+      justify-content: center;
+      color: #ff8a8a;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      cursor: pointer;
+
+      &.prev {
+        left: 5px;
+      }
+      &.next {
+        right: 5px;
+      }
+    }
+
+    .brends-container {
+      overflow: unset;
+      display: flex;
+      gap: 6.66px; // Підібрано так, щоб між 4 елементами було 3 відступи
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      scrollbar-width: none;
+      max-height: unset;
+      &::-webkit-scrollbar {
+        display: none;
+      }
+
+      a {
+        // Рівно 4 елементи в ряд: (100% - (3 відступи * 6.66px)) / 4
+        flex: 0 0 calc((100% - 20px) / 4);
+        scroll-snap-align: start;
+        scroll-snap-stop: always; // Примусова зупинка на кожній четвірці
+
+        .brend {
+          height: 40px;
+          font-size: 10px;
+          padding: 2px;
+          border-radius: 8px;
+        }
+      }
+    }
+
+    .pagination-dots {
+      display: flex;
+      justify-content: center;
+      gap: 6px;
+      margin-top: 15px;
+
+      .dot {
+        width: 8px;
+        height: 8px;
+        background: #e5e5e5;
+        border-radius: 50%;
+        cursor: pointer;
+        transition: background 0.3s;
+
+        &.active {
+          background: #ff8a8a;
+        }
+      }
+    }
+  }
+}

@@ -312,6 +312,10 @@
           transition:
             opacity 0.2s ease,
             transform 0.2s ease;
+          @media (max-width: 370px) {
+            transform: scale(0.8); // Лого трохи стискається і зникає
+            width: 200px;
+          }
         }
 
         .sea42 {

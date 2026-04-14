@@ -1,5 +1,11 @@
 .bread-crumbs-container {
   overflow-x: auto;
+
+  .home-svg {
+    display: flex;
+    align-items: center;
+    padding-bottom: 2px;
+  }
   .bread-crumb {
     display: flex;
     flex-direction: row;

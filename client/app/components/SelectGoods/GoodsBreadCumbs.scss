@@ -18,6 +18,11 @@
   &::-webkit-scrollbar-thumb:hover {
     background-color: #a0a0a0; /* Трохи темніший сірий при наведенні */
   }
+  .home-svg {
+    display: flex;
+    align-items: center;
+    padding-bottom: 2px;
+  }
   a {
     text-decoration: none;
     font-size: 14px;
@@ -31,7 +36,7 @@
     //text-wrap: nowrap;
     //word-wrap: nowrap;
     &:hover {
-      color: #fe680a;
+      color: #ff8e8e;
     }
     /*@media (max-width: 768px) {
       display: -webkit-box;
@@ -51,12 +56,12 @@
     //text-overflow: ellipsis; /* Показывает троеточие */
     //text-decoration: none;
     font-size: 14px;
-    font-weight: 400;
+    font-weight: 300;
     line-height: 14.5px;
     //text-align: left;
     //text-underline-position: from-font;
     //text-decoration-skip-ink: none;
-    color: #788289;
+    color: #6d676b;
     //text-wrap: nowrap;
     //word-wrap: nowrap;
     flex-wrap: nowrap;

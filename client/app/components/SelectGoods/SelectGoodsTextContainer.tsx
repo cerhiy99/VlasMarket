@@ -1,18 +1,27 @@
 'use client';
 import React, { useEffect, useState } from 'react';
 import './SelectGoodsTextContainer.scss';
-import ReviewsSVG from '../../assest/Goods/Revies.svg';
 import BasketSVG from '../../assest/Goods/BasketBig.svg';
+import CompresionSVG from '../../assest/Goods/comparison.svg';
 import LikeSVG from '../../assest/Goods/LikeBig.svg';
+import LikeFattySVG from '../../assest/Goods/LikeFatty.svg';
 import NewPostSVG from '../../assest/Goods/NewPost.svg';
 import UkrPostSVG from '../../assest/Goods/UkrPost.svg';
-import MyRating from './MyRating';
+import DeliverySVG from '../../assest/Goods/Delivery.svg';
+import PaySVG from '../../assest/Goods/Pay.svg';
 import { Locale } from '@/i18n.config';
+import BonusSVG from '../../assest/Bonus.svg';
 import Link from 'next/link';
 import AvailabilityTrue from '../../assest/Goods/AvailubutlyTrue.svg';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '@/app/store';
-import { addToBasket, addToLike, removeFromLike } from '@/app/store/reducers/cartReducer';
+import {
+  addToBasket,
+  addToComparisont,
+  addToLike,
+  removeFromComparisont,
+  removeFromLike,
+} from '@/app/store/reducers/cartReducer';
 import { GoodInterface } from '@/app/interfaces/goods';
 import { toSlug } from '../utils/addittional';
 import FastBuy from '../FastBuy/FastBuy';
@@ -21,6 +30,7 @@ import { usePathname } from 'next/navigation';
 import { useTranslation } from '@/context/TranslationProvider';
 import { $host } from '@/app/http';
 import { IoCloseCircle } from 'react-icons/io5';
+import MyRatingSelectGoods from './MyRatingSelectGoods';
 
 type Props = {
   selectGoods: GoodInterface;
@@ -43,8 +53,45 @@ const SelectGoodsTextContainer = ({
 }: Props) => {
   const { t } = useTranslation();
   const [isInLike, setisInLike] = useState(false);
-  const { like } = useSelector((state: RootState) => state.BasketAndLike);
+  const [isInCompresion, setisInCompresion] = useState(false);
+
+  const { like, comparison } = useSelector(
+    (state: RootState) => state.BasketAndLike
+  );
   const dispatch = useDispatch();
+  useEffect(() => {
+    setisInCompresion(
+      comparison.findIndex((x: any) => x.id == selectGoods.id) != -1
+    );
+  }, [comparison]);
+
+  const inCompresion = async (e: any) => {
+    e.preventDefault();
+    if (!isInCompresion) {
+      const goods: any = await getGoods(
+        selectGoods.volumes[selectVolume].id,
+        selectGoods.id
+      );
+      dispatch(
+        addToComparisont({
+          id: goods.id,
+          nameUA: goods.nameuk,
+          nameRU: goods.nameru,
+          volume: {
+            id: goods.volumes[0].id,
+            img: goods.volumes[0].imgs[0].img,
+            price: goods.volumes[0].price,
+            volume: goods.volumes[0].volume + goods.volumes[0].nameVolume,
+            discount: goods.volumes[0].discount,
+            priceWithDiscount: goods.volumes[0].priceWithDiscount,
+            url: goods.volumes[0].url,
+          },
+        })
+      );
+    } else {
+      dispatch(removeFromComparisont(selectGoods.id));
+    }
+  };
   useEffect(() => {
     setisInLike(like.findIndex((x: any) => x.id == selectGoods.id) != -1);
   }, [like]);
@@ -52,7 +99,10 @@ const SelectGoodsTextContainer = ({
   const inLike = async (e: any) => {
     e.preventDefault();
     if (!isInLike) {
-      const goods: any = await getGoods(selectGoods.volumes[selectVolume].id, selectGoods.id);
+      const goods: any = await getGoods(
+        selectGoods.volumes[selectVolume].id,
+        selectGoods.id
+      );
       dispatch(
         addToLike({
           id: goods.id,
@@ -94,7 +144,10 @@ const SelectGoodsTextContainer = ({
   const inBasket = async (e: any) => {
     e.preventDefault();
     if (!isInBasket) {
-      const goods: any = await getGoods(selectGoods.volumes[selectVolume].id, selectGoods.id);
+      const goods: any = await getGoods(
+        selectGoods.volumes[selectVolume].id,
+        selectGoods.id
+      );
       dispatch(
         addToBasket({
           id: goods.id,
@@ -120,7 +173,9 @@ const SelectGoodsTextContainer = ({
   };
 
   const unHoverVolume = () => {
-    const searchSelectVolumeId = selectGoods.volumes.findIndex((x) => x.id == selectVolumeId);
+    const searchSelectVolumeId = selectGoods.volumes.findIndex(
+      (x) => x.id == selectVolumeId
+    );
     //setVolume(clickedVolumeIdx)
   };
   const [fastBuy, setFastBuy] = useState(false);
@@ -151,44 +206,42 @@ const SelectGoodsTextContainer = ({
       <div className="text-container">
         <div className="text-container-card rating-reviews-and-other-and-art">
           <div className="rating-and-reviews">
-            <MyRating rating={parseFloat(reviews.avarge) || 0} />
-            <Link href={'#listReviews'} className="reviews">
-              <ReviewsSVG />
-              <span>
-                {dictionary.reviews} {selectGoods.reviews.length}
-              </span>
-            </Link>
-            <Link href="#addReview" className="write-review">
-              {dictionary.writeReview}
-            </Link>
             <div
               style={{
-                backgroundColor:
-                  selectGoods.volumes[selectVolume].isAvailability === 'inStock'
-                    ? '#edf8ea' // зелений фон для в наявності
-                    : selectGoods.volumes[selectVolume].isAvailability === 'customMade'
-                      ? '#fff4e5' // оранжевий фон для під замовлення
-                      : '#ffe5e5', // червоний фон для відсутності
                 color:
                   selectGoods.volumes[selectVolume].isAvailability === 'inStock'
-                    ? '#43b02a' // зелений текст
-                    : selectGoods.volumes[selectVolume].isAvailability === 'customMade'
+                    ? '#43B02A' // зелений текст
+                    : selectGoods.volumes[selectVolume].isAvailability ===
+                        'customMade'
                       ? '#ff8c00' // оранжевий текст
                       : '#ff0000', // червоний текст
               }}
               className="is-availability"
             >
-              {selectGoods.volumes[selectVolume].isAvailability === 'inStock' ? (
+              {selectGoods.volumes[selectVolume].isAvailability ===
+              'inStock' ? (
                 <AvailabilityTrue />
-              ) : selectGoods.volumes[selectVolume].isAvailability === 'customMade' ? (
+              ) : selectGoods.volumes[selectVolume].isAvailability ===
+                'customMade' ? (
                 <></>
               ) : (
                 <IoCloseCircle size={21} />
               )}
-              <p>{t('stock.' + selectGoods.volumes[selectVolume].isAvailability)}</p>
+              <p>
+                {t('stock.' + selectGoods.volumes[selectVolume].isAvailability)}
+              </p>
             </div>
+            <MyRatingSelectGoods rating={parseFloat(reviews.avarge) || 0} />
+            <Link href={'#listReviews'} className="reviews">
+              ({selectGoods.reviews.length}) {dictionary.reviews}
+            </Link>
+            <Link href="#addReview" className="write-review">
+              {dictionary.writeReview}
+            </Link>
           </div>
-          <div className="art">Артикул: {selectGoods.volumes[selectVolume].art}</div>
+          <div className="art23">
+            Артикул: {selectGoods.volumes[selectVolume].art}
+          </div>
         </div>
         <div className="text-container-card list-info-for-made">
           <div className="info-for-made producer">
@@ -197,7 +250,10 @@ const SelectGoodsTextContainer = ({
             <div className="info">
               <Link
                 style={{ whiteSpace: 'nowrap' }}
-                href={getLocalizedPath(`/${lang}/brands/${toSlug(selectGoods.brend.name)}/1`, lang)}
+                href={getLocalizedPath(
+                  `/${lang}/brands/${toSlug(selectGoods.brend.name)}/1`,
+                  lang
+                )}
               >
                 {selectGoods.brend.name}
               </Link>
@@ -216,14 +272,17 @@ const SelectGoodsTextContainer = ({
                   lang
                 )}
               >
-                {lang == 'ru' ? selectGoods.countryMade.nameru : selectGoods.countryMade.nameuk}
+                {lang == 'ru'
+                  ? selectGoods.countryMade.nameru
+                  : selectGoods.countryMade.nameuk}
               </Link>
             </div>
           </div>
           {selectGoods.nameTypeuk && (
             <div className="info-for-made list-masa">
               <div className="title">
-                {lang == 'ru' ? selectGoods.nameTyperu : selectGoods.nameTypeuk}:
+                {lang == 'ru' ? selectGoods.nameTyperu : selectGoods.nameTypeuk}
+                :
               </div>
               <div className="line" />
               <div className="info" onMouseLeave={() => unHoverVolume()}>
@@ -237,7 +296,8 @@ const SelectGoodsTextContainer = ({
                         className={`masa ${selectVolume == idx && 'masa-select'}`}
                         style={{ whiteSpace: 'nowrap' }}
                       >
-                        {x.volume.split('||')[lang == 'ru' ? 1 : 0]} {x.nameVolume}
+                        {x.volume.split('||')[lang == 'ru' ? 1 : 0]}{' '}
+                        {x.nameVolume}
                       </div>
                     );
                   } else
@@ -248,7 +308,8 @@ const SelectGoodsTextContainer = ({
                         className={`masa ${selectVolume == idx && 'masa-select'}`}
                         style={{ whiteSpace: 'nowrap' }}
                       >
-                        {x.volume.split('||')[lang == 'ru' ? 1 : 0]} {x.nameVolume}
+                        {x.volume.split('||')[lang == 'ru' ? 1 : 0]}{' '}
+                        {x.nameVolume}
                       </div>
                     );
                 })}
@@ -258,43 +319,72 @@ const SelectGoodsTextContainer = ({
         </div>
         <div id="selectGoodsText" className="text-container-card buy">
           <div className="price-container-with-width">
-            <div className="price-container">
-              <div className="price-no-discount-and-discount">
-                {selectGoods.volumes[selectVolume].discount > 0 && (
-                  <>
-                    <div className="price-no-discount">
-                      {selectGoods.volumes[selectVolume].price} <span>₴</span>
-                    </div>
-                    <div className="discount">-{selectGoods.volumes[selectVolume].discount}%</div>
-                  </>
-                )}
+            <div className="prices-and-bonus">
+              <div className="price-container">
+                <div className="price-no-discount-and-discount">
+                  {selectGoods.volumes[selectVolume].discount > 0 && (
+                    <>
+                      <div className="price-no-discount">
+                        {selectGoods.volumes[selectVolume].price} <span>₴</span>
+                      </div>
+                      <div className="discount">
+                        -{selectGoods.volumes[selectVolume].discount}%
+                      </div>
+                    </>
+                  )}
+                </div>
+                <div className="price-with-discount">
+                  {selectGoods.volumes[selectVolume].priceWithDiscount}{' '}
+                  <span>₴</span>
+                </div>
               </div>
-              <div className="price-with-discount">
-                {selectGoods.volumes[selectVolume].priceWithDiscount} <span>₴</span>
+              <div className="bonus">
+                <BonusSVG /> <span>+100</span> {dictionary.bonus}
               </div>
             </div>
-            <div className={`like ${isInLike ? 'isLike' : ''}`} onClick={inLike}>
+            <div
+              className={`like ${isInLike ? 'isLike' : ''}`}
+              onClick={inLike}
+            >
               <LikeSVG />
             </div>
           </div>
-          <div className="button-buy">
-            <button className={isInBasket ? 'inBasket' : ''} onClick={inBasket}>
-              {!isInBasket ? (
-                <>
-                  <BasketSVG /> {dictionary.buy}
-                </>
-              ) : (
-                <>
-                  <BasketSVG /> {lang == 'ru' ? 'В корзине' : 'У кошику'}
-                </>
-              )}
-            </button>
+          <div className="buttons">
+            <div className="button-buy">
+              <button
+                className={isInBasket ? 'inBasket' : ''}
+                onClick={inBasket}
+              >
+                {!isInBasket ? (
+                  <>
+                    <BasketSVG /> {lang == 'ru' ? 'Купити' : 'Купить'}
+                  </>
+                ) : (
+                  <>
+                    <BasketSVG /> {lang == 'ru' ? 'В корзине' : 'У кошику'}
+                  </>
+                )}
+              </button>
+            </div>
+            <div onClick={fastBuyOpen} className="fast-buy">
+              <button>
+                {lang == 'ru' ? 'Купить в 1 клик' : 'Купити в 1 клік'}
+              </button>
+            </div>
           </div>
-          <div onClick={fastBuyOpen} className="fast-buy">
-            <button>{dictionary.fastBuy}</button>
-          </div>
-          <div className={`like ${isInLike ? 'isLike' : ''}`} onClick={inLike}>
-            <LikeSVG />
+          <div className="compresion-and-like">
+            <div
+              className={`compresion ${isInCompresion ? 'isCompresion' : ''}`}
+              onClick={inCompresion}
+            >
+              <CompresionSVG />
+            </div>
+            <div
+              className={`like ${isInLike ? 'isLike' : ''}`}
+              onClick={inLike}
+            >
+              <LikeFattySVG />
+            </div>
           </div>
         </div>
         <div className="text-container-card delivery">
@@ -302,7 +392,7 @@ const SelectGoodsTextContainer = ({
           <div className="list-post">
             <div className="title">
               <NewPostSVG />
-              <h4>{dictionary.newPost}</h4>
+              <h5>{dictionary.newPost}</h5>
             </div>
             <ul>
               <li>{dictionary.department}</li>
@@ -313,17 +403,22 @@ const SelectGoodsTextContainer = ({
           <div className="list-post">
             <div className="title">
               <UkrPostSVG />
-              <h4>{dictionary.urkPost}</h4>
+              <h5>{dictionary.urkPost}</h5>
             </div>
-            <ul>
-              <li>{dictionary.deliveryUrkPost}</li>
+            <ul style={{ listStyle: 'none' }}>
+              <li style={{ marginLeft: 0 }}>{dictionary.deliveryUrkPost}</li>
             </ul>
           </div>
-          <div className="info">{dictionary.deliveryInfo}</div>
+          <div className="info">
+            <DeliverySVG />
+            {dictionary.deliveryInfo}
+          </div>
         </div>
         <div className="pay">
           <h4>{dictionary.pay}</h4>
-          <div className="info">{dictionary.payInfo}</div>
+          <div className="info">
+            <PaySVG /> {dictionary.payInfo}
+          </div>
         </div>
       </div>
     </>

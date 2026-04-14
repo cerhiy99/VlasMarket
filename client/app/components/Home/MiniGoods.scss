@@ -129,6 +129,9 @@
     flex-wrap: wrap;
     gap: 5px;
     height: 34px;
+    width: 100%;
+    max-width: 100%;
+    overflow: hidden;
     .rating {
       display: flex;
       flex-direction: row;
@@ -137,16 +140,8 @@
       span {
         white-space: nowrap;
       }
-      .MuiRating-decimal {
-        svg {
-          fill: #fe680a;
-          width: 14.82px;
-          height: 14.91px;
-        }
-      }
       span {
         font-weight: 400;
-        font-style: Regular;
         font-size: 13px;
         line-height: 100%;
         letter-spacing: 0%;
@@ -156,7 +151,7 @@
         }
       }
     }
-    .art {
+    .art-mini-goods {
       font-size: 14px;
       font-weight: 400;
       line-height: 16px;
@@ -176,6 +171,7 @@
       justify-content: left;
       align-items: flex-start;
       flex-direction: column-reverse;
+      text-align: left;
     }
   }
   .list-volume {
@@ -237,6 +233,7 @@
         line-height: 100%;
         letter-spacing: 0%;
         color: #000000;
+        white-space: nowrap;
       }
       font-weight: 400;
       font-style: Regular;

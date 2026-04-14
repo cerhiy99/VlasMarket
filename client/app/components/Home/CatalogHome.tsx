@@ -1,7 +1,6 @@
 'use client';
-import React, { useRef, useState } from 'react';
+import React, { useState } from 'react';
 import './CatalogHome.scss';
-import CatalogSVG from '../../assest/Header/Catalog.svg';
 import RightSVG from '../../assest/Header/Right.svg';
 import { Locale } from '@/i18n.config';
 import Image from 'next/image';
@@ -50,7 +49,7 @@ const CatalogHome = ({ lang, dictionary, catalog }: Props) => {
 
   const [selectCategory, setSelectCategory] = useState<number>(4);
   const router = useRouter();
-
+  console.log(4234, catalog);
   return (
     <>
       {' '}

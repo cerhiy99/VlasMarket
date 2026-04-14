@@ -4,16 +4,24 @@ import InBasket from './InBasket';
 import Image from 'next/image';
 import LikeSVG from '../../assest/Goods/LikeBig.svg';
 import BasketBig from '../../assest/Goods/BasketBig.svg';
-import MyRating from './MyRating';
-import ReviewsSVG from '../../assest/Goods/Revies.svg';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '@/app/store';
-import { addToBasket, addToLike, removeFromLike } from '@/app/store/reducers/cartReducer';
+import {
+  addToBasket,
+  addToComparisont,
+  addToLike,
+  removeFromComparisont,
+  removeFromLike,
+} from '@/app/store/reducers/cartReducer';
 import { GoodInterface } from '@/app/interfaces/goods';
 import { Locale } from '@/i18n.config';
 import { useRouter } from 'next/navigation';
 import { useTranslation } from '@/context/TranslationProvider';
 import { $host } from '@/app/http';
+import ComresionSVG from '../../assest/comparison2.svg';
+import ComresionBigSVG from '../../assest/comparison.svg';
+import DeliverySVG from '../../assest/FreeDelivery2.svg';
+import MyRatingSelectGoods from './MyRatingSelectGoods';
 
 //const widthBorderAndShadow = 0;
 //const maxWidthScreen = 1600;
@@ -31,69 +39,6 @@ type Props = {
   isHit: boolean;
 };
 
-const revie: any = {
-  countImgs: 8,
-  avarge: 4.1,
-  countReviews: 51,
-  count5: 32,
-  count4: 7,
-  count3: 2,
-  count2: 1,
-  count1: 7,
-  listReviews: [
-    {
-      id: 1,
-      name: 'Ольга Михайловская',
-      description:
-        '3.08.24 придбала в магазині Comfi мультиварку Perfezza PMC-013. При першому використанні мультиварка перестала працювати. Її відправляють на ремонт на срок до місяця. Гроші заплатила, мультиварки немає. Шкода, що продають в Comfi настільки не якісний товар.',
-      countStar: 4,
-      img: 'image5.png',
-      disadvantages: '15 хвилин роботи і зламалася.',
-      date: '24 серпня 2024',
-    },
-    {
-      id: 2,
-      name: 'Ольга Михайловская',
-      description:
-        '3.08.24 придбала в магазині Comfi мультиварку Perfezza PMC-013. При першому використанні мультиварка перестала працювати. Її відправляють на ремонт на срок до місяця. Гроші заплатила, мультиварки немає. Шкода, що продають в Comfi настільки не якісний товар.',
-      countStar: 4,
-      img: 'image5.png',
-      disadvantages: '15 хвилин роботи і зламалася.',
-      date: '24 серпня 2024',
-    },
-    {
-      id: 3,
-      name: 'Ольга Михайловская',
-      description:
-        '3.08.24 придбала в магазині Comfi мультиварку Perfezza PMC-013. При першому використанні мультиварка перестала працювати. Її відправляють на ремонт на срок до місяця. Гроші заплатила, мультиварки немає. Шкода, що продають в Comfi настільки не якісний товар.',
-      countStar: 4,
-      img: 'image5.png',
-      disadvantages: '15 хвилин роботи і зламалася.',
-      date: '24 серпня 2024',
-    },
-    {
-      id: 9,
-      name: 'Ольга Михайловская',
-      description:
-        '3.08.24 придбала в магазині Comfi мультиварку Perfezza PMC-013. При першому використанні мультиварка перестала працювати. Її відправляють на ремонт на срок до місяця. Гроші заплатила, мультиварки немає. Шкода, що продають в Comfi настільки не якісний товар.',
-      countStar: 4,
-      img: 'image5.png',
-      disadvantages: '15 хвилин роботи і зламалася.',
-      date: '24 серпня 2024',
-    },
-    {
-      id: 12,
-      name: 'Ольга Михайловская',
-      description:
-        '3.08.24 придбала в магазині Comfi мультиварку Perfezza PMC-013. При першому використанні мультиварка перестала працювати. Її відправляють на ремонт на срок до місяця. Гроші заплатила, мультиварки немає. Шкода, що продають в Comfi настільки не якісний товар.',
-      countStar: 4,
-      img: 'image5.png',
-      disadvantages: '15 хвилин роботи і зламалася.',
-      date: '24 серпня 2024',
-    },
-  ],
-};
-
 const CardSelectGoods = ({
   selectGoods,
   dictionary,
@@ -108,7 +53,9 @@ const CardSelectGoods = ({
   const { t } = useTranslation();
   const cardGoods = useRef<any>(null);
   const [isInLike, setisInLike] = useState(false);
-  const { like } = useSelector((state: RootState) => state.BasketAndLike);
+  const { like, comparison } = useSelector(
+    (state: RootState) => state.BasketAndLike
+  );
   const dispatch = useDispatch();
   useEffect(() => {
     setisInLike(like.findIndex((x) => x.id == selectGoods.id) != -1);
@@ -128,7 +75,10 @@ const CardSelectGoods = ({
   const inLike = async (e: any) => {
     e.preventDefault();
     if (!isInLike) {
-      const goods: any = await getGoods(selectGoods.volumes[selectVolume].id, selectGoods.id);
+      const goods: any = await getGoods(
+        selectGoods.volumes[selectVolume].id,
+        selectGoods.id
+      );
       dispatch(
         addToLike({
           id: goods.id,
@@ -149,7 +99,43 @@ const CardSelectGoods = ({
       dispatch(removeFromLike(selectGoods.id));
     }
   };
+  const [isInCompresion, setisInCompresion] = useState(false);
+
+  useEffect(() => {
+    setisInCompresion(
+      comparison.findIndex((x) => x.id == selectGoods.id) != -1
+    );
+  }, [comparison]);
+
+  const inCompresion = async (e: any) => {
+    e.preventDefault();
+    if (!isInCompresion) {
+      const goods: any = await getGoods(
+        selectGoods.volumes[selectVolume].id,
+        selectGoods.id
+      );
+      dispatch(
+        addToComparisont({
+          id: goods.id,
+          nameUA: goods.nameuk,
+          nameRU: goods.nameru,
+          volume: {
+            id: goods.volumes[0].id,
+            img: goods.volumes[0].imgs[0].img,
+            price: goods.volumes[0].price,
+            volume: goods.volumes[0].volume,
+            discount: goods.volumes[0].discount,
+            priceWithDiscount: goods.volumes[0].priceWithDiscount,
+            url: goods.volumes[0].url,
+          },
+        })
+      );
+    } else {
+      dispatch(removeFromComparisont(selectGoods.id));
+    }
+  };
   const [isInBasket, setIsInBasket] = useState(false); //тимчасово
+
   const { basket } = useSelector((state: RootState) => state.BasketAndLike);
 
   useEffect(() => {
@@ -159,7 +145,10 @@ const CardSelectGoods = ({
   const inBasket = async (e: any) => {
     e.preventDefault();
     if (!isInBasket) {
-      const goods: any = await getGoods(selectGoods.volumes[selectVolume].id, selectGoods.id);
+      const goods: any = await getGoods(
+        selectGoods.volumes[selectVolume].id,
+        selectGoods.id
+      );
       dispatch(
         addToBasket({
           id: goods.id,
@@ -180,63 +169,6 @@ const CardSelectGoods = ({
     }
   };
 
-  /*const [topFatherElem, setTopFatherElem] = useState(0);
-
-  useEffect(() => {
-    const elem = document.querySelector('#aboutGoodsContainer');
-    //console.log(43, elem?.getBoundingClientRect().y)
-    setTopFatherElem(elem?.getBoundingClientRect().y || -32);
-  }, []);
-
-  useEffect(() => {
-    const onScroll = () => {
-      if (cardGoods.current) {
-        const elem = document.querySelector('#aboutGoodsContainer');
-        if (elem) {
-          const borderHeight = 0;
-          const topElem = elem.getBoundingClientRect().y;
-          const elemHeight = elem.getBoundingClientRect().height;
-          const leftElem = elem.getBoundingClientRect().x;
-          const heightSelectGoods =
-            cardGoods.current.getBoundingClientRect().height;
-          const heightHeader = 110;
-          const heightMonitor = window.innerHeight;
-          if (
-            topElem * -1 + heightHeader >
-            elemHeight -
-              heightMonitor / 2 -
-              heightSelectGoods / 2 +
-              heightHeader / 2
-          ) {
-            cardGoods.current.style.position = 'absolute';
-            cardGoods.current.style.top = elemHeight - heightSelectGoods + 'px';
-            cardGoods.current.style.right = 0;
-          } else if (
-            topElem &&
-            topElem <
-              heightMonitor / 2 - heightSelectGoods / 2 + heightHeader / 2
-          ) {
-            //cardGoods.current.style.top =
-              //(topElem * -1 + heightHeader).toString() + 'px'
-            cardGoods.current.style.right = leftElem + 'px';
-
-            cardGoods.current.style.position = 'fixed';
-            cardGoods.current.style.top = `${
-              heightMonitor / 2 - heightSelectGoods / 2 + heightHeader / 2
-            }px`;
-          } else {
-            cardGoods.current.style.position = 'absolute';
-            cardGoods.current.style.right = 0;
-            cardGoods.current.style.top = -borderHeight + 'px';
-          }
-        }
-      }
-    };
-    onScroll();
-    window.addEventListener('scroll', onScroll);
-
-    return () => window.removeEventListener('scroll', onScroll);
-  }, [cardGoods]);*/
   const router = useRouter();
 
   let isPadding = false;
@@ -248,13 +180,34 @@ const CardSelectGoods = ({
     <div style={{ top: heightHeader }} ref={cardGoods} className="select-goods">
       <div className="img-container">
         <div className="discount-or-hit">
-          {isDiscount && <div className="discount">{lang == 'ru' ? 'Акция' : 'Акція'}</div>}
+          {isDiscount && (
+            <div className="discount">{lang == 'ru' ? 'Акция' : 'Акція'}</div>
+          )}
           {isHit && <div className="is-hit">Топ продаж</div>}
-          {isFreeDelivery && <div className="is-free-delivery">{t('miniGoods2.freeDelivery')}</div>}
+          {isFreeDelivery && (
+            <div className="is-free-delivery">
+              <DeliverySVG />
+              {t('miniGoods2.freeDelivery')}
+            </div>
+          )}
           {isNovetly && <div className="is-hit">Новинка</div>}
         </div>
+        <div className="like-and-compresion">
+          <div className={`like ${isInLike ? 'isLike' : ''}`} onClick={inLike}>
+            <LikeSVG />
+          </div>
+          <div
+            onClick={inCompresion}
+            className={`compresion ${isInCompresion ? 'inCompresion' : ''}`}
+          >
+            <ComresionSVG />
+          </div>
+        </div>
         <Image
-          src={process.env.NEXT_PUBLIC_SERVER + selectGoods.volumes[selectVolume].imgs[0].img}
+          src={
+            process.env.NEXT_PUBLIC_SERVER +
+            selectGoods.volumes[selectVolume].imgs[0].img
+          }
           unoptimized={true}
           alt={
             lang == 'ru'
@@ -266,55 +219,83 @@ const CardSelectGoods = ({
           style={{ paddingTop: isPadding ? '35px' : 0 }}
         />
       </div>
-      <div className="name">{lang == 'ru' ? selectGoods.nameru : selectGoods.nameuk}</div>
-      <div className="additional-container">
-        <div className="additionall">
-          <MyRating rating={review.avarge} />
-          <div className="reviews">
-            <ReviewsSVG />
-            <span onClick={() => router.push('#listReviews')}>
-              {t('selectGoods.reviews')}: {review.listReviews.length}
-            </span>
+      <div className="text-cont">
+        <div className="name">
+          {lang == 'ru' ? selectGoods.nameru : selectGoods.nameuk}
+        </div>
+
+        <div className="art">
+          Артикул: {selectGoods.volumes[selectVolume].art}
+        </div>
+        <div className="additional-container">
+          <div className="additionall">
+            <MyRatingSelectGoods rating={review.avarge} />
+            <div className="reviews">
+              <span onClick={() => router.push('#listReviews')}>
+                ({review.listReviews.length}) {t('selectGoods.reviews')}
+              </span>
+            </div>
           </div>
-          <div onClick={() => router.push('#addReview')} className="write-review">
+
+          <div
+            onClick={() => router.push('#addReview')}
+            className="write-review"
+          >
             {t('selectGoods.writeReview')}
           </div>
         </div>
-        <div className="art">Артикул: {selectGoods.volumes[selectVolume].art}</div>
-      </div>
-      <div className="buy">
-        <div className="price">
-          {selectGoods.volumes[selectVolume].discount > 0 && (
-            <div className="price-no-discount-and-discount">
-              <div className="price-no-discount">{selectGoods.volumes[selectVolume].price}₴</div>
-              <div className="discount">-{selectGoods.volumes[selectVolume].discount}%</div>
+        <div className="buy">
+          <div className="price-with-basket">
+            <div className="price">
+              {selectGoods.volumes[selectVolume].discount > 0 && (
+                <div className="price-no-discount-and-discount">
+                  <div className="price-no-discount">
+                    {selectGoods.volumes[selectVolume].price}₴
+                  </div>
+                  <div className="discount">
+                    -{selectGoods.volumes[selectVolume].discount}%
+                  </div>
+                </div>
+              )}
+              <div className="price-with-discount">
+                {selectGoods.volumes[selectVolume].priceWithDiscount}{' '}
+                <span>₴</span>
+              </div>
             </div>
-          )}
-          <div className="price-with-discount">
-            {selectGoods.volumes[selectVolume].priceWithDiscount} <span>₴</span>
+            <div className="button-buy2">
+              <InBasket id={selectGoods.id}>
+                <button
+                  onClick={inBasket}
+                  className={isInBasket ? 'inBasket' : ''}
+                  //style={{ backgroundColor: isInBasket ? '#269569' : '#fe680a' }}
+                >
+                  {!isInBasket ? (
+                    <>
+                      <BasketBig /> {dictionary.buy}
+                    </>
+                  ) : (
+                    <>
+                      <BasketBig /> {t('selectGoods.inBasket')}
+                    </>
+                  )}{' '}
+                </button>
+              </InBasket>
+            </div>
           </div>
-        </div>
-        <div className="button-buy">
-          <InBasket id={selectGoods.id}>
-            <button
-              onClick={inBasket}
-              className={isInBasket ? 'inBasket' : ''}
-              //style={{ backgroundColor: isInBasket ? '#269569' : '#fe680a' }}
+          <div className="like-and-compresion">
+            <div
+              onClick={inCompresion}
+              className={`compresion ${isInCompresion ? 'inCompresion' : ''}`}
             >
-              {!isInBasket ? (
-                <>
-                  <BasketBig /> {dictionary.buy}
-                </>
-              ) : (
-                <>
-                  <BasketBig /> {t('selectGoods.inBasket')}
-                </>
-              )}{' '}
-            </button>
-          </InBasket>
-        </div>
-        <div className={`like ${isInLike ? 'isLike' : ''}`} onClick={inLike}>
-          <LikeSVG />
+              <ComresionBigSVG />
+            </div>
+            <div
+              className={`like ${isInLike ? 'isLike' : ''}`}
+              onClick={inLike}
+            >
+              <LikeSVG />
+            </div>
+          </div>
         </div>
       </div>
     </div>

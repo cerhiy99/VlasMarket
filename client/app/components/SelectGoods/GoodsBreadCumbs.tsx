@@ -4,6 +4,7 @@ import RightSVG from '../../assest/Goods/Right.svg';
 import { getDictionary } from '@/lib/dictionary';
 import './GoodsBreadCumbs.scss';
 import { getLocalizedPath } from '../utils/getLocalizedPath';
+import HomeSVG from '../../assest/Home.svg';
 
 type Props = {
   lang: Locale;
@@ -14,6 +15,9 @@ const GoodsBreadCumbs = async ({ lang, listUrl }: Props) => {
   const { urls } = await getDictionary(lang);
   return (
     <div className="goods-bread-crumbs-container">
+      <div className="home-svg">
+        <HomeSVG />
+      </div>
       <Link href={getLocalizedPath(`/${lang}`, lang)}>{urls.main}</Link>
       {listUrl.slice(0, listUrl.length - 1).map((x, idx) => (
         <div key={idx} className="list-urls">

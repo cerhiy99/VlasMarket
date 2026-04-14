@@ -16,7 +16,10 @@ const BreadCrumbs = ({ listUrles, lang }: Props) => {
     <div className="bread-crumbs-container">
       <div className="bread-crumb">
         <Link href={getLocalizedPath(`/${lang}`, lang)}>
-          <MainSVG /> {lang == 'ru' ? 'Главная' : 'Головна'}
+          <div className="home-svg">
+            <MainSVG />
+          </div>{' '}
+          {lang == 'ru' ? 'Главная' : 'Головна'}
         </Link>
         {listUrles.slice(0, listUrles.length - 1).map((x) => (
           <Link key={x.url} href={`${x.url}`}>

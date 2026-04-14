@@ -10,6 +10,11 @@
     margin-top: 30px;
     margin-bottom: 40px;
     position: relative;
+    @media (max-width: 1024px) {
+      .catalog-home-container {
+        display: none;
+      }
+    }
   }
   .home-goods {
     @include responsive-width;
@@ -23,6 +28,13 @@
       letter-spacing: 0%;
       color: #000000;
       margin-top: 80px;
+      @media (max-width: 768px) {
+        margin-top: 30px;
+
+        &.add-margin {
+          margin-top: 90px;
+        }
+      }
     }
     .row-blog {
       display: flex;
@@ -126,6 +138,10 @@
     background-color: #ffffff;
     border: 1px solid #ebd8e4;
     border-radius: 12px;
+    @media (max-width: 768px) {
+      margin-top: 10px;
+      margin-bottom: 30px;
+    }
 
     p {
       margin-top: 12px;

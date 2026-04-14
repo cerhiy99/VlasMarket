@@ -108,7 +108,7 @@ const AboutGoods = ({
   const [textExpanded, setTextExpanded] = useState(true);
   const [isCharacteristicsExpanded, setCharacteristicsExpanded] =
     useState(true);
-  const [reviewsExpanded, setReviewsExpanded] = useState(false);
+  const [reviewsExpanded, setReviewsExpanded] = useState(true);
 
   function parseCharacteristics(html: string, lang: 'ru' | 'ua') {
     const parser = new DOMParser();
@@ -210,7 +210,59 @@ const AboutGoods = ({
                 {textExpanded
                   ? t('selectGoods.unShow')
                   : t('selectGoods.showAll')}
-                {textExpanded ? <span>-</span> : <span>+</span>}
+                {textExpanded ? (
+                  <span>
+                    <svg
+                      width="15"
+                      height="15"
+                      viewBox="0 0 15 15"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M6.70844 3.1725C8.16431 2.999 9.63695 3.30676 10.9015 4.04878C12.166 4.7908 13.153 5.9263 13.7116 7.28188C13.7637 7.4222 13.7637 7.57655 13.7116 7.71688C13.4819 8.27375 13.1783 8.79719 12.8091 9.27312M8.80282 8.84875C8.44919 9.1903 7.97556 9.37929 7.48394 9.37501C6.99232 9.37074 6.52205 9.17355 6.17441 8.82591C5.82677 8.47827 5.62957 8.008 5.6253 7.51638C5.62103 7.02476 5.81002 6.55113 6.15157 6.1975M10.9247 10.9369C10.0956 11.428 9.1706 11.735 8.21242 11.8371C7.25423 11.9392 6.28529 11.834 5.37134 11.5287C4.45738 11.2233 3.61981 10.7249 2.91545 10.0673C2.21108 9.40975 1.65641 8.60835 1.28907 7.7175C1.23698 7.57718 1.23698 7.42282 1.28907 7.2825C1.84321 5.93866 2.81824 4.81078 4.06782 4.06812M1.25032 1.25L13.7503 13.75"
+                        stroke="black"
+                        stroke-width="1.25"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      />
+                    </svg>
+                  </span>
+                ) : (
+                  <span>
+                    <svg
+                      width="15"
+                      height="15"
+                      viewBox="0 0 15 15"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M6.70844 3.1725C8.16431 2.999 9.63695 3.30676 10.9015 4.04878C12.166 4.7908 13.153 5.9263 13.7116 7.28188C13.7637 7.4222 13.7637 7.57655 13.7116 7.71688C13.4819 8.27375 13.1783 8.79719 12.8091 9.27312"
+                        fill="black"
+                      />
+                      <path
+                        d="M8.80282 8.84875C8.44919 9.1903 7.97556 9.37929 7.48394 9.37501C6.99232 9.37074 6.52205 9.17355 6.17441 8.82591C5.82677 8.47827 5.62957 8.008 5.6253 7.51638C5.62103 7.02476 5.81002 6.55113 6.15157 6.1975"
+                        fill="black"
+                      />
+                      <path
+                        d="M10.9247 10.9369C10.0956 11.428 9.1706 11.735 8.21242 11.8371C7.25423 11.9392 6.28529 11.834 5.37134 11.5287C4.45738 11.2233 3.61981 10.7249 2.91545 10.0673C2.21108 9.40975 1.65641 8.60835 1.28907 7.7175C1.23698 7.57718 1.23698 7.42282 1.28907 7.2825C1.84321 5.93866 2.81824 4.81078 4.06782 4.06812"
+                        fill="black"
+                      />
+                      <path
+                        d="M1.25032 1.25L13.7503 13.75L1.25032 1.25Z"
+                        fill="black"
+                      />
+                      <path
+                        d="M6.70844 3.1725C8.16431 2.999 9.63695 3.30676 10.9015 4.04878C12.166 4.7908 13.153 5.9263 13.7116 7.28188C13.7637 7.4222 13.7637 7.57655 13.7116 7.71688C13.4819 8.27375 13.1783 8.79719 12.8091 9.27312M8.80282 8.84875C8.44919 9.1903 7.97556 9.37929 7.48394 9.37501C6.99232 9.37074 6.52205 9.17355 6.17441 8.82591C5.82677 8.47827 5.62957 8.008 5.6253 7.51638C5.62103 7.02476 5.81002 6.55113 6.15157 6.1975M10.9247 10.9369C10.0956 11.428 9.1706 11.735 8.21242 11.8371C7.25423 11.9392 6.28529 11.834 5.37134 11.5287C4.45738 11.2233 3.61981 10.7249 2.91545 10.0673C2.21108 9.40975 1.65641 8.60835 1.28907 7.7175C1.23698 7.57718 1.23698 7.42282 1.28907 7.2825C1.84321 5.93866 2.81824 4.81078 4.06782 4.06812M1.25032 1.25L13.7503 13.75"
+                        stroke="black"
+                        stroke-width="1.25"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      />
+                    </svg>
+                  </span>
+                )}
               </button>
             </div>
           </div>
@@ -240,7 +292,7 @@ const AboutGoods = ({
                   <span>{selectGoods.linium.name}</span>
                 </li>*/}
               </ul>
-              <div className="button-show-other">
+              <div className="button-container">
                 <button
                   onClick={() =>
                     setCharacteristicsExpanded(!isCharacteristicsExpanded)
@@ -249,12 +301,65 @@ const AboutGoods = ({
                   {isCharacteristicsExpanded
                     ? t('selectGoods.unShow')
                     : t('selectGoods.showAll')}
-                  {isCharacteristicsExpanded ? <span>-</span> : <span>+</span>}
+                  {isCharacteristicsExpanded ? (
+                    <span>
+                      <svg
+                        width="15"
+                        height="15"
+                        viewBox="0 0 15 15"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          d="M6.70844 3.1725C8.16431 2.999 9.63695 3.30676 10.9015 4.04878C12.166 4.7908 13.153 5.9263 13.7116 7.28188C13.7637 7.4222 13.7637 7.57655 13.7116 7.71688C13.4819 8.27375 13.1783 8.79719 12.8091 9.27312M8.80282 8.84875C8.44919 9.1903 7.97556 9.37929 7.48394 9.37501C6.99232 9.37074 6.52205 9.17355 6.17441 8.82591C5.82677 8.47827 5.62957 8.008 5.6253 7.51638C5.62103 7.02476 5.81002 6.55113 6.15157 6.1975M10.9247 10.9369C10.0956 11.428 9.1706 11.735 8.21242 11.8371C7.25423 11.9392 6.28529 11.834 5.37134 11.5287C4.45738 11.2233 3.61981 10.7249 2.91545 10.0673C2.21108 9.40975 1.65641 8.60835 1.28907 7.7175C1.23698 7.57718 1.23698 7.42282 1.28907 7.2825C1.84321 5.93866 2.81824 4.81078 4.06782 4.06812M1.25032 1.25L13.7503 13.75"
+                          stroke="black"
+                          stroke-width="1.25"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                        />
+                      </svg>
+                    </span>
+                  ) : (
+                    <span>
+                      <svg
+                        width="15"
+                        height="15"
+                        viewBox="0 0 15 15"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          d="M6.70844 3.1725C8.16431 2.999 9.63695 3.30676 10.9015 4.04878C12.166 4.7908 13.153 5.9263 13.7116 7.28188C13.7637 7.4222 13.7637 7.57655 13.7116 7.71688C13.4819 8.27375 13.1783 8.79719 12.8091 9.27312"
+                          fill="black"
+                        />
+                        <path
+                          d="M8.80282 8.84875C8.44919 9.1903 7.97556 9.37929 7.48394 9.37501C6.99232 9.37074 6.52205 9.17355 6.17441 8.82591C5.82677 8.47827 5.62957 8.008 5.6253 7.51638C5.62103 7.02476 5.81002 6.55113 6.15157 6.1975"
+                          fill="black"
+                        />
+                        <path
+                          d="M10.9247 10.9369C10.0956 11.428 9.1706 11.735 8.21242 11.8371C7.25423 11.9392 6.28529 11.834 5.37134 11.5287C4.45738 11.2233 3.61981 10.7249 2.91545 10.0673C2.21108 9.40975 1.65641 8.60835 1.28907 7.7175C1.23698 7.57718 1.23698 7.42282 1.28907 7.2825C1.84321 5.93866 2.81824 4.81078 4.06782 4.06812"
+                          fill="black"
+                        />
+                        <path
+                          d="M1.25032 1.25L13.7503 13.75L1.25032 1.25Z"
+                          fill="black"
+                        />
+                        <path
+                          d="M6.70844 3.1725C8.16431 2.999 9.63695 3.30676 10.9015 4.04878C12.166 4.7908 13.153 5.9263 13.7116 7.28188C13.7637 7.4222 13.7637 7.57655 13.7116 7.71688C13.4819 8.27375 13.1783 8.79719 12.8091 9.27312M8.80282 8.84875C8.44919 9.1903 7.97556 9.37929 7.48394 9.37501C6.99232 9.37074 6.52205 9.17355 6.17441 8.82591C5.82677 8.47827 5.62957 8.008 5.6253 7.51638C5.62103 7.02476 5.81002 6.55113 6.15157 6.1975M10.9247 10.9369C10.0956 11.428 9.1706 11.735 8.21242 11.8371C7.25423 11.9392 6.28529 11.834 5.37134 11.5287C4.45738 11.2233 3.61981 10.7249 2.91545 10.0673C2.21108 9.40975 1.65641 8.60835 1.28907 7.7175C1.23698 7.57718 1.23698 7.42282 1.28907 7.2825C1.84321 5.93866 2.81824 4.81078 4.06782 4.06812M1.25032 1.25L13.7503 13.75"
+                          stroke="black"
+                          stroke-width="1.25"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                        />
+                      </svg>
+                    </span>
+                  )}
                 </button>
               </div>
             </div>
           )}
-          <div className="mob-watch-more">
+
+          {/*<div className="mob-watch-more">
             <div className="card-with-image__text_h2">
               <p className="h2">{t('selectGoods.watchMore')}</p>
             </div>
@@ -263,18 +368,13 @@ const AboutGoods = ({
               lang={lang}
               dictionary={dictionary.SeeMore}
             />
-          </div>
+          </div>*/}
           <div className="reviews" ref={refReview}>
             <div className="title">
               <h2>{dictionary.reviews}</h2>
-              <div className="line" />
               <p>{lang == 'ru' ? selectGoods.nameru : selectGoods.nameuk}</p>
             </div>
-            <div className="button-reviews">
-              <button>
-                {dictionary.reviews} ({revie.listReviews.length})
-              </button>
-            </div>
+
             <AddReview goodsId={selectGoods.id} dictionary={dictionary} />
             {/*<div className='list-imgs-buys'>
               <p>
@@ -376,7 +476,7 @@ const AboutGoods = ({
               )}
             </div>
 
-            {revie.listReviews.length > 3 && (
+            {/*revie.listReviews.length > 3 && (
               <div
                 className="button-all-reviews"
                 onClick={() => setReviewsExpanded(!reviewsExpanded)}
@@ -386,7 +486,7 @@ const AboutGoods = ({
                   : t('selectGoods.showReview')}
                 <ArrowRightSVG />
               </div>
-            )}
+            )*/}
           </div>
           {convertYoutubeUrl && (
             <div className="video" ref={refVideo}>
