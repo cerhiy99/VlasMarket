@@ -1,7 +1,6 @@
 import './Cabinet.scss';
 import MainImage from '@/app/assest/Cabinet/main.webp';
 import { Locale } from '@/i18n.config';
-import TabNavigation from './components/tabNavigation';
 import { getDictionary } from '@/lib/dictionary';
 import Image from 'next/image';
 

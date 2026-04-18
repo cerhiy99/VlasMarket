@@ -8,7 +8,13 @@ import Register, { FormRegisterProps } from './Register';
 import { useRouter } from 'next/navigation';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '@/app/store';
-import { logout, setToken } from '@/app/store/reducers/userReducers';
+import {
+  logout,
+  setOpenForgorPassword,
+  setOpenLogin,
+  setOpenRegister,
+  setToken,
+} from '@/app/store/reducers/userReducers';
 import { $authHost } from '@/app/http';
 import ForgotPassword from './ForgotPassword';
 import { getLocalizedPath } from '../utils/getLocalizedPath';
@@ -27,13 +33,15 @@ const AuthHeader = ({
   lang,
   onFormClose,
 }: Props) => {
-  const { isAuthorize } = useSelector((state: RootState) => state.user);
+  const {
+    isAuthorize,
+    isOpenLogin: logIsOpen,
+    isOpenRegister: isRegisterOpen,
+    isOpenForgotPass: isForgotPassword,
+  } = useSelector((state: RootState) => state.user);
   const dispatch = useDispatch();
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
-  const [logIsOpen, setLogIsOpen] = useState(false);
-  const [isRegisterOpen, setIsRegisterOpen] = useState(false);
-  const [isForgotPassword, setIsForgotPassword] = useState(false);
 
   const router = useRouter();
   const toggleDropdownOpen = () => {
@@ -64,30 +72,35 @@ const AuthHeader = ({
     };
   }, [isOpen]);
   const handleLogin = () => {
-    setLogIsOpen(false);
-    setIsRegisterOpen(true);
+    //setLogIsOpen(false);
+    dispatch(setOpenRegister(true));
   };
   const handleRegister = () => {
-    setLogIsOpen(true);
-    setIsRegisterOpen(false);
+    dispatch(setOpenRegister(true));
+    //setLogIsOpen(true);
+    //setIsRegisterOpen(false);
   };
 
   const closeLogIn = () => {
-    setLogIsOpen(false);
+    dispatch(setOpenLogin(false));
+    //setLogIsOpen(false);
   };
   const closeRegister = () => {
-    setIsRegisterOpen(false);
+    dispatch(setOpenRegister(false));
+    //setIsRegisterOpen(false);
   };
 
   const submitRegister = (e: React.FormEvent, formData: FormRegisterProps) => {
     e.preventDefault();
-    setIsRegisterOpen(false);
+    dispatch(setOpenRegister(false));
+    //setIsRegisterOpen(false);
     if (onFormClose) onFormClose();
     // Add your registration logic here
     router.push(getLocalizedPath(`/${lang}/user-cabinet`, lang));
   };
   const submitLogin = (formData: FormLoginProps) => {
-    setLogIsOpen(false);
+    dispatch(setOpenLogin(false));
+    //setLogIsOpen(false);
     if (onFormClose) onFormClose();
     // Add your registration logic here
     router.push(`/${lang}/user-cabinet`);
@@ -135,11 +148,11 @@ const AuthHeader = ({
     return () => clearInterval(interval); // очистити інтервал при розмонтуванні
   }, [isAuthorize]);
   const setForgotPassword = () => {
-    setIsForgotPassword(true);
-    setLogIsOpen(false);
+    dispatch(setOpenForgorPassword(true));
+    //dispatch(false);
   };
   const closeForgot = () => {
-    setIsForgotPassword(false);
+    dispatch(setOpenForgorPassword(false));
   };
   const { t } = useTranslation();
 
@@ -156,7 +169,7 @@ const AuthHeader = ({
           onClick={() => {
             isAuthorize
               ? router.push(getLocalizedPath(`/${lang}/user-cabinet`, lang))
-              : setLogIsOpen(true);
+              : dispatch(setOpenLogin(true));
           }}
         >
           <div className={`title ${isOpen ? 'open' : ''}`}>
@@ -170,13 +183,13 @@ const AuthHeader = ({
           <div className={`dropdown ${isOpen ? 'show' : ''}`}>
             <div
               className="log-in dropdownBtn"
-              onClick={() => setLogIsOpen(true)}
+              onClick={() => dispatch(setOpenLogin(true))}
             >
               {dictionary.logIn}
             </div>
             <div
               className="register dropdownBtn"
-              onClick={() => setIsRegisterOpen(true)}
+              onClick={() => dispatch(setOpenRegister(true))}
             >
               {dictionary.register}
             </div>
@@ -209,7 +222,7 @@ const AuthHeader = ({
           lang={lang}
         />
       )}
-      {isForgotPassword && <ForgotPassword close={closeForgot} />}
+      {isForgotPassword && <ForgotPassword lang={lang} close={closeForgot} />}
     </>
   );
 };

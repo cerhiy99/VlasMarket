@@ -1,5 +1,5 @@
 'use client';
-import React, { use, useEffect, useState } from 'react';
+import { use, useEffect, useState } from 'react';
 import './Like.scss';
 import { useDispatch, useSelector } from 'react-redux';
 import { Locale } from '@/i18n.config';
@@ -44,23 +44,18 @@ const page = ({ params }: Props) => {
     <div className="like-page-container">
       <h1>{lang == 'ru' ? 'Список желаний' : 'Список бажань'}</h1>
       {like.length == 0 ? (
-        <h6>{lang == 'ru' ? 'Список желаний пуст' : 'Список бажань пустий'}</h6>
+        <h2>Список бажань пустий</h2>
       ) : (
         <ListGoods lang={lang} isFilter data={fullGoods} />
       )}
       {like.length > 0 && (
         <div className="footer-like">
-          <div className="info">
-            {like.length}{' '}
-            {lang == 'ru' ? 'товаров на сумму' : 'товарів на суму'}{' '}
-          </div>
+          <div className="info">{like.length} товарів на суму </div>
           <div className="sum">
             {like.reduce((acc, x) => (acc += x.volume.priceWithDiscount), 0)}{' '}
             <span>₴</span>
           </div>
-          <button onClick={buyOll}>
-            {lang == 'ru' ? 'Купить все' : 'Купити все'}
-          </button>
+          <button onClick={buyOll}>Купити все</button>
         </div>
       )}
     </div>

@@ -26,6 +26,7 @@ const UpdateSubcategory = () => {
   const [nameru, setNameru] = useState<string>('');
   const [descriptionuk, setDescriptionuk] = useState<string>('');
   const [descriptionru, setDescriptionru] = useState<string>('');
+  const [img, setImg] = useState('');
   const [image, setImage] = useState<File | null>(null);
 
   const [error, setError] = useState<string | null>(null);
@@ -49,7 +50,7 @@ const UpdateSubcategory = () => {
       const fetchSubcategories = async () => {
         try {
           const res = await $authHost.get(
-            `subcategory/get?categoryId=${categoryId}`,
+            `subcategory/get?categoryId=${categoryId}`
           );
           console.log(4234, res);
           setSubcategories(res.data.res || []);
@@ -68,7 +69,7 @@ const UpdateSubcategory = () => {
   useEffect(() => {
     if (selectedSubcategoryId) {
       const selected = subcategories.find(
-        (s) => s.id === +selectedSubcategoryId,
+        (s) => s.id === +selectedSubcategoryId
       );
       console.log(54545, selected);
       if (selected) {
@@ -76,6 +77,7 @@ const UpdateSubcategory = () => {
         setNameru(selected.nameru);
         setDescriptionuk(selected.descriptionuk);
         setDescriptionru(selected.descriptionru);
+        setImg(selected.img);
       }
     } else {
       setNameua('');
@@ -106,7 +108,7 @@ const UpdateSubcategory = () => {
         formData,
         {
           headers: { 'Content-Type': 'multipart/form-data' },
-        },
+        }
       );
 
       setSuccess('Підкатегорія успішно оновлена.');
@@ -116,7 +118,7 @@ const UpdateSubcategory = () => {
       setSuccess(null);
     }
   };
-
+  console.log(423434, selectedSubcategoryId, subcategories);
   return (
     <div className="admin-category">
       <div className="add-category">
@@ -133,11 +135,13 @@ const UpdateSubcategory = () => {
               value={categoryId}
               onChange={(e) => setCategoryId(e.target.value)}
             >
-              {categories.map((category) => (
-                <MenuItem key={category.id} value={String(category.id)}>
-                  {category.nameuk}
-                </MenuItem>
-              ))}
+              {categories
+                .sort((a, b) => a.nameuk.localeCompare(b.nameuk))
+                .map((category) => (
+                  <MenuItem key={category.id} value={String(category.id)}>
+                    {category.nameuk}
+                  </MenuItem>
+                ))}
             </Select>
           </FormControl>
         </div>
@@ -204,6 +208,11 @@ const UpdateSubcategory = () => {
                 name="Опис російською"
               />
             </div>
+            <img
+              width={75}
+              height={75}
+              src={process.env.NEXT_PUBLIC_SERVER + img}
+            />
 
             <div className="text-with-input">
               <label htmlFor="image">Оновити зображення (необовʼязково)</label>

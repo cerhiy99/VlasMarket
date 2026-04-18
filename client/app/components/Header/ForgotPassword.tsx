@@ -2,12 +2,14 @@ import React, { useState } from 'react';
 import './FogotPassword.scss';
 import CloseSVG from '../../assest/Goods/Close.svg';
 import { $host } from '@/app/http';
+import { Locale } from '@/i18n.config';
 
 type Props = {
   close: any;
+  lang: Locale;
 };
 
-const ForgotPassword = ({ close }: Props) => {
+const ForgotPassword = ({ close, lang }: Props) => {
   const [email, setEmail] = useState('');
   const [message, setMeessage] = useState('');
   const [error, setError] = useState('');
@@ -21,9 +23,13 @@ const ForgotPassword = ({ close }: Props) => {
       const res = await $host.post('user/forgotPassword', { email });
 
       if (res.status == 239) {
-        setError('email не знайдено.');
+        setError(lang == 'ru' ? 'email не найден.' : 'email не знайдено.');
       } else {
-        setMeessage('Лист надійшов вам на пошту');
+        setMeessage(
+          lang == 'ru'
+            ? 'Письмо пришло вам на почту'
+            : 'Лист надійшов вам на пошту'
+        );
       }
     } catch (error) {
       setError('Сталася помилка, спробуйте пізніше.');
@@ -34,7 +40,7 @@ const ForgotPassword = ({ close }: Props) => {
     <div className="forgot-password-container">
       <form onSubmit={send} className="forgot-password">
         <div className="row">
-          <h3>Забули пароль</h3>
+          <h3>{lang == 'ru' ? 'Забыли пароль' : 'Забули пароль'}</h3>
           <div onClick={close} className="close">
             <CloseSVG />
           </div>
@@ -42,7 +48,8 @@ const ForgotPassword = ({ close }: Props) => {
 
         <div className="form-group">
           <label>
-            Електронна пошта <span>*</span>
+            {lang == 'ru' ? 'Электронная почта' : 'Електронна пошта'}{' '}
+            <span>*</span>
           </label>
 
           <input
@@ -51,20 +58,27 @@ const ForgotPassword = ({ close }: Props) => {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
-            placeholder="Введіть електронну пошту"
+            placeholder={
+              lang == 'ru'
+                ? 'Введите электронную почту'
+                : 'Введіть електронну пошту'
+            }
           />
         </div>
 
         <p className="forgot-password-text">
-          Вам надійде смс з посиланням для оновлення паролю, він буде дійсний
-          годину.
+          {lang == 'ru'
+            ? 'Вам придет смс со ссылкой для обновления пароля, он будет настоящий час.'
+            : 'Вам надійде смс з посиланням для оновлення паролю, він буде дійсний годину.'}
         </p>
 
         {message && <div className="success-message">{message}</div>}
         {error && <div className="error-message">{error}</div>}
 
         <div className="button-right">
-          <button type="submit">Надіслати</button>
+          <button type="submit">
+            {lang == 'ru' ? 'Отправить' : 'Надіслати'}
+          </button>
         </div>
       </form>
     </div>

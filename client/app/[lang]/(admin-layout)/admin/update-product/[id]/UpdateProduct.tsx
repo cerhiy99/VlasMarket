@@ -171,19 +171,25 @@ const UpdateProduct = ({ id }: { id: string }) => {
     { ruTitle: string; ruDescription: string }[]
   >([]);
 
-  const [productRecognitions, setProductRecognitions] = useState<{ recognitionId: number }[]>([]);
+  const [productRecognitions, setProductRecognitions] = useState<
+    { recognitionId: number }[]
+  >([]);
 
   useEffect(() => {}, [productRecognitions]);
 
   const updateCharacteristik = (productRecognitions2: any) => {
-    const newCharacteristicsuk = characteristicsuk.filter((x) => x.ukTitle != 'Призначення');
+    const newCharacteristicsuk = characteristicsuk.filter(
+      (x) => x.ukTitle != 'Призначення'
+    );
     const newCharacteristicsru = characteristicsru.filter(
       (x) => x.ruTitle != 'Назначение' && !x.ruTitle.startsWith('Назначен')
     );
     let newUkDescription = '';
     let newRuDescription = '';
     productRecognitions2.forEach((x: any, index: any) => {
-      const selectRecognitions: any = recognition.find((j: any) => j.id == x.recognitionId);
+      const selectRecognitions: any = recognition.find(
+        (j: any) => j.id == x.recognitionId
+      );
       newUkDescription += (index == 0 ? '' : ', ') + selectRecognitions.nameuk;
       newRuDescription += (index == 0 ? '' : ', ') + selectRecognitions.nameru;
     });
@@ -208,16 +214,22 @@ const UpdateProduct = ({ id }: { id: string }) => {
     productRecognitions2: any,
     recognition3: any
   ) => {
-    const newCharacteristicsuk = characteristicsuk2.filter((x: any) => x.ukTitle != 'Призначення');
+    const newCharacteristicsuk = characteristicsuk2.filter(
+      (x: any) => x.ukTitle != 'Призначення'
+    );
     const newCharacteristicsru = characteristicsru2.filter(
       (x: any) =>
-        x.ruTitle != 'Назначения' && x.ruTitle != 'Назначення' && x.ruTitle != 'Назначение'
+        x.ruTitle != 'Назначения' &&
+        x.ruTitle != 'Назначення' &&
+        x.ruTitle != 'Назначение'
     );
     let newUkDescription = '';
     let newRuDescription = '';
 
     productRecognitions2.forEach((x: any, index: any) => {
-      const selectRecognitions: any = recognition3.data.find((j: any) => j.id == x.recognitionId);
+      const selectRecognitions: any = recognition3.data.find(
+        (j: any) => j.id == x.recognitionId
+      );
 
       newUkDescription += (index == 0 ? '' : ', ') + selectRecognitions.nameuk;
       newRuDescription += (index == 0 ? '' : ', ') + selectRecognitions.nameru;
@@ -239,13 +251,26 @@ const UpdateProduct = ({ id }: { id: string }) => {
   };
 
   const addProductRecognitions = async (recognitionId: number) => {
-    if (productRecognitions.findIndex((x) => x.recognitionId == recognitionId) == -1) {
-      updateCharacteristik([...productRecognitions, { recognitionId: recognitionId }]);
-      setProductRecognitions([...productRecognitions, { recognitionId: recognitionId }]);
+    if (
+      productRecognitions.findIndex((x) => x.recognitionId == recognitionId) ==
+      -1
+    ) {
+      updateCharacteristik([
+        ...productRecognitions,
+        { recognitionId: recognitionId },
+      ]);
+      setProductRecognitions([
+        ...productRecognitions,
+        { recognitionId: recognitionId },
+      ]);
     } else {
-      updateCharacteristik(productRecognitions.filter((x) => x.recognitionId != recognitionId));
+      updateCharacteristik(
+        productRecognitions.filter((x) => x.recognitionId != recognitionId)
+      );
 
-      setProductRecognitions(productRecognitions.filter((x) => x.recognitionId != recognitionId));
+      setProductRecognitions(
+        productRecognitions.filter((x) => x.recognitionId != recognitionId)
+      );
     }
   };
   /*useEffect(() => {
@@ -256,7 +281,9 @@ const UpdateProduct = ({ id }: { id: string }) => {
   const [selectLinia, setSelectLinia] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('');
   const [selectedCountry, setSelectedCountry] = useState('');
-  const [isForMan, setIsForMan] = useState<null | true | false | undefined>(null);
+  const [isForMan, setIsForMan] = useState<null | true | false | undefined>(
+    null
+  );
   const [subcategoryId, setSubcategoryId] = useState<number>(0);
   const [volume, setVolume] = useState<VolumeItem[]>([]); // Стан для volume
   const [isDiscount, setIsDiscount] = useState(false);
@@ -280,7 +307,10 @@ const UpdateProduct = ({ id }: { id: string }) => {
       valueru: '', // Початково порожній рядок
     }))
   );
-  function mapToFilterValues(data: any[], filters: FilterCategory[]): FilterValue[] {
+  function mapToFilterValues(
+    data: any[],
+    filters: FilterCategory[]
+  ): FilterValue[] {
     const res = filters.map((item) => {
       if (data.find((x) => item.id == x.filterCategoryId)) {
         return {
@@ -305,7 +335,11 @@ const UpdateProduct = ({ id }: { id: string }) => {
           valueru: item.valueru
         })
 */
-  const handleFilterChange = (categoryId: number, value: string, lang: 'uk' | 'ru') => {
+  const handleFilterChange = (
+    categoryId: number,
+    value: string,
+    lang: 'uk' | 'ru'
+  ) => {
     setSelectedFilters((prevFilters) => {
       const newFilters = [...prevFilters];
       const filter = newFilters.find((f) => f.filterCategoryId === categoryId);
@@ -324,22 +358,31 @@ const UpdateProduct = ({ id }: { id: string }) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const [categoriesRes, brendsRes, countriesRes, linia]: any = await Promise.all([
-          $authHost.get(getCategoryUrl),
-          $authHost.get(getBrendUrl),
-          $authHost.get(getCountryUrl),
-          $authHost.get(getLinia),
-        ]);
+        const [categoriesRes, brendsRes, countriesRes, linia]: any =
+          await Promise.all([
+            $authHost.get(getCategoryUrl),
+            $authHost.get(getBrendUrl),
+            $authHost.get(getCountryUrl),
+            $authHost.get(getLinia),
+          ]);
         setCategories(
-          categoriesRes.data.res.sort((a: any, b: any) => a.nameuk.localeCompare(b.nameuk, 'uk'))
+          categoriesRes.data.res.sort((a: any, b: any) =>
+            a.nameuk.localeCompare(b.nameuk, 'uk')
+          )
         );
 
-        setBrends(brendsRes.data.sort((a: any, b: any) => a.name.localeCompare(b.name)));
+        setBrends(
+          brendsRes.data.sort((a: any, b: any) => a.name.localeCompare(b.name))
+        );
         setCountries(
-          countriesRes.data.res.sort((a: any, b: any) => a.nameuk.localeCompare(b.nameuk, 'uk'))
+          countriesRes.data.res.sort((a: any, b: any) =>
+            a.nameuk.localeCompare(b.nameuk, 'uk')
+          )
         );
 
-        setLinia(linia.data.sort((a: any, b: any) => a.name.localeCompare(b.name)));
+        setLinia(
+          linia.data.sort((a: any, b: any) => a.name.localeCompare(b.name))
+        );
 
         getData(countriesRes.data.res, brendsRes.data, linia.data);
       } catch (error) {
@@ -351,18 +394,23 @@ const UpdateProduct = ({ id }: { id: string }) => {
 
   const fetchSubcategoriesAndFilters = async (categoryId: string) => {
     try {
-      const [subcategoriesRes, filtersRes, recognition]: any = await Promise.all([
-        $authHost.get(`${getSubcategoryUrl}?categoryId=${categoryId}`),
-        $authHost.get(`${getFilterUrl}?categoryId=${categoryId}`),
-        $authHost.get(`${getRecognition}?categoryId=${categoryId}`),
-      ]);
+      const [subcategoriesRes, filtersRes, recognition]: any =
+        await Promise.all([
+          $authHost.get(`${getSubcategoryUrl}?categoryId=${categoryId}`),
+          $authHost.get(`${getFilterUrl}?categoryId=${categoryId}`),
+          $authHost.get(`${getRecognition}?categoryId=${categoryId}`),
+        ]);
       setFilters(filtersRes.data.res);
       setSubcategories(
-        subcategoriesRes.data.res.sort((a: any, b: any) => a.nameuk.localeCompare(b.nameuk, 'uk'))
+        subcategoriesRes.data.res.sort((a: any, b: any) =>
+          a.nameuk.localeCompare(b.nameuk, 'uk')
+        )
       );
 
       setRecognition(
-        recognition.data.sort((a: any, b: any) => a.nameuk.localeCompare(b.nameuk, 'uk'))
+        recognition.data.sort((a: any, b: any) =>
+          a.nameuk.localeCompare(b.nameuk, 'uk')
+        )
       );
 
       // ініціалізація filterValues з правильними індексами
@@ -397,7 +445,9 @@ const UpdateProduct = ({ id }: { id: string }) => {
       const discount = parseFloat(value);
 
       if (!isNaN(price) && !isNaN(discount)) {
-        current.priceWithDiscount = (price - (price * discount) / 100).toFixed(2);
+        current.priceWithDiscount = (price - (price * discount) / 100).toFixed(
+          2
+        );
       }
     } else if (key === 'priceWithDiscount') {
       current.priceWithDiscount = value;
@@ -457,7 +507,9 @@ const UpdateProduct = ({ id }: { id: string }) => {
     const fileArray = Array.from(files); // Перетворюємо FileList на масив
 
     // Перезаписуємо зображення для конкретної варіації
-    fileArray.forEach((x) => newVolume[index].images.push({ img: x, altru: '', altuk: '' })); // Перезаписуємо, а не додаємо
+    fileArray.forEach((x) =>
+      newVolume[index].images.push({ img: x, altru: '', altuk: '' })
+    ); // Перезаписуємо, а не додаємо
 
     setVolume(newVolume); // Оновлюємо стейт
   };
@@ -491,7 +543,10 @@ const UpdateProduct = ({ id }: { id: string }) => {
     return (
       '<ul>' +
       characteristicsuk
-        .map((char) => `<li><p>${char.ukTitle}</p><span>${char.ukDescription}</span></li>`)
+        .map(
+          (char) =>
+            `<li><p>${char.ukTitle}</p><span>${char.ukDescription}</span></li>`
+        )
         .join('') +
       '</ul>'
     );
@@ -501,7 +556,10 @@ const UpdateProduct = ({ id }: { id: string }) => {
     return (
       '<ul>' +
       characteristicsru
-        .map((char) => `<li><p>${char.ruTitle}</p><span>${char.ruDescription}</span></li>`)
+        .map(
+          (char) =>
+            `<li><p>${char.ruTitle}</p><span>${char.ruDescription}</span></li>`
+        )
         .join('') +
       '</ul>'
     );
@@ -518,8 +576,14 @@ const UpdateProduct = ({ id }: { id: string }) => {
     formData.append('nameTyperu', nameTyperu);
     formData.append('art', art);
     formData.append('url', url);
-    formData.append('descriptionuk', descriptionuk.replaceAll(`<p><br></p>`, ''));
-    formData.append('descriptionru', descriptionru.replaceAll(`<p><br></p>`, ''));
+    formData.append(
+      'descriptionuk',
+      descriptionuk.replaceAll(`<p><br></p>`, '')
+    );
+    formData.append(
+      'descriptionru',
+      descriptionru.replaceAll(`<p><br></p>`, '')
+    );
     if (generateCharacteristicHTMLuk())
       formData.append('characteristicuk', generateCharacteristicHTMLuk());
     if (generateCharacteristicHTMLru())
@@ -543,16 +607,6 @@ const UpdateProduct = ({ id }: { id: string }) => {
     );
     formData.append('product_type_uk', product_type_uk);
     formData.append('product_type_ru', product_type_ru);
-
-    // Масив всіх зображень
-    let allImages: any = [];
-
-    // Перебір варіацій і додавання зображень у загальний масив
-    volume.forEach((vol) => {
-      vol.images.forEach((img) => {
-        allImages.push(img.img); // Додаємо зображення в загальний масив
-      });
-    });
 
     // Формуємо новий volume з індексами зображень, скидаючи індекси на 0, 1, 2...
     const updatedVolume = volume.map((vol) => {
@@ -581,7 +635,10 @@ const UpdateProduct = ({ id }: { id: string }) => {
     // Додаємо файли для кожної варіації
     volume.forEach((vol, index) => {
       vol.images.forEach((img, i) => {
-        if (typeof img.img != 'string') formData.append(`imgs[${index}][${i}]`, img.img);
+        if (typeof img.img != 'string' && !vol.isDelete) {
+          console.log(`imgs[${index}][${i}]`, img.img);
+          formData.append(`imgs[${index}][${i}]`, img.img);
+        }
       });
     });
 
@@ -649,7 +706,9 @@ const UpdateProduct = ({ id }: { id: string }) => {
       setIsShow(good.isShow);
       setIsFeed(good.isFeed);
       setSelectedCategory(good.categoryId);
-      const recognition2 = await $authHost.get(`${getRecognition}?categoryId=${good.categoryId}`);
+      const recognition2 = await $authHost.get(
+        `${getRecognition}?categoryId=${good.categoryId}`
+      );
 
       try {
         let tempCharacteristicsuk = [];
@@ -662,7 +721,11 @@ const UpdateProduct = ({ id }: { id: string }) => {
         } else {
           const text = ``;
 
-          tempCharacteristicsuk = parseCharacteristics(text, 'ukTitle', 'ukDescription');
+          tempCharacteristicsuk = parseCharacteristics(
+            text,
+            'ukTitle',
+            'ukDescription'
+          );
         }
 
         let tempCharacteristicsru;
@@ -674,7 +737,11 @@ const UpdateProduct = ({ id }: { id: string }) => {
           );
         } else {
           const text = ``;
-          tempCharacteristicsru = parseCharacteristics(text, 'ruTitle', 'ruDescription');
+          tempCharacteristicsru = parseCharacteristics(
+            text,
+            'ruTitle',
+            'ruDescription'
+          );
         }
         if (good.countryMade.id) {
           let {
@@ -724,7 +791,12 @@ const UpdateProduct = ({ id }: { id: string }) => {
           let {
             characteristicsuk: characteristicsukWithLinia,
             characteristicsru: characteristicsruWithLinia,
-          } = setSelectedLinia3(good.liniaId, tempCharacteristicsuk, tempCharacteristicsru, linias);
+          } = setSelectedLinia3(
+            good.liniaId,
+            tempCharacteristicsuk,
+            tempCharacteristicsru,
+            linias
+          );
           tempCharacteristicsuk = characteristicsukWithLinia;
           tempCharacteristicsru = characteristicsruWithLinia;
 
@@ -735,7 +807,11 @@ const UpdateProduct = ({ id }: { id: string }) => {
         let {
           characteristicsuk2: characteristicsukWithForMan,
           characteristicsru2: characteristicsruWithForMan,
-        } = setIsForMan3(good.isForMan, tempCharacteristicsuk, tempCharacteristicsru);
+        } = setIsForMan3(
+          good.isForMan,
+          tempCharacteristicsuk,
+          tempCharacteristicsru
+        );
         tempCharacteristicsuk = characteristicsukWithForMan;
         tempCharacteristicsru = characteristicsruWithForMan;
 
@@ -750,7 +826,9 @@ const UpdateProduct = ({ id }: { id: string }) => {
       await fetchSubcategoriesAndFilters(good.categoryId);
       setProductRecognitions(good.productRecognitions);
       setSubcategoryId(good.subcategoryId || 0);
-      setSelectedFilters(mapToFilterValues(good.productCategoryFilters, filtersRes.data.res));
+      setSelectedFilters(
+        mapToFilterValues(good.productCategoryFilters, filtersRes.data.res)
+      );
       setIsForMan(good.isForMan);
       setSelectedCountry(good.countryMade.id);
       setSelectLinia(good.liniaId || '');
@@ -790,6 +868,7 @@ const UpdateProduct = ({ id }: { id: string }) => {
       newVolumes[index] = {
         ...newVolumes[index],
         isDelete: true,
+        images: [],
       };
 
       return newVolumes;
@@ -799,15 +878,27 @@ const UpdateProduct = ({ id }: { id: string }) => {
   const setIsForMan2 = (value: null | undefined | true | false) => {
     setIsForMan(value);
     if (value === undefined) {
-      const newCharacteristicsuk = characteristicsuk.filter((x) => x.ukTitle != 'Стать');
-      const newCharacteristicsru = characteristicsru.filter((x) => x.ruTitle != 'Пол');
+      const newCharacteristicsuk = characteristicsuk.filter(
+        (x) => x.ukTitle != 'Стать'
+      );
+      const newCharacteristicsru = characteristicsru.filter(
+        (x) => x.ruTitle != 'Пол'
+      );
       setCharacteristicsuk(newCharacteristicsuk);
       setCharacteristicsru(newCharacteristicsru);
     } else {
-      const newCharacteristicsuk = characteristicsuk.filter((x) => x.ukTitle != 'Стать');
-      const newCharacteristicsru = characteristicsru.filter((x) => x.ruTitle != 'Пол');
+      const newCharacteristicsuk = characteristicsuk.filter(
+        (x) => x.ukTitle != 'Стать'
+      );
+      const newCharacteristicsru = characteristicsru.filter(
+        (x) => x.ruTitle != 'Пол'
+      );
       let newUkDescription =
-        value == null ? 'Унісекс' : value == true ? 'Для чоловіків' : 'Для жінок';
+        value == null
+          ? 'Унісекс'
+          : value == true
+            ? 'Для чоловіків'
+            : 'Для жінок';
 
       let newRUDescription =
         value == null ? 'Унисекс' : value == true ? 'Для мужчин' : 'Для женщин';
@@ -830,12 +921,17 @@ const UpdateProduct = ({ id }: { id: string }) => {
   ) => {
     //setIsForMan(value);
 
-    const newCharacteristicsuk = characteristicsuk2.filter((x: any) => x.ukTitle != 'Стать');
-    const newCharacteristicsru = characteristicsru2.filter((x: any) => x.ruTitle != 'Пол');
+    const newCharacteristicsuk = characteristicsuk2.filter(
+      (x: any) => x.ukTitle != 'Стать'
+    );
+    const newCharacteristicsru = characteristicsru2.filter(
+      (x: any) => x.ruTitle != 'Пол'
+    );
     let newUkDescription =
       value == null ? 'Унісекс' : value == true ? 'Для чоловіків' : 'Для жінок';
 
-    let newRUDescription = value == null ? 'Унисекс' : value == true ? 'Для мужчин' : 'Для женщин';
+    let newRUDescription =
+      value == null ? 'Унисекс' : value == true ? 'Для мужчин' : 'Для женщин';
     newCharacteristicsuk.push({
       ukTitle: 'Стать',
       ukDescription: newUkDescription,
@@ -856,11 +952,15 @@ const UpdateProduct = ({ id }: { id: string }) => {
       (x) => x.ukTitle != 'Країна виробника' && x.ukTitle != 'Країна виробника:'
     );
     const newCharacteristicsru = characteristicsru.filter(
-      (x) => x.ruTitle != 'Страна производитель' && x.ruTitle != 'Страна производитель:'
+      (x) =>
+        x.ruTitle != 'Страна производитель' &&
+        x.ruTitle != 'Страна производитель:'
     );
-    let newUkDescription = countries.find((x) => x.id == value)?.nameuk as string;
+    let newUkDescription = countries.find((x) => x.id == value)
+      ?.nameuk as string;
 
-    let newRUDescription = countries.find((x) => x.id == value)?.nameru as string;
+    let newRUDescription = countries.find((x) => x.id == value)
+      ?.nameru as string;
 
     newCharacteristicsuk.push({
       ukTitle: 'Країна виробника',
@@ -904,15 +1004,20 @@ const UpdateProduct = ({ id }: { id: string }) => {
     linia2: any
   ) => {
     const newCharacteristicsuk = characteristicsuk2.filter(
-      (x: any) => x.ukTitle != 'Країна виробника' && x.ukTitle != 'Країна виробника:'
+      (x: any) =>
+        x.ukTitle != 'Країна виробника' && x.ukTitle != 'Країна виробника:'
     );
     const newCharacteristicsru = characteristicsru2.filter(
-      (x: any) => x.ruTitle != 'Страна производитель' && x.ruTitle != 'Страна производитель:'
+      (x: any) =>
+        x.ruTitle != 'Страна производитель' &&
+        x.ruTitle != 'Страна производитель:'
     );
 
-    let newUkDescription = linia2.find((x: any) => x.id == value)?.nameuk as string;
+    let newUkDescription = linia2.find((x: any) => x.id == value)
+      ?.nameuk as string;
 
-    let newRUDescription = linia2.find((x: any) => x.id == value)?.nameru as string;
+    let newRUDescription = linia2.find((x: any) => x.id == value)
+      ?.nameru as string;
 
     newCharacteristicsuk.push({
       ukTitle: 'Країна виробника',
@@ -929,10 +1034,15 @@ const UpdateProduct = ({ id }: { id: string }) => {
   };
   const setSelectedLinia2 = (value: string) => {
     setSelectLinia(value);
+    if (!value) return;
     setSearchLinia(linia.find((x: any) => x.id == value).name);
     if (value) {
-      const newCharacteristicsuk = characteristicsuk.filter((x: any) => x.ukTitle != 'Лінія');
-      const newCharacteristicsru = characteristicsru.filter((x: any) => x.ruTitle != 'Линия');
+      const newCharacteristicsuk = characteristicsuk.filter(
+        (x: any) => x.ukTitle != 'Лінія'
+      );
+      const newCharacteristicsru = characteristicsru.filter(
+        (x: any) => x.ruTitle != 'Линия'
+      );
 
       let newUkDescription = linia.find((x: any) => x.id == value).name;
 
@@ -956,11 +1066,17 @@ const UpdateProduct = ({ id }: { id: string }) => {
     characteristicsru2: any,
     linia2: any
   ) => {
-    const newCharacteristicsuk = characteristicsuk2.filter((x: any) => x.ukTitle != 'Лінія');
-    const newCharacteristicsru = characteristicsru2.filter((x: any) => x.ruTitle != 'Линия');
-    let newUkDescription = linia2.find((x: any) => x.id == value)?.name as string;
+    const newCharacteristicsuk = characteristicsuk2.filter(
+      (x: any) => x.ukTitle != 'Лінія'
+    );
+    const newCharacteristicsru = characteristicsru2.filter(
+      (x: any) => x.ruTitle != 'Линия'
+    );
+    let newUkDescription = linia2.find((x: any) => x.id == value)
+      ?.name as string;
 
-    let newRUDescription = linia2.find((x: any) => x.id == value)?.name as string;
+    let newRUDescription = linia2.find((x: any) => x.id == value)
+      ?.name as string;
 
     newCharacteristicsuk.push({
       ukTitle: 'Лінія',
@@ -988,9 +1104,11 @@ const UpdateProduct = ({ id }: { id: string }) => {
     const newCharacteristicsru = characteristicsru2.filter(
       (x: any) => x.ruTitle != 'Производитель' && x.ruTitle != 'Производитель:'
     );
-    let newUkDescription = brends2.find((x: any) => x.id == value)?.name as string;
+    let newUkDescription = brends2.find((x: any) => x.id == value)
+      ?.name as string;
 
-    let newRUDescription = brends2.find((x: any) => x.id == value)?.name as string;
+    let newRUDescription = brends2.find((x: any) => x.id == value)
+      ?.name as string;
 
     newCharacteristicsuk.push({
       ukTitle: 'Виробник',
@@ -1072,9 +1190,16 @@ const UpdateProduct = ({ id }: { id: string }) => {
           onChange={(e) => setNameru(e.target.value)}
           className="input"
         />
-        <div style={{ fontSize: '16px', fontWeight: '500' }} className="row checkbox">
+        <div
+          style={{ fontSize: '16px', fontWeight: '500' }}
+          className="row checkbox"
+        >
           У фід?{' '}
-          <input type="checkbox" checked={isFeed} onChange={(e) => setIsFeed(e.target.checked)} />
+          <input
+            type="checkbox"
+            checked={isFeed}
+            onChange={(e) => setIsFeed(e.target.checked)}
+          />
         </div>
         <br />
         <p className="title">Посилання на відео з ютубу.</p>
@@ -1158,7 +1283,14 @@ const UpdateProduct = ({ id }: { id: string }) => {
                 type="text"
                 placeholder="Заголовок (укр)"
                 value={characteristicsuk[index].ukTitle}
-                onChange={(e) => handleCharacteristicChange(index, e.target.value, 'uk', 'title')}
+                onChange={(e) =>
+                  handleCharacteristicChange(
+                    index,
+                    e.target.value,
+                    'uk',
+                    'title'
+                  )
+                }
                 className="input"
               />
               <input
@@ -1166,11 +1298,20 @@ const UpdateProduct = ({ id }: { id: string }) => {
                 placeholder="Опис (укр)"
                 value={characteristicsuk[index].ukDescription}
                 onChange={(e) =>
-                  handleCharacteristicChange(index, e.target.value, 'uk', 'description')
+                  handleCharacteristicChange(
+                    index,
+                    e.target.value,
+                    'uk',
+                    'description'
+                  )
                 }
                 className="input"
               />
-              <button className="but" type="button" onClick={() => delUkrChar(index)}>
+              <button
+                className="but"
+                type="button"
+                onClick={() => delUkrChar(index)}
+              >
                 del
               </button>
             </div>
@@ -1180,7 +1321,10 @@ const UpdateProduct = ({ id }: { id: string }) => {
           className="but"
           type="button"
           onClick={() =>
-            setCharacteristicsuk([...characteristicsuk, { ukTitle: '', ukDescription: '' }])
+            setCharacteristicsuk([
+              ...characteristicsuk,
+              { ukTitle: '', ukDescription: '' },
+            ])
           }
         >
           Додати характеристику (укр)
@@ -1193,7 +1337,14 @@ const UpdateProduct = ({ id }: { id: string }) => {
                 type="text"
                 placeholder="Заголовок (рос)"
                 value={characteristicsru[index].ruTitle}
-                onChange={(e) => handleCharacteristicChange(index, e.target.value, 'ru', 'title')}
+                onChange={(e) =>
+                  handleCharacteristicChange(
+                    index,
+                    e.target.value,
+                    'ru',
+                    'title'
+                  )
+                }
                 className="input"
               />
               <input
@@ -1201,11 +1352,20 @@ const UpdateProduct = ({ id }: { id: string }) => {
                 placeholder="Опис (рос)"
                 value={characteristicsru[index].ruDescription}
                 onChange={(e) =>
-                  handleCharacteristicChange(index, e.target.value, 'ru', 'description')
+                  handleCharacteristicChange(
+                    index,
+                    e.target.value,
+                    'ru',
+                    'description'
+                  )
                 }
                 className="input"
               />
-              <button className="but" type="button" onClick={() => delRuChar(index)}>
+              <button
+                className="but"
+                type="button"
+                onClick={() => delRuChar(index)}
+              >
                 del
               </button>
             </div>
@@ -1215,7 +1375,10 @@ const UpdateProduct = ({ id }: { id: string }) => {
           className="but"
           type="button"
           onClick={() =>
-            setCharacteristicsru([...characteristicsru, { ruTitle: '', ruDescription: '' }])
+            setCharacteristicsru([
+              ...characteristicsru,
+              { ruTitle: '', ruDescription: '' },
+            ])
           }
         >
           Додати характеристику (рос)
@@ -1261,7 +1424,7 @@ const UpdateProduct = ({ id }: { id: string }) => {
             className="input"
             value={searchLinia}
             onChange={(e) => setSearchLinia(e.target.value)}
-            onFocus={() => setIsOpenLiniaSearch(true)}
+            onClick={() => setIsOpenLiniaSearch(true)}
           />
           <div className="dropdown">
             {isOpenLiniaSearch && (
@@ -1371,14 +1534,18 @@ const UpdateProduct = ({ id }: { id: string }) => {
           {isPruznacheniaOpen && (
             <ul>
               {[...recognition]
-                .sort((a: any, b: any) => a.nameru.localeCompare(b.nameru, 'ru'))
+                .sort((a: any, b: any) =>
+                  a.nameru.localeCompare(b.nameru, 'ru')
+                )
                 .map((x: any) => (
                   <li key={x.id} onClick={() => addProductRecognitions(x.id)}>
                     <input
                       type="checkbox"
                       key={x.id}
                       checked={
-                        productRecognitions.findIndex((pr) => pr.recognitionId === x.id) !== -1
+                        productRecognitions.findIndex(
+                          (pr) => pr.recognitionId === x.id
+                        ) !== -1
                       }
                     />
                     <p>{x.nameru}</p>
@@ -1424,7 +1591,11 @@ const UpdateProduct = ({ id }: { id: string }) => {
         </div>
         <div className="row check">
           <p> Топ</p>
-          <input type="checkbox" checked={isHit} onChange={(e) => setIsHit(e.target.checked)} />
+          <input
+            type="checkbox"
+            checked={isHit}
+            onChange={(e) => setIsHit(e.target.checked)}
+          />
         </div>
         <div className="row check">
           <p> Новинка</p>
@@ -1450,14 +1621,24 @@ const UpdateProduct = ({ id }: { id: string }) => {
               <input
                 type="text"
                 placeholder={`Значення для ${filter.nameuk}`}
-                value={selectedFilters.find((f) => f.filterCategoryId === filter.id)?.valueuk || ''}
-                onChange={(e) => handleFilterChange(filter.id, e.target.value, 'uk')}
+                value={
+                  selectedFilters.find((f) => f.filterCategoryId === filter.id)
+                    ?.valueuk || ''
+                }
+                onChange={(e) =>
+                  handleFilterChange(filter.id, e.target.value, 'uk')
+                }
               />
               <input
                 type="text"
                 placeholder={`Значення для ${filter.nameru}`}
-                value={selectedFilters.find((f) => f.filterCategoryId === filter.id)?.valueru || ''}
-                onChange={(e) => handleFilterChange(filter.id, e.target.value, 'ru')}
+                value={
+                  selectedFilters.find((f) => f.filterCategoryId === filter.id)
+                    ?.valueru || ''
+                }
+                onChange={(e) =>
+                  handleFilterChange(filter.id, e.target.value, 'ru')
+                }
               />
             </div>
           </div>
@@ -1465,8 +1646,8 @@ const UpdateProduct = ({ id }: { id: string }) => {
         <br />
         <br />
         <p className="title">
-          Назва величини вимірювання, (наприклад: {"Об'єм"}, розмір) українською (якщо пусте то це
-          поле не висвітлиться)
+          Назва величини вимірювання, (наприклад: {"Об'єм"}, розмір) українською
+          (якщо пусте то це поле не висвітлиться)
         </p>
         <input
           type="text"
@@ -1498,7 +1679,9 @@ const UpdateProduct = ({ id }: { id: string }) => {
                   type="text"
                   placeholder="Обсяг (мл)"
                   value={volume[index].volume.split('||')[0] || ''}
-                  onChange={(e) => handleVolumeChange(index, 'volumeuk', e.target.value)}
+                  onChange={(e) =>
+                    handleVolumeChange(index, 'volumeuk', e.target.value)
+                  }
                   className="input"
                 />
                 <p className="title">Обсяг (мл) рос</p>
@@ -1506,7 +1689,9 @@ const UpdateProduct = ({ id }: { id: string }) => {
                   type="text"
                   placeholder="Обсяг (мл)"
                   value={volume[index].volume.split('||')[1] || ''}
-                  onChange={(e) => handleVolumeChange(index, 'volumeru', e.target.value)}
+                  onChange={(e) =>
+                    handleVolumeChange(index, 'volumeru', e.target.value)
+                  }
                   className="input"
                 />
                 <div className="avability">
@@ -1516,7 +1701,11 @@ const UpdateProduct = ({ id }: { id: string }) => {
                       type="string"
                       value={volume[index].sort ? volume[index].sort : ''}
                       onChange={(e) => {
-                        handleVolumeChange(index, 'sort', Number(e.target.value));
+                        handleVolumeChange(
+                          index,
+                          'sort',
+                          Number(e.target.value)
+                        );
                       }}
                     />
                   </div>
@@ -1527,7 +1716,9 @@ const UpdateProduct = ({ id }: { id: string }) => {
                     <input
                       type="radio"
                       checked={volume[index].isAvailability == 'inStock'}
-                      onClick={() => handleVolumeChange(index, 'isAvailability', 'inStock')}
+                      onClick={() =>
+                        handleVolumeChange(index, 'isAvailability', 'inStock')
+                      }
                     />
                   </div>
                   <div className="row">
@@ -1535,7 +1726,13 @@ const UpdateProduct = ({ id }: { id: string }) => {
                     <input
                       type="radio"
                       checked={volume[index].isAvailability == 'customMade'}
-                      onClick={() => handleVolumeChange(index, 'isAvailability', 'customMade')}
+                      onClick={() =>
+                        handleVolumeChange(
+                          index,
+                          'isAvailability',
+                          'customMade'
+                        )
+                      }
                     />
                   </div>
                   <div className="row">
@@ -1543,16 +1740,31 @@ const UpdateProduct = ({ id }: { id: string }) => {
                     <input
                       type="radio"
                       checked={volume[index].isAvailability == 'notAvailable'}
-                      onClick={() => handleVolumeChange(index, 'isAvailability', 'notAvailable')}
+                      onClick={() =>
+                        handleVolumeChange(
+                          index,
+                          'isAvailability',
+                          'notAvailable'
+                        )
+                      }
                     />
                   </div>
                 </div>
-                <div style={{ display: 'flex', flexDirection: 'row', gap: '5px' }} className="row">
+                <div
+                  style={{ display: 'flex', flexDirection: 'row', gap: '5px' }}
+                  className="row"
+                >
                   Безкоштовна доставка
                   <input
                     type="checkbox"
                     checked={volume[index].isFreeDelivery}
-                    onChange={(e) => handleVolumeChange(index, 'isFreeDelivery', e.target.checked)}
+                    onChange={(e) =>
+                      handleVolumeChange(
+                        index,
+                        'isFreeDelivery',
+                        e.target.checked
+                      )
+                    }
                   />
                 </div>
                 <br />
@@ -1561,7 +1773,9 @@ const UpdateProduct = ({ id }: { id: string }) => {
                   type="text"
                   placeholder="art"
                   value={volume[index].art}
-                  onChange={(e) => handleVolumeChange(index, 'art', e.target.value)}
+                  onChange={(e) =>
+                    handleVolumeChange(index, 'art', e.target.value)
+                  }
                   className="input"
                 />
                 <p className="title">Gtin</p>
@@ -1569,7 +1783,9 @@ const UpdateProduct = ({ id }: { id: string }) => {
                   type="text"
                   placeholder="gtin"
                   value={volume[index].gtin || ''}
-                  onChange={(e) => handleVolumeChange(index, 'gtin', e.target.value)}
+                  onChange={(e) =>
+                    handleVolumeChange(index, 'gtin', e.target.value)
+                  }
                   className="input"
                 />
 
@@ -1578,7 +1794,9 @@ const UpdateProduct = ({ id }: { id: string }) => {
                   type="text"
                   placeholder="metaTitle uk"
                   value={volume[index].metaTitleuk}
-                  onChange={(e) => handleVolumeChange(index, 'metaTitleuk', e.target.value)}
+                  onChange={(e) =>
+                    handleVolumeChange(index, 'metaTitleuk', e.target.value)
+                  }
                   className="input"
                 />
                 <p className="title">metaTitle ru</p>
@@ -1586,7 +1804,9 @@ const UpdateProduct = ({ id }: { id: string }) => {
                   type="text"
                   placeholder="metaTitle ru"
                   value={volume[index].metaTitleru}
-                  onChange={(e) => handleVolumeChange(index, 'metaTitleru', e.target.value)}
+                  onChange={(e) =>
+                    handleVolumeChange(index, 'metaTitleru', e.target.value)
+                  }
                   className="input"
                 />
                 <p className="title">metaDescription uk</p>
@@ -1594,7 +1814,13 @@ const UpdateProduct = ({ id }: { id: string }) => {
                   type="text"
                   placeholder="metaDescription uk"
                   value={volume[index].metaDescriptionuk}
-                  onChange={(e) => handleVolumeChange(index, 'metaDescriptionuk', e.target.value)}
+                  onChange={(e) =>
+                    handleVolumeChange(
+                      index,
+                      'metaDescriptionuk',
+                      e.target.value
+                    )
+                  }
                   className="input"
                 />
                 <p className="title">metaDescription ru</p>
@@ -1602,7 +1828,13 @@ const UpdateProduct = ({ id }: { id: string }) => {
                   type="text"
                   placeholder="metaDescription ru"
                   value={volume[index].metaDescriptionru}
-                  onChange={(e) => handleVolumeChange(index, 'metaDescriptionru', e.target.value)}
+                  onChange={(e) =>
+                    handleVolumeChange(
+                      index,
+                      'metaDescriptionru',
+                      e.target.value
+                    )
+                  }
                   className="input"
                 />
                 <p className="title">canonical uk</p>
@@ -1610,7 +1842,9 @@ const UpdateProduct = ({ id }: { id: string }) => {
                   type="text"
                   placeholder="canonical uk"
                   value={volume[index].canonicaluk}
-                  onChange={(e) => handleVolumeChange(index, 'canonicaluk', e.target.value)}
+                  onChange={(e) =>
+                    handleVolumeChange(index, 'canonicaluk', e.target.value)
+                  }
                   className="input"
                 />
                 <p className="title">canonical ru</p>
@@ -1618,7 +1852,9 @@ const UpdateProduct = ({ id }: { id: string }) => {
                   type="text"
                   placeholder="canonical ru"
                   value={volume[index].canonicalru}
-                  onChange={(e) => handleVolumeChange(index, 'canonicalru', e.target.value)}
+                  onChange={(e) =>
+                    handleVolumeChange(index, 'canonicalru', e.target.value)
+                  }
                   className="input"
                 />
                 <p className="title">Ціна</p>
@@ -1626,7 +1862,9 @@ const UpdateProduct = ({ id }: { id: string }) => {
                   type="text"
                   placeholder="Ціна"
                   value={volume[index].price}
-                  onChange={(e) => handleVolumeChange(index, 'price', e.target.value)}
+                  onChange={(e) =>
+                    handleVolumeChange(index, 'price', e.target.value)
+                  }
                   className="input"
                 />
                 <p className="title">Знижка</p>
@@ -1634,7 +1872,9 @@ const UpdateProduct = ({ id }: { id: string }) => {
                   type="text"
                   placeholder="Знижка"
                   value={volume[index].discount}
-                  onChange={(e) => handleVolumeChange(index, 'discount', e.target.value)}
+                  onChange={(e) =>
+                    handleVolumeChange(index, 'discount', e.target.value)
+                  }
                   className="input"
                 />
                 <p className="title">Ціна зі знижкою</p>
@@ -1642,7 +1882,13 @@ const UpdateProduct = ({ id }: { id: string }) => {
                   type="text"
                   placeholder="Ціна зі знижкою"
                   value={volume[index].priceWithDiscount}
-                  onChange={(e) => handleVolumeChange(index, 'priceWithDiscount', e.target.value)}
+                  onChange={(e) =>
+                    handleVolumeChange(
+                      index,
+                      'priceWithDiscount',
+                      e.target.value
+                    )
+                  }
                   className="input"
                 />
                 <input
@@ -1729,13 +1975,27 @@ const UpdateProduct = ({ id }: { id: string }) => {
 
                     <label>alt ua</label>
                     <input
-                      onChange={(e) => setVolumeImages(index, indexVolume, 'altuk', e.target.value)}
+                      onChange={(e) =>
+                        setVolumeImages(
+                          index,
+                          indexVolume,
+                          'altuk',
+                          e.target.value
+                        )
+                      }
                       value={volume[index].images[indexVolume].altuk}
                       type="text"
                     />
                     <label>alt ru</label>
                     <input
-                      onChange={(e) => setVolumeImages(index, indexVolume, 'altru', e.target.value)}
+                      onChange={(e) =>
+                        setVolumeImages(
+                          index,
+                          indexVolume,
+                          'altru',
+                          e.target.value
+                        )
+                      }
                       type="text"
                       value={volume[index].images[indexVolume].altru}
                     />

@@ -12,55 +12,55 @@ const LeftPanel = ({ lang, dictionary }: { lang: Locale; dictionary: any }) => {
   const menuItems = [
     {
       id: 1,
-      label: 'Профіль',
+      label: lang == 'ru' ? 'Профиль' : 'Профіль',
       icon: '/images/profile-icon.svg',
       url: '/profile',
     },
     {
       id: 2,
-      label: 'Історія замовлень',
+      label: lang == 'ru' ? 'История заказов' : 'Історія замовлень',
       icon: '/images/orders-icon.svg',
       url: '/history',
     },
     {
       id: 3,
-      label: 'Список бажань',
+      label: lang == 'ru' ? 'Список желаний' : 'Список бажань',
       icon: '/images/wishlist-icon.svg',
       url: '/like',
     },
     {
       id: 4,
-      label: 'Мої бонуси',
+      label: lang == 'ru' ? 'Мои бонусы' : 'Мої бонуси',
       icon: '/images/bonus-icon.svg',
       url: '/bonus',
     },
     {
       id: 5,
-      label: 'Розсилка на пошту',
+      label: lang == 'ru' ? 'Рассылка на почту' : 'Розсилка на пошту',
       icon: '/images/mailing-icon.svg',
       url: '/send-emails',
     },
     {
       id: 6,
-      label: 'Відгуки та коментарі',
+      label: lang == 'ru' ? 'Отзывы и комментарии' : 'Відгуки та коментарі',
       icon: '/images/reviews-icon.svg',
       url: '/coments',
     },
     {
       id: 7,
-      label: 'Промокоди',
+      label: lang == 'ru' ? 'Промокоды' : 'Промокоди',
       icon: '/images/promo-icon.svg',
       url: '/promokods',
     },
     {
       id: 8,
-      label: 'Переглянуті товари',
+      label: lang == 'ru' ? 'Просмотренные товары' : 'Переглянуті товари',
       icon: '/images/viewed-icon.svg',
       url: '/watched',
     },
     {
       id: 9,
-      label: 'Вийти з акаунту',
+      label: lang == 'ru' ? 'Выйти из аккаунта' : 'Вийти з акаунту',
       icon: '/images/logout-icon.svg',
       url: '/exit',
     },
@@ -82,9 +82,13 @@ const LeftPanel = ({ lang, dictionary }: { lang: Locale; dictionary: any }) => {
         <div className="left-panel-avatar">{user?.name[0]}</div>
 
         <div className="left-panel-user-info">
-          <h3>Вітаємо, {user?.name} 👋</h3>
+          <h3>
+            {lang == 'ru' ? 'Приветствуем' : 'Вітаємо'}, {user?.name} 👋
+          </h3>
           <Link href={getLocalizedPath(`/${lang}/user-cabinet/profile`, lang)}>
-            Редагувати інформацію
+            {lang == 'ru'
+              ? 'Редактировать информацию'
+              : 'Редагувати інформацію'}
             {/*<div className="home-goods">
         <UserWatched
           title={home.youWatching}

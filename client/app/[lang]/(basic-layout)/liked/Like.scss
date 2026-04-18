@@ -1,4 +1,7 @@
+@import '../App.scss';
+
 .like-page-container {
+  @include responsive-width;
   h1 {
     font-weight: 600;
     font-style: Semi Bold;
@@ -25,7 +28,6 @@
       box-sizing: border-box;
       padding: 20px;
       height: unset;
-      margin-bottom: 0;
     }
     .info {
       font-weight: 600;

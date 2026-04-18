@@ -5,86 +5,68 @@ import './MobileMenu.scss';
 import Logo from '@/app/assest/Logo.svg';
 import Link from 'next/link';
 import SetLanguage from '../SetLanguage';
-import AuthHeader from '../AuthHeader';
-import AccordionMenu from '../accordion/AccordionMenu';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '@/app/store';
-import {
-  addToBasket,
-  BasketItem,
-  decrementItemCount,
-  incrementItemCount,
-  LikeItem,
-  removeFromBasket,
-  removeFromLike,
-} from '@/app/store/reducers/cartReducer';
-import LikeSVG from '@/app/assest/Header/LikeColor.svg';
-import BasketSVG from '@/app/assest/Header/BasketColor.svg';
-import DelSVG from '@/app/assest/Header/DelColor.svg';
-import ViberSVG from '@/app/assest/Header/Viber.svg';
-import TelegramSVG from '@/app/assest/Header/Telegram.svg';
-import WhatccapSVG from '@/app/assest/Header/Whatccap.svg';
-import PhoneSVG from '@/app/assest/Header/Phone.svg';
-import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import AdminLogo from '../AdminLogo';
 import { getLocalizedPath } from '../../utils/getLocalizedPath';
+import CatalogHeaderSVG from '../../../assest/Header/Burger/Catalog.svg';
+import RightSVG from '../../../assest/Header/Burger/Right.svg';
+import LeftSVG from '../../../assest/Header/Burger/Left.svg';
+import AllProductSVG from '../../../assest/Header/Burger/AllProductRight.svg';
+import { UkrToEng } from '../../utils/UkrToEng';
+import AuthSVG from '../../../assest/Header/Burger/Auth.svg';
+import {
+  setOpenLogin,
+  setOpenRegister,
+} from '@/app/store/reducers/userReducers';
+import DownSVG from '../../../assest/Header/Basket/Down.svg';
+import ProfileSVG from '../../../assest/Header/Basket/Profile.svg';
+import HistorySVG from '../../../assest/Header/Basket/History.svg';
+import BonusSVG from '../../../assest/Header/Basket/Bonus.svg';
+import LikedSVG from '../../../assest/Header/Basket/Liked.svg';
+import EmailSendSVG from '../../../assest/Header/Basket/EmailSend.svg';
+import ComentSVG from '../../../assest/Header/Basket/Coment.svg';
+import PromokodSVG from '../../../assest/Header/Basket/Promokod.svg';
+import WatchedSVG from '../../../assest/Header/Basket/Watched.svg';
+import ExitSVG from '../../../assest/Header/Basket/Exit.svg';
+
+import BasketSVG from '../../../assest/Header/Basket/Basket.svg';
+import Liked2SVG from '../../../assest/Header/Basket/Liked2.svg';
+import CompresionSVG from '../../../assest/Header/Basket/Compresion.svg';
+import PhoneSVG from '../../../assest/Header/Burger/Phone.svg';
+import { messengers2, phones } from '../../Footer/listSocialNetwork';
 
 type MobileMenuProps = {
   isOpen: boolean;
   onClose: () => void;
   dictionary: any;
   lang: Locale;
+  catalog: any;
 };
 
-const MobileMenu = ({ isOpen, onClose, dictionary, lang }: MobileMenuProps) => {
+const MobileMenu = ({
+  isOpen,
+  onClose,
+  dictionary,
+  lang,
+  catalog,
+}: MobileMenuProps) => {
   // const pathname = usePathname()
   const router = useRouter();
   const [isClosing, setIsClosing] = useState(false);
   const [shouldRender, setShouldRender] = useState(false);
   const [sum, setSum] = useState(0);
   const [price, setPrice] = useState(0);
-  const [countBasket, setCountBasket] = useState(0);
-  const [countFav, setCountFav] = useState(0);
-  const [isBasketOpen, setBasketOpen] = useState(false);
-  const [isFavOpen, setFavOpen] = useState(false);
   const [isFormClosed, setFormClosed] = useState(false);
   const dispatch = useDispatch();
-  const { isAuthorize } = useSelector((state: RootState) => state.user);
-  const { basket, like } = useSelector(
+  const { isAuthorize, user } = useSelector((state: RootState) => state.user);
+  const { basket, like, comparison } = useSelector(
     (state: RootState) => state.BasketAndLike
   );
 
-  const toggleForm = useCallback(() => {
-    setFormClosed(!isFormClosed);
-  }, [isFormClosed]);
-
-  const handlerAddToCart = (id: number) => {
-    const currentLike = like.filter((currentItem) => currentItem.id === id);
-    dispatch(addToBasket({ ...currentLike[0], count: 1 }));
-    dispatch(removeFromLike(id));
-  };
-
-  const delWithLike = (id: number) => {
-    dispatch(removeFromLike(id));
-  };
-
-  const delWithBasket = (id: number) => {
-    dispatch(removeFromBasket(id));
-  };
-
-  const plus = (id: number) => {
-    dispatch(incrementItemCount(id));
-  };
-
-  const minus = (id: number) => {
-    dispatch(decrementItemCount(id));
-  };
-
   const handleClose = useCallback(() => {
     setIsClosing(true);
-    setBasketOpen(false);
-    setFavOpen(false);
 
     const timer = setTimeout(() => {
       onClose();
@@ -93,16 +75,6 @@ const MobileMenu = ({ isOpen, onClose, dictionary, lang }: MobileMenuProps) => {
     return () => clearTimeout(timer);
   }, [onClose]);
 
-  const toggleAccordion = (accordionType: 'favorite' | 'basket') => {
-    if (accordionType === 'basket') {
-      setBasketOpen((prev) => !prev);
-      setFavOpen(false);
-    }
-    if (accordionType === 'favorite') {
-      setFavOpen((prev) => !prev);
-      setBasketOpen(false);
-    }
-  };
   useEffect(() => {
     if (isFormClosed) {
       handleClose();
@@ -140,19 +112,102 @@ const MobileMenu = ({ isOpen, onClose, dictionary, lang }: MobileMenuProps) => {
     }
   }, [isOpen, shouldRender]);
 
-  useEffect(() => {
-    setCountBasket(basket.length);
-  }, [basket]);
-
-  useEffect(() => {
-    setCountFav(like.length);
-  }, [like]);
-
   // useEffect(() => {
   //   if (isOpen && pathname !== window.location.pathname) {
   //     handleClose()
   //   }
   // }, [pathname, handleClose, isOpen])
+  const [selectCategory, setSelectCategory] = useState(0);
+
+  const [isOpenCabinet, setIsOpenCabinet] = useState(true);
+
+  const listUrl = [
+    {
+      name: lang == 'ru' ? 'Акции' : 'Акції',
+      url: 'discount/1',
+    },
+    {
+      name: lang == 'ru' ? 'О нас' : 'Про нас',
+      url: 'about-us',
+    },
+    {
+      name: lang == 'ru' ? 'Контакты' : 'Контакти',
+      url: 'contact',
+    },
+    {
+      name: lang == 'ru' ? 'Блог' : 'Блог',
+      url: 'blog/1',
+    },
+    {
+      name: lang == 'ru' ? 'Бонусная программа' : 'Бонусна програма',
+      url: 'bonus',
+    },
+    {
+      name: lang == 'ru' ? 'Доставка' : 'Доставка',
+      url: 'delivery',
+    },
+    {
+      name: lang == 'ru' ? 'Оплата' : 'Оплата',
+      url: 'pay',
+    },
+    {
+      name: lang == 'ru' ? 'Возврат товара' : 'Повернення товару',
+      url: 'return-goods',
+    },
+    {
+      name:
+        lang == 'ru' ? 'Договор публичной оферты' : 'Договір публічної оферти',
+      url: 'offer-agreement',
+    },
+  ];
+
+  const listProfile = [
+    {
+      svg: <ProfileSVG />,
+      name: lang == 'ru' ? 'Профиль' : 'Профіль',
+      url: 'user-cabinet/profile',
+    },
+    {
+      svg: <HistorySVG />,
+      name: lang == 'ru' ? 'История заказов' : 'Історія замовлень',
+      url: 'user-cabinet/history',
+    },
+    {
+      svg: <LikedSVG />,
+      name: lang == 'ru' ? 'Список желаний' : 'Список бажань',
+      url: 'user-cabinet/like',
+    },
+    {
+      svg: <BonusSVG />,
+      name: lang == 'ru' ? 'Мои бонусы' : 'Мої бонуси',
+      url: 'user-cabinet/bonus',
+    },
+    {
+      svg: <EmailSendSVG />,
+      name: lang == 'ru' ? 'Рассылка на почту' : 'Розсилка на пошту',
+      url: 'user-cabinet/send-emails',
+    },
+    {
+      svg: <ComentSVG />,
+      name: lang == 'ru' ? 'Отзывы и комментарий' : 'Відгуки та коментар',
+      url: 'user-cabinet/coments',
+    },
+    {
+      svg: <PromokodSVG />,
+      name: lang == 'ru' ? 'Промокоды' : 'Промокоди',
+      url: 'user-cabinet/promokods',
+    },
+    {
+      svg: <WatchedSVG />,
+      name: lang == 'ru' ? 'Просмотренные товары' : 'Переглянуті товари',
+      url: 'user-cabinet/watched',
+    },
+    {
+      svg: <ExitSVG />,
+      name: lang == 'ru' ? 'Профиль' : 'Вийти з акаунту',
+      url: 'user-cabinet/exit',
+    },
+  ];
 
   if (!shouldRender) return null;
 
@@ -165,459 +220,264 @@ const MobileMenu = ({ isOpen, onClose, dictionary, lang }: MobileMenuProps) => {
         className={`mobile-menu ${isClosing ? 'closing' : ''}`}
         onClick={(e) => e.stopPropagation()}
       >
-        <div className="mobile-menu-header">
-          <div className="logo-container">
-            <Link onClick={handleClose} href={`/${lang != 'ru' ? '' : 'ru/'}`}>
-              <Logo />
-            </Link>
-          </div>
-          <AdminLogo isMob />
-          <button className="mobile-menu-close" onClick={handleClose}>
-            &times;
-          </button>
-        </div>
-        <div className="mobile-menu-content">
-          <div className="language__wrapper">
-            <SetLanguage lang={lang} />
-          </div>
-          <div className="basic-content">
-            <div
-              onClick={() => {
-                if (isAuthorize) onClose();
-              }}
-              className="auth432"
-            >
-              <AuthHeader
-                dictionary={dictionary.Auth}
-                lang={lang}
-                iconColor="#333"
-                onFormClose={toggleForm}
-              />
+        {selectCategory == 0 ? (
+          <>
+            <div className="mobile-menu-header">
+              <AdminLogo isMob />
+              <div className="logo-container">
+                <Link
+                  onClick={handleClose}
+                  href={`/${lang != 'ru' ? '' : 'ru/'}`}
+                >
+                  <Logo />
+                </Link>
+              </div>
+              <button className="mobile-menu-close" onClick={handleClose}>
+                &times;
+              </button>
             </div>
-            <div className="line-vertically" />
-            <div
-              className="svg__wrapper"
-              onClick={() => toggleAccordion('favorite')}
-            >
-              <LikeSVG />
-              {countFav > 0 && (
-                <div className="count">
-                  <span>{countFav}</span>
-                </div>
-              )}
-            </div>
-            <div className="line-vertically" />
-            <div
-              className="svg__wrapper last"
-              onClick={() => toggleAccordion('basket')}
-            >
-              <BasketSVG />
-              {countBasket > 0 && (
-                <div className="count">
-                  <span>{countBasket}</span>
-                </div>
-              )}
-            </div>
-          </div>
-
-          <div className="mobile-menu-accordions">
-            {/* Favorites Accordion */}
-            <AccordionMenu
-              isOpen={isFavOpen}
-              emptyMessage={
-                lang == 'ru' ? 'Ваше вподобане пусте' : 'Ваше вподобане пусте'
-              }
-              isEmpty={like.length === 0}
-              innerMessage="Обране"
-            >
-              <ul className="liked-container">
-                {like.map((x: LikeItem) => (
-                  <>
-                    <div className="itemWrapper" key={x.id}>
-                      <Link
-                        href={getLocalizedPath(
-                          `/${lang}/goods/${x.volume.url}`,
-                          lang
-                        )}
-                      >
-                        {' '}
-                      </Link>
-                      <div className="liked-basket">
-                        <div className="basket-goods-img">
-                          <Image
-                            src={process.env.NEXT_PUBLIC_SERVER + x.volume.img}
-                            width={52}
-                            height={52}
-                            alt={x.nameUA}
-                          />
-                        </div>
-                        <div className="basket-goods-text">
-                          <h3>{x.nameUA}</h3>
-                          <div className="price-count-volume">
-                            <div className="volume-and-count">
-                              <div className="volume">
-                                {
-                                  x.volume.volume.split('||')[
-                                    lang == 'ru' ? 1 : 0
-                                  ]
-                                }
-                              </div>
-                            </div>
-                            <div className="price-container">
-                              <div className="price-no-discount">
-                                {x.volume.price} ₴
-                              </div>
-                              <div className="price-with-discount">
-                                {x.volume.priceWithDiscount} ₴
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                        <div
-                          onClick={(e) => {
-                            e.preventDefault();
-                            delWithLike(x.id);
-                          }}
-                          className="del"
-                        >
-                          <DelSVG color="#A3AEBD" width={20} />
-                        </div>
+            <div className="mobile-menu-content">
+              <div className="language__wrapper">
+                <SetLanguage lang={lang} />
+              </div>
+              <div className="catalog-header">
+                <CatalogHeaderSVG />{' '}
+                {lang == 'ru' ? 'Каталог всех товаров' : 'Каталог всіх товарів'}
+              </div>
+              <div className="catalog">
+                {catalog.map((x: any) => (
+                  <div
+                    onClick={() => setSelectCategory(x.id)}
+                    className="category"
+                  >
+                    <div className="svg-with-name">
+                      <div className="svg">
+                        <img
+                          alt={lang == 'ru' ? x.nameru : x.nameuk}
+                          src={process.env.NEXT_PUBLIC_SERVER + x.svg}
+                        />
                       </div>
-
-                      <div className="button-with-price">
-                        <div className="price">
-                          <p>{dictionary.mobileMenu.noDelivery}</p>
-                          <div className="price-grn">
-                            {price} <span className="grn">₴</span>
-                          </div>
-                        </div>
-                        <div className="in-basket">
-                          <button onClick={() => handlerAddToCart(x.id)}>
-                            {dictionary.mobileMenu.inBasket}
-                          </button>
-                        </div>
+                      <span>{lang == 'ru' ? x.nameru : x.nameuk}</span>
+                    </div>
+                    <div className="svg-right">
+                      <RightSVG />
+                    </div>
+                  </div>
+                ))}
+              </div>
+              <div className="auth-section">
+                {isAuthorize ? (
+                  <div className="auth">
+                    <div
+                      onClick={() => setIsOpenCabinet(!isOpenCabinet)}
+                      className="auth-header"
+                    >
+                      <div className="svg-with-name">
+                        <AuthSVG />
+                        {user?.name} {user?.surname[0]}.
+                      </div>
+                      <div
+                        className={`sort ${isOpenCabinet ? 'cabiner-open' : 'cabiner-close'}`}
+                      >
+                        <DownSVG />
                       </div>
                     </div>
-                  </>
-                ))}
-              </ul>
-            </AccordionMenu>
-
-            {/* Basket Accordion */}
-            <AccordionMenu
-              innerMessage={lang == 'ru' ? 'Ваша корзина' : 'Ваш кошик'}
-              isOpen={isBasketOpen}
-              emptyMessage={
-                lang == 'ru' ? 'Ваша корзина пуста' : 'Ваша корзина пуста'
-              }
-              isEmpty={basket.length === 0}
-            >
-              <ul className="basket-list">
-                {basket.map((x: BasketItem) => (
-                  <div key={x.id} className="itemWrapper">
-                    <Link
-                      href={getLocalizedPath(
-                        `/${lang}/goods/${x.volume.url}`,
-                        lang
-                      )}
-                    >
-                      <div className="basket-goods">
-                        <div className="basket-goods-img">
-                          <Image
-                            src={process.env.NEXT_PUBLIC_SERVER + x.volume.img}
-                            width={52}
-                            height={52}
-                            alt={x.nameUA}
-                          />
-                        </div>
-                        <div className="basket-goods-text">
-                          <h3>{x.nameUA}</h3>
-                          <div className="add-or-minus-or-basket">
-                            <div className="add-or-minus">
-                              <div
-                                className="arrow minus"
-                                onClick={(e) => {
-                                  e.stopPropagation();
-                                  e.preventDefault();
-                                  if (x.count > 1) minus(x.id);
-                                }}
-                              >
-                                <svg
-                                  width="14"
-                                  height="2"
-                                  viewBox="0 0 14 2"
-                                  fill="none"
-                                  xmlns="http://www.w3.org/2000/svg"
-                                >
-                                  <path
-                                    d="M0 1H14"
-                                    stroke="white"
-                                    strokeWidth="2"
-                                  />
-                                </svg>
-                              </div>
-                              <div className="count">{x.count}</div>
-                              <div
-                                className="arrow plus"
-                                onClick={(e) => {
-                                  e.stopPropagation();
-                                  e.preventDefault();
-                                  plus(x.id);
-                                }}
-                              >
-                                <svg
-                                  width="14"
-                                  height="14"
-                                  viewBox="0 0 14 14"
-                                  fill="none"
-                                  xmlns="http://www.w3.org/2000/svg"
-                                >
-                                  <path
-                                    d="M0 7L14 7"
-                                    stroke="white"
-                                    strokeWidth="2"
-                                  />
-                                  <path
-                                    d="M7 0L7 14"
-                                    stroke="white"
-                                    strokeWidth="2"
-                                  />
-                                </svg>
-                              </div>
-                            </div>
+                    {isOpenCabinet && (
+                      <div className="cabinet-dropdown">
+                        {listProfile.map((x) => (
+                          <div
+                            onClick={() => {
+                              handleClose();
+                              router.push(
+                                getLocalizedPath(`/${lang}/${x.url}`, lang)
+                              );
+                            }}
+                            className="link-url"
+                          >
+                            {x.svg} {x.name}
                           </div>
-                          <div className="price-count-volume">
-                            <div className="volume-and-count">
-                              <div className="count">
-                                {
-                                  x.volume.volume.split('||')[
-                                    lang == 'ru' ? 1 : 0
-                                  ]
-                                }
-                              </div>
-                            </div>
-                            <div className="price-container">
-                              <div className="price-no-discount">
-                                {x.volume.price} ₴
-                              </div>
-                              <div className="price-with-discount">
-                                {x.volume.priceWithDiscount} ₴
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                        <div
-                          onClick={(e) => {
-                            e.preventDefault();
-                            e.stopPropagation();
-                            delWithBasket(x.id);
-                          }}
-                          className="del"
-                        >
-                          <DelSVG color="#A3AEBD" width={20} />
-                        </div>
+                        ))}
                       </div>
-                    </Link>
+                    )}
                   </div>
-                ))}
-
-                <div className="footer-basket">
-                  <div className="text">
-                    <span>{dictionary.mobileMenu.noDelivery}</span>
-                    <p>
-                      {sum} <span>₴</span>
-                    </p>
-                  </div>
-                  <div className="button-make-order">
-                    <button
-                      onClick={() => {
-                        handleClose();
-                        router.push(
-                          getLocalizedPath(`/${lang}/make-order`, lang)
-                        );
-                      }}
+                ) : (
+                  <div className="no-auth">
+                    <div className="svg-with-name">
+                      <AuthSVG />
+                    </div>
+                    <div
+                      onClick={() => dispatch(setOpenLogin(true))}
+                      className="log-in"
                     >
-                      {dictionary.mobileMenu.formDelivery}
-                    </button>
+                      {lang == 'ru' ? 'Войти в кабинет' : 'Увійти в кабінет'}
+                    </div>
+                    |
+                    <div
+                      onClick={() => dispatch(setOpenRegister(true))}
+                      className="register"
+                    >
+                      {lang == 'ru' ? 'Регистрация' : 'Реєстрація'}
+                    </div>
                   </div>
+                )}
+              </div>
+              <div className="basket-liked-compresion">
+                <div
+                  onClick={() => {
+                    if (basket.length > 0) {
+                      router.push(getLocalizedPath(`/${lang}/basket`, lang));
+                      handleClose();
+                    }
+                  }}
+                  className="basket elem"
+                >
+                  <div className="svg-with-name">
+                    <BasketSVG />
+                    {lang == 'ru' ? 'Корзина' : 'Кошик'}
+                  </div>
+                  {basket.length > 0 && (
+                    <div className="count">{basket.length}</div>
+                  )}
                 </div>
-              </ul>
-            </AccordionMenu>
-          </div>
-          <nav className="mobile-menu-nav">
-            <ul>
-              <li>
-                <button
-                  className="navigationBtn"
+                <div
                   onClick={() => {
-                    router.push(getLocalizedPath(`/${lang}`, lang));
-                    handleClose();
+                    if (like.length > 0) {
+                      router.push(getLocalizedPath(`/${lang}/liked`, lang));
+                      handleClose();
+                    }
                   }}
+                  className="liked elem"
                 >
-                  {dictionary.mobileMenu.main}
-                </button>
-              </li>
-              <li>
-                <button
-                  className="navigationBtn"
-                  onClick={() => {
-                    router.push(getLocalizedPath(`/${lang}/goods/1`, lang));
-                    handleClose();
-                  }}
-                >
-                  {dictionary.mobileMenu.catalog}
-                </button>
-              </li>
-              <li>
-                <button
-                  className="navigationBtn"
-                  onClick={() => {
-                    router.push(getLocalizedPath(`/${lang}/about-us`, lang));
-                    handleClose();
-                  }}
-                >
-                  {dictionary.mobileMenu.aboutUs}
-                </button>
-              </li>
-              <li>
-                <button
-                  className="navigationBtn"
-                  onClick={() => {
-                    router.push(getLocalizedPath(`/${lang}/blog/1`, lang));
-                    handleClose();
-                  }}
-                >
-                  Блог
-                </button>
-              </li>
-              <li>
-                <button
-                  className="navigationBtn"
-                  onClick={() => {
-                    router.push(getLocalizedPath(`/${lang}/discount/1`, lang));
-                    handleClose();
-                  }}
-                >
-                  {dictionary.mobileMenu.discount}
-                </button>
-              </li>
-
-              <li>
-                <button
-                  className="navigationBtn"
-                  onClick={() => {
-                    router.push(getLocalizedPath(`/${lang}/delivery`, lang));
-                    handleClose();
-                  }}
-                >
-                  {dictionary.mobileMenu.delivery}
-                </button>
-              </li>
-
-              <li>
-                <button
-                  className="navigationBtn"
-                  onClick={() => {
-                    router.push(getLocalizedPath(`/${lang}/pay`, lang));
-                    handleClose();
-                  }}
-                >
-                  {dictionary.mobileMenu.pay}
-                </button>
-              </li>
-
-              <li>
-                <button
-                  className="navigationBtn"
-                  onClick={() => {
-                    router.push(
-                      getLocalizedPath(`/${lang}/return-goods`, lang)
-                    );
-                    handleClose();
-                  }}
-                >
-                  {dictionary.mobileMenu.returnProduct}
-                </button>
-              </li>
-
-              <li>
-                <button
-                  className="navigationBtn"
-                  onClick={() => {
-                    router.push(
-                      getLocalizedPath(`/${lang}/offer-agreement`, lang)
-                    );
-                    handleClose();
-                  }}
-                >
-                  {dictionary.mobileMenu.dohovor}
-                </button>
-              </li>
-              <li>
-                <button
-                  className="navigationBtn"
-                  onClick={() => {
-                    router.push(getLocalizedPath(`/${lang}/brands`, lang));
-                    handleClose();
-                  }}
-                >
-                  {dictionary.mobileMenu.brends}
-                </button>
-              </li>
-
-              <li>
-                <button
-                  className="navigationBtn"
-                  onClick={() => {
-                    router.push(getLocalizedPath(`/${lang}/cooperation`, lang));
-                    handleClose();
-                  }}
-                >
-                  {dictionary.mobileMenu.cooperation}
-                </button>
-              </li>
-            </ul>
-          </nav>
-          <div className="contactsInfo">
-            <p>{dictionary.contact.timeWorkTitle}</p>
-            <span>{dictionary.contact.timeWorkDescription1}</span>
-            <span>{dictionary.contact.timeWorkDescription2}</span>
-            <div className="contacts__list">
-              <div className="list__item">
-                <div className="listItem--wrapper">
-                  <ViberSVG />
-                  <p>Viber</p>
-                  <a href={process.env.NEXT_PUBLIC_VIBER}></a>
+                  <div className="svg-with-name">
+                    <Liked2SVG />
+                    {lang == 'ru' ? 'Список желаний' : 'Список бажань'}
+                  </div>
+                  {like.length > 0 && (
+                    <div className="count">{like.length}</div>
+                  )}
                 </div>
-                <div className="listItem--wrapper">
-                  <TelegramSVG />
-                  <p>Telegram</p>
-                  <a href={process.env.NEXT_PUBLIC_TELEGRAM}></a>
-                </div>
-                <div className="listItem--wrapper">
-                  <WhatccapSVG />
-                  <p>Whatsapp</p>
-                  <a href={process.env.NEXT_PUBLIC_WHATSAPP}></a>
+                <div
+                  onClick={() => {
+                    if (comparison.length > 0) {
+                      router.push(
+                        getLocalizedPath(`/${lang}/comparison`, lang)
+                      );
+                      handleClose();
+                    }
+                  }}
+                  className="compresion elem"
+                >
+                  <div className="svg-with-name">
+                    <CompresionSVG />
+                    {lang == 'ru' ? 'Сравнение' : 'Порівняння'}
+                  </div>
+                  {comparison.length > 0 && (
+                    <div className="count">{comparison.length}</div>
+                  )}
                 </div>
               </div>
-              <div className="list__item contactNumber">
-                <PhoneSVG color={'#fe680a'} stroke={'white'} />
-                <div className="contactNumber__wrapper">
-                  <div>
-                    <a href={process.env.NEXT_PUBLIC_PHONE_URL_1}>
-                      {process.env.NEXT_PUBLIC_PHONE_1}
-                    </a>
+              <div className="list-url">
+                {listUrl.map((x) => (
+                  <div
+                    onClick={() => {
+                      router.push(getLocalizedPath(`/${lang}/${x.url}`, lang));
+                      handleClose();
+                    }}
+                    style={{
+                      color: x.url == 'discount/1' ? '#F80000' : '#000000',
+                    }}
+                  >
+                    {x.name}
                   </div>
-                  <div>
-                    <a href={process.env.NEXT_PUBLIC_PHONE_URL_2}>
-                      {process.env.NEXT_PUBLIC_PHONE_2}
+                ))}
+              </div>
+              <div className="phone-container">
+                <PhoneSVG />
+                <div className="phones">
+                  {phones.map((x) => (
+                    <a target="_blank" href={x.href}>
+                      {x.text}
                     </a>
-                  </div>
+                  ))}
                 </div>
+              </div>
+              <div className="socials">
+                {messengers2.map((x) => (
+                  <a href={x.url} target="_blank" className="social">
+                    {x.SVG} {x.name}
+                  </a>
+                ))}
+              </div>
+            </div>
+          </>
+        ) : (
+          <div className="select-category-container">
+            <div
+              onClick={() => setSelectCategory(0)}
+              className="select-category-header"
+            >
+              <div className="left-and-text">
+                <div className="svg-left">
+                  <LeftSVG />
+                </div>
+                <span>{lang == 'ru' ? 'Обратно' : 'Назад'}</span>
+              </div>
+              <div className="close">&times;</div>
+            </div>
+            <div className="select-category">
+              <div className="svg-select-category">
+                <img
+                  alt={
+                    lang == 'ru'
+                      ? catalog.find((x: any) => x.id == selectCategory).nameru
+                      : catalog.find((x: any) => x.id == selectCategory).nameuk
+                  }
+                  src={
+                    process.env.NEXT_PUBLIC_SERVER +
+                    catalog.find((x: any) => x.id == selectCategory).svg
+                  }
+                />
+              </div>
+              <div className="svg-name">
+                {lang == 'ru'
+                  ? catalog.find((x: any) => x.id == selectCategory).nameru
+                  : catalog.find((x: any) => x.id == selectCategory).nameuk}
+              </div>
+            </div>
+            <div className="all-subcategory">
+              <div className="all-product">
+                {lang == 'ru' ? 'Все товары' : 'Всі товари'}
+                <AllProductSVG />
+              </div>
+              <div className="list-subcategory">
+                {catalog
+                  .find((x: any) => x.id == selectCategory)
+                  .subcategories.map((x: any) => (
+                    <div
+                      onClick={() => {
+                        router.push(
+                          getLocalizedPath(
+                            `/${lang}/goods/${UkrToEng(catalog.find((x: any) => x.id == selectCategory)?.nameru || '')}/${UkrToEng(x.nameru)}/1`,
+                            lang
+                          )
+                        );
+                        handleClose();
+                      }}
+                      className="subcategory"
+                    >
+                      <img
+                        width={30}
+                        height={30}
+                        alt={lang == 'ru' ? x.nameru : x.nameuk}
+                        src={process.env.NEXT_PUBLIC_SERVER + x.img}
+                      />
+                      {lang == 'ru' ? x.nameru : x.nameuk}
+                    </div>
+                  ))}
               </div>
             </div>
           </div>
-        </div>
+        )}
       </div>
     </div>
   );

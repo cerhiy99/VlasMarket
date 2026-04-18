@@ -123,6 +123,7 @@ const HistoryPage = ({ params }: { params: Promise<{ lang: Locale }> }) => {
         }).format(createdAt);
         return formattedDate;
       };
+      console.log(5434, JSON.parse(res.data.orders[0].basket));
       setOrders(
         res.data.orders.map((x: any) => ({
           id: x.id,
@@ -133,12 +134,12 @@ const HistoryPage = ({ params }: { params: Promise<{ lang: Locale }> }) => {
           deliveryLabel: x.deliveryType,
           total: x.sum,
           opened: false,
-          items: JSON.parse(x.basket).map((x: any) => ({
-            id: x.id,
-            title: lang == 'ru' ? x.nameru : x.nameuk,
-            image: process.env.NEXT_PUBLIC_SERVER + x.volumes[0].imgs[0].img,
-            quantity: x.count,
-            price: x.priceWithDiscount,
+          items: JSON.parse(x.basket).map((j: any) => ({
+            id: j.id,
+            title: lang == 'ru' ? j.nameru : j.nameuk,
+            image: process.env.NEXT_PUBLIC_SERVER + j.volumes[0].imgs[0].img,
+            quantity: j.count,
+            price: j.volumes[0].priceWithDiscount,
           })),
         }))
       );
@@ -156,14 +157,17 @@ const HistoryPage = ({ params }: { params: Promise<{ lang: Locale }> }) => {
   const handleRepeatOrder = (order: Order) => {
     console.log('Repeat order:', order);
   };
+  console.log(orders);
 
   return (
     <div className="account-history-layout">
       <aside className="account-history-sidebar"></aside>
 
-      <main className="account-history-content">
+      <div className="account-history-content">
         <div className="history-container">
-          <h1 className="history-title">Історія замовлень</h1>
+          <h1 className="history-title">
+            {lang == 'ru' ? 'История заказов' : 'Історія замовлень'}
+          </h1>
 
           <div className="history-orders">
             {orders.map((order) => (
@@ -174,7 +178,8 @@ const HistoryPage = ({ params }: { params: Promise<{ lang: Locale }> }) => {
                 <div className="history-order-summary">
                   <div className="history-order-left">
                     <h3 className="history-order-number">
-                      {order.orderNumber}
+                      {lang == 'ru' ? 'Заказ №' : 'Замовлення №'}
+                      {order.id}
                     </h3>
                     <p className="history-order-date">{order.date}</p>
 
@@ -187,32 +192,44 @@ const HistoryPage = ({ params }: { params: Promise<{ lang: Locale }> }) => {
                               : 'processing'
                           }`}
                         >
-                          {order.status === 'received'
-                            ? 'Отримано'
-                            : 'В обробці'}
+                          <div className="only-mob">Статус:</div>
+                          <span>
+                            {' '}
+                            {order.status === 'received'
+                              ? 'Отримано'
+                              : lang == 'ru'
+                                ? 'В обработке'
+                                : 'В обробці'}
+                          </span>
                         </span>
 
                         <div className="history-inline-info">
-                          {/*<img
-                            src="/images/payment-card-icon.svg"
-                            alt="payment"
-                          />*/}
+                          <div className="only-mob">
+                            {lang == 'ru' ? 'Способ оплаты:' : 'Спосіб оплати:'}
+                          </div>
                           <span>{order.paymentLabel}</span>
                         </div>
                       </div>
 
                       <div className="history-order-row">
                         <div className="history-inline-info delivery">
-                          <img
-                            src={
-                              order.deliveryType.includes('Нов') ||
-                              order.deliveryType.includes('нов')
-                                ? '/images/nova-poshta-icon.svg'
-                                : '/images/ukrposhta-icon.svg'
-                            }
-                            alt="delivery"
-                          />
-                          <span>{order.deliveryLabel}</span>
+                          <div className="only-mob">
+                            {lang == 'ru'
+                              ? 'Способ доставки:'
+                              : 'Спосіб доставки:'}
+                          </div>
+                          <div className="row-post">
+                            <img
+                              src={
+                                order.deliveryType.includes('Нов') ||
+                                order.deliveryType.includes('нов')
+                                  ? '/images/nova-poshta-icon.svg'
+                                  : '/images/ukrposhta-icon.svg'
+                              }
+                              alt="delivery"
+                            />
+                            <span>{order.deliveryLabel}</span>
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -232,17 +249,28 @@ const HistoryPage = ({ params }: { params: Promise<{ lang: Locale }> }) => {
                       className="history-action-btn history-repeat-btn"
                       onClick={() => handleRepeatOrder(order)}
                     >
-                      Замовити знову
+                      {lang == 'ru' ? 'Заказать снова' : 'Замовити знову'}
                     </button>
 
-                    <div className="history-order-price">{order.total} ₴</div>
+                    <div className="history-order-price">
+                      <div className="only-mob">
+                        {lang == 'ru' ? 'Всего' : 'Всього'}:
+                      </div>{' '}
+                      <span>{order.total} ₴</span>
+                    </div>
 
                     <button
                       type="button"
                       className="history-action-btn history-toggle-btn"
                       onClick={() => toggleOrder(order.id)}
                     >
-                      {order.opened ? 'Згорнути' : 'Детальніше'}
+                      {order.opened
+                        ? lang == 'ru'
+                          ? 'Свернуть'
+                          : 'Згорнути'
+                        : lang == 'ru'
+                          ? 'Подробнее'
+                          : 'Детальніше'}
                     </button>
                   </div>
                 </div>
@@ -312,7 +340,11 @@ const HistoryPage = ({ params }: { params: Promise<{ lang: Locale }> }) => {
                             }
                             alt="delivery"
                           />
-                          <strong>{order.deliveryLabel}</strong>
+                          <strong>
+                            {order.deliveryLabel
+                              ? order.deliveryLabel
+                              : 'Укр пошта'}
+                          </strong>
                         </div>
                       </div>
                     </div>
@@ -329,7 +361,7 @@ const HistoryPage = ({ params }: { params: Promise<{ lang: Locale }> }) => {
             to="true"
           />
         </div>
-      </main>
+      </div>
     </div>
   );
 };

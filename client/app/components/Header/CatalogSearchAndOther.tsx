@@ -10,9 +10,7 @@ import Burger from './Burger/Burger';
 import { Locale } from '@/i18n.config';
 import MobileMenu from './mobile/MobileMenu';
 import Logo from '../../assest/LogoMob.svg';
-import ComparisonSVG from '../../assest/comparison.svg';
 import Link from 'next/link';
-import { getLocalizedPath } from '../utils/getLocalizedPath';
 import HeaderComprision from './HeaderComprision';
 
 type Props = {
@@ -90,6 +88,7 @@ const CatalogSearchAndOther = ({ dictionary, lang, catalog }: Props) => {
         onClose={closeMobileMenu}
         dictionary={dictionary}
         lang={lang}
+        catalog={catalog}
       />
     </div>
   );

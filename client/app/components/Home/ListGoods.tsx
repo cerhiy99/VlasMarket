@@ -7,78 +7,89 @@ import { Locale } from '@/i18n.config';
 import { $host } from '@/app/http';
 
 type Props = {
-  type: string;
   dictionary: any;
   lang: Locale;
   query: string;
+  type?: string;
   startGoods?: any[];
 };
 
-const ListArticle = ({ type, dictionary, lang, query, startGoods }: Props) => {
-  const [limit, setLimit] = useState(5);
-  const [countShow, setCountShow] = useState(1);
-  const [listGoods, setListGoods] = useState<any[]>(
-    startGoods ? startGoods : []
-  );
+const ListArticle = ({ dictionary, lang, query }: Props) => {
+  const [columns, setColumns] = useState<number | null>(null);
+  const [rows, setRows] = useState(1);
+  const [listGoods, setListGoods] = useState<any[]>([]);
+  const [loading, setLoading] = useState(false);
 
+  // 🔥 визначаємо кількість колонок
   useEffect(() => {
-    const handleResize = () => {
-      const width = window.outerWidth;
-      if (width >= 1400) {
-        setLimit(5);
-      } else if (width >= 1124) {
-        setLimit(4);
-        setListGoods(listGoods.slice(0, 4));
-      } else if (width >= 800) {
-        setLimit(3);
-        setListGoods(listGoods.slice(0, 3));
-      } else if (width >= 350) {
-        setLimit(2);
-        setListGoods(listGoods.slice(0, 2));
-      } else {
-        setLimit(1);
-        setListGoods(listGoods.slice(0, 1));
-      }
+    const updateColumns = () => {
+      const width = window.innerWidth;
+
+      if (width >= 1400) setColumns(5);
+      else if (width >= 1124) setColumns(4);
+      else if (width >= 800) setColumns(3);
+      else if (width >= 350) setColumns(2);
+      else setColumns(1);
     };
 
-    // Виклик функції для встановлення початкового значення
-    handleResize();
+    updateColumns();
+    window.addEventListener('resize', updateColumns);
 
-    // Додаємо обробник події при зміні розміру вікна
-    window.addEventListener('resize', handleResize);
-
-    // Очищуємо обробник при відмонтовані компонента
-    return () => {
-      window.removeEventListener('resize', handleResize);
-    };
+    return () => window.removeEventListener('resize', updateColumns);
   }, []);
 
-  const getListGoods = async () => {
+  // 🔥 запит даних (по рядках)
+  const getListGoods = async (rowsCount: number, cols: number) => {
     try {
+      setLoading(true);
+
+      const limit = rowsCount * cols;
+
       const res = await $host.get(
-        `goods/get?${query}=true&limit=${limit}&page=${countShow}`
+        `goods/get?${query}=true&limit=${limit}&page=1`
       );
-      setListGoods([...listGoods, ...res.data.goods]);
-    } catch (err) {}
+
+      setListGoods(res.data.goods);
+    } catch (err) {
+      console.log(err);
+    } finally {
+      setLoading(false);
+    }
   };
 
+  // 🔥 перший запуск + resize
   useEffect(() => {
-    if (startGoods && countShow == 1) return;
-    else getListGoods();
-  }, [limit, countShow]);
+    if (!columns) return;
 
-  const addCountShow = () => {
-    setCountShow(countShow + 1);
+    setRows(1); // завжди починаємо з 1 рядка
+    getListGoods(1, columns);
+  }, [columns]);
+
+  // 🔥 кнопка "далі"
+  const loadMore = () => {
+    if (!columns || loading) return;
+
+    const nextRows = rows + 1;
+    setRows(nextRows);
+    getListGoods(nextRows, columns);
   };
+
+  if (!columns) return null; // щоб не було "мигання"
 
   return (
-    <div className={`list-article-container limit-${limit}`}>
+    <div
+      className="list-article-container"
+      style={{
+        gridTemplateColumns: `repeat(${columns}, 1fr)`,
+      }}
+    >
       {listGoods.map((x) => (
-        <MiniGoods lang={lang} dictionary={dictionary} goods={x} key={x.id} />
+        <MiniGoods key={x.id} lang={lang} dictionary={dictionary} goods={x} />
       ))}
+
       <div className="button-down">
-        <div onClick={addCountShow} className="downsvg-container">
-          <DownSVG />
+        <div onClick={loadMore} className="downsvg-container">
+          {loading ? '...' : <DownSVG />}
         </div>
       </div>
     </div>

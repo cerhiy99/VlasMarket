@@ -3,12 +3,16 @@
 .cabinetLayout {
   @include responsive-width;
   &__wrapper {
-    margin-top: 55px;
     display: flex;
     flex-direction: row;
     gap: 10px;
-    @media (max-width: 768px) {
-      flex-direction: row;
+    margin-bottom: 30px;
+    box-sizing: border-box;
+    margin-top: 10px;
+    @media (max-width: 1024px) {
+      flex-direction: column;
+      margin-bottom: 30px;
+      gap: 0;
     }
   }
   .cabinetLayout--contnet {

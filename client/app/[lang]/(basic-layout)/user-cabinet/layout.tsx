@@ -5,6 +5,7 @@ import { getDictionary } from '@/lib/dictionary';
 import { ReactNode } from 'react';
 import LeftPanel from './LeftPanel';
 import ScrollToTop from './ScrollToTop';
+import BreadCrumbsCabinetDynamic from '@/app/components/utils/BreadCrumbsCabinetDynamic';
 
 export async function generateMetadata() {
   return {
@@ -22,8 +23,11 @@ export default async function CabinetLayout({
 }) {
   const { lang } = await params;
   const { leftPanel } = await getDictionary(lang);
+
   return (
     <div className="cabinetLayout">
+      <BreadCrumbsCabinetDynamic lang={lang} />
+
       <div className="cabinetLayout__wrapper">
         <LeftPanel dictionary={leftPanel} lang={lang} />
 

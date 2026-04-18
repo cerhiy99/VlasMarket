@@ -268,7 +268,9 @@ const Page = ({ params }: Props) => {
 
   return (
     <div className="coments-cabinet-container">
-      <h1 className="coments-cabinet-title">Відгуки та коментарі</h1>
+      <h1 className="coments-cabinet-title">
+        {lang == 'ru' ? 'Отзывы и комментарии' : 'Відгуки та коментарі'}
+      </h1>
 
       <div className="coments-cabinet-tabs">
         <button
@@ -276,7 +278,7 @@ const Page = ({ params }: Props) => {
           className={`tab-btn ${activeTab === 'reviews' ? 'active' : ''}`}
           onClick={() => setActiveTab('reviews')}
         >
-          Відгуки
+          {lang == 'ru' ? 'Отзывы' : 'Відгуки'}
         </button>
 
         <button
@@ -284,7 +286,7 @@ const Page = ({ params }: Props) => {
           className={`tab-btn ${activeTab === 'comments' ? 'active' : ''}`}
           onClick={() => setActiveTab('comments')}
         >
-          Коментарі
+          {lang == 'ru' ? 'комментарии' : 'коментарі'}
         </button>
       </div>
 
@@ -309,7 +311,10 @@ const Page = ({ params }: Props) => {
 
                 <div className="review-card-rating">
                   <div className="stars">{renderStars(item.rating)}</div>
-                  <span>({item.good.reviews.length}) Відгуків</span>
+                  <span>
+                    ({item.good.reviews.length}){' '}
+                    {lang == 'ru' ? 'Отзывов' : 'Відгуків'}
+                  </span>
                 </div>
 
                 <p>
@@ -342,7 +347,7 @@ const Page = ({ params }: Props) => {
                     className="review-action-btn"
                   >
                     <img src="/images/edit-review-icon.svg" alt="" />
-                    Редагувати
+                    {lang == 'ru' ? 'Редактировать' : 'Редагувати'}
                   </button>
 
                   <button
@@ -351,7 +356,7 @@ const Page = ({ params }: Props) => {
                     className="review-action-btn"
                   >
                     <img src="/images/delete-review-icon.svg" alt="" />
-                    Видалити
+                    {lang == 'ru' ? 'Удалить' : 'Видалити'}
                   </button>
                 </div>
               </div>
@@ -381,7 +386,9 @@ const Page = ({ params }: Props) => {
                     {item.Parent.description}
                   </p>
 
-                  <div className="my-comment-title">↳ Ваш коментар:</div>
+                  <div className="my-comment-title">
+                    ↳ {lang == 'ru' ? 'Ваш комментарий' : 'Ваш коментар'}:
+                  </div>
                   <p className="comment-my-text">
                     {editId == item.id ? (
                       <textarea
@@ -416,12 +423,12 @@ const Page = ({ params }: Props) => {
                       className="review-action-btn"
                     >
                       <img src="/images/edit-review-icon.svg" alt="" />
-                      Редагувати
+                      {lang == 'ru' ? 'Редактировать' : 'Редагувати'}
                     </button>
 
                     <button type="button" className="review-action-btn">
                       <img src="/images/delete-review-icon.svg" alt="" />
-                      Видалити
+                      {lang == 'ru' ? 'Удалить' : 'Видалити'}
                     </button>
                   </div>
                 </div>

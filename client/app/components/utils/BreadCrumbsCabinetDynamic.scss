@@ -1,0 +1,51 @@
+.bread-crumbs-cabinet-container {
+  overflow-x: auto;
+
+  .home-svg {
+    display: flex;
+    align-items: center;
+    padding-bottom: 2px;
+  }
+  .bread-crumb {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 5px;
+    text-decoration: none;
+    a {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 14px;
+      font-weight: 400;
+      line-height: 20px;
+      text-align: left;
+      text-underline-position: from-font;
+      text-decoration-skip-ink: none;
+      color: #5f6c72;
+      text-decoration: none;
+      white-space: nowrap;
+      &:hover {
+        color: #fe680a;
+      }
+    }
+    div {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 14px;
+      font-weight: 400;
+      line-height: 20px;
+      text-align: left;
+      text-underline-position: from-font;
+      text-decoration-skip-ink: none;
+      color: #5f6c72;
+      text-decoration: none;
+      white-space: nowrap;
+    }
+    margin: 25px 0 20px 0;
+    @media (max-width: 1024px) {
+      margin: 20px 0 10px 0;
+    }
+  }
+}

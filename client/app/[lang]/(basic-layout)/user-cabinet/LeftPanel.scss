@@ -1,14 +1,22 @@
+@import '../App.scss';
+
 .left-panel-container {
   width: 361px;
   height: 672px;
   margin-bottom: 80px;
   background: #ffffff;
   border-radius: 20px;
-  box-sizing: border-box;
   padding: 30px 0 0;
   display: flex;
   flex-direction: column;
-  font-family: 'Inter', sans-serif;
+  box-sizing: border-box;
+  @media (max-width: 1024px) {
+    margin: 0;
+    margin-bottom: 20px;
+    justify-content: center;
+    padding: 0;
+    width: unset;
+  }
 
   .left-panel-user {
     display: flex;
@@ -126,5 +134,21 @@
     color: #000000;
     text-align: left;
     max-width: 220px;
+  }
+  @media (max-width: 768px) {
+    background-color: unset;
+    height: unset;
+    margin-top: 0;
+    padding-top: 0;
+    padding: 0;
+    .left-panel-user {
+      padding: 0 20px;
+      margin: 0;
+      width: 100%;
+      box-sizing: border-box;
+    }
+    .left-panel-nav {
+      display: none;
+    }
   }
 }

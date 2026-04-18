@@ -87,7 +87,7 @@ export default function RegistrationModal({
     <div className="modal-overlay">
       <div className="registration-modal">
         <div className="row">
-          <h3>Реєстрація</h3>
+          <h3>{lang == 'ru' ? 'Регистрация' : 'Реєстрація'}</h3>
           <div onClick={onClose} className="close">
             <CloseSVG />
           </div>
@@ -96,12 +96,13 @@ export default function RegistrationModal({
         <form onSubmit={handleSubmit}>
           <div className="form-group">
             <label>
-              Ім&apos;я <span className="required">*</span>
+              {lang == 'ru' ? 'Имя' : "Ім'я"}{' '}
+              <span className="required">*</span>
             </label>
             <input
               type="text"
               name="firstName"
-              placeholder="Введіть ім'я..."
+              placeholder={lang == 'ru' ? 'Введите имя...' : "Введіть ім'я..."}
               value={formData.firstName}
               onChange={handleChange}
               required
@@ -110,12 +111,16 @@ export default function RegistrationModal({
 
           <div className="form-group">
             <label>
-              Прізвище <span className="required">*</span>
+              {lang == 'ru' ? 'Фамилия' : 'Прізвище'}
+
+              <span className="required">*</span>
             </label>
             <input
               type="text"
               name="lastName"
-              placeholder="Введіть прізвище..."
+              placeholder={
+                lang == 'ru' ? 'Введите фамилию...' : 'Введіть прізвище...'
+              }
               value={formData.lastName}
               onChange={handleChange}
               required
@@ -124,7 +129,8 @@ export default function RegistrationModal({
 
           <div className="form-group">
             <label>
-              Номер телефону <span className="required">*</span>
+              {lang == 'ru' ? 'Номер телефона' : 'Номер телефону'}{' '}
+              <span className="required">*</span>
             </label>
             <div className="phone-input-container">
               <PhoneInput
@@ -153,12 +159,17 @@ export default function RegistrationModal({
 
           <div className="form-group">
             <label>
-              Електронна пошта <span className="required">*</span>
+              {lang == 'ru' ? 'Электронная почта' : 'Електронна пошта'}{' '}
+              <span className="required">*</span>
             </label>
             <input
               type="email"
               name="email"
-              placeholder="Введіть електронну пошту..."
+              placeholder={
+                lang == 'ru'
+                  ? 'Введите электронную почту...'
+                  : 'Введіть електронну пошту...'
+              }
               value={formData.email}
               onChange={handleChange}
               required
@@ -167,12 +178,15 @@ export default function RegistrationModal({
 
           <div className="form-group">
             <label>
-              Пароль <span className="required">*</span>
+              {lang == 'ru' ? 'Пароль' : 'Пароль'}{' '}
+              <span className="required">*</span>
             </label>
             <input
               type="password"
               name="password"
-              placeholder="Введіть пароль..."
+              placeholder={
+                lang == 'ru' ? 'Введите пароль...' : 'Введіть пароль...'
+              }
               value={formData.password}
               onChange={handleChange}
               required
@@ -181,12 +195,17 @@ export default function RegistrationModal({
 
           <div className="form-group">
             <label>
-              Підтвердити пароль <span className="required">*</span>
+              {lang == 'ru' ? 'Подтвердить пароль' : 'Підтвердити пароль'}{' '}
+              <span className="required">*</span>
             </label>
             <input
               type="password"
               name="confirmPassword"
-              placeholder="Введіть повторно пароль..."
+              placeholder={
+                lang == 'ru'
+                  ? 'Введите повторный пароль...'
+                  : 'Введіть повторно пароль...'
+              }
               value={formData.confirmPassword}
               onChange={handleChange}
               required
@@ -198,7 +217,7 @@ export default function RegistrationModal({
           )}
 
           <button type="submit" className="register-button">
-            Зареєструватися
+            {lang == 'ru' ? 'Зарегистрироваться' : 'Зареєструватися'}
           </button>
         </form>
       </div>

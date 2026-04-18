@@ -55,11 +55,14 @@ const HeaderBasket = ({ lang }: Props) => {
   }, [isOpenBasket]);
 
   return (
-    <div onClick={() => setIsOpenBasket(true)} id="header-basket-container">
+    <div
+      onClick={() => router.push(getLocalizedPath(`/${lang}/basket`, lang))}
+      id="header-basket-container"
+    >
       <div id="title-container">
         <div
           onClick={() => {
-            dispatch(setIsOpenBasket(true));
+            router.push(getLocalizedPath(`/${lang}/basket`, lang));
           }}
           className={`title ${isOpenBasket ? 'open' : ''}`}
         >

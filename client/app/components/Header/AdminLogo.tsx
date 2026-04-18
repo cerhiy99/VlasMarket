@@ -44,7 +44,7 @@ const AdminLogo = ({ isMob }: Props) => {
               }
         }
         href={`/ru/admin`}
-        className={!isMob ? 'admin-logo-pc' : ''}
+        className={!isMob ? 'admin-logo-pc' : 'admin-logo-mob'}
       >
         A
       </Link>
@@ -80,7 +80,7 @@ const AdminLogo = ({ isMob }: Props) => {
               }
         }
         href={`/ru/admin/orders-for-manager`}
-        className={!isMob ? 'admin-logo-pc' : ''}
+        className={!isMob ? 'admin-logo-pc' : 'admin-logo-mob'}
       >
         M
       </Link>
