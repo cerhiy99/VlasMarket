@@ -138,23 +138,36 @@
         background-color: #000000;
         color: #ffffff;
         margin-top: 20px;
-        padding: 0 22px;
         box-sizing: border-box;
         display: flex;
-        flex-direction: row;
         align-items: center;
-        font-size: 19px;
-        gap: 5px;
-        .log-in {
-          padding-left: 5px;
-        }
-        .log-in,
-        .register {
-          font-weight: 600;
-          font-style: Semi Bold;
+        padding-left: 22px;
+        .no-auth-text {
+          display: flex;
+          flex-direction: row;
+          align-items: center;
           font-size: 19px;
-          line-height: 100%;
-          letter-spacing: 0%;
+          gap: 5px;
+          width: auto;
+          .log-in {
+            display: flex;
+            padding-left: 5px;
+            text-align: right;
+            width: auto;
+          }
+          .log-in,
+          .register {
+            font-weight: 600;
+            font-style: Semi Bold;
+            font-size: 19px;
+            line-height: 100%;
+            letter-spacing: 0%;
+          }
+          .register {
+            @media (max-width: 361px) {
+              width: 100%;
+            }
+          }
         }
       }
       .auth {

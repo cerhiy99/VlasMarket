@@ -302,21 +302,23 @@ const MobileMenu = ({
                   </div>
                 ) : (
                   <div className="no-auth">
-                    <div className="svg-with-name">
-                      <AuthSVG />
-                    </div>
-                    <div
-                      onClick={() => dispatch(setOpenLogin(true))}
-                      className="log-in"
-                    >
-                      {lang == 'ru' ? 'Войти в кабинет' : 'Увійти в кабінет'}
-                    </div>
-                    |
-                    <div
-                      onClick={() => dispatch(setOpenRegister(true))}
-                      className="register"
-                    >
-                      {lang == 'ru' ? 'Регистрация' : 'Реєстрація'}
+                    <div className="no-auth-text">
+                      <div className="svg-with-name">
+                        <AuthSVG />
+                      </div>
+                      <div
+                        onClick={() => dispatch(setOpenLogin(true))}
+                        className="log-in"
+                      >
+                        {lang == 'ru' ? 'Войти в кабинет' : 'Увійти в кабінет'}
+                      </div>
+                      |
+                      <div
+                        onClick={() => dispatch(setOpenRegister(true))}
+                        className="register"
+                      >
+                        {lang == 'ru' ? 'Регистрация' : 'Реєстрація'}
+                      </div>
                     </div>
                   </div>
                 )}
