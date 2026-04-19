@@ -2,6 +2,7 @@ import React from 'react';
 import '../Goods.scss';
 import { getDictionary } from '@/lib/dictionary';
 import BreadCrumbs from '@/app/components/utils/BreadCrumbs';
+import Sort from '@/app/components/goods/Sort/Sort';
 import { GoodInterface } from '@/app/interfaces/goods';
 import ListGoods from '@/app/components/goods/ListGoods';
 import MyPagination from '@/app/components/MyPagination/MyPagination';
@@ -10,6 +11,7 @@ import { notFound } from 'next/navigation';
 import { UkrToEng } from '@/app/components/utils/UkrToEng';
 import { getLocalizedPath } from '@/app/components/utils/getLocalizedPath';
 import SelectGoods from '../../select-goods/[id]/SelectGoods';
+import Filters from '@/app/components/goods/Filters/Filters';
 import { headers } from 'next/headers';
 
 type Props = {
@@ -429,13 +431,14 @@ const Page = async ({ params, searchParams }: Props) => {
       <BreadCrumbs lang={lang} listUrles={listUrles} />
       <div className="goods-main">
         {/* Передаємо фільтри, отримані з бекенду, та поточні searchParams */}
-        {/*<Filters
+        <Filters
           filters={filters}
           lang={lang}
           currentSearchParams={currentSearchParams}
           currentPathname={`/${lang}/goods/${slug.join('/')}`}
           isMob={isMobile}
-        />*/}
+          isMobReal={isMobile}
+        />
         <div className="sore-and-goods">
           {selectSubcategory ? (
             <h1>{selectSubcategory[`name${lang == 'ru' ? 'ru' : 'uk'}`]}</h1>
@@ -444,9 +447,7 @@ const Page = async ({ params, searchParams }: Props) => {
           ) : (
             <h1>{lang == 'ru' ? 'Каталог товаров' : 'Каталог товарів'}</h1>
           )}
-          {
-            //<Sort lang={lang} />
-          }{' '}
+          <Sort lang={lang} />
           <br />
           <ListGoods
             data={data}
