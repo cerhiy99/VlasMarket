@@ -1,32 +1,5 @@
 'use client';
 
-import { ReactNode } from 'react';
-
-// 1. Створюємо фіксований об'єкт
-const mockT = (key: string) => key;
-
-// 2. Провайдер тепер — це просто "прозора" коробка
-export function TranslationProvider({
-  children,
-}: {
-  children: ReactNode;
-  lang: any;
-}) {
-  return <>{children}</>;
-}
-
-// 3. ХУК БІЛЬШЕ НЕ ВИКОРИСТОВУЄ useContext
-// Це прибере помилку "must be used within a TranslationProvider"
-export function useTranslation() {
-  return {
-    t: mockT,
-    locale: 'ua',
-    setLocale: () => {},
-    isLoaded: true,
-  };
-}
-/*'use client';
-
 import { ReactNode, createContext, useContext, useEffect, useState, useMemo } from 'react';
 import { usePathname } from 'next/navigation';
 import { Locale } from '@/i18n.config';
@@ -124,4 +97,3 @@ export function useTranslation() {
   }
   return context;
 }
-*/
