@@ -3,6 +3,7 @@ import React from 'react';
 import './DiscountOrFreeShippingOrOther.scss';
 import { useTranslation } from '@/context/TranslationProvider';
 import DeliverySVG from '../../assest/FreeDelivery.svg';
+import { Locale } from '@/i18n.config';
 
 type Props = {
   isDiscount: boolean;
@@ -10,6 +11,7 @@ type Props = {
   isBestseller: boolean; //Хит продаж
   isNovetly: boolean;
   isHit: boolean;
+  lang: Locale;
 };
 
 const DiscountOrFreeShippingOrOther = ({
@@ -18,6 +20,7 @@ const DiscountOrFreeShippingOrOther = ({
   isFreeShipping,
   isNovetly,
   isHit,
+  lang,
 }: Props) => {
   const { t } = useTranslation();
   return (
@@ -35,10 +38,12 @@ const DiscountOrFreeShippingOrOther = ({
           }}
           className="discount"
         >
-          <DeliverySVG /> {t('miniGoods2.freeDelivery')}
+          <DeliverySVG /> {lang == 'ru' ? 'Бесплатно' : 'Безкоштовно'}
         </div>
       )}
-      {isDiscount && <div className="discount">{t('miniGoods2.discount')}</div>}
+      {isDiscount && (
+        <div className="discount">{lang == 'ru' ? 'Акции' : 'Акції'}</div>
+      )}
 
       {isNovetly && <div className="discount">Новинка</div>}
       {isHit && <div className="discount">Топ</div>}

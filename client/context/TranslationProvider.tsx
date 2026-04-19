@@ -8,7 +8,6 @@ import {
   useState,
   useMemo,
 } from 'react';
-import { usePathname } from 'next/navigation';
 import { Locale } from '@/i18n.config';
 
 interface TranslationContextType {
@@ -32,7 +31,6 @@ export function TranslationProvider({
   children: ReactNode;
   lang: Locale;
 }) {
-  const pathname = usePathname();
   const [dictionary, setDictionary] = useState<any>(null);
   const [isLoaded, setIsLoaded] = useState(false);
 

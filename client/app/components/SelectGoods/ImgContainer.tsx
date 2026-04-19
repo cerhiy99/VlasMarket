@@ -42,7 +42,6 @@ const ImgContainer = ({
     setSelectUrl(listImg[0]);
   }, [listImg]);
 
-  const { t } = useTranslation();
   let isPadding = false;
   if (isFreeDelivery) isPadding = true;
   if (isDiscount) isPadding = true;
@@ -58,24 +57,29 @@ const ImgContainer = ({
         {isHit && <div className="is-hit">Топ продаж</div>}
         {isFreeDelivery && (
           <div className="is-free-delivery">
-            <DeliverySVG /> {t('miniGoods2.freeDelivery')}
+            <DeliverySVG /> {lang == 'ru' ? 'Бесплатно' : 'Безкоштовно'}
           </div>
         )}
         {isNovetly && <div className="is-hit">Новинка</div>}
       </div>
-      <div className="select-img">
-        <Image
+      <picture className="select-img">
+        {/* Джерело для мобілок (екран < 768px) */}
+        <source
+          srcSet={
+            process.env.NEXT_PUBLIC_SERVER +
+            selectUrl.img.replace('.webp', '_small.webp')
+          }
+          media="(max-width: 767px)"
+        />
+        {/* Основне зображення для ПК */}
+        <img
           onClick={() => setShowImg(!showImg)}
           src={process.env.NEXT_PUBLIC_SERVER + selectUrl.img}
-          width={888}
-          height={888}
-          unoptimized
           alt={lang == 'ru' ? selectUrl.volumeru : selectUrl.volumeuk}
-          style={{ paddingTop: isPadding ? '40px' : 0 }}
           loading="eager"
-          priority
+          className="object-contain w-full h-full"
         />
-      </div>
+      </picture>
       <div className="list-img">
         {listImg.map((x) => (
           <Image
@@ -85,7 +89,10 @@ const ImgContainer = ({
             width={60}
             height={60}
             alt={lang == 'ru' ? x.volumeru : x.volumeuk}
-            src={process.env.NEXT_PUBLIC_SERVER + x.img}
+            src={
+              process.env.NEXT_PUBLIC_SERVER +
+              x.img.replace('.webp', '_small.webp')
+            }
             loading="eager"
             priority
           />

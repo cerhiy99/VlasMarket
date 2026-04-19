@@ -105,7 +105,7 @@ const InBasket = ({ selectGoods, selectVolumeIdx }: Props) => {
       )}
 
       {!isInBasket ? (
-        <p>{t('SelectGoods.buy')}</p>
+        <p>{t('selectGoods.buy')}</p>
       ) : (
         <p>{t('selectGoods.inBasket')}</p>
       )}

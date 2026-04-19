@@ -58,6 +58,7 @@ const MiniGoods = ({ goods, dictionary, lang, idx }: Props) => {
               isFreeShipping={goods.volumes[selectVolumeIdx].isFreeDelivery}
               isDiscount={goods.isDiscount}
               isHit={goods.isHit}
+              lang={lang}
             />
             <div className="like-svg-container">
               <Like selectVolumeIdx={selectVolumeIdx} goods={goods} />
