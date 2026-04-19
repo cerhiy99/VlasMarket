@@ -126,15 +126,16 @@
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
-    flex-wrap: wrap;
     gap: 5px;
-    height: 34px;
+    //height: 34px;
     width: 100%;
     max-width: 100%;
-    overflow: hidden;
+    overflow-x: hidden;
+    overflow-y: none;
     .rating {
       display: flex;
       flex-direction: row;
+      flex-wrap: wrap;
       align-items: center;
       gap: 5px;
       span {

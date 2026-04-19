@@ -427,7 +427,18 @@ const MobileMenu = ({
               <div className="close">&times;</div>
             </div>
             <div className="select-category">
-              <div className="svg-select-category">
+              <div
+                onClick={() => {
+                  router.push(
+                    getLocalizedPath(
+                      `/${lang}/goods/${UkrToEng(catalog.find((x: any) => x.id == selectCategory)?.nameru || '')}/1`,
+                      lang
+                    )
+                  );
+                  handleClose();
+                }}
+                className="svg-select-category"
+              >
                 <img
                   alt={
                     lang == 'ru'

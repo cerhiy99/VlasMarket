@@ -12,6 +12,7 @@ import { useTranslation } from '@/context/TranslationProvider';
 import BonusSVG from '../../assest/Bonus.svg';
 import CloseSVG from '../../assest/Header/close.svg';
 import BasketItemComponent from './BasketItem';
+import { getCountBonus } from '../utils/getCountBonus';
 
 type Props = {
   lang: Locale;
@@ -116,7 +117,16 @@ const HeaderBasket = ({ lang }: Props) => {
                 <div className="bonus-info">
                   За покупку:
                   <div className="bonus">
-                    <BonusSVG /> <span>+ 90</span>{' '}
+                    <BonusSVG />{' '}
+                    <span>
+                      +{' '}
+                      {getCountBonus(
+                        basket.reduce(
+                          (acc, x) => (acc += x.volume.priceWithDiscount),
+                          0
+                        )
+                      )}
+                    </span>{' '}
                     {lang == 'ru' ? 'бонусов' : 'бонусів'}
                   </div>
                 </div>

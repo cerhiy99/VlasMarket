@@ -1,6 +1,6 @@
 .list-article-container {
   display: grid;
-  gap: 15px;
+  gap: 10px;
 
   .button-down {
     grid-column: 1 / -1;
@@ -26,5 +26,8 @@
         }
       }
     }
+  }
+  @media (max-width: 768px) {
+    gap: 2px;
   }
 }

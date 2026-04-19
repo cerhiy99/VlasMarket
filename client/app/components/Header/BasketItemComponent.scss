@@ -52,7 +52,10 @@
           align-items: center;
           background-color: #ebd8e499;
           border-radius: 100px;
-          width: 137px;
+          width: 148px;
+          min-width: 148px;
+          max-width: 148px;
+
           gap: 7px;
           justify-content: left;
           font-weight: 500;
@@ -62,6 +65,10 @@
           letter-spacing: 0%;
           color: #000000;
           padding: 6px;
+          white-space: nowrap;
+          svg {
+            min-width: 23px;
+          }
           span {
             font-weight: 600;
             font-style: Semi Bold;
@@ -69,6 +76,7 @@
             line-height: 100%;
             letter-spacing: 0%;
             color: #000000;
+            white-space: nowrap;
           }
         }
         .art {

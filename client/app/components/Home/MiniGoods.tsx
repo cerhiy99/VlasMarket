@@ -14,6 +14,7 @@ import ComparisonSVG from '../../assest/Goods/comparison.svg';
 import BonusSVG from '../../assest/Goods/Bonus.svg';
 import Comparison from './Comparison';
 import MyRating from '../SelectGoods/MyRating';
+import { getCountBonus } from '../utils/getCountBonus';
 
 type Props = {
   goods: GoodInterface;
@@ -93,7 +94,10 @@ const MiniGoods = ({ goods, dictionary, lang }: Props) => {
             <div className="svg">
               <BonusSVG />
             </div>
-            <span>+ {countBonus}</span>
+            <span>
+              +{' '}
+              {getCountBonus(goods.volumes[selectVolumeIdx].priceWithDiscount)}
+            </span>
             {lang == 'ru' ? 'бонусов' : 'бонусів '}
           </div>
         </div>

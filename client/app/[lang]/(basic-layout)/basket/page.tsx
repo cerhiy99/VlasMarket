@@ -9,6 +9,7 @@ import { RootState } from '@/app/store';
 import BonusSVG from '../../../assest/Bonus.svg';
 import { useRouter } from 'next/navigation';
 import { getLocalizedPath } from '@/app/components/utils/getLocalizedPath';
+import { getCountBonus } from '@/app/components/utils/getCountBonus';
 
 type Props = {
   params: Promise<{ lang: Locale }>;
@@ -47,7 +48,16 @@ const Page = ({ params }: Props) => {
                   <div className="bonus-svg">
                     <BonusSVG />
                   </div>
-                  <span> + 300</span> {lang == 'ru' ? 'бонусов' : 'бонусів'}
+                  <span>
+                    {' '}
+                    +{' '}
+                    {basket.reduce(
+                      (acc, x) =>
+                        (acc += getCountBonus(x.volume.priceWithDiscount)),
+                      0
+                    )}
+                  </span>{' '}
+                  {lang == 'ru' ? 'бонусов' : 'бонусів'}
                 </span>
               </div>
               <div className="buttons">

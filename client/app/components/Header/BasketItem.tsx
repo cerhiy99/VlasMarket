@@ -19,6 +19,7 @@ import {
 import DelSVG from '../../assest/Header/Del.svg';
 import LikeSVG from '../../assest/Header/Like.svg';
 import './BasketItemComponent.scss';
+import { getCountBonus } from '../utils/getCountBonus';
 
 type Props = {
   lang: Locale;
@@ -53,7 +54,7 @@ const BasketItemComponent = ({ lang, noList }: Props) => {
     <div
       className={`itemWrapper-container ${noList ? 'itemWrapper-container-no-list' : ''}`}
     >
-      {basket.map((x: any) => (
+      {basket.map((x) => (
         <Link
           key={x.id}
           href={getLocalizedPath(`/${lang}/goods/${x.volume.url}`, lang)}
@@ -70,7 +71,8 @@ const BasketItemComponent = ({ lang, noList }: Props) => {
             <div className="basket-goods-text23">
               <h3>{lang == 'ru' ? x.nameRU : x.nameUA}</h3>
               <div className="bonus">
-                <BonusSVG /> <span>+15</span>{' '}
+                <BonusSVG />{' '}
+                <span>+ {getCountBonus(x.volume.priceWithDiscount)}</span>{' '}
                 {
                   lang == 'ru'
                     ? 'бонусов' /* за покупку*/
