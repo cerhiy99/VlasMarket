@@ -227,6 +227,15 @@
           font-family: 'Inter', sans-serif !important;
         }
       }
+      .special-label {
+        display: none !important;
+      }
+      .flag-dropdown {
+        .arrow {
+          position: absolute;
+          z-index: 3;
+        }
+      }
     }
 
     .register-button {

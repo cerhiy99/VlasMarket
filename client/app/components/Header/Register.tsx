@@ -5,7 +5,7 @@ import CloseSVG from '../../assest/Goods/Close.svg';
 import { useState } from 'react';
 import './Registration.scss';
 import PhoneInput from 'react-phone-input-2';
-import 'react-phone-input-2/lib/style.css';
+//import 'react-phone-input-2/lib/style.css';
 import { Locale } from '@/i18n.config';
 import { $authHost } from '@/app/http';
 import { useDispatch } from 'react-redux';
@@ -34,7 +34,7 @@ export default function RegistrationModal({
   const [formData, setFormData] = useState<FormRegisterProps>({
     firstName: '',
     lastName: '',
-    phone: '',
+    phone: '380',
     email: '',
     password: '',
     confirmPassword: '',
@@ -133,7 +133,15 @@ export default function RegistrationModal({
               <span className="required">*</span>
             </label>
             <div className="phone-input-container">
-              <PhoneInput
+              <input
+                onChange={handleChange}
+                name="phone"
+                type="text"
+                value={formData.phone}
+                required
+                pattern="^\\+380 \\(\\d{2}\\\\) \\d{3} \\d{2} \\d{2}$|^(?!\\+380).{7,20}$"
+              />
+              {/*<PhoneInput
                 country={'ua'}
                 placeholder=""
                 value={formData.phone}

@@ -75,11 +75,6 @@ const AuthHeader = ({
     //setLogIsOpen(false);
     dispatch(setOpenRegister(true));
   };
-  const handleRegister = () => {
-    dispatch(setOpenRegister(true));
-    //setLogIsOpen(true);
-    //setIsRegisterOpen(false);
-  };
 
   const closeLogIn = () => {
     dispatch(setOpenLogin(false));
