@@ -1,0 +1,32 @@
+const router = require('express')();
+const brendRouter = require('./BrendRouter');
+const categoryRouter = require('./CategoryRouter');
+const subcategoryRouter = require('./SubcategoryRouter');
+const filterCategoryRouter = require('./FilterCategoryRouter');
+const countryMadeRouter = require('./CountryMadeRouter');
+const goodsRouter = require('./GoodsRouter');
+const userRouter = require('./UserRouter');
+const searchRouter = require('./searchRouter');
+const orderRouter = require('./OrderRouter');
+const reviewRouter = require('./ReviewRouter');
+const richTextEditor = require('./RichTextEditor');
+const blogRouter = require('./BlogRouter');
+const banersRouter = require('./BanersRouter');
+const uploadImage = require('./UploadImage');
+
+router.use('/brend', brendRouter);
+router.use('/category', categoryRouter);
+router.use('/subcategory', subcategoryRouter);
+router.use('/filterCategory', filterCategoryRouter);
+router.use('/countryMade', countryMadeRouter);
+router.use('/goods', goodsRouter);
+router.use('/user', userRouter);
+router.use('/search', searchRouter);
+router.use('/order', orderRouter);
+router.use('/review', reviewRouter);
+router.use('/rich-text-editor', richTextEditor);
+router.use('/blog', blogRouter);
+router.use('/slides', banersRouter);
+router.use('/upload-image', uploadImage);
+
+module.exports = router;
