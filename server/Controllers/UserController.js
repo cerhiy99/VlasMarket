@@ -1,16 +1,26 @@
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const ErrorApi = require('../error/ErrorApi'); // припускаю, що є ErrorApi
-const { Users, PersonalDate, Order, Goods, Volume, Img } = require('../models/models');
+const { Users, Order, Goods, Volume, Img } = require('../models/models');
 const dayjs = require('dayjs');
 const sendEmail = require('./utils/sendEmail');
 
-const secretKey = process.env.JWT_SECRET;
-
-const generateJwt = async (id, email, adminAccess, name, surname, phone, isRemember = true) => {
-  return jwt.sign({ id, email, adminAccess, name, surname, phone }, process.env.JWT_SECRET, {
-    expiresIn: isRemember ? '1y' : '1h',
-  });
+const generateJwt = async (
+  id,
+  email,
+  adminAccess,
+  name,
+  surname,
+  phone,
+  isRemember = true
+) => {
+  return jwt.sign(
+    { id, email, adminAccess, name, surname, phone },
+    process.env.JWT_SECRET,
+    {
+      expiresIn: isRemember ? '1y' : '1h',
+    }
+  );
 };
 
 class UserController {
@@ -54,6 +64,7 @@ class UserController {
       // 6️⃣ Повернення токена у відповідь
       return res.json({ token });
     } catch (err) {
+      console.log(434, err);
       return next(ErrorApi.badRequest(err.message));
     }
   };
@@ -70,7 +81,9 @@ class UserController {
       // 2️⃣ Перевірка, чи користувач існує в базі
       const user = await Users.findOne({ where: { email } });
       if (!user) {
-        return next(ErrorApi.badRequest('Користувача з таким email не знайдено'));
+        return next(
+          ErrorApi.badRequest('Користувача з таким email не знайдено')
+        );
       }
 
       // 3️⃣ Перевірка правильності пароля
@@ -105,7 +118,15 @@ class UserController {
   static GetUsers = async (req, resp, next) => {
     try {
       const users = await Users.findAll({
-        attributes: ['id', 'name', 'surname', 'email', 'phone', 'latestActivity', 'createdAt'],
+        attributes: [
+          'id',
+          'name',
+          'surname',
+          'email',
+          'phone',
+          'latestActivity',
+          'createdAt',
+        ],
       });
       const res = [];
       for (let i = 0; i < users.length; i++) {
@@ -137,7 +158,7 @@ class UserController {
     }
   };
 
-  static setPersonalDate = async (req, resp, next) => {
+  /*static setPersonalDate = async (req, resp, next) => {
     try {
       const {
         deliveryType,
@@ -244,7 +265,7 @@ class UserController {
     } catch (err) {
       return next(ErrorApi.badRequest(err));
     }
-  };
+  };*/
   static getPersonalDiscountAndOrders = async (req, resp, next) => {
     try {
       const userId = req.user.id;
@@ -288,9 +309,13 @@ class UserController {
         return resp.status(239).json({ message: 'Email не знайдено' });
       }
 
-      const token = jwt.sign({ id: user.id, email: user.email }, process.env.JWT_SECRET, {
-        expiresIn: '1h',
-      });
+      const token = jwt.sign(
+        { id: user.id, email: user.email },
+        process.env.JWT_SECRET,
+        {
+          expiresIn: '1h',
+        }
+      );
 
       const resetUrl = `${process.env.FRONTEND_URL}/ua/forgot-password/${token}`;
 
@@ -324,7 +349,9 @@ class UserController {
       // Виклик функції відправки пошти
       await sendEmail(email, htmlMessage, subject);
 
-      return resp.status(200).json({ message: 'Інструкції надіслано на email' });
+      return resp
+        .status(200)
+        .json({ message: 'Інструкції надіслано на email' });
     } catch (err) {
       return next(ErrorApi.badRequest(err));
     }
@@ -343,7 +370,9 @@ class UserController {
       try {
         decoded = jwt.verify(token, process.env.JWT_SECRET);
       } catch (err) {
-        return resp.status(401).json({ message: 'Термін дії посилання минув або воно недійсне' });
+        return resp
+          .status(401)
+          .json({ message: 'Термін дії посилання минув або воно недійсне' });
       }
 
       // 3️⃣ Пошук користувача по ID
@@ -357,6 +386,7 @@ class UserController {
 
       // 5️⃣ Оновлення пароля
       user.password = hashedPassword;
+      user.passwordUpdatedAt = new Date();
       await user.save();
 
       // 6️⃣ Успішна відповідь
@@ -409,6 +439,87 @@ class UserController {
       }
 
       return resp.json(newBasket);
+    } catch (err) {
+      return next(ErrorApi.badRequest(err));
+    }
+  };
+  static getMy = async (req, resp, next) => {
+    try {
+      return resp.json({ user: req.user });
+    } catch (err) {
+      return next(ErrorApi.badRequest(err));
+    }
+  };
+
+  static UpdateMy = async (req, resp, next) => {
+    try {
+      const userId = req.user.id;
+      const {
+        name,
+        surname,
+        dateBirsday,
+        phone,
+        email,
+        city,
+        cityKey,
+        password,
+      } = req.body;
+      const user = await Users.findOne({ where: { id: userId } });
+      user.name = name;
+      user.surname = surname;
+      if (dateBirsday) {
+        const parsedDate = new Date(dateBirsday);
+
+        // перевірка валідності дати
+        if (!isNaN(parsedDate.getTime())) {
+          user.dateBirsday = parsedDate;
+        }
+      }
+      user.phone = phone;
+      user.email = email;
+      if (city) {
+        user.city = city;
+      }
+      if (cityKey) {
+        user.cityKey = cityKey;
+      }
+      if (password) {
+        const hashedPassword = await bcrypt.hash(password, 10);
+        user.password = hashedPassword;
+        user.passwordUpdatedAt = new Date();
+      }
+
+      await user.save();
+      // 5️⃣ Генерація JWT токена
+      const token = await generateJwt(
+        user.id,
+        user.email,
+        user.adminAccess,
+        user.name,
+        user.surname,
+        user.phone,
+        true
+      );
+      return resp.json({ token });
+    } catch (err) {
+      return next(ErrorApi.badRequest(err));
+    }
+  };
+  static UpdateValue = async (req, resp, next) => {
+    try {
+      const {
+        emailSendAnswersReview,
+        emailSendRememberToReview,
+        emaildSendDiscount,
+        emailSendProposion,
+      } = req.body;
+      const user = await Users.findOne({ where: { id: req.user.id } });
+      user.emailSendAnswersReview = emailSendAnswersReview;
+      user.emailSendRememberToReview = emailSendRememberToReview;
+      user.emaildSendDiscount = emaildSendDiscount;
+      user.emailSendProposion = emailSendProposion;
+      user.save();
+      resp.json();
     } catch (err) {
       return next(ErrorApi.badRequest(err));
     }

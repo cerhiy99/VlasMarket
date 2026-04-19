@@ -7,13 +7,23 @@ router.post('/register', UserController.Register);
 router.post('/login', UserController.Login);
 router.post('/active', IsAuthMiddleWare, UserController.Active);
 router.get('/getUsers', IsAdminMiddleWare, UserController.GetUsers);
-router.post('/setPeronal', IsAuthMiddleWare, UserController.setPersonalDate);
-router.get('/getPersonal', IsAuthMiddleWare, UserController.getPersonal);
-router.get('/getDiscountAndOrders', IsAuthMiddleWare, UserController.getPersonalDiscountAndOrders);
-router.get('/getPersonalDiscount', IsAuthMiddleWare, UserController.getPersonalDiscount);
+//router.post('/setPeronal', IsAuthMiddleWare, UserController.setPersonalDate);
+//router.get('/getPersonal', IsAuthMiddleWare, UserController.getPersonal);
+router.get(
+  '/getDiscountAndOrders',
+  IsAuthMiddleWare,
+  UserController.getPersonalDiscountAndOrders
+);
+router.get(
+  '/getPersonalDiscount',
+  IsAuthMiddleWare,
+  UserController.getPersonalDiscount
+);
 router.post('/forgotPassword', UserController.ForgotPassword);
 router.post('/reset-password', UserController.ResetPassword);
 router.get('/repearOrder/:orderId', UserController.RepeatOrder);
+router.get('/getMy', IsAuthMiddleWare, UserController.getMy);
+router.put('/myDate', IsAuthMiddleWare, UserController.UpdateMy);
+router.put('/updateSendEmail', IsAuthMiddleWare, UserController.UpdateValue);
 
 module.exports = router;
-

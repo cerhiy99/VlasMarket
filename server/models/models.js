@@ -237,6 +237,29 @@ const Users = sequelize.define('users', {
   email: { type: DataTypes.STRING, allowNull: false, unique: true },
   password: { type: DataTypes.STRING, allowNull: true, defaultValue: null },
   phone: { type: DataTypes.STRING, allowNull: true, defaultValue: null },
+  dateBirsday: { type: DataTypes.DATE, allowNull: true, defaultValue: null },
+  city: { type: DataTypes.STRING, allowNull: true, defaultValue: null },
+  cityKey: { type: DataTypes.STRING, allowNull: true, defaultValue: null },
+  emailSendAnswersReview: {
+    type: DataTypes.BOOLEAN,
+    allowNull: false,
+    defaultValue: true,
+  },
+  emailSendRememberToReview: {
+    type: DataTypes.BOOLEAN,
+    allowNull: false,
+    defaultValue: true,
+  },
+  emaildSendDiscount: {
+    type: DataTypes.BOOLEAN,
+    allowNull: false,
+    defaultValue: true,
+  },
+  emailSendProposion: {
+    type: DataTypes.BOOLEAN,
+    allowNull: false,
+    defaultValue: true,
+  },
   latestActivity: {
     type: DataTypes.DATE,
     allowNull: false,
@@ -254,7 +277,7 @@ const Users = sequelize.define('users', {
   },
 });
 
-const PersonalDate = sequelize.define('personal', {
+/*const PersonalDate = sequelize.define('personal', {
   id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
   firstName: { type: DataTypes.STRING, allowNull: true, defaultValue: null },
   lastName: { type: DataTypes.STRING, allowNull: true, defaultValue: null },
@@ -270,10 +293,7 @@ const PersonalDate = sequelize.define('personal', {
   ukrPoshtaCity: { type: DataTypes.STRING, allowNull: true },
   ukrPoshtaDepartment: { type: DataTypes.STRING, allowNull: true },
   ukrPoshtaRegion: { type: DataTypes.STRING, allowNull: true },
-});
-
-Users.hasMany(PersonalDate);
-PersonalDate.belongsTo(Users);
+});*/
 
 const Order = sequelize.define('order', {
   id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
@@ -437,7 +457,6 @@ module.exports = {
   Img,
   ProductCategoryFilter,
   Users,
-  PersonalDate,
   Order,
   GoodsViews,
   Linia,

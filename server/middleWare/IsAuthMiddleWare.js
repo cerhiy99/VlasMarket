@@ -25,16 +25,16 @@ module.exports = async (req, res, next) => {
       decoded.iat * 1000 < user.passwordUpdatedAt.getTime()
     ) {
       return next(
-        ErrorApi.noAuth('Пароль був змінений після створення токена.'),
+        ErrorApi.noAuth('Пароль був змінений після створення токена.')
       );
     }
 
     await Users.update(
       { latestActivity: literal('NOW()') },
-      { where: { id: decoded.id } },
+      { where: { id: decoded.id } }
     );
 
-    req.user = decoded;
+    req.user = { ...user.dataValues, password: '' };
     next();
   } catch (err) {
     return next(ErrorApi.noAuth('Токен протермінований або недійсний.'));

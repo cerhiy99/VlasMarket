@@ -85,4 +85,5 @@ start();
 //ParseFromSite.parseAllLine();
 //SetUrlToVolume.SetAllGoods();
 //SetUrlToVolume.SetAllGoods();
+//ConvertPngToWebP.generateSmallForAllExistingWebp();
 ConvertPngToWebP.UpdateNoWebp();

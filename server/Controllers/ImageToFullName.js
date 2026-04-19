@@ -31,11 +31,14 @@ class ImageToFullName {
       const imagesToProcess = images.filter((image) => {
         const isNew = !image.img.includes('/');
         const wasHiddenButNowOpen =
-          image.img.startsWith('hidden/') && image.volume?.good?.isShow === true;
+          image.img.startsWith('hidden/') &&
+          image.volume?.good?.isShow === true;
         return isNew || wasHiddenButNowOpen;
       });
 
-      console.log(`Знайдено ${imagesToProcess.length} фото для обробки/повернення.`);
+      console.log(
+        `Знайдено ${imagesToProcess.length} фото для обробки/повернення.`
+      );
 
       const staticDir = path.join(__dirname, '../static');
 
@@ -73,13 +76,20 @@ class ImageToFullName {
           .replace(/^ua-/, '');
 
         if (cleanName.length > 80) {
-          cleanName = cleanName.substring(0, 80).split('-').slice(0, -1).join('-');
+          cleanName = cleanName
+            .substring(0, 80)
+            .split('-')
+            .slice(0, -1)
+            .join('-');
         }
 
         // 3. ВИЗНАЧЕННЯ НОВОГО ШЛЯХУ
         // Формуємо чистий шлях: id_товару/id_фото/назва.avif
         const newRelativeDir = `${product.id}/${image.id}`;
-        const newRelativePath = `${newRelativeDir}/${cleanName}.webp`.replace(/\\/g, '/');
+        const newRelativePath = `${newRelativeDir}/${cleanName}.webp`.replace(
+          /\\/g,
+          '/'
+        );
 
         const fullOldPath = path.join(staticDir, image.img);
         const fullNewDir = path.join(staticDir, newRelativeDir);
@@ -92,10 +102,21 @@ class ImageToFullName {
               fs.mkdirSync(fullNewDir, { recursive: true });
             }
 
-            // Переміщуємо
+            // --- ЛОГІКА ДЛЯ ОСНОВНОГО ФАЙЛУ ---
             fs.renameSync(fullOldPath, fullNewPath);
 
-            // Оновлюємо БД
+            // --- ЛОГІКА ДЛЯ МАЛЕНЬКОГО ФАЙЛУ (_small) ---
+            const oldSmallPath = fullOldPath.replace('.webp', '_small.webp');
+            const newSmallPath = fullNewPath.replace('.webp', '_small.webp');
+
+            if (fs.existsSync(oldSmallPath)) {
+              fs.renameSync(oldSmallPath, newSmallPath);
+              console.log(
+                `Також переміщено мініатюру: ${path.basename(newSmallPath)}`
+              );
+            }
+
+            // Оновлюємо БД (записуємо тільки основний шлях)
             await image.update({ img: newRelativePath });
 
             console.log(`Оновлено: ${image.img} -> ${newRelativePath}`);
@@ -177,7 +198,11 @@ class ImageToFullName {
           .replace(/^ua-/, '');
 
         if (cleanName.length > 80) {
-          cleanName = cleanName.substring(0, 80).split('-').slice(0, -1).join('-');
+          cleanName = cleanName
+            .substring(0, 80)
+            .split('-')
+            .slice(0, -1)
+            .join('-');
         }
 
         // 3. ВИЗНАЧЕННЯ НОВОГО ШЛЯХУ (з урахуванням isShow)

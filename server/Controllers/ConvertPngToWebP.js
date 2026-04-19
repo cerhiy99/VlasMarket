@@ -7,49 +7,56 @@ class ConvertPngToWebP {
   static convertOneToWebp = async (id) => {
     try {
       const img = await Img.findOne({ where: { id } });
-      if (!img) {
-        console.log('Зображення з таким ID не знайдено.');
-        return;
-      }
+      if (!img) return;
 
       const src = img.img;
       const originalPath = path.join(__dirname, '..', 'static', src);
 
-      if (!fs.existsSync(originalPath)) {
-        console.log('Файл не знайдено за шляхом:', originalPath);
-        return;
-      }
+      if (!fs.existsSync(originalPath)) return;
 
-      // 1. Змінюємо розширення на .webp.
-      // Регулярний вираз тепер враховує і .avif, якщо раптом такі файли вже є
-      const webpFileName = src.replace(/\.(png|jpeg|jpg|avif)$/i, '.webp');
+      // Створюємо базове ім'я без розширення
+      const baseName = src.replace(/\.(png|jpeg|jpg|avif|webp)$/i, '');
+
+      const webpFileName = `${baseName}.webp`;
+      const smallFileName = `${baseName}_small.webp`; // Ім'я для мобільної версії
+
       const webpPath = path.join(__dirname, '..', 'static', webpFileName);
+      const smallPath = path.join(__dirname, '..', 'static', smallFileName);
 
-      // 2. Конвертація через Sharp
-      await sharp(originalPath)
+      const sharpInstance = sharp(originalPath);
+
+      // 1. Створюємо основне зображення (888x888)
+      await sharpInstance
+        .clone()
         .resize(888, 888, {
           fit: 'contain',
           background: { r: 255, g: 255, b: 255, alpha: 1 },
         })
-        .webp({
-          quality: 80,
-          effort: 4, // Баланс між швидкістю та стисненням (0-6)
-        })
+        .webp({ quality: 80, effort: 4 })
         .toFile(webpPath);
 
-      // 3. Оновлюємо запис в базі даних
+      // 2. Створюємо мобільну версію (400x400)
+      await sharpInstance
+        .clone()
+        .resize(400, 400, {
+          fit: 'contain',
+          background: { r: 255, g: 255, b: 255, alpha: 1 },
+        })
+        .webp({ quality: 70, effort: 4 }) // Трохи сильніше стиснення для мобілок
+        .toFile(smallPath);
+
+      // 3. Оновлюємо базу (тільки основним ім'ям)
       img.img = webpFileName;
       await img.save();
 
-      // 4. ОПЦІЙНО: Видалення старого файлу
-      // Якщо шлях змінився (наприклад, був .jpg, став .webp), старий файл треба видалити
+      // 4. Видалення оригіналу, якщо він не був основним .webp
       if (originalPath !== webpPath && fs.existsSync(originalPath)) {
         fs.unlinkSync(originalPath);
       }
 
-      console.log(`Успішно: ${src} -> ${webpFileName}`);
+      console.log(`✅ Оброблено: ${webpFileName} та ${smallFileName}`);
     } catch (err) {
-      console.error(`Помилка при конвертації ID ${id}:`, err);
+      console.error(`Помилка ID ${id}:`, err);
     }
   };
 
@@ -78,7 +85,9 @@ class ConvertPngToWebP {
         return;
       }
 
-      console.log(`Знайдено ${imgs.length} зображень для конвертації у WebP...`);
+      console.log(
+        `Знайдено ${imgs.length} зображень для конвертації у WebP...`
+      );
 
       for (let i = 0; i < imgs.length; i++) {
         // Виводимо прогрес: поточний індекс / загальна кількість
@@ -91,6 +100,67 @@ class ConvertPngToWebP {
       console.log(`✅ Конвертація ${imgs.length} зображень завершена.`);
     } catch (err) {
       console.error('Помилка під час масового оновлення:', err);
+    }
+  };
+  static generateSmallForAllExistingWebp = async () => {
+    try {
+      // 1. Шукаємо в базі всі зображення, які вже є у форматі webp
+      const imgs = await Img.findAll({
+        where: {
+          img: { [Op.like]: '%.webp' },
+        },
+      });
+
+      console.log(
+        `Знайдено ${imgs.length} зображень для перевірки/створення мініатюр...`
+      );
+
+      const staticDir = path.join(__dirname, '../static');
+      let createdCount = 0;
+      let skippedCount = 0;
+
+      for (let i = 0; i < imgs.length; i++) {
+        const image = imgs[i];
+        const fullPath = path.join(staticDir, image.img);
+
+        // Формуємо ім'я для маленької копії
+        const smallPath = fullPath.replace('.webp', '_small.webp');
+
+        // Перевіряємо, чи існує основне фото і чи ще НЕМАЄ маленького
+        if (fs.existsSync(fullPath)) {
+          if (!fs.existsSync(smallPath)) {
+            try {
+              await sharp(fullPath)
+                .resize(400, 400, {
+                  fit: 'contain',
+                  background: { r: 255, g: 255, b: 255, alpha: 1 },
+                })
+                .webp({ quality: 70, effort: 4 })
+                .toFile(smallPath);
+
+              createdCount++;
+            } catch (sharpErr) {
+              console.error(
+                `Помилка Sharp для файлу ${image.img}:`,
+                sharpErr.message
+              );
+            }
+          } else {
+            skippedCount++;
+          }
+        }
+
+        // Виводимо прогрес кожні 100 файлів, щоб не спамити в консоль
+        if (i % 100 === 0) {
+          console.log(`Прогрес: ${i}/${imgs.length}...`);
+        }
+      }
+
+      console.log(`--- ЗАВЕРШЕНО ---`);
+      console.log(`Створено нових мініатюр: ${createdCount}`);
+      console.log(`Вже існували (пропущено): ${skippedCount}`);
+    } catch (err) {
+      console.error('Критична помилка при генерації мініатюр:', err);
     }
   };
 }
