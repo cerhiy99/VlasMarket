@@ -84,7 +84,7 @@ const MiniGoods = ({ goods, dictionary, lang, idx }: Props) => {
               sizes="(max-width: 768px) 50vw, 300px"
               // 3. Якість 75 — це золота середина між вагою та чіткістю
               //quality={75}
-              priority={idx ? idx < 4 : false}
+              priority={idx != undefined ? idx < 4 : false}
               className="object-contain" // або object-cover, щоб зберегти пропорції
               unoptimized
             />
