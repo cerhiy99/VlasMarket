@@ -1,46 +1,37 @@
 'use client';
 
-import { ReactNode } from 'react';
-
-// 1. Створюємо фіксований об'єкт
-const mockT = (key: string) => key;
-
-// 2. Провайдер тепер — це просто "прозора" коробка
-export function TranslationProvider({
-  children,
-}: {
-  children: ReactNode;
-  lang: any;
-}) {
-  return <>{children}</>;
-}
-
-// 3. ХУК БІЛЬШЕ НЕ ВИКОРИСТОВУЄ useContext
-// Це прибере помилку "must be used within a TranslationProvider"
-export function useTranslation() {
-  return {
-    t: mockT,
-    locale: 'ua',
-    setLocale: () => {},
-    isLoaded: true,
-  };
-}
-/*'use client';
-
-import { ReactNode, createContext, useContext, useEffect, useState, useMemo } from 'react';
+import {
+  ReactNode,
+  createContext,
+  useContext,
+  useEffect,
+  useState,
+  useMemo,
+} from 'react';
 import { usePathname } from 'next/navigation';
 import { Locale } from '@/i18n.config';
 
 interface TranslationContextType {
-  t: (key: string, options?: Record<string, string | number>) => string | string[];
+  t: (
+    key: string,
+    options?: Record<string, string | number>
+  ) => string | string[];
   locale: Locale;
   setLocale: (locale: Locale) => void;
   isLoaded: boolean;
 }
 
-const TranslationContext = createContext<TranslationContextType | undefined>(undefined);
+const TranslationContext = createContext<TranslationContextType | undefined>(
+  undefined
+);
 
-export function TranslationProvider({ children, lang }: { children: ReactNode; lang: Locale }) {
+export function TranslationProvider({
+  children,
+  lang,
+}: {
+  children: ReactNode;
+  lang: Locale;
+}) {
   const pathname = usePathname();
   const [dictionary, setDictionary] = useState<any>(null);
   const [isLoaded, setIsLoaded] = useState(false);
@@ -79,7 +70,10 @@ export function TranslationProvider({ children, lang }: { children: ReactNode; l
 
   // Функція перекладу (мемоізована для продуктивності)
   const t = useMemo(() => {
-    return (key: string, options?: Record<string, string | number>): string | string[] => {
+    return (
+      key: string,
+      options?: Record<string, string | number>
+    ): string | string[] => {
       if (!dictionary) return key; // Повертаємо ключ замість порожнечі, поки вантажиться
 
       const keys = key.split('.');
@@ -124,4 +118,3 @@ export function useTranslation() {
   }
   return context;
 }
-*/
