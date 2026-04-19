@@ -6,26 +6,17 @@ import CloseSVG from '../../assest/Goods/Close.svg';
 import Inputmask from 'inputmask';
 import { $host } from '@/app/http';
 import { useTranslation } from '@/context/TranslationProvider';
+import { RootState } from '@/app/store';
+import { useSelector } from 'react-redux';
 
 type Props = {
   lang: Locale;
   fastBuy: boolean;
   setFastBuy: Function;
-  idGoods: number;
-  idVolume: string;
-  nameProduct: string;
-  realIdVolume: number;
 };
 
-const FastBuy = ({
-  lang,
-  fastBuy,
-  setFastBuy,
-  idGoods,
-  idVolume,
-  nameProduct,
-  realIdVolume,
-}: Props) => {
+const FastBuyMany = ({ lang, fastBuy, setFastBuy }: Props) => {
+  const { basket } = useSelector((state: RootState) => state.BasketAndLike);
   const { t } = useTranslation();
   const phoneInputRef = useRef<HTMLInputElement>(null);
 
@@ -49,10 +40,7 @@ const FastBuy = ({
       await $host.post('order/fastOrder', {
         name,
         phone: number,
-        goodsID: idGoods,
-        idVolume,
-        nameProduct,
-        realIdVolume,
+        basket,
       });
 
       setMessage('Заявка успішно надіслана.');
@@ -126,4 +114,4 @@ const FastBuy = ({
   );
 };
 
-export default FastBuy;
+export default FastBuyMany;

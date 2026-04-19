@@ -69,16 +69,16 @@
   }
 
   .history-status {
-    padding: 8px 18px;
-    border-radius: 20px;
-    padding-left: 0;
-    font-size: 14px;
-    font-weight: 500;
-    white-space: nowrap;
-
     &.received {
-      background: rgba(4, 196, 33, 0.2);
-      border: 1px solid #04c421;
+      span {
+        border-radius: 20px;
+        font-size: 14px;
+        font-weight: 500;
+        white-space: nowrap;
+        padding: 8px 18px;
+        background: rgba(4, 196, 33, 0.2);
+        border: 1px solid #04c421;
+      }
     }
   }
 
@@ -438,12 +438,20 @@
       .history-status {
         display: flex;
         flex-direction: row;
-        justify-content: space-between;
         align-items: center;
+        justify-content: space-between;
         width: 100%;
         order: 5;
         padding: 0;
         margin-bottom: 15px;
+        text-align: center;
+        span {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          text-align: center;
+          //width: 100%;
+        }
       }
       .history-inline-info {
         display: flex;

@@ -22,13 +22,14 @@ const ListGoods = ({
       }`}
     >
       {data.map(
-        (x) =>
+        (x, idx) =>
           x.volumes.length > 0 && (
             <MiniGoods
               lang={lang}
               dictionary={dictionary}
               goods={x}
               key={x.id}
+              idx={idx}
             />
           )
       )}

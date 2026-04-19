@@ -19,6 +19,13 @@
     display: grid;
     gap: 12px;
     align-items: start;
+    justify-content: space-between;
+    @media (max-width: 1450px) {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+      justify-content: space-between;
+    }
   }
 
   .profile-row-top {
@@ -34,6 +41,12 @@
   .profile-field {
     width: 100%;
 
+    @media (max-width: 1450px) {
+      width: 30%;
+    }
+    @media (max-width: 768px) {
+      width: 100%;
+    }
     label {
       display: block;
       margin: 0 0 8px 0;
@@ -50,6 +63,7 @@
     input,
     select {
       width: 100%;
+      max-width: 400px;
       height: 46px;
       border: 1px solid #ecd7e3;
       border-radius: 8px;
@@ -61,6 +75,9 @@
       font-weight: 400;
       color: #1e1e1e;
       outline: none;
+      @media (max-width: 768px) {
+        max-width: unset;
+      }
 
       &::placeholder {
         color: #919191;
@@ -117,6 +134,10 @@
     border-radius: 8px;
     overflow: hidden;
     background: #ffffff;
+    max-width: 400px;
+    @media (max-width: 768px) {
+      max-width: unset;
+    }
   }
 
   .profile-phone-flag {
@@ -177,6 +198,31 @@
       height: 14px;
       object-fit: contain;
       pointer-events: none;
+    }
+    .dropdown {
+      background-color: #ffffff;
+      display: flex;
+      flex-direction: column;
+      gap: 12.5px;
+      max-height: 300px;
+      overflow-y: auto;
+      padding: 15px 0;
+      position: absolute;
+      width: 100%;
+      z-index: 3;
+      .city {
+        max-height: unset;
+        width: 100%;
+        padding: 0 15px;
+        padding-right: 7.5px;
+
+        box-sizing: border-box;
+        color: #000000;
+        cursor: pointer;
+      }
+      &.close {
+        display: none;
+      }
     }
   }
 

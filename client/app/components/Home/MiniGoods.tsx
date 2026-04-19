@@ -10,7 +10,6 @@ import Image from 'next/image';
 import { GoodInterface } from '@/app/interfaces/goods';
 import { getLocalizedPath } from '../utils/getLocalizedPath';
 import { useTranslation } from '@/context/TranslationProvider';
-import ComparisonSVG from '../../assest/Goods/comparison.svg';
 import BonusSVG from '../../assest/Goods/Bonus.svg';
 import Comparison from './Comparison';
 import MyRating from '../SelectGoods/MyRating';
@@ -20,9 +19,10 @@ type Props = {
   goods: GoodInterface;
   dictionary?: any;
   lang: Locale;
+  idx?: number;
 };
 
-const MiniGoods = ({ goods, dictionary, lang }: Props) => {
+const MiniGoods = ({ goods, dictionary, lang, idx }: Props) => {
   const countBonus = 100;
   const [selectVolumeIdx, setSelectVolumeIdx] = useState(0);
 
@@ -77,14 +77,16 @@ const MiniGoods = ({ goods, dictionary, lang }: Props) => {
             }
           />*/}
             <Image
-              src={`${process.env.NEXT_PUBLIC_SERVER}${goods.volumes[selectVolumeIdx].imgs[0].img}`}
+              src={`${process.env.NEXT_PUBLIC_SERVER}${goods.volumes[selectVolumeIdx].imgs[0].img.replace('.webp', '_small.webp')}`}
               fill
               alt={lang === 'ru' ? goods.nameru : goods.nameuk}
               // На мобілці (до 768px) — фото займає 50vw (пів екрану), на ПК — близько 300px
               sizes="(max-width: 768px) 50vw, 300px"
               // 3. Якість 75 — це золота середина між вагою та чіткістю
-              quality={75}
+              //quality={75}
+              priority={idx ? idx < 4 : false}
               className="object-contain" // або object-cover, щоб зберегти пропорції
+              unoptimized
             />
           </div>
         </div>
