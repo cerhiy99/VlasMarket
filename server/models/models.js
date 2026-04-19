@@ -4,18 +4,19 @@ const sequelize = require('../db'); // Імпортуємо ваш екземп�
 const Brends = sequelize.define('brend', {
   id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
   name: { type: DataTypes.STRING, allowNull: false },
+  img: { type: DataTypes.STRING, allowNull: true, defaultValue: null },
   descriptionuk: {
     type: DataTypes.TEXT('long'),
     allowNull: true,
     unique: false,
     defaultValue: null,
-  }, //в mysql
+  },
   descriptionru: {
     type: DataTypes.TEXT('long'),
     allowNull: true,
     unique: false,
     defaultValue: null,
-  }, //в mysql]
+  },
 });
 
 const CountryMade = sequelize.define('countryMade', {
@@ -282,7 +283,14 @@ const Order = sequelize.define('order', {
   sum: { type: DataTypes.FLOAT, allowNull: false },
   basket: { type: DataTypes.TEXT, allowNull: false },
   status: {
-    type: DataTypes.ENUM('wait', 'check', 'pay', 'nalozhen', 'finish', 'cansel'),
+    type: DataTypes.ENUM(
+      'wait',
+      'check',
+      'pay',
+      'nalozhen',
+      'finish',
+      'cansel'
+    ),
     allowNull: false,
     defaultValue: 'wait',
   },

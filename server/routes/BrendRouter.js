@@ -8,5 +8,6 @@ router.get('/getFirst', BrednController.GetFirstLetters);
 router.get('/get', BrednController.Get);
 router.get('/getForListBrends', BrednController.GetForListBrends);
 router.post('/update/:id', IsAdminMiddleWare, BrednController.Update);
+router.get('/brendWithImgs', BrednController.BrendWithImg);
 
 module.exports = router;

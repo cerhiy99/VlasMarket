@@ -1,6 +1,9 @@
 const { Op } = require('sequelize');
 const ErrorApi = require('../error/ErrorApi');
 const { Brends, Goods } = require('../models/models');
+const path = require('path');
+const fs = require('fs');
+const sharp = require('sharp'); // 🔥 для webp
 
 class BrednController {
   static Add = async (req, resp, next) => {
@@ -11,8 +14,8 @@ class BrednController {
     } catch (err) {
       return next(
         ErrorApi.badRequest(
-          'Не вдалося додати бренд, скоріш за все бренд з такою назвою уже існує.',
-        ),
+          'Не вдалося додати бренд, скоріш за все бренд з такою назвою уже існує.'
+        )
       );
     }
   };
@@ -21,13 +24,61 @@ class BrednController {
     try {
       const { id } = req.params;
       const { name, descriptionuk, descriptionru } = req.body;
-      const res = await Brends.update(
-        { name, descriptionuk, descriptionru },
-        { where: { id: parseInt(id) } },
+
+      const brend = await Brends.findByPk(id);
+      if (!brend) {
+        return next(ErrorApi.badRequest('Бренд не знайдено'));
+      }
+
+      let imgPath = brend.img;
+
+      // 🔥 якщо прийшов файл
+      if (req.files && req.files.img) {
+        const file = req.files.img;
+
+        // 🔥 slug назви (щоб не було пробілів)
+        const slug = name
+          .toLowerCase()
+          .replace(/\s+/g, '_')
+          .replace(/[^\w\-]+/g, '');
+
+        const dirPath = path.resolve(
+          __dirname,
+          '..',
+          'static',
+          'brend',
+          String(id)
+        );
+
+        // 🔥 створити папку якщо нема
+        if (!fs.existsSync(dirPath)) {
+          fs.mkdirSync(dirPath, { recursive: true });
+        }
+
+        const fileName = `${slug}.webp`;
+        const fullPath = path.join(dirPath, fileName);
+
+        // 🔥 конвертація в webp
+        await sharp(file.data).webp({ quality: 80 }).toFile(fullPath);
+
+        // 🔥 шлях для БД
+        imgPath = `brend/${id}/${fileName}`;
+      }
+
+      await Brends.update(
+        {
+          name,
+          descriptionuk,
+          descriptionru,
+          img: imgPath,
+        },
+        { where: { id: parseInt(id) } }
       );
-      return resp.json({ res });
+
+      return resp.json({ success: true });
     } catch (err) {
-      return next(ErrorApi.badRequest('Не вдалося Оновити бренд.'));
+      console.log(err);
+      return next(ErrorApi.badRequest('Не вдалося оновити бренд.'));
     }
   };
 
@@ -48,8 +99,8 @@ class BrednController {
       if (!letter || letter.length !== 1) {
         return next(
           ErrorApi.badRequest(
-            "Необхідно вказати одну літеру, або 'number' для пошуку.",
-          ),
+            "Необхідно вказати одну літеру, або 'number' для пошуку."
+          )
         );
       }
       const res = await Brends.findAll({
@@ -64,7 +115,7 @@ class BrednController {
       return resp.json({ res });
     } catch (err) {
       return next(
-        ErrorApi.badRequest(err.message || 'Помилка при отриманні брендів.'),
+        ErrorApi.badRequest(err.message || 'Помилка при отриманні брендів.')
       );
     }
   };
@@ -194,6 +245,18 @@ class BrednController {
       return resp.json({ res });
     } catch (err) {
       return next(ErrorApi.badRequest(err.message));
+    }
+  };
+
+  static BrendWithImg = async (req, resp, next) => {
+    try {
+      const res = await Brends.findAll({
+        where: { img: { [Op.ne]: null } },
+        attributes: ['id', 'name', 'img'],
+      });
+      return resp.json({ brends: res });
+    } catch (err) {
+      return next(ErrorApi.badRequest(err));
     }
   };
 }
