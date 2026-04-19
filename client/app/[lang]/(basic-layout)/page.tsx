@@ -171,7 +171,7 @@ const getFullCatalog = async (lang: Locale) => {
 const getBrends = async () => {
   try {
     const res = await fetch(
-      process.env.NEXT_PUBLIC_API_SERVER + 'brend/getForListBrends',
+      process.env.NEXT_PUBLIC_API_SERVER + 'brend/brendWithImgs',
       {
         method: 'GET',
         headers: {
@@ -182,8 +182,7 @@ const getBrends = async () => {
     );
     const data = await res.json();
 
-    const result = [...data.res.flatMap((x: any) => x.brends)];
-    return result;
+    return data.brends;
   } catch (err) {
     console.error('Помилка запиту getBrends:', err);
     return null;

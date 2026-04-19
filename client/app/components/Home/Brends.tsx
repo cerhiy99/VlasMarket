@@ -88,7 +88,9 @@ const Brends = ({ brends, lang }: Props) => {
             key={x.id}
             className="mini-brend-container"
           >
-            <div className="brend">{x.name}</div>
+            <div className="brend">
+              <img src={process.env.NEXT_PUBLIC_SERVER + x.img} alt={x.name} />
+            </div>
           </Link>
         ))}
       </div>

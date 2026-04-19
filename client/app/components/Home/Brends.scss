@@ -25,6 +25,11 @@
         justify-content: center;
         color: #000;
         transition: 0.3s;
+        img {
+          width: 100%;
+          height: 100%;
+          object-fit: contain;
+        }
         &:hover {
           border-color: #f80000;
         }

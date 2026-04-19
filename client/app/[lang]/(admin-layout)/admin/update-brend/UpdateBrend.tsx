@@ -12,51 +12,64 @@ import {
 import './AddCategory.scss';
 import MyJoditEditor from '@/app/components/utils/MyJoditReact';
 
-interface Category {
+interface Brand {
   id: number;
   name: string;
   descriptionuk: string;
   descriptionru: string;
+  img?: string | null;
 }
 
 const UpdateBrend = () => {
-  const [categories, setCategories] = useState<Category[]>([]);
+  const [brands, setBrands] = useState<Brand[]>([]);
   const [selectedId, setSelectedId] = useState<string>('');
 
   const [name, setName] = useState('');
   const [descriptionuk, setDescriptionuk] = useState<string>('');
   const [descriptionru, setDescriptionru] = useState<string>('');
 
+  const [newImg, setNewImg] = useState<File | null>(null);
+  const [currentImg, setCurrentImg] = useState<string | null>(null);
+
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
 
+  // 🔥 отримання брендів
   useEffect(() => {
-    const fetchCategories = async () => {
+    const fetchBrands = async () => {
       try {
         const res = await $authHost.get('brend/get');
-        setCategories(res.data || []);
+        setBrands(res.data || []);
       } catch {
         setError('Не вдалося завантажити бренд.');
       }
     };
 
-    fetchCategories();
+    fetchBrands();
   }, []);
 
+  // 🔥 при виборі бренду
   useEffect(() => {
     if (selectedId) {
-      const selected = categories.find((c) => c.id === +selectedId);
+      const selected = brands.find((b) => b.id === +selectedId);
       if (selected) {
         setName(selected.name);
         setDescriptionuk(selected.descriptionuk);
         setDescriptionru(selected.descriptionru);
+        setCurrentImg(selected.img || null);
+        setNewImg(null);
       }
     } else {
       setName('');
+      setDescriptionuk('');
+      setDescriptionru('');
+      setCurrentImg(null);
+      setNewImg(null);
     }
-  }, [selectedId]);
+  }, [selectedId, brands]);
 
-  const updateCategory = async () => {
+  // 🔥 update
+  const updateBrand = async () => {
     if (!selectedId || !name) {
       setError('Усі поля обовʼязкові.');
       setSuccess(null);
@@ -69,15 +82,33 @@ const UpdateBrend = () => {
       formData.append('descriptionuk', descriptionuk);
       formData.append('descriptionru', descriptionru);
 
+      if (newImg) {
+        formData.append('img', newImg);
+      }
+
       const res = await $authHost.post(`brend/update/${selectedId}`, formData);
 
       if (res.status === 200) {
-        setSuccess('Бренд успішно оновлена.');
+        setSuccess('Бренд успішно оновлено.');
         setError(null);
+
+        // 🔥 оновити список
+        const updated = brands.map((b) =>
+          b.id === +selectedId
+            ? {
+                ...b,
+                name,
+                descriptionuk,
+                descriptionru,
+                img: newImg ? b.img : currentImg,
+              }
+            : b
+        );
+        setBrands(updated);
       } else {
         setError('Щось пішло не так.');
       }
-    } catch (err: any) {
+    } catch (err) {
       console.error(err);
       setError('Сталася помилка при оновленні.');
       setSuccess(null);
@@ -88,20 +119,22 @@ const UpdateBrend = () => {
     <div className="admin-category">
       <div className="add-category">
         <h1>Оновити бренд</h1>
+
         {error && <Alert severity="error">{error}</Alert>}
         {success && <Alert severity="success">{success}</Alert>}
 
+        {/* 🔽 SELECT */}
         <div className="text-with-input">
           <FormControl fullWidth>
-            <InputLabel id="category-select-label">Оберіть бренд</InputLabel>
+            <InputLabel id="brand-select-label">Оберіть бренд</InputLabel>
             <Select
-              labelId="category-select-label"
+              labelId="brand-select-label"
               value={selectedId}
               onChange={(e) => setSelectedId(e.target.value)}
             >
-              {categories.map((cat) => (
-                <MenuItem key={cat.id} value={String(cat.id)}>
-                  {cat.name}
+              {brands.map((b) => (
+                <MenuItem key={b.id} value={String(b.id)}>
+                  {b.name}
                 </MenuItem>
               ))}
             </Select>
@@ -110,41 +143,71 @@ const UpdateBrend = () => {
 
         {selectedId && (
           <>
+            {/* 🔤 NAME */}
             <div className="text-with-input">
-              <label htmlFor="nameUA">Назва українською</label>
+              <label>Назва бренду</label>
               <input
-                id="nameUA"
                 type="text"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
               />
             </div>
 
+            {/* 🖼 IMAGE */}
             <div className="text-with-input">
-              <label htmlFor="descriptionuk">Опис українською</label>
+              <label>Картинка бренду</label>
+
+              <input
+                type="file"
+                accept="image/*"
+                onChange={(e) => {
+                  const file = e.target.files?.[0];
+                  if (file) setNewImg(file);
+                }}
+              />
+
+              {/* 🔥 PREVIEW */}
+              <div style={{ marginTop: 10 }}>
+                {newImg ? (
+                  <img
+                    src={URL.createObjectURL(newImg)}
+                    style={{ maxWidth: 150 }}
+                  />
+                ) : currentImg ? (
+                  <img
+                    src={(process.env.NEXT_PUBLIC_SERVER || '') + currentImg}
+                    style={{ maxWidth: 150 }}
+                  />
+                ) : (
+                  <div>Картинки немає</div>
+                )}
+              </div>
+            </div>
+
+            {/* 📝 DESCRIPTION UA */}
+            <div className="text-with-input">
+              <label>Опис українською</label>
               <MyJoditEditor
                 value={descriptionuk}
                 setValue={setDescriptionuk}
                 placeholder="Опис українською"
-                name="Опис українською"
+                name="descriptionuk"
               />
             </div>
 
+            {/* 📝 DESCRIPTION RU */}
             <div className="text-with-input">
-              <label htmlFor="descriptionru">Опис російською</label>
+              <label>Опис російською</label>
               <MyJoditEditor
-                placeholder="Опис російською"
                 value={descriptionru}
                 setValue={setDescriptionru}
-                name="Опис російською"
+                placeholder="Опис російською"
+                name="descriptionru"
               />
             </div>
 
-            <Button
-              variant="contained"
-              color="primary"
-              onClick={updateCategory}
-            >
+            {/* 🚀 BUTTON */}
+            <Button variant="contained" color="primary" onClick={updateBrand}>
               Оновити
             </Button>
           </>
