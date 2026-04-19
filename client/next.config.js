@@ -60,6 +60,9 @@ const nextConfig = {
   },
   //trailingSlash: false,
   //skipTrailingSlashRedirect: true,
+  experimental: {
+    optimizeCss: true, // Потребує встановлення бібліотеки 'critters'
+  },
 };
 
 module.exports = nextConfig;

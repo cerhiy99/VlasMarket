@@ -17,6 +17,7 @@
     "@react-oauth/google": "^0.12.2",
     "@reduxjs/toolkit": "^2.6.1",
     "axios": "^1.13.5",
+    "critters": "^0.0.23",
     "cyrillic-to-translit-js": "^3.2.1",
     "framer-motion": "^12.34.0",
     "glob": "^13.0.3",

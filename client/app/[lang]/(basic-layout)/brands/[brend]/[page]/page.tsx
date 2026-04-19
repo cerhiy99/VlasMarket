@@ -262,6 +262,7 @@ const Page = async ({ params, searchParams }: Props) => {
           brand={brend}
           realName={realNameBrend}
           isMob={isMobile}
+          isMobReal={isMobile}
         />
         <div className="sore-and-goods">
           <h1>{realNameBrend}</h1>
