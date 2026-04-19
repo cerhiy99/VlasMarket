@@ -28,7 +28,7 @@ export default async function RootLayout({
   return (
     <html lang={lang == 'ru' ? lang : 'uk'}>
       <head>
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        {/*<link rel="preconnect" href="https://fonts.googleapis.com" />
         <link
           rel="preconnect"
           href="https://fonts.gstatic.com"
@@ -41,12 +41,13 @@ export default async function RootLayout({
 
         <Script
           src="https://www.googletagmanager.com/gtag/js?id=G-E6NLPXJE38"
-          strategy="afterInteractive"
+          strategy="lazyOnload"
         />
 
         <Script
           id="google-tags-init"
-          strategy="afterInteractive"
+          
+          strategy="lazyOnload"
           dangerouslySetInnerHTML={{
             __html: `
         window.dataLayer = window.dataLayer || [];
@@ -56,7 +57,7 @@ export default async function RootLayout({
         gtag('config', 'G-E6NLPXJE38');
       `,
           }}
-        />
+        />*/}
       </head>
       <body>
         <TranslationProvider lang={lang}>
