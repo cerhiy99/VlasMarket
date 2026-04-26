@@ -397,12 +397,7 @@ const Page = async ({ params, searchParams }: Props) => {
     true
   ); // Передаємо currentSearchParams
 
-  const listUrles = [
-    {
-      name: lang == 'ru' ? 'каталог' : 'каталог',
-      url: getLocalizedPath(`/goods/1`, lang),
-    },
-  ];
+  const listUrles = [];
 
   if (selectCategory && selectCategory[`name${lang == 'ru' ? 'ru' : 'uk'}`]) {
     listUrles.push({

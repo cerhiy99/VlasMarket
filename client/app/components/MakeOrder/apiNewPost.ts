@@ -133,6 +133,66 @@ export const searchCity = async (query: string): Promise<CityDataNewPost[]> => {
   }
 };
 
+export const searchCity2 = async (
+  query: string,
+  signal?: AbortSignal
+): Promise<CityDataNewPost[]> => {
+  const API_URL = 'https://api.novaposhta.ua/v2.0/json/';
+  const apiKey = process.env.NEXT_PUBLIC_NP_API_KEY;
+  // Не робимо запит, якщо введено менше 2 символів (економія ресурсів)
+  if (!query || query.trim().length < 2) return [];
+
+  try {
+    const requestBody = {
+      apiKey,
+      modelName: 'Address',
+      calledMethod: 'getCities',
+      methodProperties: {
+        FindByString: query.trim(),
+        Page: '1',
+        Limit: '20', // Обмежуємо кількість результатів з боку API
+      },
+    };
+
+    const response = await axios.post(API_URL, requestBody, { signal });
+
+    if (response.data.success && Array.isArray(response.data.data)) {
+      const cities: CityDataNewPost[] = response.data.data;
+
+      // Сортування:
+      // 1. Повний збіг назви
+      // 2. Назви, що починаються з запиту
+      // 3. Алфавітний порядок
+      return cities.sort((a, b) => {
+        const lowerQuery = query.toLowerCase();
+        const aDesc = a.Description.toLowerCase();
+        const bDesc = b.Description.toLowerCase();
+
+        const aExact = aDesc === lowerQuery;
+        const bExact = bDesc === lowerQuery;
+        if (aExact && !bExact) return -1;
+        if (!aExact && bExact) return 1;
+
+        const aStarts = aDesc.startsWith(lowerQuery);
+        const bStarts = bDesc.startsWith(lowerQuery);
+        if (aStarts && !bStarts) return -1;
+        if (!aStarts && bStarts) return 1;
+
+        return a.Description.localeCompare(b.Description);
+      });
+    }
+
+    return [];
+  } catch (error: any) {
+    // Якщо запит було скасовано через AbortController, не виводимо помилку
+    if (axios.isCancel(error)) {
+      return [];
+    }
+    console.error('NP API Error:', error?.message || error);
+    return [];
+  }
+};
+
 export type WarehouseData = {
   Description: string; // Назва відділення або поштомату
   DescriptionRu: string; // Назва відділення або поштомату
@@ -143,7 +203,7 @@ export type WarehouseData = {
 
 export const fetchBranchesByCityRef = async (
   cityRef: string,
-  typeDelivery: 'department' | 'post',
+  typeDelivery: 'department' | 'post'
 ): Promise<WarehouseData[]> => {
   try {
     const response = await axios.post('https://api.novaposhta.ua/v2.0/json/', {
@@ -158,11 +218,11 @@ export const fetchBranchesByCityRef = async (
     if (response.data.success) {
       if (typeDelivery == 'department') {
         return response.data.data.filter(
-          (x: any) => x.CategoryOfWarehouse != 'Postomat',
+          (x: any) => x.CategoryOfWarehouse != 'Postomat'
         );
       } else
         return response.data.data.filter(
-          (x: any) => x.CategoryOfWarehouse == 'Postomat',
+          (x: any) => x.CategoryOfWarehouse == 'Postomat'
         );
       //return response.data.data // Масив відділень
     } else {

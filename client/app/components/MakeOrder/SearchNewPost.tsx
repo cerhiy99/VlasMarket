@@ -24,6 +24,7 @@ const SearchNewPost = ({ selectFinishDelivery, infoDelivery, lang }: Props) => {
   const { t } = useTranslation();
   return (
     <div className="search-new-post-container">
+      {lang == 'ru' ? 'Способ доставки:' : 'Спосіб доставки:'}
       <fieldset>
         <div
           onClick={() => setTypeDelivery('department')}

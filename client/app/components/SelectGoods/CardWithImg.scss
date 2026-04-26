@@ -40,6 +40,53 @@
       display: none;
     }
     z-index: 3;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+
+    .messangers-share {
+      padding-right: 20px;
+      display: flex;
+      flex-direction: row;
+      gap: 10px;
+      align-items: center;
+      .share-title {
+        font-weight: 600;
+        font-style: Semi Bold;
+        font-size: 16px;
+        line-height: 100%;
+        letter-spacing: 0%;
+        color: #7f7f7f;
+        align-items: center;
+      }
+      .list-titles {
+        display: flex;
+        flex-direction: row;
+        gap: 12px;
+        align-items: center;
+        div {
+          svg {
+            cursor: pointer;
+            &:hover {
+              path:nth-child(2) {
+                fill: #2ca5e0;
+              }
+            }
+          }
+          &.link {
+            &:hover {
+              svg {
+                g {
+                  path {
+                    stroke: #2ca5e0;
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
     ul {
       height: 50px;
       display: flex;

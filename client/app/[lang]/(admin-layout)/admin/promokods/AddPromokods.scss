@@ -1,0 +1,100 @@
+.add-promokod {
+  margin: 15px auto;
+  width: 400px;
+  max-width: 100%;
+  background-color: #ffffff;
+  border: 0.5px solid #ccc;
+  padding: 20px;
+  border-radius: 15px;
+
+  form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+
+    h1 {
+      font-size: 24px;
+      font-weight: 600;
+      margin-bottom: 10px;
+    }
+
+    .value {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+
+      label {
+        font-size: 13px;
+        color: #666;
+      }
+
+      input,
+      select,
+      textarea {
+        padding: 10px 12px;
+        border-radius: 8px;
+        border: 1px solid #ccc;
+        font-size: 14px;
+        outline: none;
+        transition: 0.2s;
+
+        &:focus {
+          border-color: #ff8e8e;
+          box-shadow: 0 0 0 2px rgba(255, 142, 142, 0.2);
+        }
+      }
+
+      textarea {
+        min-height: 80px;
+        resize: vertical;
+      }
+
+      input[type='file'] {
+        padding: 6px;
+        background: #f7f7f7;
+        cursor: pointer;
+      }
+    }
+
+    button {
+      margin-top: 10px;
+      padding: 12px;
+      border: none;
+      border-radius: 10px;
+      background: #ff8e8e;
+      color: #fff;
+      font-size: 15px;
+      cursor: pointer;
+      transition: 0.2s;
+
+      &:hover {
+        background: #ff6b6b;
+      }
+    }
+  }
+}
+
+/* 💻 2 колонки на десктопі */
+@media (min-width: 700px) {
+  .add-promokod {
+    form {
+      display: flex;
+      flex-direction: column;
+
+      h1 {
+        grid-column: span 2;
+      }
+
+      button {
+        grid-column: span 2;
+      }
+    }
+  }
+}
+
+/* 📱 мобілка */
+@media (max-width: 699px) {
+  .add-promokod {
+    padding: 10px;
+  }
+}

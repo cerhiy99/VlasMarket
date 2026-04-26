@@ -33,9 +33,6 @@ const DroprownUrles = ({ dictionary, lang }: Props) => {
         <DownSVG className="arrow" />
       </p>
       <div onClick={toggleClose} className={`dropdown ${isOpen ? 'show' : ''}`}>
-        <Link href={getLocalizedPath(`/${lang}/goods/1`, lang)}>
-          {dictionary.catalog}
-        </Link>
         <Link href={getLocalizedPath(`/${lang}/about-us`, lang)}>
           {dictionary.aboutUs}
         </Link>

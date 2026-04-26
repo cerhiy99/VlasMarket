@@ -35,7 +35,13 @@ interface Order {
 }
 const DeliverySvg = () => {
   return (
-    <svg width="20" height="18" viewBox="0 0 20 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <svg
+      width="20"
+      height="18"
+      viewBox="0 0 20 18"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
       <path
         fillRule="evenodd"
         clipRule="evenodd"
@@ -66,7 +72,13 @@ const DeliverySvg = () => {
 
 const PaymentSvg = () => {
   return (
-    <svg width="20" height="18" viewBox="0 0 20 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <svg
+      width="20"
+      height="18"
+      viewBox="0 0 20 18"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
       <path
         fillRule="evenodd"
         clipRule="evenodd"
@@ -189,7 +201,9 @@ const OrdersPage = ({ params }: { params: Promise<{ lang: Locale }> }) => {
           quantity: j.count,
           price: j.volumes[0].price,
           originalPrice: j.volumes[0].price,
-          discount: Math.round(100 - (j.volumes[0].price / j.volumes[0].price) * 100),
+          discount: Math.round(
+            100 - (j.volumes[0].price / j.volumes[0].price) * 100
+          ),
           image: process.env.NEXT_PUBLIC_SERVER + j.volumes[0].imgs[0].img,
         })),
       }));
@@ -232,7 +246,9 @@ const OrdersPage = ({ params }: { params: Promise<{ lang: Locale }> }) => {
     <div className="PageOrders">
       <div className="PageOrders__title">
         {t('myOrders.title')}
-        {orders.length > 0 && <div className="hiddenHint">{t('myOrders.latestHint')}</div>}
+        {orders.length > 0 && (
+          <div className="hiddenHint">{t('myOrders.latestHint')}</div>
+        )}
       </div>
       {orders.length ? (
         <div className="PageOrders__container">
@@ -268,7 +284,10 @@ const OrdersPage = ({ params }: { params: Promise<{ lang: Locale }> }) => {
               <div className="order-divider"></div>
 
               <div className="order-summary">
-                <div className="order-status" data-status={order.status.toLowerCase()}>
+                <div
+                  className="order-status"
+                  data-status={order.status.toLowerCase()}
+                >
                   {t(order.status)}
                 </div>
                 <div className="order-payment">
@@ -279,46 +298,72 @@ const OrdersPage = ({ params }: { params: Promise<{ lang: Locale }> }) => {
                 </div>
                 <div className="order-delivery">
                   <div className="delivery-icon">
-                    {order.deliveryMethod == 'Укр пошта' ? <IconUrkPost /> : <DeliverySvg />}{' '}
+                    {order.deliveryMethod == 'Укр пошта' ? (
+                      <IconUrkPost />
+                    ) : (
+                      <DeliverySvg />
+                    )}{' '}
                   </div>
                   <span>{order.deliveryMethod}</span>
                 </div>
                 <div className="order-amount">
                   {order.totalAmount.toFixed(2)} {t('myOrders.currency')}
                 </div>
-                <button className="details-button" onClick={() => toggleOrderDetails(order.id)}>
-                  {expandedOrderId === order.id ? t('myOrders.collapse') : t('myOrders.details')}
+                <button
+                  className="details-button"
+                  onClick={() => toggleOrderDetails(order.id)}
+                >
+                  {expandedOrderId === order.id
+                    ? t('myOrders.collapse')
+                    : t('myOrders.details')}
                 </button>
               </div>
 
               <div className="detailed-order-summary">
                 <div className="detailed-order-summary__grid">
                   <div className="name__line">{t('myOrders.statusTitle')}</div>
-                  <div className="order-status" data-status={order.status.toLowerCase()}>
+                  <div
+                    className="order-status"
+                    data-status={order.status.toLowerCase()}
+                  >
                     {order.status}
                   </div>
-                  <div className="name__line">{t('myOrders.paymentMethodTitle')}</div>
+                  <div className="name__line">
+                    {t('myOrders.paymentMethodTitle')}
+                  </div>
                   <div className="order-payment">
                     <div className="payment-icon">
                       <PaymentSvg />
                     </div>
                     <span>{order.paymentMethod}</span>
                   </div>
-                  <div className="name__line">{t('myOrders.deliveryMethodTitle')}</div>
+                  <div className="name__line">
+                    {t('myOrders.deliveryMethodTitle')}
+                  </div>
                   <div className="order-delivery">
                     <div className="delivery-icon">
-                      {order.deliveryMethod == 'Укр пошта' ? <IconUrkPost /> : <DeliverySvg />}
+                      {order.deliveryMethod == 'Укр пошта' ? (
+                        <IconUrkPost />
+                      ) : (
+                        <DeliverySvg />
+                      )}
                     </div>
                     <span>{order.deliveryMethod}</span>
                   </div>
                 </div>
                 <div className="order-divider"></div>
                 <div className="order-amount">
-                  {t('myOrders.total')}: {order.totalAmount.toFixed(2)} {t('myOrders.currency')}
+                  {t('myOrders.total')}: {order.totalAmount.toFixed(2)}{' '}
+                  {t('myOrders.currency')}
                 </div>
                 <div className="order-divider"></div>
-                <button className="details-button" onClick={() => toggleOrderDetails(order.id)}>
-                  {expandedOrderId === order.id ? t('myOrders.collapse') : t('myOrders.details')}
+                <button
+                  className="details-button"
+                  onClick={() => toggleOrderDetails(order.id)}
+                >
+                  {expandedOrderId === order.id
+                    ? t('myOrders.collapse')
+                    : t('myOrders.details')}
                 </button>
               </div>
 
@@ -326,7 +371,9 @@ const OrdersPage = ({ params }: { params: Promise<{ lang: Locale }> }) => {
                 <div className="order-details">
                   <div className="order-items-header">
                     <div className="item-product">{t('myOrders.product')}</div>
-                    <div className="item-quantity">{t('myOrders.quantity')}</div>
+                    <div className="item-quantity">
+                      {t('myOrders.quantity')}
+                    </div>
                     <div className="item-price">{t('myOrders.summary')}</div>
                   </div>
 
@@ -358,9 +405,12 @@ const OrdersPage = ({ params }: { params: Promise<{ lang: Locale }> }) => {
                               {item.discount > 0 && (
                                 <div className="original-price">
                                   <div className="originalPrice">
-                                    {item.originalPrice} {t('myOrders.currency')}
+                                    {item.originalPrice}{' '}
+                                    {t('myOrders.currency')}
                                   </div>
-                                  <div className="discount-badge">-{item.discount}%</div>
+                                  <div className="discount-badge">
+                                    -{item.discount}%
+                                  </div>
                                 </div>
                               )}
                             </div>
@@ -379,7 +429,9 @@ const OrdersPage = ({ params }: { params: Promise<{ lang: Locale }> }) => {
                             <div className="originalPrice">
                               {item.originalPrice} {t('myOrders.currency')}
                             </div>
-                            <div className="discount-badge">-{item.discount}%</div>
+                            <div className="discount-badge">
+                              -{item.discount}%
+                            </div>
                           </div>
                         )}
                       </div>
@@ -387,22 +439,32 @@ const OrdersPage = ({ params }: { params: Promise<{ lang: Locale }> }) => {
                   ))}
 
                   <div className="order-total">
-                    <span>{t('myOrders.total')}:</span> {getTotalSum(order.items)}{' '}
-                    {t('myOrders.currency')}.
+                    <span>{t('myOrders.total')}:</span>{' '}
+                    {getTotalSum(order.items)} {t('myOrders.currency')}.
                   </div>
 
                   <div className="order-footer">
                     <div className="footer-item">
-                      <span className="footer-label">{t('myOrders.orderDate')}:</span>
+                      <span className="footer-label">
+                        {t('myOrders.orderDate')}:
+                      </span>
                       <span className="footer-value">{order.date}</span>
                     </div>
                     <div className="footer-item">
-                      <span className="footer-label">{t('myOrders.paymentMethodTitle')}:</span>
-                      <span className="footer-value">{order.paymentMethod}</span>
+                      <span className="footer-label">
+                        {t('myOrders.paymentMethodTitle')}:
+                      </span>
+                      <span className="footer-value">
+                        {order.paymentMethod}
+                      </span>
                     </div>
                     <div className="footer-item">
-                      <span className="footer-label">{t('myOrders.deliveryMethodTitle')}:</span>
-                      <span className="footer-value">{order.deliveryMethod}</span>
+                      <span className="footer-label">
+                        {t('myOrders.deliveryMethodTitle')}:
+                      </span>
+                      <span className="footer-value">
+                        {order.deliveryMethod}
+                      </span>
                     </div>
                   </div>
                 </div>
@@ -415,7 +477,9 @@ const OrdersPage = ({ params }: { params: Promise<{ lang: Locale }> }) => {
           <p>{t('myOrders.noOrders')}</p>
           <span>
             {t('myOrders.goTo')}{' '}
-            <Link href={getLocalizedPath(`/${lang}/goods/1`, lang)}>{t('myOrders.catalog')}</Link>
+            <Link href={getLocalizedPath(`/${lang}`, lang)}>
+              {t('myOrders.catalog')}
+            </Link>
           </span>
         </div>
       )}

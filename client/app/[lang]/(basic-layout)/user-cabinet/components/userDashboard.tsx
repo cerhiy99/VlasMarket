@@ -107,7 +107,7 @@ const UserDashboard = ({ lang }: { lang: Locale }) => {
           <div className="user__hashtag">
             {t('userDashboard.taglinePart1')}
             <Link href={'#'}>#НАМБЕРВАН</Link> {t('userDashboard.taglinePart2')}
-            <Link href={getLocalizedPath(`/${lang}/goods/1`, lang)}>
+            <Link href={getLocalizedPath(`/${lang}`, lang)}>
               {t('userDashboard.catalog')}
             </Link>
             {t('userDashboard.taglinePart3')}

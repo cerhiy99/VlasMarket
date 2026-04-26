@@ -64,7 +64,12 @@ export default function RootLayout({
         });
         console.log(res);
       } catch (err) {
-        if (err && typeof err === 'object' && 'status' in err && (err as any).status === 401) {
+        if (
+          err &&
+          typeof err === 'object' &&
+          'status' in err &&
+          (err as any).status === 401
+        ) {
           dispatch(logout());
           router.push('/');
         }
@@ -77,7 +82,12 @@ export default function RootLayout({
   const [isTrue, setIsTrue] = useState(true);
 
   const avabileForAdmin = ['orders-for-manager', 'edit-order'];
-  const avabileForMeneger = ['orders-for-manager', 'edit-order', 'new-order', 'orders'];
+  const avabileForMeneger = [
+    'orders-for-manager',
+    'edit-order',
+    'new-order',
+    'orders',
+  ];
 
   useEffect(() => {
     if (!pathname) return;
@@ -99,7 +109,10 @@ export default function RootLayout({
       <div className="header-admin-cont">
         <div className="header-admin">
           <div className="left">
-            <Link href={`/${lang == 'ua' ? '' : 'ru'}`} className="header__link">
+            <Link
+              href={`/${lang == 'ua' ? '' : 'ru'}`}
+              className="header__link"
+            >
               <HomeSVG />
             </Link>
             <div className="header__Button" onClick={toggleMobileMenu}>
@@ -109,73 +122,157 @@ export default function RootLayout({
               {isRole === 'owner' && (
                 <>
                   <div className="goods-dropdown-container">
-                    <Link href={getLocalizedPath(`/${lang}/admin/`, lang)}>Товары</Link>
+                    <Link href={getLocalizedPath(`/${lang}/admin/`, lang)}>
+                      Товары
+                    </Link>
                     <div className="goods-dropdown">
-                      <Link href={getLocalizedPath(`/${lang}/admin/brand`, lang)}>
+                      <Link
+                        href={getLocalizedPath(
+                          `/${lang}/admin/promokods`,
+                          lang
+                        )}
+                      >
+                        Добавити промокод
+                      </Link>
+                      <Link
+                        href={getLocalizedPath(`/${lang}/admin/brand`, lang)}
+                      >
                         Добавити бренд
                       </Link>
-                      <Link href={getLocalizedPath(`/${lang}/admin/update-brend`, lang)}>
+                      <Link
+                        href={getLocalizedPath(
+                          `/${lang}/admin/update-brend`,
+                          lang
+                        )}
+                      >
                         Оновити бренд
                       </Link>
-                      <Link href={getLocalizedPath(`/${lang}/admin/country-made`, lang)}>
+                      <Link
+                        href={getLocalizedPath(
+                          `/${lang}/admin/country-made`,
+                          lang
+                        )}
+                      >
                         Добавити країну виробника
                       </Link>
-                      <Link href={getLocalizedPath(`/${lang}/admin/category`, lang)}>
+                      <Link
+                        href={getLocalizedPath(`/${lang}/admin/category`, lang)}
+                      >
                         Добавити категорію
                       </Link>
-                      <Link href={getLocalizedPath(`/${lang}/admin/category-filter`, lang)}>
+                      <Link
+                        href={getLocalizedPath(
+                          `/${lang}/admin/category-filter`,
+                          lang
+                        )}
+                      >
                         Добавити фільтр для категорій
                       </Link>
-                      <Link href={getLocalizedPath(`/${lang}/admin/subcategory`, lang)}>
+                      <Link
+                        href={getLocalizedPath(
+                          `/${lang}/admin/subcategory`,
+                          lang
+                        )}
+                      >
                         Добавити підкатегорію
                       </Link>
-                      <Link href={getLocalizedPath(`/${lang}/admin/recognitions`, lang)}>
+                      <Link
+                        href={getLocalizedPath(
+                          `/${lang}/admin/recognitions`,
+                          lang
+                        )}
+                      >
                         Додати призначення
                       </Link>
-                      <Link href={getLocalizedPath(`/${lang}/admin/line`, lang)}>Додати лінію</Link>
+                      <Link
+                        href={getLocalizedPath(`/${lang}/admin/line`, lang)}
+                      >
+                        Додати лінію
+                      </Link>
                       <div className="line" />
-                      <Link href={getLocalizedPath(`/${lang}/admin/add-product`, lang)}>
+                      <Link
+                        href={getLocalizedPath(
+                          `/${lang}/admin/add-product`,
+                          lang
+                        )}
+                      >
                         Добавить товар
                       </Link>
                       <div className="line" />
-                      <Link href={getLocalizedPath(`/${lang}/admin/goods`, lang)}>
+                      <Link
+                        href={getLocalizedPath(`/${lang}/admin/goods`, lang)}
+                      >
                         Статистика товаров
                       </Link>
-                      <Link href={getLocalizedPath(`/${lang}/admin/`, lang)}>Список товаров</Link>
-                      <Link href={getLocalizedPath(`/${lang}/admin/goodsFilter`, lang)}>
+                      <Link href={getLocalizedPath(`/${lang}/admin/`, lang)}>
+                        Список товаров
+                      </Link>
+                      <Link
+                        href={getLocalizedPath(
+                          `/${lang}/admin/goodsFilter`,
+                          lang
+                        )}
+                      >
                         Фільтр товарів
                       </Link>
                       <div className="line" />
-                      <Link href={getLocalizedPath(`/${lang}/admin/instruktion`, lang)}>
+                      <Link
+                        href={getLocalizedPath(
+                          `/${lang}/admin/instruktion`,
+                          lang
+                        )}
+                      >
                         Інструкція
                       </Link>
                     </div>
                   </div>
                   <div className="goods-dropdown-container">
-                    <Link href={getLocalizedPath(`/${lang}/admin/blog/add`, lang)}>Блог</Link>
+                    <Link
+                      href={getLocalizedPath(`/${lang}/admin/blog/add`, lang)}
+                    >
+                      Блог
+                    </Link>
                     <div className="goods-dropdown">
-                      <Link href={getLocalizedPath(`/${lang}/admin/blog/update/selectBlog`, lang)}>
+                      <Link
+                        href={getLocalizedPath(
+                          `/${lang}/admin/blog/update/selectBlog`,
+                          lang
+                        )}
+                      >
                         Список блогу
                       </Link>
-                      <Link href={getLocalizedPath(`/${lang}/admin/blog/add`, lang)}>
+                      <Link
+                        href={getLocalizedPath(`/${lang}/admin/blog/add`, lang)}
+                      >
                         Добавити Блог
                       </Link>
                     </div>
                   </div>
                 </>
               )}
-              {user?.email == 'meneger@gmail.com' || user?.adminAccess == 'owner' ? (
-                <Link href={getLocalizedPath(`/${lang}/admin/orders`, lang)}>Заказы</Link>
+              {user?.email == 'meneger@gmail.com' ||
+              user?.adminAccess == 'owner' ? (
+                <Link href={getLocalizedPath(`/${lang}/admin/orders`, lang)}>
+                  Заказы
+                </Link>
               ) : (
                 <></>
               )}
-              <Link href={`/${lang}/admin/orders-for-manager`}>Заказы для менеджера</Link>
+              <Link href={`/${lang}/admin/orders-for-manager`}>
+                Заказы для менеджера
+              </Link>
               {isRole === 'owner' && (
                 <>
-                  <Link href={getLocalizedPath(`/${lang}/admin/reviews`, lang)}>Комментарии</Link>
-                  <Link href={getLocalizedPath(`/${lang}/admin/users`, lang)}>Пользователи</Link>
+                  <Link href={getLocalizedPath(`/${lang}/admin/reviews`, lang)}>
+                    Комментарии
+                  </Link>
+                  <Link href={getLocalizedPath(`/${lang}/admin/users`, lang)}>
+                    Пользователи
+                  </Link>
                   <div className="goods-dropdown-container">
-                    <Link href={getLocalizedPath(`/${lang}/admin/bane`, lang)}>Банеры</Link>
+                    <Link href={getLocalizedPath(`/${lang}/admin/bane`, lang)}>
+                      Банеры
+                    </Link>
                   </div>{' '}
                 </>
               )}
@@ -196,52 +293,91 @@ export default function RootLayout({
 
       {/* Mobile Menu */}
       <div className={`mobile-menu ${mobileMenuOpen ? 'open' : ''}`}>
-        <div onClick={() => setMobileMenuOpen(false)} className="mobile-menu-content">
+        <div
+          onClick={() => setMobileMenuOpen(false)}
+          className="mobile-menu-content"
+        >
           {isRole == 'owner' && (
             <>
-              <Link href={getLocalizedPath(`/${lang}/admin/brand`, lang)}>Добавити бренд</Link>
-              <Link href={getLocalizedPath(`/${lang}/admin/country-made`, lang)}>
+              <Link href={getLocalizedPath(`/${lang}/admin/promokods`, lang)}>
+                Добавити промокод
+              </Link>
+              <Link href={getLocalizedPath(`/${lang}/admin/brand`, lang)}>
+                Добавити бренд
+              </Link>
+              <Link
+                href={getLocalizedPath(`/${lang}/admin/country-made`, lang)}
+              >
                 Добавити країну виробника
               </Link>
               <Link href={getLocalizedPath(`/${lang}/admin/category`, lang)}>
                 Добавити категорію
               </Link>
-              <Link href={getLocalizedPath(`/${lang}/admin/category-filter`, lang)}>
+              <Link
+                href={getLocalizedPath(`/${lang}/admin/category-filter`, lang)}
+              >
                 Добавити фільтр для категорій
               </Link>
               <Link href={getLocalizedPath(`/${lang}/admin/subcategory`, lang)}>
                 Добавити підкатегорію
               </Link>
-              <Link href={getLocalizedPath(`/${lang}/admin/recognitions`, lang)}>
+              <Link
+                href={getLocalizedPath(`/${lang}/admin/recognitions`, lang)}
+              >
                 Додати призначення
               </Link>
-              <Link href={getLocalizedPath(`/${lang}/admin/line`, lang)}>Додати лінію</Link>
+              <Link href={getLocalizedPath(`/${lang}/admin/line`, lang)}>
+                Додати лінію
+              </Link>
               <div className="line" />
               <Link href={getLocalizedPath(`/${lang}/admin/add-product`, lang)}>
                 Добавить товар
               </Link>
               <div className="line" />
-              <Link href={getLocalizedPath(`/${lang}/admin/goods`, lang)}>Статистика товаров</Link>
-              <Link href={getLocalizedPath(`/${lang}/admin/`, lang)}>Список товаров</Link>
+              <Link href={getLocalizedPath(`/${lang}/admin/goods`, lang)}>
+                Статистика товаров
+              </Link>
+              <Link href={getLocalizedPath(`/${lang}/admin/`, lang)}>
+                Список товаров
+              </Link>
               <Link href={getLocalizedPath(`/${lang}/admin/goodsFilter`, lang)}>
                 Фільтр товарів
               </Link>
               <div className="line" />
-              <Link href={getLocalizedPath(`/${lang}/admin/instruktion`, lang)}>Інструкція</Link>
-              <Link href={getLocalizedPath(`/${lang}/admin/blog/add`, lang)}>Блог</Link>
+              <Link href={getLocalizedPath(`/${lang}/admin/instruktion`, lang)}>
+                Інструкція
+              </Link>
+              <Link href={getLocalizedPath(`/${lang}/admin/blog/add`, lang)}>
+                Блог
+              </Link>
               <Link href={`/${lang}/admin/orders`}>Заказы</Link>
-              <Link href={`/${lang}/admin/orders-for-manager`}>Заказы для менеджера</Link>
-              <Link href={getLocalizedPath(`/${lang}/admin/reviews`, lang)}>Комментарии</Link>
-              <Link href={getLocalizedPath(`/${lang}/admin/users`, lang)}>Пользователи</Link>
-              <Link href={getLocalizedPath(`/${lang}/admin/bane`, lang)}>Банеры</Link>
+              <Link href={`/${lang}/admin/orders-for-manager`}>
+                Заказы для менеджера
+              </Link>
+              <Link href={getLocalizedPath(`/${lang}/admin/reviews`, lang)}>
+                Комментарии
+              </Link>
+              <Link href={getLocalizedPath(`/${lang}/admin/users`, lang)}>
+                Пользователи
+              </Link>
+              <Link href={getLocalizedPath(`/${lang}/admin/bane`, lang)}>
+                Банеры
+              </Link>
             </>
           )}
           {isRole == 'admin' && (
             <>
               {user?.email == 'meneger@gmail.com' && (
-                <Link href={getLocalizedPath(`/${lang}/admin/orders`, lang)}>Заказы</Link>
+                <Link href={getLocalizedPath(`/${lang}/admin/orders`, lang)}>
+                  Заказы
+                </Link>
               )}
-              <Link href={getLocalizedPath(`/${lang}/admin/orders-for-manager`, lang)}>
+              <Link
+                href={getLocalizedPath(
+                  `/${lang}/admin/orders-for-manager`,
+                  lang
+                )}
+              >
                 Заказы для менеджера
               </Link>
             </>
@@ -260,7 +396,11 @@ export default function RootLayout({
       </div>
 
       <div className="children">
-        {user?.adminAccess == 'admin' && !isTrue ? <div>У вас недостатньо прав</div> : children}
+        {user?.adminAccess == 'admin' && !isTrue ? (
+          <div>У вас недостатньо прав</div>
+        ) : (
+          children
+        )}
       </div>
     </div>
   );

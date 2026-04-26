@@ -1,0 +1,140 @@
+.promokods-container {
+  padding: 24px;
+  box-sizing: border-box;
+  width: 100%;
+  background-color: #ffffff;
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  h3 {
+    margin: 0;
+    font-weight: 600;
+    font-style: Semi Bold;
+    font-size: 20px;
+    line-height: 100%;
+    letter-spacing: 0%;
+    color: #000000;
+  }
+  input {
+    width: 100%;
+    height: 50px;
+    padding: 10px;
+    box-sizing: border-box;
+    border: 1px solid #ebd8e4;
+    background-color: #ffffff;
+    border-radius: 6px;
+    outline: none;
+    margin-top: 12px;
+  }
+  p {
+    margin: 0;
+    font-weight: 400;
+    font-style: Regular;
+    font-size: 14px;
+    line-height: 100%;
+    letter-spacing: 0%;
+    color: #000000;
+  }
+  button {
+    background-color: #81e190;
+    height: 50px;
+    border-radius: 6px;
+    font-weight: 500;
+    font-style: Medium;
+    font-size: 19px;
+    line-height: 100%;
+    letter-spacing: 0%;
+    color: #ffffff;
+    border: none;
+    margin: 8px 0;
+  }
+  .list-promokods {
+    border: 1px solid #000000;
+    border-radius: 8px;
+    padding: 10px;
+    .list-promokod-header {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+      cursor: pointer;
+      .list-promokod-title {
+        font-weight: 500;
+        font-style: Medium;
+        font-size: 15px;
+        line-height: 130%;
+        letter-spacing: 0%;
+        color: #000000;
+      }
+      .list-promokod-svg {
+        transition: all 0.3s ease;
+
+        svg {
+          path {
+            fill: #000000;
+          }
+        }
+      }
+    }
+    .list-promokod-dropdown {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      overflow: hidden;
+      transition: all 0.3s ease;
+
+      .promokod {
+        display: flex;
+        flex-direction: row;
+        gap: 12px;
+        align-items: center;
+        height: 44px;
+        border-radius: 6px;
+        padding: 6px;
+        box-sizing: border-box;
+        cursor: pointer;
+        img {
+          border-radius: 6px;
+          border: 1px solid #ebd8e4;
+          object-fit: contain;
+          width: 100px;
+          height: 32px;
+          min-width: 100px;
+          min-height: 32px;
+          max-width: 100px;
+          max-height: 32px;
+        }
+        .promokod-name {
+          font-weight: 500;
+          font-style: Medium;
+          font-size: 15px;
+          line-height: 100%;
+          letter-spacing: 0%;
+          color: #000000;
+        }
+        &.promokod-select {
+          background-color: #f9f3f7;
+        }
+        &:hover {
+          background-color: #f9f3f7;
+        }
+      }
+    }
+
+    &.open {
+      .list-promokod-dropdown {
+        height: auto;
+        padding-top: 16px;
+      }
+      .list-promokod-svg {
+        transform: rotate(180deg);
+      }
+    }
+    &.close {
+      .list-promokod-dropdown {
+        height: 0;
+      }
+    }
+  }
+}

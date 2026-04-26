@@ -18,6 +18,14 @@ import { $authHost, $host } from '@/app/http';
 import { useRouter } from 'next/navigation';
 import { getLocalizedPath } from '../utils/getLocalizedPath';
 import { useTranslation } from '@/context/TranslationProvider';
+import ContactSVG from '../../assest/MakeOrder/Contact.svg';
+import DeliverySVG from '../../assest/MakeOrder/Delivery.svg';
+import PaySVG from '../../assest/MakeOrder/Pay.svg';
+import Promokods from './Promokods';
+import {
+  PromokodFromDBInterface,
+  PromokodInterface,
+} from '@/app/[lang]/(admin-layout)/admin/promokods/GetPromokods';
 
 type Props = {
   lang: Locale;
@@ -30,15 +38,36 @@ const MakeOrder: React.FC<Props> = ({ lang }) => {
   const listWayDelivery = [
     {
       id: 1,
-      name: t('makeOrder.listWayDelivery.1'),
+      name:
+        lang == 'ru'
+          ? 'Оплата на счет IBAN или на карту'
+          : 'Оплата на рахунок IBAN або на картку',
+      description:
+        lang == 'ru'
+          ? 'Ожидаю звонок для уточнения деталей'
+          : 'Очікую дзвінок для уточнення деталей',
     },
     {
       id: 2,
-      name: t('makeOrder.listWayDelivery.2'),
+      name:
+        lang == 'ru'
+          ? 'Оплата на счет IBAN или на карту'
+          : 'Оплата на рахунок IBAN або на картку',
+      description:
+        lang == 'ru'
+          ? 'Получить SMS с реквизитами'
+          : 'Отримати SMS з реквізитами',
     },
     {
       id: 3,
-      name: t('makeOrder.listWayDelivery.3'),
+      name:
+        lang == 'ru'
+          ? 'Наложенный платеж (с предоплатой)'
+          : 'Накладений платіж (з передоплатою)',
+      description:
+        lang == 'ru'
+          ? 'Ожидаю звонок для подтверждения'
+          : 'Очікую дзвінок для підтвердження',
     },
   ];
   const user = useSelector((state: RootState) => state.user);
@@ -55,9 +84,10 @@ const MakeOrder: React.FC<Props> = ({ lang }) => {
   const [comment, setComment] = useState('');
   const [isCommentOpen, setIsCommentOpen] = useState(false);
 
-  const [selectPost, setSelectPost] = useState<'new' | 'ukr' | 'seller' | null>('new');
+  const [selectPost, setSelectPost] = useState<'new' | 'ukr' | 'seller' | null>(
+    'new'
+  );
   const [selectWayDelivery, setSelectWayDelivery] = useState(0);
-  const [personalDiscount, setPeronalDiscount] = useState(0);
 
   const setUser = () => {
     try {
@@ -106,7 +136,12 @@ const MakeOrder: React.FC<Props> = ({ lang }) => {
   useEffect(() => {}, [isSelectFinishDelivery]);
 
   useEffect(() => {
-    if (isContactOpen && isSelectFinishDelivery && selectWayDelivery && basket.length > 0) {
+    if (
+      isContactOpen &&
+      isSelectFinishDelivery &&
+      selectWayDelivery &&
+      basket.length > 0
+    ) {
       setIsFinishFillDate(true);
     } else setIsFinishFillDate(false);
   }, [isContactOpen, isSelectFinishDelivery, selectWayDelivery, basket.length]);
@@ -161,7 +196,9 @@ const MakeOrder: React.FC<Props> = ({ lang }) => {
             setIsSelectFinishDelivery(true);
 
             setInfoDelivery({
-              typeDelivery: (personal.novaPoshtaWarehouseName || '').startsWith('Поштомат')
+              typeDelivery: (personal.novaPoshtaWarehouseName || '').startsWith(
+                'Поштомат'
+              )
                 ? 'post'
                 : 'warehouse',
               selectLocality: {
@@ -282,21 +319,7 @@ const MakeOrder: React.FC<Props> = ({ lang }) => {
     setPeronal();
   }, [user]);
 
-  useEffect(() => {
-    getPersonalDiscount();
-  }, [user]);
-
   const router = useRouter();
-
-  const getPersonalDiscount = async () => {
-    try {
-      if (!user.isAuthorize) return;
-      const res = await $authHost.get('user/getPersonalDiscount');
-      setPeronalDiscount(res.data.procent);
-    } catch (err) {
-      console.log(err);
-    }
-  };
 
   const setFinishOrder = async () => {
     try {
@@ -338,8 +361,11 @@ const MakeOrder: React.FC<Props> = ({ lang }) => {
       } else if (delivery?.selectInfoDelivery) {
         // Відділення або поштомат НП
         const warehouseType =
-          delivery?.selectInfoDelivery?.Description?.toLowerCase().includes('поштомат') ||
-          delivery?.selectInfoDelivery?.TypeOfWarehouse === '5d8a980d-391c-11dd-90d9-001a92567626'
+          delivery?.selectInfoDelivery?.Description?.toLowerCase().includes(
+            'поштомат'
+          ) ||
+          delivery?.selectInfoDelivery?.TypeOfWarehouse ===
+            '5d8a980d-391c-11dd-90d9-001a92567626'
             ? 'поштомат Нової Пошти'
             : 'відділення Нової Пошти';
         typeDelivery = warehouseType;
@@ -372,7 +398,10 @@ const MakeOrder: React.FC<Props> = ({ lang }) => {
     }
   };
 
-  useEffect(() => {}, [personalDiscount]);
+  const [userUseBonus, setUserUseBonus] = useState(0);
+  const [promokod, setPromokod] = useState<null | PromokodFromDBInterface>(
+    null
+  );
 
   return (
     <div className="make-order">
@@ -380,7 +409,13 @@ const MakeOrder: React.FC<Props> = ({ lang }) => {
       <div className="form-with-basket">
         <form>
           <div className="title">
-            {isContactOpen ? <MarkSVG /> : <div className="number">1</div>}
+            {isContactOpen ? (
+              <MarkSVG />
+            ) : (
+              <div className="number">
+                <ContactSVG />
+              </div>
+            )}
             <h2>
               {t('makeOrder.contactInfo')}
               <span>*</span>
@@ -396,12 +431,21 @@ const MakeOrder: React.FC<Props> = ({ lang }) => {
             {isContactOpen ? (
               <div onClick={() => setIsContactOpen(false)} className="fade-in">
                 <div className="comtact-open">
-                  <div className="contact-name-and-phone">
+                  <div
+                    style={{
+                      display: 'flex',
+                      flexDirection: 'row-reverse',
+                      alignItems: 'center',
+                    }}
+                    className="contact-name-and-phone"
+                  >
                     <div className="name-and-surname">
                       <p>{name}</p>
                       <p>{surname}</p>
                     </div>
-                    <div className="number">{number}</div>{' '}
+                    <div className="svg-main">
+                      <ContactSVG />
+                    </div>
                   </div>
 
                   <div className="pencil">
@@ -410,47 +454,55 @@ const MakeOrder: React.FC<Props> = ({ lang }) => {
                 </div>
               </div>
             ) : (
-              <div className="fade-in">
+              <div className="fade-in contact-open">
                 <p>{t('makeOrder.receiver')}</p>
-                <label>
-                  {t('makeOrder.phone')} <span>*</span>
-                </label>
-                <input
-                  ref={phoneInputRef}
-                  type="text"
-                  value={number}
-                  onChange={(e) => setNumber(e.target.value)}
-                  className="phone-input"
-                  placeholder="+380 (__) ___-__-__"
-                />
-                <label>
-                  Email <span>*</span>
-                </label>
-                <input
-                  type="text"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  className="phone-input"
-                  placeholder="email"
-                />
-                <label>
-                  {t('makeOrder.surname')} <span>*</span>
-                </label>
-                <input
-                  value={surname}
-                  onChange={(e) => setSurname(e.target.value)}
-                  type="text"
-                  placeholder={t('makeOrder.surnamePlaceholder') as string}
-                />
-                <label>
-                  {t('makeOrder.name')} <span>*</span>
-                </label>
-                <input
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                  type="text"
-                  placeholder={t('makeOrder.namePlaceholder') as string}
-                />
+                <div className="value">
+                  <label>
+                    {t('makeOrder.phone')} <span>*</span>
+                  </label>
+                  <input
+                    ref={phoneInputRef}
+                    type="text"
+                    value={number}
+                    onChange={(e) => setNumber(e.target.value)}
+                    className="phone-input"
+                    placeholder="+380 (__) ___-__-__"
+                  />
+                </div>
+                <div className="value">
+                  <label>
+                    Email <span>*</span>
+                  </label>
+                  <input
+                    type="text"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    className="phone-input"
+                    placeholder="email"
+                  />
+                </div>
+                <div className="value">
+                  <label>
+                    {t('makeOrder.surname')} <span>*</span>
+                  </label>
+                  <input
+                    value={surname}
+                    onChange={(e) => setSurname(e.target.value)}
+                    type="text"
+                    placeholder={t('makeOrder.surnamePlaceholder') as string}
+                  />
+                </div>
+                <div className="value">
+                  <label>
+                    {t('makeOrder.name')} <span>*</span>
+                  </label>
+                  <input
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    type="text"
+                    placeholder={t('makeOrder.namePlaceholder') as string}
+                  />
+                </div>
                 <button
                   type="button"
                   onClick={handleContinue}
@@ -465,7 +517,13 @@ const MakeOrder: React.FC<Props> = ({ lang }) => {
             )}
           </div>
           <div className="title">
-            {isSelectFinishDelivery ? <MarkSVG /> : <div className="number">2</div>}
+            {isSelectFinishDelivery ? (
+              <MarkSVG />
+            ) : (
+              <div className="number">
+                <DeliverySVG />
+              </div>
+            )}
             <h2>
               {t('makeOrder.delivery.title')}
               <span>*</span>
@@ -476,7 +534,8 @@ const MakeOrder: React.FC<Props> = ({ lang }) => {
               <div
                 className="delivery block"
                 style={{
-                  borderWidth: !isContactOpen || isSelectFinishDelivery ? '0' : '0.75px',
+                  borderWidth:
+                    !isContactOpen || isSelectFinishDelivery ? '0' : '0.75px',
                 }}
                 onClick={() => {
                   setSelectPost('new');
@@ -498,7 +557,7 @@ const MakeOrder: React.FC<Props> = ({ lang }) => {
 
                       <div className="curier-or-other">
                         <div className="row">
-                          <span>{t('makeOrder.delivery.type')}</span>
+                          <span>{t('makeOrder.delivery.type')}:</span>
                           <p>
                             {infoDelivery?.typeDelivery == 'curier'
                               ? t('makeOrder.delivery.courier')
@@ -509,7 +568,9 @@ const MakeOrder: React.FC<Props> = ({ lang }) => {
                         </div>
                         <div className="row">
                           <span>{t('makeOrder.delivery.locality')}:</span>
-                          <p>{infoDelivery?.selectLocality?.Description || ''}</p>{' '}
+                          <p>
+                            {infoDelivery?.selectLocality?.Description || ''}
+                          </p>{' '}
                         </div>
                         {infoDelivery?.typeDelivery == 'curier' ? (
                           <>
@@ -523,7 +584,9 @@ const MakeOrder: React.FC<Props> = ({ lang }) => {
                             </div>
                             {infoDelivery?.apartment?.length > 0 && (
                               <div className="row">
-                                <span>{t('makeOrder.delivery.apartment')}:</span>
+                                <span>
+                                  {t('makeOrder.delivery.apartment')}:
+                                </span>
                                 <p>{infoDelivery?.apartment || ''}</p>
                               </div>
                             )}
@@ -536,7 +599,10 @@ const MakeOrder: React.FC<Props> = ({ lang }) => {
                                 : t('makeOrder.delivery.toDepartment')}
                               :
                             </span>
-                            <p>{infoDelivery?.selectInfoDelivery?.Description || ''}</p>
+                            <p>
+                              {infoDelivery?.selectInfoDelivery?.Description ||
+                                ''}
+                            </p>
                           </div>
                         )}
                       </div>
@@ -547,23 +613,36 @@ const MakeOrder: React.FC<Props> = ({ lang }) => {
                 <div
                   onClick={() => setIsSelectFinishDelivery(false)}
                   className={`dropdown ${
-                    !isSelectFinishDelivery || selectPost != 'new' ? 'drop-open' : 'drop-close'
+                    !isSelectFinishDelivery || selectPost != 'new'
+                      ? 'drop-open'
+                      : 'drop-close'
                   }`}
                 >
-                  <div className="row">
-                    <div className="radio-contain">
-                      <input checked={selectPost == 'new'} type="radio" className="radio" />
+                  <div className="col">
+                    <div
+                      style={{
+                        borderBottom:
+                          selectPost == 'new' ? '1px solid #ebd8e4' : 'none',
+                      }}
+                      className="radio-contain"
+                    >
+                      <input
+                        checked={selectPost == 'new'}
+                        type="radio"
+                        className="radio"
+                      />
+                      <div className="post-title new">
+                        <NewPost />
+                        <div className="new-post">
+                          {t('makeOrder.delivery.newPost')}
+                        </div>
+                        <div className="post-from">
+                          {lang == 'ru' ? 'от 80 ₴' : 'від 80 ₴'}
+                        </div>
+                      </div>
                     </div>
                     <div className="new-post">
                       <div className="new-post-title">
-                        <NewPost />
-                        <div className="new-post">{t('makeOrder.delivery.newPost')}</div>
-                        <div className="list-price">
-                          <span>{t('makeOrder.delivery.newPostPriceFrom')}</span>
-                          <span>{t('makeOrder.delivery.newPostPricePostomat')}</span>
-                          <span>{t('makeOrder.delivery.newPostPriceDepartment')}</span>
-                          <span>{t('makeOrder.delivery.newPostPriceCourier')}</span>
-                        </div>
                         <div
                           className={`dropdown ${selectPost == 'new' ? 'drop-open' : 'drop-close'}`}
                         >
@@ -585,7 +664,8 @@ const MakeOrder: React.FC<Props> = ({ lang }) => {
               <div
                 className="delivery block"
                 style={{
-                  borderWidth: !isContactOpen || isSelectFinishDelivery ? '0' : '0.75px',
+                  borderWidth:
+                    !isContactOpen || isSelectFinishDelivery ? '0' : '0.75px',
                 }}
                 onClick={() => {
                   setSelectPost('ukr');
@@ -593,12 +673,16 @@ const MakeOrder: React.FC<Props> = ({ lang }) => {
                 }}
               >
                 {isSelectFinishDelivery && selectPost == 'ukr' ? (
-                  <div className="row" style={{ justifyContent: 'space-between' }}>
+                  <div
+                    className="row"
+                    style={{ display: 'flex', justifyContent: 'space-between' }}
+                  >
                     <div style={{ gap: '10px' }} className="row">
                       <div>
-                        <UkrPost /> <p>{lang == 'ru' ? 'Укрпочта' : 'Укрпошта'}</p>
+                        <UkrPost />{' '}
+                        <p>{lang == 'ru' ? 'Укрпочта' : 'Укрпошта'}</p>
                       </div>
-                      <div>
+                      <div className="ukr-post-info">
                         <div className="row">
                           <span>{t('makeOrder.oblast')}</span>
                           <p>{infoDelivery?.oblast}</p>
@@ -616,26 +700,37 @@ const MakeOrder: React.FC<Props> = ({ lang }) => {
                     <PencilSVG />
                   </div>
                 ) : (
-                  <div className="row">
-                    <div className="radio-contain">
-                      <input checked={selectPost == 'ukr'} type="radio" className="radio" />
-                    </div>
-                    <div className="new-post">
-                      <div className="new-post-title">
-                        <UkrPost />{' '}
-                        <div className="new-post">{lang == 'ru' ? 'Укрпочта' : 'Укрпошта'}</div>
-                        <div className="list-price">
-                          <span>{t('makeOrder.delivery.ukrPostPriceFrom')}</span>
-                          <span> {t('makeOrder.delivery.ukrPostPriceDepartment')}</span>
+                  <div className="col">
+                    <div
+                      style={{
+                        borderBottom:
+                          selectPost == 'ukr' ? '1px solid #ebd8e4' : 'none',
+                      }}
+                      className="radio-contain"
+                    >
+                      <input
+                        checked={selectPost == 'ukr'}
+                        type="radio"
+                        className="radio"
+                      />
+                      <div className="post-title ukr">
+                        <UkrPost />
+                        <div className="new-post">
+                          {t('makeOrder.delivery.ukrPost')}
+                        </div>
+                        <div className="post-from">
+                          {lang == 'ru' ? 'от 50 ₴' : 'від 50 ₴'}
                         </div>
                       </div>
-
+                    </div>
+                    <div className="new-post">
                       <div
                         className={`dropdown ${selectPost == 'ukr' ? 'drop-open' : 'drop-close'}`}
                       >
                         <SearchUkrPost
                           infoDelivery={infoDelivery}
                           selectFinishDelivery={selectFinishDelivery}
+                          lang={lang}
                         />
                       </div>
                     </div>
@@ -645,7 +740,13 @@ const MakeOrder: React.FC<Props> = ({ lang }) => {
             )}
           </div>
           <div className="title">
-            {selectWayDelivery == 0 ? <div className="number">3</div> : <MarkSVG />}
+            {selectWayDelivery == 0 ? (
+              <div className="number">
+                <PaySVG />
+              </div>
+            ) : (
+              <MarkSVG />
+            )}
             <h2>
               {t('makeOrder.pay')} <span>*</span>
             </h2>
@@ -660,7 +761,10 @@ const MakeOrder: React.FC<Props> = ({ lang }) => {
                   onClick={() => setSelectWayDelivery(x.id)}
                 >
                   <input type="radio" checked={selectWayDelivery == x.id} />
-                  {x.name}
+                  <div className="text">
+                    <p>{x.name}</p>
+                    <div className="desc">{x.description}</div>
+                  </div>
                 </div>
               ))}
             </div>
@@ -673,6 +777,7 @@ const MakeOrder: React.FC<Props> = ({ lang }) => {
                   flexDirection: 'row',
                   justifyContent: 'space-between',
                   borderWidth: 0,
+                  alignItems: 'center',
                 }}
                 onClick={() => setSelectWayDelivery(0)}
               >
@@ -696,12 +801,23 @@ const MakeOrder: React.FC<Props> = ({ lang }) => {
             setComent={setComment}
           />
         </form>
-        <ListFromBasket
-          lang={lang}
-          setFinishOrder={setFinishOrder}
-          isFinishFillDate={isFinishFillDate}
-          personal={personalDiscount}
-        />
+        <div className="basket-and-promokods">
+          <Promokods
+            promokod={promokod}
+            setPromokod={setPromokod}
+            lang={lang}
+          />
+          <ListFromBasket
+            lang={lang}
+            setFinishOrder={setFinishOrder}
+            isFinishFillDate={isFinishFillDate}
+            userUseBonus={userUseBonus}
+            countBonus={0}
+            setUserUseBonus={setUserUseBonus}
+            isAuth={user.isAuthorize}
+            isPromokod={promokod !== null}
+          />
+        </div>
       </div>
     </div>
   );

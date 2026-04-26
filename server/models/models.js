@@ -315,14 +315,27 @@ const Order = sequelize.define('order', {
     defaultValue: 'wait',
   },
   isToMeneger: { type: DataTypes.BOOLEAN, defaultValue: false },
-  procent: { type: DataTypes.INTEGER, allowNull: 0 },
   phone: { type: DataTypes.STRING, allowNull: false },
-  deliveryType: { type: DataTypes.STRING, allowNull: false },
-  city: { type: DataTypes.STRING, allowNull: false },
   comment: { type: DataTypes.TEXT, allowNull: false, defaultValue: '' },
   commentMeneger: { type: DataTypes.TEXT, allowNull: false, defaultValue: '' },
+
+  countBonus: { type: DataTypes.INTEGER, allowNull: false, defaultValue: 0 },
+  deliveryType: {
+    type: DataTypes.ENUM(
+      'Укр пошта',
+      'Нова пошта курєр',
+      'Нова пошта поштомат',
+      'Нова пошта відділення'
+    ),
+  },
+  typePay: { type: DataTypes.ENUM('1', '2', '3'), allowNull: false },
+  //1 Оплата на рахунок IBAN або на картку  Очікую дзвінок для уточнення деталей
+  //2 Оплата на рахунок IBAN або на картку  Отримати SMS з реквізитами
+  //3 Накладений платіж (з передоплатою)  Очікую дзвінок для підтвердження
+
   oblast: { type: DataTypes.STRING, allowNull: false, defaultValue: '' },
-  typePay: { type: DataTypes.STRING, allowNull: false },
+  city: { type: DataTypes.STRING, allowNull: false },
+  departmentOrPostomatOrAddress: { type: DataTypes.STRING, allowNull: false },
 });
 
 Users.hasMany(Order);
@@ -446,6 +459,45 @@ const Baners = sequelize.define('Baners', {
   sort: { type: DataTypes.INTEGER, allowNull: false },
 });
 
+const Promokods = sequelize.define('promokods', {
+  id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
+  code: { type: DataTypes.STRING, unique: true },
+  nameuk: { type: DataTypes.STRING, allowNull: false },
+  nameru: { type: DataTypes.STRING, allowNull: false },
+  descriptionuk: { type: DataTypes.TEXT, allowNull: false },
+  descriptionru: { type: DataTypes.TEXT, allowNull: false },
+  type: {
+    type: DataTypes.ENUM(
+      'procent',
+      'price',
+      'select_goods_free',
+      'select_goods_discount_sum',
+      'select_goods_discount_procent'
+    ),
+    allowNull: false,
+  },
+  procent: { type: DataTypes.INTEGER, allowNull: true },
+  min_price: { type: DataTypes.INTEGER, allowNull: true },
+  price_discount: { type: DataTypes.INTEGER, allowNull: true },
+  countPromokods: { type: DataTypes.INTEGER, allowNull: false },
+  selectVolumeArt: { type: DataTypes.STRING, allowNull: true },
+  img: { type: DataTypes.STRING, allowNull: false },
+});
+
+const UserBronPromokod = sequelize.define('UserBronPromokod', {
+  id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
+  isUse: { type: DataTypes.BOOLEAN, allowNull: false, defaultValue: false },
+});
+
+Promokods.hasMany(UserBronPromokod);
+UserBronPromokod.belongsTo(Promokods, { foreignKey: 'promokodId' });
+
+Users.hasMany(UserBronPromokod);
+UserBronPromokod.belongsTo(Users, { foreignKey: 'userId' });
+
+Promokods.hasMany(Order);
+Order.belongsTo(Promokods, { foreignKey: 'promokodId' });
+
 module.exports = {
   Brends,
   CountryMade,
@@ -466,4 +518,6 @@ module.exports = {
   ReviewImg,
   Blog,
   Baners,
+  Promokods,
+  UserBronPromokod,
 };

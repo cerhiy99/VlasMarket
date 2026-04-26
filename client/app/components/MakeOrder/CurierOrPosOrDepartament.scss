@@ -1,4 +1,7 @@
 .curier-or-post-or-departament {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
   span {
     color: red;
   }
@@ -12,6 +15,11 @@
   }
   p {
     margin-top: 7.5px;
+    margin-bottom: 5px;
+  }
+  input {
+    margin-top: 5px;
+    margin-bottom: 5px;
   }
   .post-or-departament {
     ul {

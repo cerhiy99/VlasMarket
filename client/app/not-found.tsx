@@ -88,7 +88,7 @@ export default function NotFound() {
           {buttonTexts[locale].home}
         </Link>
         <Link
-          href={`/${locale === 'ru' ? 'ru/' : ''}goods/1`}
+          href={`/${locale === 'ru' ? 'ru' : ''}`}
           style={{
             display: 'inline-block',
             padding: '0.75rem 1.5rem',

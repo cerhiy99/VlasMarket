@@ -262,21 +262,6 @@ const Pruznachenia: React.FC<Props> = ({
           style={{ left: '15px' }}
           className={isMobile ? 'dropdownFilterMobile dropdown' : ''}
         >
-          {' '}
-          {realCountries.length > 10 && (
-            <div className="brands-alphabet">
-              {' '}
-              {dynamicAlphabet.map((letter) => (
-                <button
-                  key={letter}
-                  className={`alphabet-button ${selectedLetter === letter ? 'active' : ''}`}
-                  onClick={() => handleLetterClick(letter)}
-                >
-                  {letter}
-                </button>
-              ))}
-            </div>
-          )}
           <ul className="brands-list filter-scroll" ref={scrollContainerRef}>
             {' '}
             {/* Залишаємо brands-list */}

@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import './ListNewPost.scss';
 import ArrowDown from '../../assest/MakeOrder/ArrowDown.svg';
 import SearchSVG from '../../assest/MakeOrder/Search.svg';
-import { CityDataNewPost, getCitiesDefault, searchCity } from './apiNewPost';
+import { CityDataNewPost, getCitiesDefault, searchCity2 } from './apiNewPost';
 import CurierOrPosOrDepartament from './CurierOrPosOrDepartament';
 import { useTranslation } from '@/context/TranslationProvider';
 import { Locale } from '@/i18n.config';
@@ -37,7 +37,7 @@ const ListNewPost = ({
   const changeWriteCity = async (value: string) => {
     setWriteSearcgCity(value);
     if (value.length >= 3) {
-      const res = await searchCity(value);
+      const res = await searchCity2(value);
       setSearchCityes(res);
     } else {
       setSearchCityes(popularCities);
@@ -47,9 +47,7 @@ const ListNewPost = ({
   const changeSelectCity = (selectCity: CityDataNewPost) => {
     setSelectCity(selectCity);
     setSelectCityInputValue(
-      lang == 'ru'
-        ? `${selectCity.DescriptionRu}`
-        : `${selectCity.Description}`,
+      lang == 'ru' ? `${selectCity.DescriptionRu}` : `${selectCity.Description}`
     );
     setIsOpenLocality(false);
   };
@@ -75,12 +73,9 @@ const ListNewPost = ({
 
   return (
     <div className="locality-container">
-      <div className="locality">
-        {t('makeOrder.delivery.locality')} <span>*</span>
-      </div>
       <div className="open-locality" onClick={openOrClose}>
         <input
-          placeholder={t('makeOrder.city') as string}
+          placeholder={lang == 'ru' ? 'Город доставки*' : 'Місто доставки*'}
           style={{ marginTop: '7.5px', cursor: 'pointer' }}
           type="text"
           id="input-no-focus"

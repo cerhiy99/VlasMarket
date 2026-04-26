@@ -13,6 +13,7 @@ const richTextEditor = require('./RichTextEditor');
 const blogRouter = require('./BlogRouter');
 const banersRouter = require('./BanersRouter');
 const uploadImage = require('./UploadImage');
+const promokods = require('./PromokodsRouter');
 
 router.use('/brend', brendRouter);
 router.use('/category', categoryRouter);
@@ -28,5 +29,6 @@ router.use('/rich-text-editor', richTextEditor);
 router.use('/blog', blogRouter);
 router.use('/slides', banersRouter);
 router.use('/upload-image', uploadImage);
+router.use('/promokods', promokods);
 
 module.exports = router;

@@ -22,7 +22,9 @@ const Page = ({ params, searchParams }: Props) => {
   const sParams = use(searchParams);
   const { t } = useTranslation();
   const [personal, setPeronal] = useState(0);
-  const basketTemp = useSelector((state: RootState) => state.BasketAndLike.basket);
+  const basketTemp = useSelector(
+    (state: RootState) => state.BasketAndLike.basket
+  );
   const [basket] = useState(basketTemp);
   const dispatch = useDispatch();
   const router = useRouter();
@@ -111,7 +113,9 @@ const Page = ({ params, searchParams }: Props) => {
               <div className="product-quantity">{x.count} шт.</div>
 
               <div className="product-price">
-                <span className="current-price">{x.volume.priceWithDiscount} ₴/шт.</span>
+                <span className="current-price">
+                  {x.volume.priceWithDiscount} ₴/шт.
+                </span>
                 {x.volume.priceWithDiscount !== x.volume.price && (
                   <span className="old-price">{x.volume.price} ₴/шт.</span>
                 )}
@@ -123,7 +127,9 @@ const Page = ({ params, searchParams }: Props) => {
         <div className="total-amount">
           <div className="total-amount-label">
             <span className="total-main-text">{t('OrderTrue.toPayTitle')}</span>
-            <span className="total-subtext">{t('OrderTrue.toPayWithoutDelivery')}</span>
+            <span className="total-subtext">
+              {t('OrderTrue.toPayWithoutDelivery')}
+            </span>
           </div>
 
           <span className="total-price">{totalPrice} ₴</span>
@@ -137,7 +143,8 @@ const Page = ({ params, searchParams }: Props) => {
           <div className="delivery-method">
             <span className="delivery-icon">✦</span>
             <span className="delivery-name">
-              {sParams.typeOrder[0]?.toLocaleUpperCase() + sParams.typeOrder.slice(1)}
+              {sParams.typeOrder[0]?.toLocaleUpperCase() +
+                sParams.typeOrder.slice(1)}
             </span>
           </div>
 
@@ -176,7 +183,7 @@ const Page = ({ params, searchParams }: Props) => {
         <button
           onClick={() => {
             dispatch(setBasket([]));
-            router.push(getLocalizedPath(`/${lang}/goods/1`, lang));
+            router.push(getLocalizedPath(`/${lang}`, lang));
           }}
           className="continue-shopping-button"
         >

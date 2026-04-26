@@ -1,13 +1,15 @@
 'use client';
 import React, { useEffect, useState } from 'react';
 import './SearchUkrPost.scss';
+import { Locale } from '@/i18n.config';
 
 type Props = {
   selectFinishDelivery: any;
   infoDelivery: any;
+  lang: Locale;
 };
 
-const SearchUkrPost = ({ selectFinishDelivery, infoDelivery }: Props) => {
+const SearchUkrPost = ({ selectFinishDelivery, infoDelivery, lang }: Props) => {
   const [isFinish, setIsFinish] = useState(false);
   const [oblast, setOblast] = useState('');
   const [city, setCity] = useState('');
@@ -49,26 +51,26 @@ const SearchUkrPost = ({ selectFinishDelivery, infoDelivery }: Props) => {
     <div className="search-ukr-post-container">
       <fieldset>
         <div className="select-input">
-          <p>У відділення</p>
+          <p>{lang == 'ru' ? 'В отделение' : 'У відділення'}</p>
         </div>
       </fieldset>
-      <label>Область</label>
+      <label>{lang == 'ru' ? 'Область' : 'Область'}</label>
       <input
         value={oblast}
         onChange={(e) => setOblast(e.target.value)}
-        placeholder="Область"
+        placeholder={lang == 'ru' ? 'Область' : 'Область'}
       />
-      <label>Населений пункт</label>
+      <label>{lang == 'ru' ? 'Населенный пункт' : 'Населений пункт'}</label>
       <input
         value={city}
         onChange={(e) => setCity(e.target.value)}
-        placeholder="Населений пункт"
+        placeholder={lang == 'ru' ? 'Населенный пункт' : 'Населений пункт'}
       />
-      <label>Відділення</label>
+      <label>{lang == 'ru' ? 'Отделение' : 'Відділення'}</label>
       <input
         value={departament}
         onChange={(e) => setDepartament(e.target.value)}
-        placeholder="Відділення"
+        placeholder={lang == 'ru' ? 'Отделение' : 'Відділення'}
       />
       <button
         type="button"
@@ -78,7 +80,7 @@ const SearchUkrPost = ({ selectFinishDelivery, infoDelivery }: Props) => {
         }}
         onClick={(e) => sendIfoDelivery(e)}
       >
-        Продовжити
+        {lang == 'ru' ? 'Продолжить' : 'Продовжити'}
       </button>
     </div>
   );

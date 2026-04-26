@@ -6,7 +6,7 @@ import RightSVG from '../../assest/Header/Right.svg';
 import { Locale } from '@/i18n.config';
 import Image from 'next/image';
 import SvgIcon from './SvgIcon';
-import { useRouter } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { getLocalizedPath } from '../utils/getLocalizedPath';
 import { UkrToEng } from '../utils/UkrToEng';
 
@@ -38,25 +38,27 @@ type Props = {
 
 const Catalog = ({ lang, dictionary, catalog }: Props) => {
   const [isHovered, setIsHovered] = useState<boolean>(false); // Змінна для збереження стану
-
-  const handleMouseEnter = () => {
-    setIsHovered(true);
-  };
-
-  const handleMouseLeave = () => {
-    setSelectCategory(0);
-    setIsHovered(false);
-  };
+  const pathname = usePathname();
 
   const [selectCategory, setSelectCategory] = useState<number>(4);
   const router = useRouter();
 
+  const open = () => {
+    if (pathname == '/' || pathname == '/ru') return;
+    setIsHovered(!isHovered);
+  };
+
   return (
     <>
       {' '}
-      {isHovered && <div className="calalog-beck" />}
-      <div className="catalog-container" onMouseLeave={handleMouseLeave}>
-        <div onMouseEnter={handleMouseEnter} className="catalog-title">
+      {isHovered && (
+        <div onClick={() => setIsHovered(false)} className="back-dark" />
+      )}
+      <div className="catalog-container" /*onMouseLeave={handleMouseLeave}*/>
+        <div
+          onClick={open}
+          /*onMouseEnter={handleMouseEnter}*/ className="catalog-title"
+        >
           <CatalogSVG /> {dictionary.title}
         </div>
 

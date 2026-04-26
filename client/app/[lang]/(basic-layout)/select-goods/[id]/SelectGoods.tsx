@@ -27,7 +27,8 @@ const getData = async (id: string, lang: Locale) => {
     const { good, reviews, indexVolume } = data;
     const watchMore = data.watchMore.map((x: any) => ({
       id: x.id,
-      [`name${lang == 'ru' ? 'ru' : 'uk'}`]: x[`name${lang == 'ru' ? 'ru' : 'uk'}`],
+      [`name${lang == 'ru' ? 'ru' : 'uk'}`]:
+        x[`name${lang == 'ru' ? 'ru' : 'uk'}`],
       art: x.art,
       [`characteristic${lang == 'ru' ? 'ru' : 'uk'}`]:
         x[`characteristic${lang == 'ru' ? 'ru' : 'uk'}`],
@@ -61,7 +62,12 @@ const getData = async (id: string, lang: Locale) => {
 
 const SelectGoods = async ({ params: { lang, id }, searchParams }: Props) => {
   const { SelectGoods } = await getDictionary(lang);
-  const { good: selectGoods, indexVolume, watchMore, reviews } = await getData(id, lang);
+  const {
+    good: selectGoods,
+    indexVolume,
+    watchMore,
+    reviews,
+  } = await getData(id, lang);
 
   // Важливо: перевіряємо, чи отримали ми товар. Якщо ні, повертаємо notFound().
   if (!selectGoods) {
@@ -69,11 +75,14 @@ const SelectGoods = async ({ params: { lang, id }, searchParams }: Props) => {
   }
 
   // Логіка для хлібних крихт
-  const listUrlBread = [{ url: `/${lang}/goods/1`, name: 'Каталог' }];
+  const listUrlBread = [];
   if (selectGoods.category) {
     listUrlBread.push({
       url: `/${lang}/goods/${UkrToEng(selectGoods.category.nameru)}/1`,
-      name: lang === 'ru' ? selectGoods.category.nameru : selectGoods.category.nameuk,
+      name:
+        lang === 'ru'
+          ? selectGoods.category.nameru
+          : selectGoods.category.nameuk,
     });
   }
   if (
@@ -83,7 +92,10 @@ const SelectGoods = async ({ params: { lang, id }, searchParams }: Props) => {
   ) {
     listUrlBread.push({
       url: `/${lang}/goods/${UkrToEng(selectGoods.category.nameru)}/${UkrToEng(selectGoods.subcategory.nameru)}/1`,
-      name: lang === 'ru' ? selectGoods.subcategory.nameru : selectGoods.subcategory.nameuk,
+      name:
+        lang === 'ru'
+          ? selectGoods.subcategory.nameru
+          : selectGoods.subcategory.nameuk,
     });
   }
   listUrlBread.push({
@@ -97,7 +109,8 @@ const SelectGoods = async ({ params: { lang, id }, searchParams }: Props) => {
   const volume = selectGoods.volumes[indexVolume] || selectGoods.volumes[0];
 
   const title = lang === 'ru' ? selectGoods.nameru : selectGoods.nameuk;
-  const rawDescription = lang === 'ru' ? selectGoods.descriptionru : selectGoods.descriptionuk;
+  const rawDescription =
+    lang === 'ru' ? selectGoods.descriptionru : selectGoods.descriptionuk;
   const plainDescription = rawDescription.replace(/<[^>]+>/g, '').slice(0, 200);
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
   const canonicalUrl = `${baseUrl}/${lang === 'ru' ? 'ru/' : ''}goods/${id}`;
@@ -106,7 +119,8 @@ const SelectGoods = async ({ params: { lang, id }, searchParams }: Props) => {
     : '';
   const sku = selectGoods.art || '';
   const brandName = selectGoods.brend?.name || '';
-  const categoryName = lang === 'ru' ? selectGoods.category.nameru : selectGoods.category.nameuk;
+  const categoryName =
+    lang === 'ru' ? selectGoods.category.nameru : selectGoods.category.nameuk;
   const price = volume.priceWithDiscount?.toString() || '';
 
   const jsonLd = {
@@ -133,7 +147,9 @@ const SelectGoods = async ({ params: { lang, id }, searchParams }: Props) => {
           ? 'https://schema.org/InStock'
           : 'https://schema.org/OutOfStock',
       // Додаємо дату, до якої ціна актуальна (наприклад, +1 рік від сьогодні)
-      priceValidUntil: new Date(new Date().setFullYear(new Date().getFullYear() + 1))
+      priceValidUntil: new Date(
+        new Date().setFullYear(new Date().getFullYear() + 1)
+      )
         .toISOString()
         .split('T')[0],
       shippingDetails: {
@@ -148,7 +164,8 @@ const SelectGoods = async ({ params: { lang, id }, searchParams }: Props) => {
         // Теж корисно для відображення ціни в пошуку
         '@type': 'MerchantReturnPolicy',
         applicableCountry: 'UA',
-        returnPolicyCategory: 'https://schema.org/MerchantReturnFiniteReturnWindow',
+        returnPolicyCategory:
+          'https://schema.org/MerchantReturnFiniteReturnWindow',
         merchantReturnDays: 14,
         returnMethod: 'https://schema.org/ReturnByMail',
         feesCollector: 'https://schema.org/ReturnFeesCustomerPay',

@@ -13,11 +13,17 @@ import { getLocalizedPath } from '@/app/components/utils/getLocalizedPath';
 import { useTranslation } from '@/context/TranslationProvider';
 import { use } from 'react';
 
-const SelectedProductsPage = ({ params }: { params: Promise<{ lang: Locale }> }) => {
+const SelectedProductsPage = ({
+  params,
+}: {
+  params: Promise<{ lang: Locale }>;
+}) => {
   const { lang } = use(params);
   const { t } = useTranslation();
   const dispatch = useDispatch();
-  const { like: basket } = useSelector((state: RootState) => state.BasketAndLike);
+  const { like: basket } = useSelector(
+    (state: RootState) => state.BasketAndLike
+  );
 
   const delWithBasket = (id: number) => {
     dispatch(removeFromLike(id));
@@ -25,15 +31,19 @@ const SelectedProductsPage = ({ params }: { params: Promise<{ lang: Locale }> })
 
   return (
     <div className="selectedProducts">
-      <div className="selectedProducts__title">{t('selectedProductsPage.title')}</div>
+      <div className="selectedProducts__title">
+        {t('selectedProductsPage.title')}
+      </div>
       <div className="selectedProducts__container">
         {basket.length === 0 ? (
           <div className="selectedProducts__item">
             <div className="selectedProducts__noneWrapper">
-              <div className="selectedProducts__none">{t('selectedProductsPage.emptyMessage')}</div>
+              <div className="selectedProducts__none">
+                {t('selectedProductsPage.emptyMessage')}
+              </div>
               <div className="selectedProducts__none--link">
                 {t('selectedProductsPage.emptyLinkPrefix')}{' '}
-                <Link href={getLocalizedPath(`/${lang}/goods/1`, lang)}>
+                <Link href={getLocalizedPath(`/${lang}`, lang)}>
                   {t('selectedProductsPage.emptyLinkText')}
                 </Link>
               </div>
@@ -79,7 +89,9 @@ const SelectedProductsPage = ({ params }: { params: Promise<{ lang: Locale }> })
                     <div className="discount">{product.volume.discount}</div>
                   </div>
                 )}
-                <div className="itemInfo__currentPrice">{product.volume.priceWithDiscount}</div>
+                <div className="itemInfo__currentPrice">
+                  {product.volume.priceWithDiscount}
+                </div>
               </div>
               <div className="itemDelete">
                 <button onClick={() => delWithBasket(product.id)}>

@@ -1,7 +1,9 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { use, useEffect, useState } from 'react';
 import './Promokods.scss';
+import { Locale } from '@/i18n.config';
+import { $authHost } from '@/app/http';
 
 type PromoItem = {
   id: number;
@@ -39,50 +41,53 @@ const mockPromoDatabase: PromoItem[] = [
   },
 ];
 
-const Page = () => {
+const Page = ({ params }: { params: Promise<{ lang: Locale }> }) => {
+  const { lang } = use(params);
   const [promoValue, setPromoValue] = useState('');
   const [status, setStatus] = useState<'idle' | 'error' | 'success'>('idle');
   const [statusText, setStatusText] = useState('');
   const [activatedPromos, setActivatedPromos] = useState<PromoItem[]>([]);
-
-  const handleActivatePromo = () => {
-    const normalizedCode = promoValue.trim().toUpperCase();
-
-    if (!normalizedCode) {
-      setStatus('error');
-      setStatusText('Промокод не знайдено');
-      return;
-    }
-
-    const foundPromo = mockPromoDatabase.find(
-      (item) => item.code.toUpperCase() === normalizedCode
-    );
-
-    if (!foundPromo) {
-      setStatus('error');
-      setStatusText('Промокод не знайдено');
-      return;
-    }
-
-    const alreadyActivated = activatedPromos.some(
-      (item) => item.code.toUpperCase() === normalizedCode
-    );
-
-    if (alreadyActivated) {
+  const [myPromokods, setMyPromokods] = useState([]);
+  const handleActivatePromo = async () => {
+    try {
+      const res = await $authHost.get(
+        'promokods/checkPromokod?promokodCode=' + promoValue
+      );
       setStatus('success');
-      setStatusText('Промокод успішно застосовано');
+      setStatusText(
+        lang == 'ru'
+          ? 'Промокод успешно применен'
+          : 'Промокод успішно застосовано'
+      );
+      setPromoValue('');
+      getMyPromokods();
       return;
+    } catch (err: any) {
+      console.log(4343, err);
+      setStatus('error');
+      setStatusText(err.response.data.message);
     }
-
-    setActivatedPromos((prev) => [...prev, foundPromo]);
-    setStatus('success');
-    setStatusText('Промокод успішно застосовано');
-    setPromoValue('');
   };
+
+  const getMyPromokods = async () => {
+    try {
+      const res = await $authHost.get('promokods/getMy');
+      console.log(3434, res.data);
+      setMyPromokods(res.data.myPromokods);
+    } catch (err) {
+      console.log(4324, err);
+    }
+  };
+
+  useEffect(() => {
+    getMyPromokods();
+  }, []);
 
   return (
     <div className="promokods-container">
-      <h1 className="promokods-title">Промокоди</h1>
+      <h1 className="promokods-title">
+        {lang == 'ru' ? 'Промокоды' : 'Промокоди'}
+      </h1>
 
       <div className="promokods-card">
         <div className="promokods-form-block">
@@ -110,10 +115,12 @@ const Page = () => {
                 status === 'error'
                   ? 'promokods-input--error'
                   : status === 'success'
-                  ? 'promokods-input--success'
-                  : ''
+                    ? 'promokods-input--success'
+                    : ''
               }`}
-              placeholder="Введіть промокод"
+              placeholder={
+                lang == 'ru' ? 'Введите промокод' : 'Введіть промокод'
+              }
               value={promoValue}
               onChange={(e) => {
                 setPromoValue(e.target.value);
@@ -132,29 +139,47 @@ const Page = () => {
               }`}
               onClick={handleActivatePromo}
             >
-              Активувати
+              {lang == 'ru' ? 'Активировать' : 'Активувати'}
             </button>
           </div>
         </div>
 
-        {activatedPromos.length > 0 ? (
+        {myPromokods.length > 0 ? (
           <div className="promokods-list">
-            {activatedPromos.map((promo) => (
-              <div className="promokods-item" key={promo.id}>
+            {myPromokods.map((promo: any) => (
+              <div
+                className={`promokods-item ${promo.isUse ? 'promo-use' : ''}`}
+                key={promo.promokod.id}
+              >
                 <div className="promokods-item-left">
                   <div className="promokods-item-icon">
-                    <img src={promo.icon} alt={promo.title} />
+                    <img
+                      src={process.env.NEXT_PUBLIC_SERVER + promo.promokod.img}
+                      alt={
+                        lang == 'ru'
+                          ? promo.promokod.nameru
+                          : promo.promokod.nameuk
+                      }
+                    />
                   </div>
 
                   <div className="promokods-item-info">
                     <p className="promokods-item-discount">
-                      {promo.discountText}
+                      {lang == 'ru'
+                        ? promo.promokod.nameru
+                        : promo.promokod.nameuk}
                     </p>
                   </div>
                 </div>
 
                 <div className="promokods-item-status">
-                  {promo.activatedText}
+                  {promo.isUse
+                    ? lang == 'ru'
+                      ? 'Использовано'
+                      : 'Використано'
+                    : lang == 'ru'
+                      ? 'Этот промокод активирован'
+                      : 'Цей промокод активований'}
                 </div>
               </div>
             ))}
@@ -167,8 +192,9 @@ const Page = () => {
               className="promokods-image"
             />
             <p className="promokods-empty-text">
-              Перевірте електронну пошту — там ви знайдете свої активні
-              промокоди
+              {lang == 'ru'
+                ? 'Проверьте электронную почту – там вы найдете свои активные промокоды'
+                : 'Перевірте електронну пошту — там ви знайдете свої активні промокоди'}
             </p>
           </div>
         )}

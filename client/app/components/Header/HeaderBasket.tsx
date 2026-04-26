@@ -145,9 +145,12 @@ const HeaderBasket = ({ lang }: Props) => {
                 </div>
                 <div className="buttons">
                   <button
-                    onClick={() =>
-                      router.push(getLocalizedPath(`/${lang}/make-order`, lang))
-                    }
+                    onClick={() => {
+                      router.push(
+                        getLocalizedPath(`/${lang}/make-order`, lang)
+                      );
+                      dispatch(setIsOpenBasket(false));
+                    }}
                     className="button-form-order"
                   >
                     {lang == 'ru' ? 'Оформить заказ' : 'Оформити замовлення'}

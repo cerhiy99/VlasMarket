@@ -1,189 +1,206 @@
 .promokods-container {
   font-family: 'Inter', sans-serif;
   color: #1e1e1e;
-}
 
-.promokods-title {
-  margin: 0 0 12px;
-  font-size: 24px;
-  font-weight: 700;
-  color: #000;
-}
-
-.promokods-card {
-  width: 1050px;
-  background: #ffffff;
-  border-radius: 14px;
-  padding: 22px;
-  box-sizing: border-box;
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
-}
-
-.promokods-label {
-  display: block;
-  margin-bottom: 10px;
-  font-size: 18px;
-  color: #8d8d8d;
-}
-
-.promokods-form-row {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
-.promokods-input {
-  width: 332px;
-  height: 44px;
-  border: 1px solid #ead9e1;
-  border-radius: 8px;
-  padding: 0 14px;
-  font-size: 16px;
-  outline: none;
-  box-sizing: border-box;
-
-  &::placeholder {
-    color: #a3a3a3;
-  }
-}
-
-.promokods-input--error {
-  border: 1px solid #ff4d4f;
-  color: #ff4d4f;
-}
-
-.promokods-input--success {
-  border: 1px solid #2dbf64;
-}
-
-.promokods-button {
-  width: 195px;
-  height: 44px;
-  border: none;
-  border-radius: 8px;
-  background: #d9f2de;
-  color: #ffffff;
-  font-size: 16px;
-  font-weight: 600;
-  cursor: default;
-  transition: all 0.2s ease;
-  flex-shrink: 0;
-}
-
-.promokods-button--active {
-  background: #7bd389;
-  cursor: pointer;
-
-  &:hover {
-    background: #5fd07a;
+  .promokods-title {
+    margin: 0 0 12px;
+    font-size: 24px;
+    font-weight: 700;
+    color: #000;
   }
 
-  &:active {
-    background: #49b965;
-    transform: scale(0.97);
+  .promokods-card {
+    width: 100%;
+    background: #ffffff;
+    border-radius: 14px;
+    padding: 22px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    @media (max-width: 768px) {
+      padding: 10px 0;
+    }
   }
-}
 
-.promokods-status {
-  margin: 0 0 8px;
-  font-size: 16px;
-  font-weight: 500;
-}
+  .promokods-label {
+    display: block;
+    margin-bottom: 10px;
+    font-size: 18px;
+    color: #8d8d8d;
+  }
 
-.promokods-status--error {
-  color: #ff4d4f;
-}
+  .promokods-form-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    @media (max-width: 375px) {
+      gap: 0;
+    }
+  }
 
-.promokods-status--success {
-  color: #2dbf64;
-}
+  .promokods-input {
+    width: 332px;
+    height: 44px;
+    border: 1px solid #ead9e1;
+    border-radius: 8px;
+    padding: 0 14px;
+    font-size: 16px;
+    outline: none;
+    box-sizing: border-box;
+    @media (max-width: 768px) {
+      width: unset;
+      padding-right: 0;
+    }
 
-.promokods-empty-state {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  height: 220px;
-  text-align: center;
-}
+    &::placeholder {
+      color: #a3a3a3;
+    }
+  }
 
-.promokods-image {
-  width: 1200px;
-  height: 1200px;
-  margin-bottom: 12px;
-  display: block;
-}
+  .promokods-input--error {
+    border: 1px solid #ff4d4f;
+    color: #ff4d4f;
+  }
 
-.promokods-empty-text {
-  font-size: 16px;
-  font-weight: 500;
-  color: #2f2f30;
-  margin: 0;
-}
+  .promokods-input--success {
+    border: 1px solid #2dbf64;
+  }
 
-.promokods-list {
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
-}
+  .promokods-button {
+    width: 195px;
+    height: 44px;
+    border: none;
+    border-radius: 8px;
+    background: #d9f2de;
+    color: #ffffff;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: default;
+    transition: all 0.2s ease;
+    flex-shrink: 0;
+    @media (max-width: 768px) {
+      width: unset;
+    }
+  }
 
-.promokods-item {
-  width: 100%;
-  border: 1px solid #edd7e3;
-  border-radius: 14px;
-  padding: 16px 18px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  box-sizing: border-box;
-}
+  .promokods-button--active {
+    background: #7bd389;
+    cursor: pointer;
 
-.promokods-item-left {
-  display: flex;
-  align-items: center;
-  gap: 20px;
-  min-width: 0;
-}
+    &:hover {
+      background: #5fd07a;
+    }
 
-.promokods-item-icon {
-  width: 64px;
-  height: 64px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-  overflow: hidden;
+    &:active {
+      background: #49b965;
+      transform: scale(0.97);
+    }
+  }
 
-  img {
-    width: 64px;
-    height: 64px;
-    object-fit: contain;
+  .promokods-status {
+    margin: 0 0 8px;
+    font-size: 16px;
+    font-weight: 500;
+  }
+
+  .promokods-status--error {
+    color: #ff4d4f;
+  }
+
+  .promokods-status--success {
+    color: #2dbf64;
+  }
+
+  .promokods-empty-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 220px;
+    text-align: center;
+  }
+
+  .promokods-image {
+    width: 100%;
+    height: auto;
+    margin-bottom: 12px;
     display: block;
   }
-}
 
-.promokods-item-info {
-  display: flex;
-  flex-direction: column;
-  min-width: 0;
-}
+  .promokods-empty-text {
+    font-size: 16px;
+    font-weight: 500;
+    color: #2f2f30;
+    margin: 0;
+  }
 
-.promokods-item-discount {
-  margin: 0;
-  font-size: 16px;
-  color: #4a4a4a;
-  line-height: 1.3;
-}
+  .promokods-list {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
 
-.promokods-item-status {
-  background: #dff5e4;
-  border: 1px solid #2dbf64;
-  color: #2dbf64;
-  padding: 10px 16px;
-  border-radius: 10px;
-  font-size: 15px;
-  font-weight: 500;
-  flex-shrink: 0;
+  .promokods-item {
+    width: 100%;
+    border: 1px solid #edd7e3;
+    border-radius: 14px;
+    padding: 16px 18px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    box-sizing: border-box;
+    max-width: 540px;
+    @media (max-width: 767px) {
+      flex-direction: column;
+    }
+  }
+
+  .promokods-item-left {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    min-width: 0;
+  }
+
+  .promokods-item-icon {
+    width: 64px;
+    height: 64px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    overflow: hidden;
+
+    img {
+      width: 64px;
+      height: 64px;
+      object-fit: contain;
+      display: block;
+    }
+  }
+
+  .promokods-item-info {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+  }
+
+  .promokods-item-discount {
+    margin: 0;
+    font-size: 16px;
+    color: #4a4a4a;
+    line-height: 1.3;
+  }
+
+  .promokods-item-status {
+    background: #dff5e4;
+    border: 1px solid #2dbf64;
+    color: #000000;
+    padding: 10px 16px;
+    border-radius: 10px;
+    font-size: 15px;
+    font-weight: 500;
+    flex-shrink: 0;
+  }
 }

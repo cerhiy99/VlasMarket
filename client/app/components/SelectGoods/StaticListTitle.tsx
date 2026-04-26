@@ -19,6 +19,12 @@ import {
 import { GoodInterface } from '@/app/interfaces/goods';
 import { Locale } from '@/i18n.config';
 import { $host } from '@/app/http';
+import TGSVG from '../../assest/Goods/TG.svg';
+import FBSVG from '../../assest/Goods/FB.svg';
+import ViberSVG from '../../assest/Goods/Viber.svg';
+import LinkSVG from '../../assest/Goods/Link.svg';
+import CopiedSVG from '../../assest/Goods/Copied.svg';
+import { usePathname } from 'next/navigation';
 
 const heightHeader = 60; // Висота хедера
 
@@ -66,7 +72,7 @@ const StaticListTitle = ({
       | 'characteristics'
       | 'reviews'
       | 'video'
-      | 'similar',
+      | 'similar'
   ) => {
     onChanegeSection(sectionName);
   };
@@ -91,7 +97,7 @@ const StaticListTitle = ({
         root: null, // Вікно браузера
         threshold: 0, // Триггер при будь-якому перетині
         rootMargin: `-${heightHeader}px 0px 0px 0px`, // Враховує висоту хедера
-      },
+      }
     );
 
     observer.observe(selectGoodsText);
@@ -108,7 +114,7 @@ const StaticListTitle = ({
     if (!isInLike) {
       const goods: any = await getGoods(
         selectGoods.volumes[selectVolume].id,
-        selectGoods.id,
+        selectGoods.id
       );
       dispatch(
         addToLike({
@@ -124,7 +130,7 @@ const StaticListTitle = ({
             priceWithDiscount: goods.volumes[0].priceWithDiscount,
             url: goods.volumes[0].url,
           },
-        }),
+        })
       );
     } else {
       dispatch(removeFromLike(selectGoods.id));
@@ -140,7 +146,7 @@ const StaticListTitle = ({
   const getGoods = async (idVolume: number, idGoods: number) => {
     try {
       const res = await $host.get(
-        `goods/GetForBasketOrLike?idVolume=${idVolume}&idGoods=${idGoods}`,
+        `goods/GetForBasketOrLike?idVolume=${idVolume}&idGoods=${idGoods}`
       );
       return res.data;
     } catch (err) {
@@ -153,7 +159,7 @@ const StaticListTitle = ({
     if (!isInBasket) {
       const goods: any = await getGoods(
         selectGoods.volumes[selectVolume].id,
-        selectGoods.id,
+        selectGoods.id
       );
       const goodToBasket = {
         id: goods.id,
@@ -172,6 +178,35 @@ const StaticListTitle = ({
       };
       dispatch(addToBasket(goodToBasket));
     }
+  };
+
+  const pathname = usePathname();
+
+  const shareText =
+    lang === 'ru'
+      ? `Нашёл интересный товар: ${selectGoods.nameru}`
+      : `Знайшов цікавий товар: ${selectGoods.nameuk}`;
+  const url = `${process.env.NEXT_PUBLIC_BASE_URL}${pathname}`;
+
+  const shareMap = {
+    telegram: `https://t.me/share/url?text=${encodeURIComponent(shareText)}&url=${encodeURIComponent(url)}`,
+    facebook: `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`,
+    viber: `viber://forward?text=${encodeURIComponent(`${shareText} ${url}`)}`,
+  };
+
+  const openShare = (type: 'telegram' | 'facebook' | 'viber') => {
+    const link = shareMap[type];
+    if (!link) return;
+
+    window.open(link, '_blank', 'noopener,noreferrer');
+  };
+
+  const [isCopy, setIsCopy] = useState(false);
+
+  const copyLink = async () => {
+    setIsCopy(true);
+    await navigator.clipboard.writeText(url);
+    setTimeout(() => setIsCopy(false), 3000);
   };
 
   return (
@@ -226,6 +261,25 @@ const StaticListTitle = ({
             {dictionary['list-title-info'][6]}
           </li>
         </ul>
+        <div className="messangers-share">
+          <div className="share-title">
+            {lang == 'ru' ? 'Поделиться' : 'Поділитися'}:
+          </div>
+          <div className="list-titles">
+            <div onClick={() => openShare('telegram')} className="tg">
+              <TGSVG />
+            </div>
+            <div onClick={() => openShare('facebook')} className="fb">
+              <FBSVG />
+            </div>
+            <div onClick={() => openShare('viber')} className="vb">
+              <ViberSVG />
+            </div>
+            <div onClick={copyLink} className="link">
+              {isCopy ? <CopiedSVG /> : <LinkSVG />}
+            </div>
+          </div>
+        </div>
       </div>
       <div
         ref={listRef}

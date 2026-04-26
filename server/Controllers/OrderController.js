@@ -33,7 +33,8 @@ const IS_SEND = process.env.IS_SEND;
 class OrderController {
   static FastOrder = async (req, resp, next) => {
     try {
-      const { name, phone, goodsID, idVolume, nameProduct, realIdVolume } = req.body;
+      const { name, phone, goodsID, idVolume, nameProduct, realIdVolume } =
+        req.body;
       let basket = [];
       const product = await Goods.findOne({
         where: { id: parseInt(goodsID) },
@@ -77,11 +78,14 @@ class OrderController {
       /*ID варіанту (volume): ${idVolume}
           `.trim();*/
 
-      await axios.post(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
-        chat_id: TELEGRAM_CHAT_ID,
-        text: message,
-        parse_mode: 'HTML',
-      });
+      await axios.post(
+        `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`,
+        {
+          chat_id: TELEGRAM_CHAT_ID,
+          text: message,
+          parse_mode: 'HTML',
+        }
+      );
 
       const res = await Order.create({
         nameUser: name,
@@ -123,9 +127,39 @@ class OrderController {
     }
   };
 
+  static SetNewOrder = async (req, resp, next) => {
+    try {
+      const {
+        nameUser,
+        phone,
+        email,
+        contactInfo,
+        basket,
+        coment,
+        deliveryType,
+        typePay,
+        oblast,
+        city,
+        departmentOrPostomatOrAddress,
+      } = await req.body;
+    } catch (err) {
+      return next(ErrorApi.badRequest(err));
+    }
+  };
+
   static SetOrder = async (req, resp, next) => {
     try {
-      let { surname, name, phone, delivery, comment, basket, typePay, token, email } = req.body;
+      let {
+        surname,
+        name,
+        phone,
+        delivery,
+        comment,
+        basket,
+        typePay,
+        token,
+        email,
+      } = req.body;
 
       const realProducts = await Promise.all(
         basket.map(async (item) => {
@@ -169,15 +203,19 @@ class OrderController {
       );
 
       // фільтруємо null, якщо якийсь товар не знайшовся
-      const filteredProducts = realProducts.filter((p) => p !== null && p.volumes.length > 0);
+      const filteredProducts = realProducts.filter(
+        (p) => p !== null && p.volumes.length > 0
+      );
 
       let totalPrice = filteredProducts.reduce(
         (x, j) => x + j.volumes[0].priceWithDiscount * j.count,
         0
       );
 
-      const payType = listWayDelivery.find((x) => x.id === typePay)?.name || 'Невідомо';
-      const payTypeShort = listWayDelivery.find((x) => x.id === typePay)?.shortName || 'Невідомо';
+      const payType =
+        listWayDelivery.find((x) => x.id === typePay)?.name || 'Невідомо';
+      const payTypeShort =
+        listWayDelivery.find((x) => x.id === typePay)?.shortName || 'Невідомо';
       let deliveryText = '';
       let deliveryTextAdmin = '';
       let city = 'Не вказано';
@@ -205,8 +243,11 @@ class OrderController {
       } else if (delivery?.selectInfoDelivery) {
         // Відділення або поштомат НП
         const warehouseType =
-          delivery?.selectInfoDelivery?.Description?.toLowerCase().includes('поштомат') ||
-          delivery?.selectInfoDelivery?.TypeOfWarehouse === '5d8a980d-391c-11dd-90d9-001a92567626'
+          delivery?.selectInfoDelivery?.Description?.toLowerCase().includes(
+            'поштомат'
+          ) ||
+          delivery?.selectInfoDelivery?.TypeOfWarehouse ===
+            '5d8a980d-391c-11dd-90d9-001a92567626'
             ? 'поштомат Нової Пошти'
             : 'відділення Нової Пошти';
         typeDelivery = warehouseType;
@@ -300,11 +341,14 @@ ${basketText}
 
 ${process.env.FRONTEND_URL + `/ru/admin/orders/edit-order/${res.id}`}`;
       if (IS_SEND) {
-        await axios.post(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
-          chat_id: TELEGRAM_CHAT_ID,
-          text: message,
-          parse_mode: 'HTML',
-        });
+        await axios.post(
+          `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`,
+          {
+            chat_id: TELEGRAM_CHAT_ID,
+            text: message,
+            parse_mode: 'HTML',
+          }
+        );
       }
 
       const html = `
@@ -538,8 +582,16 @@ ${basketTextToEmail}<br><br><br>
 ${process.env.FRONTEND_URL + `/ru/admin/orders/edit-order/${res.id}`}`;
 
       try {
-        sendEmail('7551991@gmail.com', messageToEmail, `нове замовлення №${res.id}`);
-        sendEmail('664645@gmail.com', messageToEmail, `нове замовлення №${res.id}`);
+        sendEmail(
+          '7551991@gmail.com',
+          messageToEmail,
+          `нове замовлення №${res.id}`
+        );
+        sendEmail(
+          '664645@gmail.com',
+          messageToEmail,
+          `нове замовлення №${res.id}`
+        );
       } catch (err) {
         console.log('Помилка відправлення на пошту.', err);
       }
@@ -553,11 +605,14 @@ ${process.env.FRONTEND_URL + `/ru/admin/orders/edit-order/${res.id}`}`;
   static SendMessage = async (req, resp, next) => {
     try {
       const { message } = req.body;
-      await axios.post(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
-        chat_id: TELEGRAM_CHAT_ID,
-        text: message,
-        parse_mode: 'HTML',
-      });
+      await axios.post(
+        `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`,
+        {
+          chat_id: TELEGRAM_CHAT_ID,
+          text: message,
+          parse_mode: 'HTML',
+        }
+      );
       return resp.json({ ok: true });
     } catch (err) {
       return next(ErrorApi.badRequest(err));
@@ -669,11 +724,14 @@ ${process.env.FRONTEND_URL + `/ru/admin/orders/edit-order/${res.id}`}`;
 ${res.contactInfo.replace(/<[^>]*>/g, '')}
 ${basketText}`;
       if (IS_SEND) {
-        await axios.post(`https://api.telegram.org/bot${MENEGER_TOKEN_ID}/sendMessage`, {
-          chat_id: MENEGER_CHAT_ID,
-          text: message,
-          parse_mode: 'HTML',
-        });
+        await axios.post(
+          `https://api.telegram.org/bot${MENEGER_TOKEN_ID}/sendMessage`,
+          {
+            chat_id: MENEGER_CHAT_ID,
+            text: message,
+            parse_mode: 'HTML',
+          }
+        );
       }
       return resp.json(res);
     } catch (err) {
@@ -683,7 +741,9 @@ ${basketText}`;
   static SetStatus = async (req, resp, next) => {
     try {
       const { status, ides } = req.body;
-      await Promise.all(ides.map((id) => Order.update({ status }, { where: { id } })));
+      await Promise.all(
+        ides.map((id) => Order.update({ status }, { where: { id } }))
+      );
       return resp.json();
     } catch (err) {
       return next(ErrorApi.badRequest(err));
@@ -761,7 +821,11 @@ ${basketText}`;
 
       // Перевірка, що дати передані
       if (!startBonusDate || !finishBonusDate) {
-        return next(ErrorApi.badRequest('Необхідно вказати startBonusDate і finishBonusDate'));
+        return next(
+          ErrorApi.badRequest(
+            'Необхідно вказати startBonusDate і finishBonusDate'
+          )
+        );
       }
 
       // Парсимо дати
@@ -770,7 +834,9 @@ ${basketText}`;
 
       if (isNaN(startDate.getTime()) || isNaN(finishDate.getTime())) {
         return next(
-          ErrorApi.badRequest('Невірний формат дати. Використовуйте yyyy-mm-dd або ISO формат.')
+          ErrorApi.badRequest(
+            'Невірний формат дати. Використовуйте yyyy-mm-dd або ISO формат.'
+          )
         );
       }
 
@@ -800,7 +866,10 @@ ${basketText}`;
       }, 0);
 
       // Загальна сума замовлень
-      const totalSum = orders.reduce((acc, order) => acc + (Number(order.sum) || 0), 0);
+      const totalSum = orders.reduce(
+        (acc, order) => acc + (Number(order.sum) || 0),
+        0
+      );
 
       return resp.json({
         success: true,
@@ -810,7 +879,9 @@ ${basketText}`;
         orders,
       });
     } catch (err) {
-      return next(ErrorApi.badRequest(err && err.message ? err.message : 'Unknown error'));
+      return next(
+        ErrorApi.badRequest(err && err.message ? err.message : 'Unknown error')
+      );
     }
   }
   static Delete = async (req, resp, next) => {
@@ -829,7 +900,12 @@ ${basketText}`;
       page = parseInt(page);
       limit = parseInt(limit);
       const offset = (page - 1) * limit;
-      const orders = await Order.findAndCountAll({ where: { userId }, offset, limit, order: [['id', 'desc']] });
+      const orders = await Order.findAndCountAll({
+        where: { userId },
+        offset,
+        limit,
+        order: [['id', 'desc']],
+      });
       return resp.json({ orders: orders.rows, count: orders.count });
     } catch (err) {
       return next(ErrorApi.badRequest(err));

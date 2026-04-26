@@ -50,31 +50,14 @@ function generateStaticPages() {
   ];
 }
 
-async function generateDynamicGoodsPages() {
-  const response = await fetch(`${process.env.NEXT_PUBLIC_API_SERVER}goods/getForSiteMapCatalog`, {
-    next: { revalidate: revalidateTime },
-  });
-  if (!response.ok) throw new Error('Failed to fetch goods pages');
-  const data = await response.json();
-
-  // Припустимо, що data.countPages повертає число, наприклад, 3
-  const numberOfPages = data.countPages;
-
-  // Створюємо масив з чисел від 1 до numberOfPages
-  const pagesArray = Array.from({ length: numberOfPages }, (_, i) => i + 1);
-
-  return LANGUAGES.map((lang) => ({
-    url: `${BASE_URL}/${lang}goods/1`,
-    lastModified: new Date(),
-    alternates: generateLocalizedUrls(`/goods/1`),
-  }));
-}
-
 // Функція для генерації динамічних URL для сторінок категорій
 async function generateDynamicGoodsPagesCategory() {
-  const response = await fetch(`${process.env.NEXT_PUBLIC_API_SERVER}goods/getForSiteMapCategory`, {
-    next: { revalidate: revalidateTime },
-  });
+  const response = await fetch(
+    `${process.env.NEXT_PUBLIC_API_SERVER}goods/getForSiteMapCategory`,
+    {
+      next: { revalidate: revalidateTime },
+    }
+  );
   if (!response.ok) throw new Error('Failed to fetch goods pages');
   const data = await response.json();
 
@@ -124,9 +107,12 @@ async function generateDynamicGoodsPagesSubcategory() {
 }
 
 async function generateDynamicBrend() {
-  const response = await fetch(`${process.env.NEXT_PUBLIC_API_SERVER}goods/getBrendsForSitemap`, {
-    next: { revalidate: revalidateTime },
-  });
+  const response = await fetch(
+    `${process.env.NEXT_PUBLIC_API_SERVER}goods/getBrendsForSitemap`,
+    {
+      next: { revalidate: revalidateTime },
+    }
+  );
   if (!response.ok) throw new Error('Failed to fetch goods pages');
   const data = await response.json();
 
@@ -173,9 +159,12 @@ async function generateDynamicDiscountPages() {
 }
 
 async function generateDynamicBlogPages() {
-  const response = await fetch(`${process.env.NEXT_PUBLIC_API_SERVER}blog/getForSiteMap`, {
-    next: { revalidate: revalidateTime },
-  });
+  const response = await fetch(
+    `${process.env.NEXT_PUBLIC_API_SERVER}blog/getForSiteMap`,
+    {
+      next: { revalidate: revalidateTime },
+    }
+  );
   if (!response.ok) throw new Error('Failed to fetch goods pages');
   const data = await response.json();
 
@@ -231,9 +220,12 @@ async function generateDynamicSelectGoods() {
 }
 
 async function generateDynamicSelectBlogs() {
-  const response = await fetch(`${process.env.NEXT_PUBLIC_API_SERVER}blog/getBlogForSiteMap`, {
-    next: { revalidate: revalidateTime },
-  });
+  const response = await fetch(
+    `${process.env.NEXT_PUBLIC_API_SERVER}blog/getBlogForSiteMap`,
+    {
+      next: { revalidate: revalidateTime },
+    }
+  );
   if (!response.ok) throw new Error('Failed to fetch goods pages');
   const data = await response.json();
 
@@ -255,7 +247,6 @@ async function generateDynamicSelectBlogs() {
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   return [
     ...generateStaticPages(),
-    ...(await generateDynamicGoodsPages()),
     ...(await generateDynamicGoodsPagesCategory()),
     ...(await generateDynamicGoodsPagesSubcategory()),
     ...(await generateDynamicBrend()),
