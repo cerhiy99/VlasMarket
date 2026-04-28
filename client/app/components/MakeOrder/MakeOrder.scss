@@ -436,4 +436,10 @@
       }
     }
   }
+  .row-no-wrap {
+    align-items: flex-start !important;
+    span {
+      white-space: nowrap;
+    }
+  }
 }

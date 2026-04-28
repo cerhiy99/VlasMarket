@@ -10,12 +10,12 @@ import CloseSVG from '../../../assest/Filters/Close.svg';
 
 type Props = {
   lang: Locale;
-  brend?: string;
+  url: string;
   // currentSearchParams тепер не потрібен безпосередньо в Props,
   // оскільки ми будемо використовувати useSearchParams() для актуальних параметрів URL
 };
 
-const Sort = ({ lang, brend }: Props) => {
+const Sort = ({ lang, url }: Props) => {
   const router = useRouter();
   const searchParams = useSearchParams(); // Отримуємо поточні параметри запиту з URL
 
@@ -53,19 +53,13 @@ const Sort = ({ lang, brend }: Props) => {
       // Встановлюємо або оновлюємо параметр 'sort'
       params.set('sort', sortValue);
     }
-
+    console.log(
+      6432434,
+      url,
+      getLocalizedPath(`/${lang}/${url}?${params.toString()}`, lang)
+    );
     // Оновлюємо URL, що призведе до перезавантаження даних з новими параметрами сортування
-    if (brend)
-      router.push(
-        getLocalizedPath(
-          `/${lang}/brands/${brend}/1?${params.toString()}`,
-          lang
-        )
-      );
-    else
-      router.push(
-        getLocalizedPath(`/${lang}/goods/1?${params.toString()}`, lang)
-      );
+    router.push(getLocalizedPath(`/${lang}/${url}?${params.toString()}`, lang));
   };
 
   // Визначаємо активний варіант сортування з URL або встановлюємо 'popularity' за замовчуванням

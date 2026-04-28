@@ -113,7 +113,7 @@ const MakeOrder: React.FC<Props> = ({ lang }) => {
     try {
       if (user.isAuthorize) {
         const res = await $authHost.get('order/userGetCountYoutBonus');
-        console.log(42343, res);
+
         setUserHaveBonus(res.data.countBonus);
       } else {
         setUserHaveBonus(0);
@@ -255,61 +255,16 @@ const MakeOrder: React.FC<Props> = ({ lang }) => {
         countBonus: userUseBonus,
         promokod: promokod?.code,
       });
-      let typeDelivery = '';
-      let deliveryText = '';
-      let deliveryTextAdmin = '';
-
-      if (delivery?.street) {
-        // Кур'єр Нова Пошта
-        typeDelivery = 'Курєр нова пошта';
-        deliveryText = `🚚 Доставка кур'єром Нової Пошти у ${
-          delivery?.selectLocality?.AreaDescription
-        }, населений пункт: ${delivery?.selectLocality?.Description}, вул. ${
-          delivery?.street
-        }, буд. ${delivery?.house}${delivery?.apartment ? `, кв. ${delivery.apartment}` : ''}`;
-        deliveryTextAdmin = `<p>Населений пункт</p>
-<span>${delivery?.selectLocality?.Description}</span>
-<p>Місто</p>
-<span>${delivery.street}</span>
-<p>буд</p>
-<span>${delivery.house}</span>
-<p>кв.</p>
-<span>${delivery.apartment}</span>
-`;
-      } else if (delivery?.selectInfoDelivery) {
-        // Відділення або поштомат НП
-        const warehouseType =
-          delivery?.selectInfoDelivery?.Description?.toLowerCase().includes(
-            'поштомат'
-          ) ||
-          delivery?.selectInfoDelivery?.TypeOfWarehouse ===
-            '5d8a980d-391c-11dd-90d9-001a92567626'
-            ? 'поштомат Нової Пошти'
-            : 'відділення Нової Пошти';
-        typeDelivery = warehouseType;
-        deliveryText = `🚚 Доставка: ${warehouseType} у ${delivery?.selectLocality?.AreaDescription}, населений пункт: ${delivery?.selectLocality?.Description}, ${delivery?.selectInfoDelivery?.Description}`;
-        deliveryTextAdmin = `<p>Населений пункт</p>
-<span>${delivery?.selectLocality?.Description}</span>
-<p>${warehouseType}</p>
-<span>${delivery.selectInfoDelivery.Description}</span>
-`;
-      } else if (delivery?.oblast && delivery?.city && delivery?.departament) {
-        // Укрпошта
-        typeDelivery = 'Укр пошта';
-        deliveryText = `🚚 Доставка Укрпоштою у ${delivery.oblast}, місто: ${delivery.city}, відділення №${delivery.departament}`;
-        deliveryTextAdmin = `<p>Область</p>
-        <span>${delivery.oblast}</span>
-        <p>Місто</p>
-        <span>${delivery.city}</span>
-        <p>Відділення</p>
-        <span>${delivery.departament}</span>`;
-      }
-      /*router.push(
+      console.log(
+        `/${lang}/order-true?contactUsers=${name + ' ' + surname}&phone=${number}&typePay=${listWayDelivery.find((x) => x.id == selectWayDelivery)?.name}&orderId=${res.data.order.id}&typeOrder=${deliveryType}&infoDelivery=${`${city}, ${departmentOrPostomatOrAddress}`}`,
+        lang
+      );
+      router.push(
         getLocalizedPath(
-          `/${lang}/order-true?contactUsers=${name + ' ' + surname}&phone=${number}&typePay=${listWayDelivery.find((x) => x.id == selectWayDelivery)?.name}&orderId=${res.data.res.id}&typeOrder=${typeDelivery}&infoDelivery=${deliveryTextAdmin}`,
+          `/${lang}/order-true?contactUsers=${name + ' ' + surname}&phone=${number}&typePay=${listWayDelivery.find((x) => x.id == selectWayDelivery)?.name}&orderId=${res.data.order.id}&typeOrder=${deliveryType}&infoDelivery=${`${city}, ${departmentOrPostomatOrAddress}`}`,
           lang
         )
-      );*/
+      );
     } catch (err: any) {
       const message = err?.response?.data?.message;
 
@@ -317,6 +272,7 @@ const MakeOrder: React.FC<Props> = ({ lang }) => {
         console.log(23434, message);
         alert(message);
       } else {
+        console.log(err);
         alert('Сталася помилка, спробуйте ще раз.');
       }
     }
@@ -509,16 +465,16 @@ const MakeOrder: React.FC<Props> = ({ lang }) => {
                         </div>
                         {infoDelivery?.typeDelivery == 'curier' ? (
                           <>
-                            <div className="row">
+                            <div className="row row-no-wrap">
                               <span>{t('makeOrder.delivery.street')}:</span>
                               <p>{infoDelivery?.street || ''}</p>
                             </div>
-                            <div className="row">
+                            <div className="row row-no-wrap">
                               <span>{t('makeOrder.delivery.house')}:</span>
                               <p>{infoDelivery?.house || ''}</p>
                             </div>
                             {infoDelivery?.apartment?.length > 0 && (
-                              <div className="row">
+                              <div className="row row-no-wrap">
                                 <span>
                                   {t('makeOrder.delivery.apartment')}:
                                 </span>
@@ -527,7 +483,7 @@ const MakeOrder: React.FC<Props> = ({ lang }) => {
                             )}
                           </>
                         ) : (
-                          <div className="row">
+                          <div className="row row-no-wrap">
                             <span>
                               {infoDelivery?.typeDelivery == 'post'
                                 ? t('makeOrder.delivery.postomat')

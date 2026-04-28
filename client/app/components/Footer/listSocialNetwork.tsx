@@ -90,8 +90,8 @@ export const phones = [
 ];
 
 export const email = {
-  email: 'info@baylap.com',
-  url: 'malito:info@baylap.com',
+  email: 'info@vlasmarket.com.ua',
+  url: 'malito:info@vlasmarket.com.ua',
   SVG: EmailSVG,
 };
 

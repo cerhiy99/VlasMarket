@@ -1,57 +1,53 @@
-import React, { useState } from 'react'
-import './Review.scss'
-import ClientRating from '../Reviews/ClientRating'
-import BasketTrue from '../../assest/Goods/BasketTrue.svg'
-import ReactionSVG from '../../assest/Goods/Reaction.svg'
-import ThumbsUpSVG from '../../assest/Goods/ThumbsUp.svg'
-import ThumbsDownSVG from '../../assest/Goods/ThumbsDown.svg'
-import Image from 'next/image'
-import { $authHost } from '@/app/http'
-import { GrUpdate } from 'react-icons/gr'
+import React, { useState } from 'react';
+import './Review.scss';
+import ClientRating from '../Reviews/ClientRating';
+import ReactionSVG from '../../assest/Goods/Reaction.svg';
+import { $authHost } from '@/app/http';
+import { GrUpdate } from 'react-icons/gr';
 
 type Props = {
   review: {
-    id: number
-    name: string
-    description: string
-    countStar: number
-    img: string
-    disadvantages: string
-    date: string
-    child: any[]
-  }
-  goodsId: number
-  isChild?: true
-}
+    id: number;
+    name: string;
+    description: string;
+    countStar: number;
+    img: string;
+    disadvantages: string;
+    date: string;
+    child: any[];
+  };
+  goodsId: number;
+  isChild?: true;
+};
 
 const Review = ({ review, goodsId, isChild }: Props) => {
-  const [isRespond, setIsRespond] = useState(false)
-  const [respond, setRespond] = useState('')
+  const [isRespond, setIsRespond] = useState(false);
+  const [respond, setRespond] = useState('');
 
-  const [captchaValue, setCaptchaValue] = useState('')
-  const [errorMessage, setErrorMessage] = useState('')
-  const [message, setMessage] = useState('')
-  const [isCaptchaGet, setIsCaptchaGet] = useState<boolean>(false)
-  const [selectSvg, setSelectSvg] = useState('')
+  const [captchaValue, setCaptchaValue] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
+  const [message, setMessage] = useState('');
+  const [isCaptchaGet, setIsCaptchaGet] = useState<boolean>(false);
+  const [selectSvg, setSelectSvg] = useState('');
 
   const updateCaptcha = async () => {
     try {
-      setCaptchaValue('')
-      const res = await $authHost.post('review/startWriteComment', { goodsId })
-      setIsCaptchaGet(true)
-      setSelectSvg(res.data)
-      return
+      setCaptchaValue('');
+      const res = await $authHost.post('review/startWriteComment', { goodsId });
+      setIsCaptchaGet(true);
+      setSelectSvg(res.data);
+      return;
     } catch (err) {
-      alert('Помилка')
+      alert('Помилка');
     }
-  }
+  };
 
   const sendRespond = async () => {
-    setMessage('')
-    setErrorMessage('')
+    setMessage('');
+    setErrorMessage('');
     if (!isCaptchaGet) {
-      updateCaptcha()
-      return
+      updateCaptcha();
+      return;
     } else {
       try {
         const res = await $authHost.post('review/sendReview', {
@@ -59,42 +55,42 @@ const Review = ({ review, goodsId, isChild }: Props) => {
           comment: respond,
           goodsId,
           reviewId: review.id,
-          rating: null
-        })
+          rating: null,
+        });
         if (res.status == 250) {
-          setErrorMessage('Не вірно введена капча.')
-          updateCaptcha()
+          setErrorMessage('Не вірно введена капча.');
+          updateCaptcha();
         } else {
-          setIsCaptchaGet(false)
-          setRespond('')
-          setMessage('Ваша відповідь успішно надіслана')
-          setTimeout(() => setIsRespond(false), 1500)
+          setIsCaptchaGet(false);
+          setRespond('');
+          setMessage('Ваша відповідь успішно надіслана');
+          setTimeout(() => setIsRespond(false), 1500);
         }
       } catch (err) {
-        setErrorMessage('Невідома помилка.')
+        setErrorMessage('Невідома помилка.');
       }
     }
-  }
+  };
 
   return (
     <div className={`review-container ${isChild ? 'child' : ''}`}>
-      <div className='rating-and-additional-info'>
+      <div className="rating-and-additional-info">
         {!isChild && (
           <ClientRating
-            name='half-rating-read'
+            name="half-rating-read"
             defaultValue={review.countStar}
             precision={1}
             isReadOnly={true}
             size={16}
           />
         )}
-        <div className='date'>{review.date.slice(0, 10)}</div>
+        <div className="date">{review.date.slice(0, 10)}</div>
         {/*<div className='basket-true'>
-          <BasketTrue /> Куплено в BAYLAP
+          <BasketTrue /> Куплено в 
         </div>*/}
       </div>
 
-      <div className='review'>
+      <div className="review">
         <h4>{review.name}</h4>
         <p>{review.description}</p>
         {/* <div className='review-img'>
@@ -109,7 +105,7 @@ const Review = ({ review, goodsId, isChild }: Props) => {
           Недоліки: <span>{review.disadvantages}</span>
         </div>*/}
         {!isChild && (
-          <div onClick={() => setIsRespond(!isRespond)} className='reaction'>
+          <div onClick={() => setIsRespond(!isRespond)} className="reaction">
             <p>
               <ReactionSVG /> Відповісти
             </p>
@@ -121,23 +117,23 @@ const Review = ({ review, goodsId, isChild }: Props) => {
           </div>
         )}
         {!isChild && isRespond && (
-          <div className='respond-container'>
-            <div className='resend-form'>
-              <label htmlFor='description'>Ваша відповідь</label>
+          <div className="respond-container">
+            <div className="resend-form">
+              <label htmlFor="description">Ваша відповідь</label>
               <textarea
                 value={respond}
-                onChange={e => setRespond(e.target.value)}
+                onChange={(e) => setRespond(e.target.value)}
               />
               {isCaptchaGet && (
                 <>
-                  <div className='captcha-cont'>
-                    <div className='captcha'>
+                  <div className="captcha-cont">
+                    <div className="captcha">
                       <div
-                        className='svg'
+                        className="svg"
                         dangerouslySetInnerHTML={{ __html: selectSvg }}
                       />
                       <div
-                        className='svg-update-captcha'
+                        className="svg-update-captcha"
                         onClick={() => updateCaptcha()}
                       >
                         <GrUpdate size={20} />
@@ -145,7 +141,7 @@ const Review = ({ review, goodsId, isChild }: Props) => {
                     </div>
                     <input
                       value={captchaValue}
-                      onChange={e => setCaptchaValue(e.target.value)}
+                      onChange={(e) => setCaptchaValue(e.target.value)}
                     />
                   </div>
                 </>
@@ -162,16 +158,16 @@ const Review = ({ review, goodsId, isChild }: Props) => {
                   <br />
                 </>
               )}
-              <div className='but-center'>
+              <div className="but-center">
                 <button onClick={sendRespond}>Отправить</button>
               </div>
             </div>
           </div>
         )}
         {!isChild && (
-          <div className='list-child'>
-            {review.child.map(x => (
-              <div key={x.id} className='review-child'>
+          <div className="list-child">
+            {review.child.map((x) => (
+              <div key={x.id} className="review-child">
                 <Review isChild review={x} goodsId={goodsId} />
               </div>
             ))}
@@ -179,7 +175,7 @@ const Review = ({ review, goodsId, isChild }: Props) => {
         )}
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Review
+export default Review;

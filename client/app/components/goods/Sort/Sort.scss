@@ -73,8 +73,10 @@
         color: #000000;
         cursor: pointer;
         white-space: nowrap;
-        &:hover {
-          background: #ebd8e4;
+        @media (min-width: 769px) {
+          &:hover {
+            background: #ebd8e4;
+          }
         }
       }
       .active {

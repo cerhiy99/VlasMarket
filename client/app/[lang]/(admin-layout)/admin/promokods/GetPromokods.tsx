@@ -182,7 +182,7 @@ const GetPromokods = (props: Props) => {
                 />
               </div>
             )}
-            {(selectPromokod.type.startsWith('select_goods_discount_procent') ||
+            {(selectPromokod.type == 'select_goods_discount_procent' ||
               selectPromokod.type == 'procent') && (
               <div className="value">
                 <label>Відсоток знижки</label>

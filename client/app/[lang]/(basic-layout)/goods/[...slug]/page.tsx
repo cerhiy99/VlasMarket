@@ -398,6 +398,7 @@ const Page = async ({ params, searchParams }: Props) => {
   ); // Передаємо currentSearchParams
 
   const listUrles = [];
+  let url = `goods`;
 
   if (selectCategory && selectCategory[`name${lang == 'ru' ? 'ru' : 'uk'}`]) {
     listUrles.push({
@@ -407,6 +408,7 @@ const Page = async ({ params, searchParams }: Props) => {
         lang
       ),
     });
+    url += `/${UkrToEng(selectCategory.nameru)}`;
   }
   1;
   if (selectSubcategory) {
@@ -414,13 +416,15 @@ const Page = async ({ params, searchParams }: Props) => {
       name: selectSubcategory[`name${lang == 'ru' ? 'ru' : 'uk'}`],
       url: ``,
     });
+    url += `/${UkrToEng(selectSubcategory.nameru)}`;
   }
+  url += '/1';
+  console.log(9234324, url);
   const headersList = await headers();
   const userAgent = headersList.get('user-agent') || '';
 
   // Проста перевірка на мобільний пристрій
   const isMobile = /mobile|android|iphone|ipad|phone/i.test(userAgent);
-
   return (
     <div className="goods-container">
       <BreadCrumbs lang={lang} listUrles={listUrles} />
@@ -433,6 +437,7 @@ const Page = async ({ params, searchParams }: Props) => {
           currentPathname={`/${lang}/goods/${slug.join('/')}`}
           isMob={isMobile}
           isMobReal={isMobile}
+          url={url}
         />
         <div className="sore-and-goods">
           {selectSubcategory ? (
@@ -442,7 +447,7 @@ const Page = async ({ params, searchParams }: Props) => {
           ) : (
             <h1>{lang == 'ru' ? 'Каталог товаров' : 'Каталог товарів'}</h1>
           )}
-          <Sort lang={lang} />
+          <Sort url={url} lang={lang} />
           <br />
           <ListGoods
             data={data}

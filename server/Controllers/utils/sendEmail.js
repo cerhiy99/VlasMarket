@@ -5,7 +5,7 @@ const sendEmail = async (to, messageHtml, subject) => {
   try {
     // Налаштування транспорту (використовуємо Gmail)
     const transporter = nodemailer.createTransport({
-      host: 'mail.baylap.com',
+      host: 'mail.vlasmarket.com.ua',
       port: 465,
       secure: true,
       auth: {
@@ -21,7 +21,7 @@ const sendEmail = async (to, messageHtml, subject) => {
 
     // Параметри електронного листа
     const mailOptions = {
-      from: `"Baylap - інтернет магазин" <${process.env.GMAIL_USER_SEND}>`, // Від кого
+      from: `"vlasmarket.com.ua - інтернет магазин" <${process.env.GMAIL_USER_SEND}>`, // Від кого
       to, // Кому надсилаємо
       subject, // Тема листа
       html: messageHtml, // HTML-контент листа
@@ -30,6 +30,7 @@ const sendEmail = async (to, messageHtml, subject) => {
     // Відправка листа
     await transporter.sendMail(mailOptions);
 
+    console.log('Лист успішно надіслано');
     // Якщо лист успішно надіслано
     return {
       status: 200,

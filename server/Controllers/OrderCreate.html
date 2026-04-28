@@ -1,0 +1,316 @@
+<!doctype html>
+<html lang="uk">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Замовлення оформлено - Baylap</title>
+  </head>
+  <body
+    style="
+      margin: 0;
+      padding: 0;
+      background-color: #f9f9f9;
+      font-family: 'Helvetica', Arial, sans-serif;
+    "
+  >
+    <table
+      width="100%"
+      border="0"
+      cellspacing="0"
+      cellpadding="0"
+      bgcolor="#f9f9f9"
+    >
+      <tr>
+        <td align="center" style="padding: 20px 0">
+          <table
+            border="0"
+            cellspacing="0"
+            cellpadding="0"
+            style="
+              max-width: 600px;
+              background-color: #ffffff;
+              border: 1px solid #eeeeee;
+              border-radius: 8px;
+              overflow: hidden;
+            "
+          >
+            <tr>
+              <td align="center" style="padding: 40px 0 20px">
+                <img
+                  src="http://localhost:3000/images/Logo.png"
+                  alt="vlas market"
+                  width="180"
+                  style="display: block; border: 0"
+                />
+              </td>
+            </tr>
+
+            <tr>
+              <td align="center" style="padding: 0 40px 30px">
+                <h1 style="font-size: 24px; color: #000000; margin: 0 0 10px">
+                  Чудово, замовлення оформлено!
+                </h1>
+                <p style="font-size: 16px; color: #000000; margin: 0">
+                  Замовлення <strong>№${order.id}</strong> успішно прийнято та
+                  передано в обробку
+                </p>
+              </td>
+            </tr>
+
+            <tr>
+              <td
+                align="left"
+                style="
+                  padding: 0 40px 30px;
+                  font-size: 13px;
+                  color: #777777;
+                  line-height: 1.5;
+                "
+              >
+                Найближчим часом з вами зв'яжеться менеджер для уточнення
+                деталей (за наявності товару). Якщо позиція тимчасово відсутня,
+                повідомлення буде надіслано на вашу електронну пошту.<br /><br />
+                Поки очікуєте, можете переглянути сайт — зараз доступно багато
+                вигідних пропозицій. Перевірити статус та деталі замовлення
+                також можна у своєму особистому
+                <a
+                  href="https://vlasmarket.com.ua/user-cabinet"
+                  style="color: #ff6b6b; text-decoration: none"
+                  >кабінеті</a
+                >
+                після авторизації.
+              </td>
+            </tr>
+
+            <tr>
+              <td style="padding: 0 40px 30px">
+                <h2
+                  style="
+                    font-size: 18px;
+                    color: #000000;
+                    margin: 0 0 15px;
+                    border-bottom: 1px solid #eeeeee;
+                    padding-bottom: 5px;
+                  "
+                >
+                  Деталі замовлення
+                </h2>
+                <table
+                  width="100%"
+                  border="0"
+                  cellspacing="0"
+                  cellpadding="0"
+                  style="font-size: 14px; color: #000000; line-height: 2"
+                >
+                  <tr>
+                    <td>Номер замовлення:</td>
+                    <td align="right">№${order.id}</td>
+                  </tr>
+                  <tr>
+                    <td>Створено:</td>
+                    <td align="right">${createdAt}</td>
+                  </tr>
+                  <tr>
+                    <td>Отримувач:</td>
+                    <td align="right">${order.nameUser}</td>
+                  </tr>
+                  <tr>
+                    <td>Телефон:</td>
+                    <td align="right">${order.phone}</td>
+                  </tr>
+                  <tr>
+                    <td>Місто:</td>
+                    <td align="right">${city}</td>
+                  </tr>
+                  <tr>
+                    <td>Спосіб доставки:</td>
+                    <td align="right">${typeDelivery}</td>
+                  </tr>
+                  <tr>
+                    <td style="font-weight: bold">До сплати:</td>
+                    <td align="right" style="font-weight: bold">
+                      ${order.sum} грн
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>Слідкувати за статусом:</td>
+                    <td align="right">
+                      <a
+                        href="https://vlasmarket.com.ua/user-cabinet/history"
+                        style="color: #ff6b6b; text-decoration: none"
+                        >Переглянути замовлення</a
+                      >
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+
+            <tr>
+              <td style="padding: 0 40px 30px">
+                <h2 style="font-size: 18px; color: #000000; margin: 0 0 15px">
+                  Склад замовлення
+                </h2>
+                <table
+                  width="100%"
+                  border="0"
+                  cellspacing="0"
+                  cellpadding="0"
+                  style="border-radius: 4px; overflow: hidden"
+                >
+                  <tr bgcolor="#f2e4eb">
+                    <td
+                      style="padding: 10px; font-size: 12px; font-weight: bold"
+                    >
+                      Товар
+                    </td>
+                    <td
+                      align="center"
+                      style="padding: 10px; font-size: 12px; font-weight: bold"
+                    >
+                      Ціна
+                    </td>
+                    <td
+                      align="center"
+                      style="padding: 10px; font-size: 12px; font-weight: bold"
+                    >
+                      Кількість
+                    </td>
+                    <td
+                      align="right"
+                      style="padding: 10px; font-size: 12px; font-weight: bold"
+                    >
+                      Разом
+                    </td>
+                  </tr>
+                  ${basket.map(x => (`
+                  <tr>
+                    <td
+                      style="
+                        padding: 15px 10px;
+                        border-bottom: 1px solid #eeeeee;
+                      "
+                    >
+                      <table border="0" cellspacing="0" cellpadding="0">
+                        <tr>
+                          <td width="50" style="padding-right: 10px">
+                            <img
+                              src="https://vlasmarket.com.ua/image/${x.volumes.imgs.img}"
+                              width="45"
+                              height="45"
+                              style="
+                                display: block;
+                                border-radius: 4px;
+                                object-fit: contain;
+                                background-color: #ffffff;
+                              "
+                            />
+                          </td>
+                          <td
+                            style="
+                              font-size: 13px;
+                              color: #000000;
+                              font-weight: bold;
+                              line-height: 1.2;
+                            "
+                          >
+                            ${x.nameuk}
+                          </td>
+                        </tr>
+                      </table>
+                    </td>
+                    <td
+                      align="center"
+                      style="
+                        padding: 10px;
+                        font-size: 13px;
+                        border-bottom: 1px solid #eeeeee;
+                      "
+                    >
+                      ${x.volumes.priceWithDiscount}
+                    </td>
+                    <td
+                      align="center"
+                      style="
+                        padding: 10px;
+                        font-size: 13px;
+                        border-bottom: 1px solid #eeeeee;
+                      "
+                    >
+                      x${x.count}
+                    </td>
+                    <td
+                      align="right"
+                      style="
+                        padding: 10px;
+                        font-size: 13px;
+                        font-weight: bold;
+                        border-bottom: 1px solid #eeeeee;
+                      "
+                    >
+                      ${Math.round(x.volumes.priceWithDiscount * x.count)}
+                    </td>
+                  </tr>
+                  `)).join('')}
+                </table>
+              </td>
+            </tr>
+
+            <tr>
+              <td style="padding: 0 40px 40px">
+                <h3 style="font-size: 16px; color: #000000; margin: 0 0 15px">
+                  Маєте запитання?
+                </h3>
+                <p
+                  style="
+                    font-size: 13px;
+                    color: #000000;
+                    margin: 0 0 15px;
+                    line-height: 1.6;
+                  "
+                >
+                  <strong>Viber / Telegram / WhatsApp</strong><br />
+                  <a
+                    href="tel:+380931587551"
+                    style="color: #000000; text-decoration: none"
+                    >+38 (093) 158-75-51</a
+                  >
+                </p>
+                <p
+                  style="
+                    font-size: 13px;
+                    color: #000000;
+                    margin: 0 0 15px;
+                    line-height: 1.6;
+                  "
+                >
+                  <strong>Lifecell</strong><br />
+                  <a
+                    href="tel:+380931587551"
+                    style="color: #000000; text-decoration: none"
+                    >+38 (093) 158-75-51</a
+                  >
+                </p>
+                <p
+                  style="
+                    font-size: 13px;
+                    color: #000000;
+                    margin: 0;
+                    line-height: 1.6;
+                  "
+                >
+                  <strong>Kyivstar</strong><br />
+                  <a
+                    href="tel:+380673939952"
+                    style="color: #000000; text-decoration: none"
+                    >+38 (067) 393-99-52</a
+                  >
+                </p>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+  </body>
+</html>

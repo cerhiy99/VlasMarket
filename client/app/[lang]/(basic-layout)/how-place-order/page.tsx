@@ -18,13 +18,13 @@ export async function generateMetadata({ params }: Props) {
   const canonicalUrl = `${baseUrl}${urlPath}/how-place-order`;
 
   const titles = {
-    ua: 'Як оформити замовлення — Baylap',
-    ru: 'Как оформить заказ — Baylap',
+    ua: 'Як оформити замовлення — VlasMarket',
+    ru: 'Как оформить заказ — VlasMarket',
   };
 
   const descriptions = {
-    ua: 'Інструкція про те, як оформити замовлення в інтернет-магазині Baylap.',
-    ru: 'Инструкция о том, как оформить заказ в интернет-магазине Baylap.',
+    ua: 'Інструкція про те, як оформити замовлення в інтернет-магазині VlasMarket.',
+    ru: 'Инструкция о том, как оформить заказ в интернет-магазине VlasMarket.',
   };
 
   return {
@@ -43,12 +43,13 @@ export async function generateMetadata({ params }: Props) {
       description: descriptions[lang] || descriptions.ua,
       url: canonicalUrl,
       type: 'website',
-      siteName: 'Baylap',
+      siteName: 'VlasMarket',
     },
   };
 }
 
-const Page = async ({ params: { lang } }: Props) => {
+const Page = async ({ params }: Props) => {
+  const { lang } = await params;
   const { howPlaceOrder } = await getDictionary(lang);
   return (
     <div className="delivery-container">

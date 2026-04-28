@@ -99,105 +99,108 @@ ${dictionary?.telegramMessage || '✍️ Сообщение:'} ${formData.messag
 
   return (
     <div className="formcooperation">
-    <div className="form-container">
-      <h3>
-        {dictionary?.title || 'Заповніть форму, щоб розпочати співпрацю як постачальник'}
-      </h3>
-      <form onSubmit={handleSubmit}>
-        <div className="form-row">
-          <div className="form-group">
-            <label htmlFor="name">
-              {dictionary?.nameLabel || "Ім'я"} <span>*</span>
+      <div className="form-container">
+        <h3>
+          {dictionary?.title ||
+            'Заповніть форму, щоб розпочати співпрацю як постачальник'}
+        </h3>
+        <form onSubmit={handleSubmit}>
+          <div className="form-row">
+            <div className="form-group">
+              <label htmlFor="name">
+                {dictionary?.nameLabel || "Ім'я"} <span>*</span>
+              </label>
+              <input
+                type="text"
+                id="name"
+                name="name"
+                value={formData.name}
+                onChange={handleChange}
+                placeholder={dictionary?.namePlaceholder || "Введіть ім'я"}
+                required
+              />
+            </div>
+
+            <div className="form-group phone-group">
+              <label htmlFor="phone">
+                {dictionary?.phoneLabel || 'Номер телефону'} <span>*</span>
+              </label>
+
+              <PhoneInput
+                country="ua"
+                value={formData.phone}
+                onChange={handlePhoneChange}
+                enableSearch={true}
+                disableSearchIcon={true}
+                countryCodeEditable={false}
+                searchPlaceholder={
+                  dictionary?.phoneSearchPlaceholder || 'Пошук'
+                }
+                specialLabel=""
+                inputProps={{
+                  name: 'phone',
+                  required: true,
+                  id: 'phone',
+                }}
+              />
+            </div>
+          </div>
+
+          <div className="form-group full-width">
+            <label htmlFor="email">
+              {dictionary?.emailLabel || 'Електронна пошта'} <span>*</span>
             </label>
             <input
-              type="text"
-              id="name"
-              name="name"
-              value={formData.name}
+              type="email"
+              id="email"
+              name="email"
+              value={formData.email}
               onChange={handleChange}
-              placeholder={dictionary?.namePlaceholder || "Введіть ім'я"}
+              placeholder={
+                dictionary?.emailPlaceholder || 'Введіть електронну пошту'
+              }
               required
             />
           </div>
 
-          <div className="form-group phone-group">
-            <label htmlFor="phone">
-              {dictionary?.phoneLabel || 'Номер телефону'} <span>*</span>
+          <div className="form-group full-width">
+            <label htmlFor="message">
+              {dictionary?.messageLabel || 'Повідомлення'} <span>*</span>
             </label>
-
-            <PhoneInput
-              country="ua"
-              value={formData.phone}
-              onChange={handlePhoneChange}
-              enableSearch={true}
-              disableSearchIcon={true}
-              countryCodeEditable={false}
-              searchPlaceholder={dictionary?.phoneSearchPlaceholder || 'Пошук'}
-              specialLabel=""
-              inputProps={{
-                name: 'phone',
-                required: true,
-                id: 'phone',
-              }}
+            <textarea
+              id="message"
+              name="message"
+              value={formData.message}
+              onChange={handleChange}
+              placeholder={
+                dictionary?.messagePlaceholder || 'Введіть повідомлення'
+              }
+              required
             />
           </div>
-        </div>
 
-        <div className="form-group full-width">
-          <label htmlFor="email">
-            {dictionary?.emailLabel || 'Електронна пошта'} <span>*</span>
-          </label>
-          <input
-            type="email"
-            id="email"
-            name="email"
-            value={formData.email}
-            onChange={handleChange}
-            placeholder={
-              dictionary?.emailPlaceholder || 'Введіть електронну пошту'
-            }
-            required
-          />
-        </div>
+          <button
+            type="submit"
+            className={`submit-btn ${isFormValid ? 'active' : ''}`}
+            disabled={!isFormValid}
+          >
+            {dictionary?.send || 'Відправити'}
+          </button>
+        </form>
 
-        <div className="form-group full-width">
-          <label htmlFor="message">
-            {dictionary?.messageLabel || 'Повідомлення'} <span>*</span>
-          </label>
-          <textarea
-            id="message"
-            name="message"
-            value={formData.message}
-            onChange={handleChange}
-            placeholder={
-              dictionary?.messagePlaceholder || 'Введіть повідомлення'
-            }
-            required
-          />
-        </div>
+        {successMessage && (
+          <p className="success-message success-message--success">
+            {successMessage}
+          </p>
+        )}
 
-        <button
-          type="submit"
-          className={`submit-btn ${isFormValid ? 'active' : ''}`}
-          disabled={!isFormValid}
-        >
-          {dictionary?.send || 'Відправити'}
-        </button>
-      </form>
-
-      {successMessage && (
-        <p className="success-message success-message--success">
-          {successMessage}
-        </p>
-      )}
-
-      {errorMessage && (
-        <p className="success-message success-message--error">
-          {errorMessage}
-        </p>
-      )}
+        {errorMessage && (
+          <p className="success-message success-message--error">
+            {errorMessage}
+          </p>
+        )}
+      </div>
     </div>
-     </div>
   );
 };
 

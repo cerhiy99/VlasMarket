@@ -237,6 +237,8 @@ const Page = async ({ params, searchParams }: Props) => {
   // Проста перевірка на мобільний пристрій
   const isMobile = /mobile|android|iphone|ipad|phone/i.test(userAgent);
 
+  const url = `brands/${brend}/1`;
+
   return (
     <div className="goods-container">
       <BreadCrumbs
@@ -263,6 +265,7 @@ const Page = async ({ params, searchParams }: Props) => {
           realName={realNameBrend}
           isMob={isMobile}
           isMobReal={isMobile}
+          url={url}
         />
         <div className="sore-and-goods">
           <h1>{realNameBrend}</h1>
@@ -272,7 +275,7 @@ const Page = async ({ params, searchParams }: Props) => {
               {totalGoods} товаров
             </div>
           </IsAdmin>
-          <Sort brend={brend} lang={lang} />
+          <Sort url={url} lang={lang} />
           <br />
 
           <ListGoods

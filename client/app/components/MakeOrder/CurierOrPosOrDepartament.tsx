@@ -144,7 +144,13 @@ const CurierOrPosOrDepartament = ({
       {typeDelivery !== 'curier' ? (
         <div className="post-or-departament">
           <p>
-            {typeDelivery === 'department' ? 'Відділення' : 'Поштомат'}
+            {typeDelivery === 'department'
+              ? lang == 'ru'
+                ? 'Отделение'
+                : 'Відділення'
+              : lang == 'ru'
+                ? 'Почтомат'
+                : 'Поштомат'}
             <span>*</span>
           </p>
           <input

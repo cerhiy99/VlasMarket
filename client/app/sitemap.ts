@@ -1,6 +1,7 @@
 import type { MetadataRoute } from 'next';
 
-const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || 'https://baylap.com';
+const BASE_URL =
+  process.env.NEXT_PUBLIC_BASE_URL || 'https://vlasmarket.com.ua/';
 const IMG_URL = process.env.NEXT_PUBLIC_SERVER;
 const LANGUAGES = ['', 'ru/']; // Підтримувані мови
 const revalidateTime = 3600; // Час оновлення
@@ -8,14 +9,15 @@ const revalidateTime = 3600; // Час оновлення
 // Статичні сторінки
 const STATIC_PAGES = [
   'about-us',
+  'bonus',
   'brands',
+  'comparison',
   'cooperation',
   'delivery',
   'how-place-order',
   'offer-agreement',
   'pay',
   'return-goods',
-  'contact',
 ];
 const dynamicPages = ['blog', 'brands/[brend]', 'discount', 'goods'];
 

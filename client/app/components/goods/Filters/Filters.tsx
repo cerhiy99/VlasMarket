@@ -32,6 +32,7 @@ type Props = {
   realName?: string;
   isMob?: boolean;
   isMobReal?: boolean;
+  url: string;
 };
 
 const Filters = ({
@@ -43,6 +44,7 @@ const Filters = ({
   currentPathname,
   realName,
   isMobReal,
+  url,
 }: Props) => {
   const isMob = false;
   const [isMobile, setIsMobile] = useState(isMob);
@@ -74,7 +76,7 @@ const Filters = ({
           <MobFilterSVG />
           {lang == 'ru' ? 'Фильтры' : 'Фільтри'}
         </div>
-        <Sort lang={lang} />
+        <Sort url={url} lang={lang} />
       </div>
       <div className={`filters-container ${isOpen ? 'open' : 'close'}`}>
         <div className="filter-main-title">

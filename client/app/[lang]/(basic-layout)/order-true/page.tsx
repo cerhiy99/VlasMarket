@@ -1,6 +1,6 @@
 'use client';
 import React, { useEffect, useState, use } from 'react';
-import './OrderTrue.css';
+import './OrderTrue.scss';
 import { RootState } from '@/app/store';
 import { Locale } from '@/i18n.config';
 import { useRouter } from 'next/navigation';
@@ -19,6 +19,41 @@ type Props = {
 
 const Page = ({ params, searchParams }: Props) => {
   const { lang } = use(params);
+  const listWayDelivery = [
+    {
+      id: 1,
+      name:
+        lang == 'ru'
+          ? 'Оплата на счет IBAN или на карту'
+          : 'Оплата на рахунок IBAN або на картку',
+      description:
+        lang == 'ru'
+          ? 'Ожидаю звонок для уточнения деталей'
+          : 'Очікую дзвінок для уточнення деталей',
+    },
+    {
+      id: 2,
+      name:
+        lang == 'ru'
+          ? 'Оплата на счет IBAN или на карту'
+          : 'Оплата на рахунок IBAN або на картку',
+      description:
+        lang == 'ru'
+          ? 'Получить SMS с реквизитами'
+          : 'Отримати SMS з реквізитами',
+    },
+    {
+      id: 3,
+      name:
+        lang == 'ru'
+          ? 'Наложенный платеж (с предоплатой)'
+          : 'Накладений платіж (з передоплатою)',
+      description:
+        lang == 'ru'
+          ? 'Ожидаю звонок для подтверждения'
+          : 'Очікую дзвінок для підтвердження',
+    },
+  ];
   const sParams = use(searchParams);
   const { t } = useTranslation();
   const [personal, setPeronal] = useState(0);
@@ -61,12 +96,20 @@ const Page = ({ params, searchParams }: Props) => {
 
   return (
     <div className="order-true-container">
-      <h1>{t('OrderTrue.thankYouTitle')}</h1>
+      <h1>{lang == 'ru' ? 'Спасибо за заказ!' : 'Дякуємо за замовлення!'}</h1>
 
       <div className="green-block">
         <div className="green-block-content">
-          <h2>{t('OrderTrue.successTitle')}</h2>
-          <p>{t('OrderTrue.description')}</p>
+          <h2>
+            {lang == 'ru'
+              ? 'Ваш заказ успешно оформлен'
+              : 'Ваше замовлення успішно оформлено'}
+          </h2>
+          <p>
+            {lang == 'ru'
+              ? 'Каждый оформленный заказ способствует развитию экономики Украины и поддержке украинского бизнеса.'
+              : 'Кожне оформлене замовлення сприяє розвитку економіки України та підтримці українського бізнесу.'}
+          </p>
         </div>
 
         <div className="green-block-image">
@@ -80,8 +123,12 @@ const Page = ({ params, searchParams }: Props) => {
         </div>
 
         <div className="next-step-content">
-          <h3>{t('OrderTrue.whatNextTitle')}</h3>
-          <p>{t('OrderTrue.whatNextDescription')}</p>
+          <h3>{lang == 'ru' ? '' : 'Що далі?'}</h3>
+          <p>
+            {lang == 'ru'
+              ? 'В ближайшее время с вами свяжется менеджер для уточнения деталей заказа (при наличии товара). В случае отсутствия позиции информация будет отправлена ​​на вашу электронную почту. Просмотреть статус и детали заказа вы можете в своем личном кабинете после авторизации на сайте.'
+              : 'Найближчим часом з вами зв’яжеться менеджер для уточнення деталей замовлення (за умови наявності товару). У разі відсутності позиції інформацію буде надіслано на вашу електронну пошту. Переглянути статус та деталі замовлення ви можете у своєму особистому кабінеті після авторизації на сайті.'}
+          </p>
         </div>
       </div>
 
@@ -126,7 +173,9 @@ const Page = ({ params, searchParams }: Props) => {
 
         <div className="total-amount">
           <div className="total-amount-label">
-            <span className="total-main-text">{t('OrderTrue.toPayTitle')}</span>
+            <span className="total-main-text">
+              {lang == 'ru' ? '' : 'Сума до сплати'}
+            </span>
             <span className="total-subtext">
               {t('OrderTrue.toPayWithoutDelivery')}
             </span>
@@ -166,7 +215,10 @@ const Page = ({ params, searchParams }: Props) => {
         <div className="payment-option">
           <span>{sParams.typePay}</span>
           <span className="payment-option-subtext">
-            {t('OrderTrue.paymentDescription')}
+            {
+              listWayDelivery.find((x) => x.name == sParams.typePay)
+                ?.description
+            }
           </span>
         </div>
       </div>
