@@ -9,44 +9,42 @@ import '../../editOrder.scss';
 
 import type { Locale } from '@/i18n.config';
 import AdminHeader from '@/app/components/Admin/AdminHeader/AdminHeader';
-import { $authHost } from '@/app/http';
+import { $authHost, $host } from '@/app/http';
 //import dynamic from 'next/dynamic';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/app/store';
-import { notFound, useRouter } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import { getLocalizedPath } from '@/app/components/utils/getLocalizedPath';
+import { PromokodFromDBInterface } from '../../../promokods/GetPromokods';
 //const MyReactQuil = dynamic(() => import('../MyReactQuil'), { ssr: false });
 
 type ProductOrder = {
   id: number;
   count: number;
-  art: string;
   nameru: string;
   nameuk: string;
-  volumes: [
-    {
-      id: number;
-      discount: number;
-      isAvailability: string;
-      nameVolume: string;
-      volume: 2000;
-      priceWithDiscount: number;
-      price: number;
-      art: string;
-      url: string;
-      imgs: [
-        {
-          createdAt: string;
-          id: 30787;
-          img: string;
-          updatedAt: string;
-          volumeId: 29659;
-          volumeru: string;
-          volumeuk: string;
-        },
-      ];
-    },
-  ];
+  volumes: {
+    id: number;
+    discount: number;
+    isAvailability: string;
+    nameVolume: string;
+    volume: 2000;
+    priceWithDiscount: number;
+    price: number;
+    art: string;
+    url: string;
+    imgs: [
+      {
+        createdAt: string;
+        id: 30787;
+        img: string;
+        updatedAt: string;
+        volumeId: 29659;
+        volumeru: string;
+        volumeuk: string;
+      },
+    ];
+  };
 };
 
 interface OrderPageProps {
@@ -83,6 +81,24 @@ const listOrders = [
   },
 ];
 
+const listWayDelivery = [
+  {
+    id: 1,
+    name: 'Оплата на рахунок IBAN або на картку (Очікую дзвінок для уточнення деталей)',
+    description: 'Очікую дзвінок для уточнення деталей',
+  },
+  {
+    id: 2,
+    name: 'Оплата на рахунок IBAN або на картку (Отримати SMS з реквізитами)',
+    description: 'Отримати SMS з реквізитами',
+  },
+  {
+    id: 3,
+    name: 'Накладений платіж (з передоплатою) (Очікую дзвінок для підтвердження)',
+    description: 'Очікую дзвінок для підтвердження',
+  },
+];
+
 export default function EditOrderPage({ params }: OrderPageProps) {
   const { id, lang } = use(params);
   const { user } = useSelector((state: RootState) => state.user);
@@ -106,39 +122,72 @@ export default function EditOrderPage({ params }: OrderPageProps) {
     };
   }, []);
 
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<{
+    id: number;
+    nameUser: string;
+    email: string;
+    sum: number;
+    basket: string;
+    status: 'wait' | 'check' | 'pay' | 'nalozhen' | 'finish' | 'cansel';
+    isToMeneger: false;
+    phone: string;
+    comment: string;
+    commentMeneger: string;
+    counstBonus: number;
+    deliveryType:
+      | 'Укр пошта'
+      | 'Нова пошта курєр'
+      | 'Нова пошта поштомат'
+      | 'Нова пошта відділення';
+    typePay: '1' | '2' | '3';
+    oblast: string;
+    city: string;
+    departmentOrPostomatOrAddress: string;
+    userGetBonus: number;
+    additionalInfo: string;
+    promokodId: number | null;
+    promokod: PromokodFromDBInterface | null;
+    createdAt: '';
+    updatedAt: '';
+    userId: number | null;
+    user: {} | null;
+  }>({
     id: 0,
     nameUser: '',
     email: '',
-    contactInfo: '',
+    basket: '',
     sum: 0,
-    status: '',
+    status: 'wait',
     isToMeneger: false,
-    procent: 0,
     phone: '',
-    deliveryType: '',
-    city: '',
     comment: '',
     commentMeneger: '',
+    counstBonus: 0,
+    deliveryType: 'Укр пошта',
+    typePay: '1',
     oblast: '',
-    typePay: '',
+    city: '',
+    departmentOrPostomatOrAddress: '',
+    userGetBonus: 0,
+    additionalInfo: '',
+    promokodId: null,
+    promokod: null,
     createdAt: '',
     updatedAt: '',
-    userId: '',
+    userId: null,
+    user: null,
   });
-  const [contactFields, setContactFields] = useState([]);
 
   const getOrder = async () => {
     try {
       const res = await $authHost.get(`order/getOrder/${id}`);
-      let { basket: JsonBasket, contactInfo, ...formDataFromRes } = res.data;
+      const JsonBasket = res.data.basket;
+      let formDataFromRes = res.data;
 
-      contactInfo = parseContactInfo(contactInfo);
       const basket = JSON.parse(JsonBasket);
 
       setProducts(basket);
-      setContactFields(contactInfo); // окремо зберігаємо для форми
-      setFormData({ ...formDataFromRes, contactInfo });
+      setFormData({ ...formDataFromRes });
     } catch (err) {
       alert('Помилка отримання замовлення');
     }
@@ -178,18 +227,14 @@ export default function EditOrderPage({ params }: OrderPageProps) {
 
   const setOrder = async () => {
     try {
-      const updateContactInfo = buildContactInfo(formData.contactInfo);
-      const { id, contactInfo, sum, ...rest } = formData;
+      const { id, sum, ...rest } = formData;
 
       const updatedOrder = {
         ...rest,
-        contactInfo: updateContactInfo,
         basket: JSON.stringify(products), // або listOrders, залежно що зберігаєш
-        sum: products.reduce((sum, x) => sum + x.volumes[0].priceWithDiscount * x.count, 0),
       };
-      //console.log(4234, updatedOrder)
+
       const res = await $authHost.post('order/updateOrder/' + id, updatedOrder);
-      console.log(4234, res);
     } catch (err) {
       alert('Помилка');
       console.log(err);
@@ -222,33 +267,18 @@ export default function EditOrderPage({ params }: OrderPageProps) {
       managerBonus: 100,
       status: 'processing',
     };
-    /* 
-    setProducts(mockOrderData.products)
-     setFormData({
-      phone: mockOrderData.phone,
-      fullName: mockOrderData.fullName,
-      deliveryMethod: mockOrderData.deliveryMethod,
-      city: mockOrderData.city,
-      department: mockOrderData.department,
-      comment: mockOrderData.comment,
-      showBillingRecord: mockOrderData.showBillingRecord,
-      managerComment: mockOrderData.managerComment,
-      managerApproved: mockOrderData.managerApproved,
-      managerBonus: mockOrderData.managerBonus,
-      status: mockOrderData.status
-    })*/
+
     getOrder();
   }, [id]);
 
   const handleInputChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+    >
   ) => {
     const { name, value } = e.target;
 
     setFormData((prev) => ({ ...prev, [name]: value }));
-  };
-  const UpdateHandleInputChange = (newValue: string, name: string) => {
-    setFormData((prev) => ({ ...prev, [name]: newValue }));
   };
 
   const handleCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -257,15 +287,19 @@ export default function EditOrderPage({ params }: OrderPageProps) {
   };
 
   const handleAddProduct = async () => {
-    if (!articleInput.trim()) return;
     try {
-      const res = await $authHost.get('order/getProductToOrder?url=' + articleInput);
-      setProducts([...products, res.data]);
+      if (products.some((x) => x.volumes.art == articleInput)) {
+        alert('Цей товар вже добавлений');
+        return;
+      }
+      const res = await $authHost.get(
+        'order/getProductToOrder?url=' + articleInput
+      );
+      const newProduct = { ...res.data, count: 1 };
+      setProducts([...products, newProduct]);
     } catch (err) {
       alert('Помилка');
     }
-    //    setProducts(prev => [...prev, newProduct])
-    //  setArticleInput('')
   };
 
   const handleRemoveProduct = (id: number) => {
@@ -274,7 +308,9 @@ export default function EditOrderPage({ params }: OrderPageProps) {
 
   const handleQuantityChange = (id: number, count: number) => {
     setProducts((prev) =>
-      prev.map((product) => (product.id === id ? { ...product, count } : product))
+      prev.map((product) =>
+        product.id === id ? { ...product, count } : product
+      )
     );
   };
 
@@ -282,31 +318,179 @@ export default function EditOrderPage({ params }: OrderPageProps) {
     return price * quantity;
   };
 
+  const [checkedMinPrice, setCheckedMinPrice] = useState(false);
+  const [checkedMissingProduct, setCheckedMissingProduct] = useState(false);
+  useEffect(() => {
+    const run = async () => {
+      await calculateSum();
+    };
+
+    run();
+  }, [products, formData.promokod, formData.counstBonus]);
+
+  useEffect(() => {
+    setCheckedMinPrice(false);
+    setCheckedMissingProduct(false);
+  }, [formData.promokodId, products]);
+
+  const calculateSum = async () => {
+    let sum = products.reduce(
+      (acc, x) => acc + x.volumes.priceWithDiscount * x.count,
+      0
+    );
+
+    let userGetBonus = 0;
+
+    // ✅ бонуси
+    if (formData.counstBonus > 0) {
+      sum -= formData.counstBonus;
+    }
+
+    const promokod = formData.promokod;
+
+    if (promokod) {
+      // ===============================
+      // 🔴 MIN PRICE CHECK
+      // ===============================
+      if (promokod.min_price && sum < promokod.min_price && !checkedMinPrice) {
+        setCheckedMinPrice(true);
+
+        const confirmKeep = window.confirm(
+          `Сума менша за мінімальну згідно промокодом (${promokod.min_price} грн).
+
+ОК — залишити промокод
+Скасувати — видалити промокод`
+        );
+
+        if (!confirmKeep) {
+          setFormData((prev) => ({
+            ...prev,
+            promokod: null,
+            promokodId: null,
+          }));
+          return;
+        }
+      }
+
+      // ===============================
+      // 🔵 SIMPLE PROMO
+      // ===============================
+      if (promokod.type === 'procent') {
+        sum -= (sum / 100) * (promokod.procent as any);
+      } else if (promokod.type === 'price') {
+        sum -= promokod.price_discount as any;
+      }
+
+      // ===============================
+      // 🟣 SELECT GOODS PROMO
+      // ===============================
+      else {
+        const artProduct = promokod.selectVolumeArt as string;
+
+        const productForDiscount = products.find(
+          (x) => x.volumes.art == artProduct
+        );
+
+        // ❌ товару нема
+        if (!productForDiscount && !checkedMissingProduct) {
+          setCheckedMissingProduct(true);
+
+          const confirmAdd = window.confirm(
+            `Товар для промокоду відсутній у замовленні.
+
+ОК — повернути товар
+Скасувати — видалити промокод`
+          );
+
+          if (confirmAdd) {
+            try {
+              const res = await $authHost.get(
+                'order/getProductToOrder?url=' + artProduct
+              );
+
+              const newProduct = {
+                ...res.data,
+                count: 1,
+              };
+
+              setProducts((prev) => [...prev, newProduct]);
+            } catch (err) {
+              console.log(542434, err);
+              alert('Помилка при додаванні товару');
+            }
+          } else {
+            setFormData((prev) => ({
+              ...prev,
+              promokod: null,
+              promokodId: null,
+            }));
+          }
+
+          return;
+        }
+
+        // ✅ якщо товар є
+        if (productForDiscount) {
+          const price = productForDiscount.volumes.priceWithDiscount;
+          if (promokod.type === 'select_goods_free') {
+            sum -= price;
+          } else if (promokod.type === 'select_goods_discount_procent') {
+            sum -= (price / 100) * (promokod.procent as any);
+          } else if (promokod.type === 'select_goods_discount_sum') {
+            sum -= promokod.price_discount as any;
+          }
+        }
+      }
+    }
+
+    if (formData.userId) {
+      userGetBonus = products.reduce(
+        (acc, x) =>
+          (acc += Math.floor(x.volumes.priceWithDiscount / 100) * x.count),
+        0
+      );
+    }
+
+    // ===============================
+    // ✅ SET SUM (safe)
+    // ===============================
+    setFormData((prev) => ({
+      ...prev,
+      sum,
+      userGetBonus,
+    }));
+  };
+
   const renderMobileProductList = () => {
     if (products.length === 0) {
-      return <div className="mobile-empty-message">Позиции заказа не найдены.</div>;
+      return (
+        <div className="mobile-empty-message">Позиции заказа не найдены.</div>
+      );
     }
 
     return products.map((product) => (
       <div className="mobile-product-card" key={product.id}>
         <div className="mobile-product-header">
           <Link href={'#'} className="productLink">
-            {`Обєм ${product.volumes[0].volume + product.volumes[0].nameVolume}` +
+            {`Обєм ${product.volumes.volume + product.volumes.nameVolume}` +
               ' ' +
               product.nameru}
           </Link>
-          <button className="removeBtn" onClick={() => handleRemoveProduct(product.id)}>
+          <button
+            className="removeBtn"
+            onClick={() => handleRemoveProduct(product.id)}
+          >
             x
           </button>
         </div>
         <div className="mobile-product-details">
           <div className="mobile-product-info">
             <span className="mobile-label">Статья:</span>
-            <span>{product.art}</span>
+            <span>{product.volumes.art}</span>
           </div>
           <div className="mobile-product-info">
             <span className="mobile-label">Цена:</span>
-            <span>{product.volumes[0].priceWithDiscount} грн</span>
+            <span>{product.volumes.priceWithDiscount} грн</span>
           </div>
           <div className="mobile-product-info">
             <span className="mobile-label">Кол-во:</span>
@@ -316,7 +500,10 @@ export default function EditOrderPage({ params }: OrderPageProps) {
                 min="1"
                 value={product.count}
                 onChange={(e) =>
-                  handleQuantityChange(product.id, Number.parseInt(e.target.value) || 1)
+                  handleQuantityChange(
+                    product.id,
+                    Number.parseInt(e.target.value) || 1
+                  )
                 }
               />
             </div>
@@ -324,59 +511,48 @@ export default function EditOrderPage({ params }: OrderPageProps) {
           <div className="mobile-product-info">
             <span className="mobile-label">Вместе:</span>
             <span className="mobile-total">
-              {calculateTotal(product.volumes[0].priceWithDiscount, product.count)} грн
+              {calculateTotal(product.volumes.priceWithDiscount, product.count)}{' '}
+              грн
             </span>
           </div>
         </div>
       </div>
     ));
   };
-  function parseContactInfo(html: string) {
-    const parser = new DOMParser();
-    const doc = parser.parseFromString(html, 'text/html');
-    const result = [];
 
-    const elements = Array.from(doc.body.children); // p, span, p, span...
+  const updateFormData = (
+    e:
+      | React.ChangeEvent<HTMLInputElement, HTMLInputElement>
+      | React.ChangeEvent<HTMLTextAreaElement, HTMLTextAreaElement>
+  ) => {
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
+  };
 
-    for (let i = 0; i < elements.length; i += 2) {
-      const p: any = elements[i];
-      const span: any = elements[i + 1];
-
-      if (p && span && p.tagName === 'P' && span.tagName === 'SPAN') {
-        result.push({
-          title: p.textContent.trim().replace(/:$/, ''), // забираємо двокрапку
-          value: span.textContent.trim(),
-        });
-      }
-    }
-
-    return result;
-  }
-  function buildContactInfo(items: any) {
-    return items
-      .map(({ title, value }: any) => `<p>${title}:</p>\n<span>${value}</span>`)
-      .join('\n');
-  }
-
-  function handleChange(index: number, newValue: string) {
-    const updated: any = [...contactFields];
-    updated[index].value = newValue;
-    setContactFields(updated);
-
-    // також оновлюємо formData, якщо треба
-    setFormData((prev) => ({
-      ...prev,
-      contactInfo: updated,
-    }));
-  }
+  console.log(534324, products, formData);
 
   return (
     <>
       <AdminHeader url="new-order" name="Редагування замовлення" lang={lang} />
       <div className="container">
         <div className="content">
+          <h3 dangerouslySetInnerHTML={{ __html: formData.additionalInfo }} />
+          {formData.counstBonus > 0 && (
+            <h4>
+              Користувач використав {formData.counstBonus}, воно враховується в
+              суму.
+            </h4>
+          )}
+          {formData.promokod !== null && (
+            <h4>
+              Користувач використвач промокод {formData.promokod.code}, він
+              враховується в суму
+            </h4>
+          )}
           {isMobile ? (
-            <div className="mobile-products-container">{renderMobileProductList()}</div>
+            <div className="mobile-products-container">
+              {renderMobileProductList()}
+            </div>
           ) : (
             <table className="table">
               <thead>
@@ -409,26 +585,33 @@ export default function EditOrderPage({ params }: OrderPageProps) {
                       </td>
                       <td>
                         <Link
-                          href={`/${lang}/goods/${product.volumes[0].url}`}
+                          href={`/${lang}/goods/${product.volumes.url}`}
                           className="productLink"
                         >
                           {product.nameru}
                         </Link>
                       </td>
-                      <td>{product.volumes[0].art}</td>
-                      <td>{product.volumes[0].priceWithDiscount} грн</td>
+                      <td>{product.volumes.art}</td>
+                      <td>{product.volumes.priceWithDiscount} грн</td>
                       <td>
                         <input
                           type="number"
                           min="1"
                           value={product.count}
                           onChange={(e) =>
-                            handleQuantityChange(product.id, Number.parseInt(e.target.value) || 1)
+                            handleQuantityChange(
+                              product.id,
+                              Number.parseInt(e.target.value) || 1
+                            )
                           }
                         />
                       </td>
                       <td>
-                        {calculateTotal(product.volumes[0].priceWithDiscount, product.count)} грн
+                        {calculateTotal(
+                          product.volumes.priceWithDiscount,
+                          product.count
+                        )}{' '}
+                        грн
                       </td>
                     </tr>
                   ))
@@ -447,9 +630,14 @@ export default function EditOrderPage({ params }: OrderPageProps) {
           >
             <p>Сума:</p>
 
-            <span style={{ color: '#666' }}>
-              {products.reduce((sum, x) => sum + x.volumes[0].priceWithDiscount * x.count, 0)}
-            </span>
+            <span style={{ color: '#666' }}>{formData.sum}</span>
+            {formData.userId !== null && (
+              <>
+                <p>Користувач отримає бонусів:</p>
+
+                <span style={{ color: '#666' }}>{formData.userGetBonus}</span>
+              </>
+            )}
           </div>
           <div className="articleInput">
             <label className="label">артикул товара</label>
@@ -466,7 +654,10 @@ export default function EditOrderPage({ params }: OrderPageProps) {
               <button className="buttons__addBtn" onClick={handleAddProduct}>
                 Добавить товар
               </button>
-              <button className="buttons__cancelBtn" onClick={() => setArticleInput('')}>
+              <button
+                className="buttons__cancelBtn"
+                onClick={() => setArticleInput('')}
+              >
                 Отменить
               </button>
             </div>
@@ -476,26 +667,185 @@ export default function EditOrderPage({ params }: OrderPageProps) {
             <div className="sectionHeader">Информация о доставке</div>
             <div className="sectionContent">
               <div className="formGroup">
-                <label className="label">Контактная информация</label>
-                {contactFields.map((field: any, index) => (
-                  <div
-                    className="contact-item"
-                    key={index}
-                    style={{
-                      marginBottom: '1rem',
-                      display: 'flex',
-                      flexDirection: 'column',
-                      gap: '7.5px',
-                    }}
+                <h3
+                  style={{ margin: 0, marginBottom: '15px' }}
+                  className="label"
+                >
+                  Контактная информация
+                </h3>
+                <div
+                  className="contact-item"
+                  style={{
+                    marginBottom: '1rem',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    gap: '7.5px',
+                  }}
+                >
+                  <label>імя</label>
+                  <input
+                    type="text"
+                    name="nameUser"
+                    value={formData.nameUser}
+                    onChange={updateFormData}
+                  />
+                </div>
+                <div
+                  className="contact-item"
+                  style={{
+                    marginBottom: '1rem',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    gap: '7.5px',
+                  }}
+                >
+                  <label>email</label>
+                  <input
+                    type="text"
+                    name="email"
+                    value={formData.email}
+                    onChange={updateFormData}
+                  />
+                </div>
+                <div
+                  className="contact-item"
+                  style={{
+                    marginBottom: '1rem',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    gap: '7.5px',
+                  }}
+                >
+                  <label>телефон</label>
+                  <input
+                    type="text"
+                    name="phone"
+                    value={formData.phone}
+                    onChange={updateFormData}
+                  />
+                </div>
+                <div
+                  className="contact-item"
+                  style={{
+                    marginBottom: '1rem',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    gap: '7.5px',
+                  }}
+                >
+                  <label>Коментар користувача</label>
+                  <textarea
+                    name="comment"
+                    value={formData.comment}
+                    onChange={updateFormData}
+                  />
+                </div>
+                <div
+                  className="contact-item"
+                  style={{
+                    marginBottom: '1rem',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    gap: '7.5px',
+                  }}
+                >
+                  <label>Тип оплати</label>
+                  <select
+                    onChange={(e) =>
+                      setFormData({
+                        ...formData,
+                        typePay: e.target.value as any,
+                      })
+                    }
                   >
-                    <label>{field.title}</label>
-                    <input
-                      type="text"
-                      value={field.value}
-                      onChange={(e) => handleChange(index, e.target.value)}
-                    />
-                  </div>
-                ))}
+                    {listWayDelivery.map((x) => (
+                      <option value={x.id} key={x.id}>
+                        {x.name}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+                <div
+                  className="contact-item"
+                  style={{
+                    marginBottom: '1rem',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    gap: '7.5px',
+                  }}
+                >
+                  <label>Тип доставки</label>
+                  <select
+                    onChange={(e) =>
+                      setFormData({
+                        ...formData,
+                        deliveryType: e.target.value as any,
+                      })
+                    }
+                  >
+                    {[
+                      'Укр пошта',
+                      'Нова пошта курєр',
+                      'Нова пошта поштомат',
+                      'Нова пошта відділення',
+                    ].map((x) => (
+                      <option value={x} key={x}>
+                        {x}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+                <div
+                  className="contact-item"
+                  style={{
+                    marginBottom: '1rem',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    gap: '7.5px',
+                  }}
+                >
+                  <label>Область</label>
+                  <input
+                    type="text"
+                    name="oblast"
+                    value={formData.oblast}
+                    onChange={updateFormData}
+                  />
+                </div>
+                <div
+                  className="contact-item"
+                  style={{
+                    marginBottom: '1rem',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    gap: '7.5px',
+                  }}
+                >
+                  <label>Населений пункт</label>
+                  <input
+                    type="text"
+                    name="city"
+                    value={formData.city}
+                    onChange={updateFormData}
+                  />
+                </div>
+                <div
+                  className="contact-item"
+                  style={{
+                    marginBottom: '1rem',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    gap: '7.5px',
+                  }}
+                >
+                  <label>Відділення або адреса</label>
+                  <input
+                    type="text"
+                    name="departmentOrPostomatOrAddress"
+                    value={formData.departmentOrPostomatOrAddress}
+                    onChange={updateFormData}
+                  />
+                </div>
               </div>
             </div>
           </div>
@@ -523,19 +873,6 @@ export default function EditOrderPage({ params }: OrderPageProps) {
                   />
                 </div>
               )}
-
-              <div className="formGroup managerBonus">
-                <label className="label">Бонус менеджера</label>
-                <input
-                  type="number"
-                  min={2}
-                  max={3}
-                  name="procent"
-                  value={formData.procent}
-                  onChange={handleInputChange}
-                />
-                <span> %.</span>
-              </div>
             </div>
           </div>
 
@@ -544,7 +881,11 @@ export default function EditOrderPage({ params }: OrderPageProps) {
             <div className="sectionContent">
               <div className="formGroup">
                 <label className="label">Статус</label>
-                <select name="status" value={formData.status} onChange={handleInputChange}>
+                <select
+                  name="status"
+                  value={formData.status}
+                  onChange={handleInputChange}
+                >
                   {listOrders.map((x) => (
                     <option value={x.id} key={x.id}>
                       {x.name}

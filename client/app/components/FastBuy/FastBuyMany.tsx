@@ -35,12 +35,17 @@ const FastBuyMany = ({ lang, fastBuy, setFastBuy }: Props) => {
     e.preventDefault();
 
     try {
-      if (message || error) return;
+      setMessage('');
+      setError('');
+      const realIdVolumeAndCountArray = basket.map((x) => ({
+        realIdVolume: x.volume.id,
+        count: x.count,
+      }));
 
       await $host.post('order/fastOrder', {
         name,
         phone: number,
-        basket,
+        realIdVolumeAndCountArray,
       });
 
       setMessage('Заявка успішно надіслана.');

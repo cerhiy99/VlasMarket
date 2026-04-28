@@ -109,8 +109,24 @@ const MakeOrder: React.FC<Props> = ({ lang }) => {
     }
   };
 
+  const getCountBonus = async () => {
+    try {
+      if (user.isAuthorize) {
+        const res = await $authHost.get('order/userGetCountYoutBonus');
+        console.log(42343, res);
+        setUserHaveBonus(res.data.countBonus);
+      } else {
+        setUserHaveBonus(0);
+        setUserUseBonus(0);
+      }
+    } catch (err) {
+      setUserHaveBonus(0);
+    }
+  };
+
   useEffect(() => {
     setUser();
+    getCountBonus();
   }, [user]);
 
   useEffect(() => {
@@ -181,162 +197,64 @@ const MakeOrder: React.FC<Props> = ({ lang }) => {
     }
   }, [number, surname, name, email]);
 
-  const setPeronal = async () => {
-    if (user.isAuthorize) {
-      try {
-        const res = await $authHost.get('user/getPersonal');
-        const personal = res.data.personal;
-        if (personal) {
-          setName(personal.firstName || '');
-          setSurname(personal.lastName || '');
-          setNumber(personal.phone.slice() || '');
-
-          if (personal.deliveryType.startsWith('Нова пошт')) {
-            setSelectPost('new');
-            setIsSelectFinishDelivery(true);
-
-            setInfoDelivery({
-              typeDelivery: (personal.novaPoshtaWarehouseName || '').startsWith(
-                'Поштомат'
-              )
-                ? 'post'
-                : 'warehouse',
-              selectLocality: {
-                Description: personal.novaPoshtaCityName || '',
-                AreaDescription: personal.novaPoshtaCityName || '',
-              },
-              selectInfoDelivery: {
-                Description: personal.novaPoshtaWarehouseName || '',
-                AreaDescription: personal.novaPoshtaCityName || '',
-              },
-              street: personal.novaPoshtaStreet,
-              house: personal.novaPoshtaBuilding,
-              apartment: personal.novaPoshtaApartment,
-            });
-          } else if (personal.deliveryType.startsWith('Укр')) {
-            setSelectPost('ukr');
-            setIsSelectFinishDelivery(true);
-
-            setInfoDelivery({
-              oblast: personal.ukrPoshtaRegion,
-              city: personal.ukrPoshtaCity,
-              departament: personal.ukrPoshtaDepartment,
-            });
-          } else if (personal.deliveryType.startsWith("Кур'єром нов")) {
-            setSelectPost('new');
-            setIsSelectFinishDelivery(true);
-
-            // Додаємо захист від порожніх даних з бекенду
-            const cityName = personal.novaPoshtaCityName || '';
-
-            setInfoDelivery({
-              typeDelivery: 'curier',
-              apartment: personal.novaPoshtaApartment || '',
-              house: personal.novaPoshtaBuilding || '',
-              street: personal.novaPoshtaStreet || '',
-              Description: cityName,
-              DescriptionRu: cityName,
-              selectLocality: {
-                Ref: personal.novaPoshtaCityRef || '',
-                Description: cityName,
-                DescriptionRu: cityName,
-                AreaDescription: cityName,
-              },
-              selectInfoDelivery: {
-                Ref: personal.novaPoshtaCityRef || '',
-                Description: cityName,
-                DescriptionRu: cityName,
-                AreaDescription: cityName,
-              },
-            });
-          }
-          /*
-{
-    "typeDelivery": "curier",
-    "selectLocality": {
-        "Description": "Львів",
-        "DescriptionRu": "Львов",
-        "Ref": "db5c88f5-391c-11dd-90d9-001a92567626",
-        "Delivery1": "1",
-        "Delivery2": "1",
-        "Delivery3": "1",
-        "Delivery4": "1",
-        "Delivery5": "1",
-        "Delivery6": "1",
-        "Delivery7": "1",
-        "Area": "71508134-9b87-11de-822f-000c2965ae0e",
-        "SettlementType": "563ced10-f210-11e3-8c4a-0050568002cf",
-        "IsBranch": "1",
-        "PreventEntryNewStreetsUser": "0",
-        "CityID": "8",
-        "SettlementTypeDescription": "місто",
-        "SettlementTypeDescriptionRu": "город",
-        "SpecialCashCheck": 1,
-        "AreaDescription": "Львівська",
-        "AreaDescriptionRu": "Львовская"
-    },
-    "street": "Стрийська",
-    "house": "106",
-    "apartment": "87"
-}
-          */
-          /*
-{
-    "curier": "curier",
-    "apartment": "87",
-    "house": "106",
-    "street": "Стрийська",
-    "Description": "Львів",
-    "DescriptionRu": "Львів",
-    "selectLocality": {
-        "Ref": "db5c88f5-391c-11dd-90d9-001a92567626",
-        "Description": "Львів",
-        "DescriptionRu": "Львів"
-    },
-    "selectInfoDelivery": {
-        "Ref": "db5c88f5-391c-11dd-90d9-001a92567626",
-        "Description": "Львів",
-        "DescriptionRu": "Львів"
-    }
-}
-         */
-
-          setIsContactOpen(true);
-          setIsContact(true);
-          setIsSelectFinishDelivery(true);
-          //setSelectWayDelivery(1) // або завантаж із personal, якщо є поле
-        } else {
-          // Перевірка заповненості полів
-          setIsContact(!!(name.trim() && surname.trim() && number[18] != '_'));
-        }
-      } catch (err) {
-        console.log(err);
-      }
-    }
-  };
-
-  useEffect(() => {
-    setPeronal();
-  }, [user]);
-
   const router = useRouter();
 
   const setFinishOrder = async () => {
     try {
       if (!isFinishFillDate) return;
       const token = localStorage.getItem('token');
-      const res = await $host.post('order/setOrder', {
-        surname,
-        name,
-        phone: number,
-        delivery: infoDelivery,
-        comment,
-        basket,
-        typePay: selectWayDelivery,
-        token,
-        email,
-      });
+      let deliveryType = '';
       const delivery = infoDelivery;
+      let oblast = '';
+      let city = '';
+      let departmentOrPostomatOrAddress = '';
+      if (delivery?.street) {
+        // Кур'єр Нова Пошта
+        deliveryType = 'Нова пошта курєр';
+        oblast = delivery?.selectLocality?.AreaDescription || '';
+        city = delivery?.selectLocality?.Description;
+        departmentOrPostomatOrAddress = `Вулиця ${delivery.street} будинок ${delivery.house} квартира ${delivery.apartment}`;
+      } else if (delivery?.selectInfoDelivery) {
+        const description =
+          delivery?.selectInfoDelivery?.Description?.toLowerCase() || '';
+
+        const isPostomatByName = description.includes('поштомат');
+        const isPostomatByType =
+          delivery?.selectInfoDelivery?.TypeOfWarehouse ===
+          '5d8a980d-391c-11dd-90d9-001a92567626';
+
+        deliveryType =
+          isPostomatByName || isPostomatByType
+            ? 'Нова пошта поштомат'
+            : 'Нова пошта відділення';
+        oblast = delivery?.selectLocality?.AreaDescription || '';
+        city = delivery?.selectLocality?.Description;
+        departmentOrPostomatOrAddress =
+          delivery?.selectInfoDelivery?.Description;
+      } else if (delivery?.oblast && delivery?.city && delivery?.departament) {
+        console.log(324324, delivery);
+        deliveryType = 'Укр пошта';
+        oblast = delivery.oblast;
+        city = delivery.city;
+        departmentOrPostomatOrAddress = delivery.departament;
+      }
+      const res = await $host.post('order/setOrder', {
+        nameUser: surname + ' ' + name,
+        phone: number,
+        email: email,
+        //delivery: infoDelivery,
+        contactInfo: '',
+        basket,
+        comment,
+        deliveryType: deliveryType,
+        typePay: selectWayDelivery,
+        oblast,
+        city,
+        departmentOrPostomatOrAddress,
+        token,
+        countBonus: userUseBonus,
+        promokod: promokod?.code,
+      });
       let typeDelivery = '';
       let deliveryText = '';
       let deliveryTextAdmin = '';
@@ -386,15 +304,21 @@ const MakeOrder: React.FC<Props> = ({ lang }) => {
         <p>Відділення</p>
         <span>${delivery.departament}</span>`;
       }
-      router.push(
+      /*router.push(
         getLocalizedPath(
           `/${lang}/order-true?contactUsers=${name + ' ' + surname}&phone=${number}&typePay=${listWayDelivery.find((x) => x.id == selectWayDelivery)?.name}&orderId=${res.data.res.id}&typeOrder=${typeDelivery}&infoDelivery=${deliveryTextAdmin}`,
           lang
         )
-      );
-    } catch (err) {
-      alert('Сталася помилка, спробуйте ще раз.');
-      console.log(err);
+      );*/
+    } catch (err: any) {
+      const message = err?.response?.data?.message;
+
+      if (message) {
+        console.log(23434, message);
+        alert(message);
+      } else {
+        alert('Сталася помилка, спробуйте ще раз.');
+      }
     }
   };
 
@@ -402,6 +326,17 @@ const MakeOrder: React.FC<Props> = ({ lang }) => {
   const [promokod, setPromokod] = useState<null | PromokodFromDBInterface>(
     null
   );
+
+  const userSetPromokod = (promokod: PromokodFromDBInterface | null) => {
+    setPromokod(promokod);
+    if (promokod) {
+      setUserUseBonus(0);
+    }
+  };
+
+  const [userHaveBonus, setUserHaveBonus] = useState(0);
+
+  useEffect(() => {}, [userHaveBonus]);
 
   return (
     <div className="make-order">
@@ -804,7 +739,7 @@ const MakeOrder: React.FC<Props> = ({ lang }) => {
         <div className="basket-and-promokods">
           <Promokods
             promokod={promokod}
-            setPromokod={setPromokod}
+            setPromokod={userSetPromokod}
             lang={lang}
           />
           <ListFromBasket
@@ -812,10 +747,12 @@ const MakeOrder: React.FC<Props> = ({ lang }) => {
             setFinishOrder={setFinishOrder}
             isFinishFillDate={isFinishFillDate}
             userUseBonus={userUseBonus}
-            countBonus={0}
+            countBonus={userHaveBonus}
             setUserUseBonus={setUserUseBonus}
             isAuth={user.isAuthorize}
             isPromokod={promokod !== null}
+            promokod={promokod}
+            setPromokod={setPromokod}
           />
         </div>
       </div>

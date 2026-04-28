@@ -299,7 +299,6 @@ const Order = sequelize.define('order', {
   id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
   nameUser: { type: DataTypes.STRING, allowNull: false },
   email: { type: DataTypes.STRING, allowNull: false },
-  contactInfo: { type: DataTypes.TEXT, allowNull: false },
   sum: { type: DataTypes.FLOAT, allowNull: false },
   basket: { type: DataTypes.TEXT, allowNull: false },
   status: {
@@ -336,6 +335,12 @@ const Order = sequelize.define('order', {
   oblast: { type: DataTypes.STRING, allowNull: false, defaultValue: '' },
   city: { type: DataTypes.STRING, allowNull: false },
   departmentOrPostomatOrAddress: { type: DataTypes.STRING, allowNull: false },
+  userGetBonus: { type: DataTypes.INTEGER, allowNull: false, defaultValue: 0 },
+  additionalInfo: {
+    type: DataTypes.TEXT,
+    allowNull: false,
+    defaultValue: '',
+  },
 });
 
 Users.hasMany(Order);

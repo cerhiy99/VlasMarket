@@ -193,26 +193,25 @@ const GetPromokods = (props: Props) => {
                 />
               </div>
             )}
-            {selectPromokod.type == 'price' && (
-              <div className="value">
-                <label>Мінімальна ціна для знижку в грн</label>
-                <input
-                  value={Number(selectPromokod.min_price)}
-                  name="min_price"
-                  required
-                />
-              </div>
-            )}
-            {selectPromokod.type == 'price' && (
-              <div className="value">
-                <label>Знижка в грн</label>
-                <input
-                  value={Number(selectPromokod.price_discount)}
-                  name="price_discount"
-                  required
-                />
-              </div>
-            )}
+            <div className="value">
+              <label>Мінімальна ціна для знижку в грн</label>
+              <input
+                value={Number(selectPromokod.min_price)}
+                name="min_price"
+                required
+              />
+            </div>
+            {selectPromokod.type == 'price' ||
+              (selectPromokod.type == 'select_goods_discount_sum' && (
+                <div className="value">
+                  <label>Знижка в грн</label>
+                  <input
+                    value={Number(selectPromokod.price_discount)}
+                    name="price_discount"
+                    required
+                  />
+                </div>
+              ))}
           </div>
         )}
       </div>

@@ -130,7 +130,10 @@ class GoodsControllers {
         const normalizedSlug = normalize(brendName);
 
         const brendId = await Brends.findOne({
-          where: sequelize.where(sequelize.fn('LOWER', sequelize.col('name')), normalizedSlug),
+          where: sequelize.where(
+            sequelize.fn('LOWER', sequelize.col('name')),
+            normalizedSlug
+          ),
         });
         if (brendId) {
           realNameBrend = brendId.name;
@@ -148,9 +151,12 @@ class GoodsControllers {
       let subcategoryToRetun;
 
       // --- 1. Обробка булевих фільтрів ---
-      if (typeof isDiscount !== 'undefined') goodsWhere.isDiscount = isDiscount === 'true';
-      if (typeof isBestseller !== 'undefined') goodsWhere.isBestseller = isBestseller === 'true';
-      if (typeof isNovetly !== 'undefined') goodsWhere.isNovetly = isNovetly === 'true';
+      if (typeof isDiscount !== 'undefined')
+        goodsWhere.isDiscount = isDiscount === 'true';
+      if (typeof isBestseller !== 'undefined')
+        goodsWhere.isBestseller = isBestseller === 'true';
+      if (typeof isNovetly !== 'undefined')
+        goodsWhere.isNovetly = isNovetly === 'true';
       if (typeof isHit !== 'undefined') goodsWhere.isHit = isHit === 'true';
       if (typeof isFreeDelivery !== 'undefined')
         goodsWhere.isFreeDelivery = isFreeDelivery === 'true';
@@ -328,7 +334,10 @@ class GoodsControllers {
           const filterCategoryId = parseInt(key.replace('filter_', ''));
           const selectedValuesString = productFilterParams[key];
 
-          if (!isNaN(filterCategoryId) && typeof selectedValuesString === 'string') {
+          if (
+            !isNaN(filterCategoryId) &&
+            typeof selectedValuesString === 'string'
+          ) {
             const selectedValues = selectedValuesString
               .split(',')
               .map((val) => val.trim())
@@ -396,26 +405,35 @@ class GoodsControllers {
         }
       }
 
-      const resolvedGoodIdsArrays = await Promise.all(goodIdsFromProductFilters);
+      const resolvedGoodIdsArrays = await Promise.all(
+        goodIdsFromProductFilters
+      );
 
       let finalGoodIds = null;
       if (resolvedGoodIdsArrays.length > 0) {
-        finalGoodIds = resolvedGoodIdsArrays.reduce((intersectionSet, currentArray) => {
-          if (intersectionSet === null) {
-            return new Set(currentArray);
-          }
-          const newIntersection = new Set();
-          currentArray.forEach((id) => {
-            if (intersectionSet.has(id)) {
-              newIntersection.add(id);
+        finalGoodIds = resolvedGoodIdsArrays.reduce(
+          (intersectionSet, currentArray) => {
+            if (intersectionSet === null) {
+              return new Set(currentArray);
             }
-          });
-          return newIntersection;
-        }, null);
+            const newIntersection = new Set();
+            currentArray.forEach((id) => {
+              if (intersectionSet.has(id)) {
+                newIntersection.add(id);
+              }
+            });
+            return newIntersection;
+          },
+          null
+        );
 
         if (finalGoodIds && finalGoodIds.size > 0) {
           goodsWhere.id = { [Op.in]: Array.from(finalGoodIds) };
-        } else if (finalGoodIds && finalGoodIds.size === 0 && resolvedGoodIdsArrays.length > 0) {
+        } else if (
+          finalGoodIds &&
+          finalGoodIds.size === 0 &&
+          resolvedGoodIdsArrays.length > 0
+        ) {
           goodsWhere.id = { [Op.in]: [] };
         }
       }
@@ -424,7 +442,9 @@ class GoodsControllers {
         ['sort', 'ASC'],
       ];
       if (sort && sort.startsWith('price')) {
-        volumesSort = [['priceWithDiscount', sort == 'price_asc' ? 'asc' : 'desc']];
+        volumesSort = [
+          ['priceWithDiscount', sort == 'price_asc' ? 'asc' : 'desc'],
+        ];
       }
 
       // --- 6. Формуємо includeOptions для основного запиту ---
@@ -547,7 +567,10 @@ class GoodsControllers {
           if (key.startsWith('filter_')) {
             const filterCategoryId = parseInt(key.replace('filter_', ''));
             const selectedValuesString = productFilterParams[key];
-            if (!isNaN(filterCategoryId) && typeof selectedValuesString === 'string') {
+            if (
+              !isNaN(filterCategoryId) &&
+              typeof selectedValuesString === 'string'
+            ) {
               const selectedValues = selectedValuesString
                 .split(',')
                 .map((val) => val.trim())
@@ -612,8 +635,12 @@ class GoodsControllers {
           }
         }
 
-        const tempResolvedGoodIdsArrays = await Promise.all(tempGoodIdsFromProductFilters);
-        const filteredTempGoodIdsArrays = tempResolvedGoodIdsArrays.filter((arr) => arr !== null);
+        const tempResolvedGoodIdsArrays = await Promise.all(
+          tempGoodIdsFromProductFilters
+        );
+        const filteredTempGoodIdsArrays = tempResolvedGoodIdsArrays.filter(
+          (arr) => arr !== null
+        );
 
         let goodIdsForAvailableAttributes = null;
         if (filteredTempGoodIdsArrays.length > 0) {
@@ -631,17 +658,25 @@ class GoodsControllers {
             null
           );
         } else if (
-          Object.keys(productFilterParams).some((k) => k.startsWith('filter_')) ||
+          Object.keys(productFilterParams).some((k) =>
+            k.startsWith('filter_')
+          ) ||
           recognition
         ) {
           goodIdsForAvailableAttributes = new Set();
         }
 
-        if (goodIdsForAvailableAttributes !== null && goodIdsForAvailableAttributes.size > 0) {
+        if (
+          goodIdsForAvailableAttributes !== null &&
+          goodIdsForAvailableAttributes.size > 0
+        ) {
           tempGoodsWhere.id = {
             [Op.in]: Array.from(goodIdsForAvailableAttributes),
           };
-        } else if (goodIdsForAvailableAttributes && goodIdsForAvailableAttributes.size === 0) {
+        } else if (
+          goodIdsForAvailableAttributes &&
+          goodIdsForAvailableAttributes.size === 0
+        ) {
           tempGoodsWhere.id = { [Op.in]: [] };
         }
 
@@ -670,7 +705,9 @@ class GoodsControllers {
           distinct: true,
         });
 
-        return distinctResults.map((item) => item[foreignKey]).filter((id) => id !== null);
+        return distinctResults
+          .map((item) => item[foreignKey])
+          .filter((id) => id !== null);
       };
 
       // --- Доступні Категорії АБО Підкатегорії ---
@@ -750,7 +787,10 @@ class GoodsControllers {
           if (key.startsWith('filter_')) {
             const filterCategoryId = parseInt(key.replace('filter_', ''));
             const selectedValuesString = productFilterParams[key];
-            if (!isNaN(filterCategoryId) && typeof selectedValuesString === 'string') {
+            if (
+              !isNaN(filterCategoryId) &&
+              typeof selectedValuesString === 'string'
+            ) {
               const selectedValues = selectedValuesString
                 .split(',')
                 .map((val) => val.trim())
@@ -790,8 +830,12 @@ class GoodsControllers {
           }
         }
 
-        const tempResolvedGoodIdsArrays = await Promise.all(tempGoodIdsFromAllFilters);
-        const filteredTempGoodIdsArrays = tempResolvedGoodIdsArrays.filter((arr) => arr !== null);
+        const tempResolvedGoodIdsArrays = await Promise.all(
+          tempGoodIdsFromAllFilters
+        );
+        const filteredTempGoodIdsArrays = tempResolvedGoodIdsArrays.filter(
+          (arr) => arr !== null
+        );
 
         let goodIdsForAvailableAttributes = null;
         if (filteredTempGoodIdsArrays.length > 0) {
@@ -808,15 +852,23 @@ class GoodsControllers {
             },
             null
           );
-        } else if (Object.keys(productFilterParams).some((k) => k.startsWith('filter_'))) {
+        } else if (
+          Object.keys(productFilterParams).some((k) => k.startsWith('filter_'))
+        ) {
           goodIdsForAvailableAttributes = new Set();
         }
 
-        if (goodIdsForAvailableAttributes !== null && goodIdsForAvailableAttributes.size > 0) {
+        if (
+          goodIdsForAvailableAttributes !== null &&
+          goodIdsForAvailableAttributes.size > 0
+        ) {
           tempGoodsWhere.id = {
             [Op.in]: Array.from(goodIdsForAvailableAttributes),
           };
-        } else if (goodIdsForAvailableAttributes && goodIdsForAvailableAttributes.size === 0) {
+        } else if (
+          goodIdsForAvailableAttributes &&
+          goodIdsForAvailableAttributes.size === 0
+        ) {
           tempGoodsWhere.id = { [Op.in]: [] };
         }
 
@@ -832,7 +884,10 @@ class GoodsControllers {
                 {
                   model: Volume,
                   as: 'volumes',
-                  where: Object.keys(volumeWhere).length > 0 ? volumeWhere : undefined,
+                  where:
+                    Object.keys(volumeWhere).length > 0
+                      ? volumeWhere
+                      : undefined,
                   required: Object.keys(volumeWhere).length > 0,
                   attributes: [],
                 },
@@ -843,7 +898,9 @@ class GoodsControllers {
           raw: true,
         });
 
-        return recognitionResults.map((item) => item.recognitionId).filter((id) => id !== null);
+        return recognitionResults
+          .map((item) => item.recognitionId)
+          .filter((id) => id !== null);
       };
 
       const recognitionIds = await getDistinctRecognitionIds();
@@ -861,8 +918,14 @@ class GoodsControllers {
       const tempGoodsWhereForPriceRange = { ...goodsWhere };
       const priceRangeResult = await Volume.findOne({
         attributes: [
-          [sequelize.fn('MIN', sequelize.col('volume.priceWithDiscount')), 'minAvailablePrice'],
-          [sequelize.fn('MAX', sequelize.col('volume.priceWithDiscount')), 'maxAvailablePrice'],
+          [
+            sequelize.fn('MIN', sequelize.col('volume.priceWithDiscount')),
+            'minAvailablePrice',
+          ],
+          [
+            sequelize.fn('MAX', sequelize.col('volume.priceWithDiscount')),
+            'maxAvailablePrice',
+          ],
         ],
         include: [
           {
@@ -885,9 +948,15 @@ class GoodsControllers {
           ? parseFloat(priceRangeResult.maxAvailablePrice)
           : null;
 
-      if (filters.minAvailablePrice === null || isNaN(filters.minAvailablePrice))
+      if (
+        filters.minAvailablePrice === null ||
+        isNaN(filters.minAvailablePrice)
+      )
         filters.minAvailablePrice = 0;
-      if (filters.maxAvailablePrice === null || isNaN(filters.maxAvailablePrice))
+      if (
+        filters.maxAvailablePrice === null ||
+        isNaN(filters.maxAvailablePrice)
+      )
         filters.maxAvailablePrice = 0;
 
       // --- Отримання доступних фільтрів за атрибутами товару ---
@@ -912,7 +981,10 @@ class GoodsControllers {
               const currentFilterId = parseInt(key.replace('filter_', ''));
               if (currentFilterId !== filterCat.id) {
                 const selectedValuesString = productFilterParams[key];
-                if (!isNaN(currentFilterId) && typeof selectedValuesString === 'string') {
+                if (
+                  !isNaN(currentFilterId) &&
+                  typeof selectedValuesString === 'string'
+                ) {
                   const selectedValues = selectedValuesString
                     .split(',')
                     .map((val) => val.trim())
@@ -976,8 +1048,11 @@ class GoodsControllers {
             }
           }
 
-          const tempResolvedGoodIdsArrays = await Promise.all(tempGoodIdsPromises);
-          const filteredTempGoodIdsArrays = tempResolvedGoodIdsArrays.filter((arr) => arr !== null);
+          const tempResolvedGoodIdsArrays =
+            await Promise.all(tempGoodIdsPromises);
+          const filteredTempGoodIdsArrays = tempResolvedGoodIdsArrays.filter(
+            (arr) => arr !== null
+          );
 
           if (filteredTempGoodIdsArrays.length > 0) {
             goodIdsForAvailableAttributes = filteredTempGoodIdsArrays.reduce(
@@ -995,7 +1070,9 @@ class GoodsControllers {
             );
           } else if (
             Object.keys(productFilterParams).some(
-              (k) => k.startsWith('filter_') && parseInt(k.replace('filter_', '')) !== filterCat.id
+              (k) =>
+                k.startsWith('filter_') &&
+                parseInt(k.replace('filter_', '')) !== filterCat.id
             ) ||
             recognition
           ) {
@@ -1045,7 +1122,8 @@ class GoodsControllers {
           const uniqueValuesRu = new Set();
 
           const currentFilterParamName = `filter_${filterCat.id}`;
-          const selectedValuesStringForThisFilter = productFilterParams[currentFilterParamName];
+          const selectedValuesStringForThisFilter =
+            productFilterParams[currentFilterParamName];
           if (typeof selectedValuesStringForThisFilter === 'string') {
             const selectedValues = selectedValuesStringForThisFilter
               .split(',')
@@ -1137,7 +1215,11 @@ class GoodsControllers {
         if (delLeng == 'ru' && isLeaveCategoryAndSubcategory) {
           filters.categories = JSON.parse(selectCategoriesInFilters);
         }
-        if (selectSubcategoryInFilters && delLeng == 'ru' && isLeaveCategoryAndSubcategory) {
+        if (
+          selectSubcategoryInFilters &&
+          delLeng == 'ru' &&
+          isLeaveCategoryAndSubcategory
+        ) {
           filters.subcategories = JSON.parse(selectSubcategoryInFilters);
         }
       }
@@ -1156,7 +1238,9 @@ class GoodsControllers {
     } catch (err) {
       console.error('Помилка в GoodsController.GetGoods:', err);
       return next(
-        ErrorApi.badRequest(err.message || 'Невідома помилка під час отримання товарів.')
+        ErrorApi.badRequest(
+          err.message || 'Невідома помилка під час отримання товарів.'
+        )
       );
     }
   };
@@ -1313,7 +1397,14 @@ class GoodsControllers {
             include: [
               {
                 model: Img,
-                attributes: ['id', 'img', `volume${lang}`, 'createdAt', 'updatedAt', 'volumeId'],
+                attributes: [
+                  'id',
+                  'img',
+                  `volume${lang}`,
+                  'createdAt',
+                  'updatedAt',
+                  'volumeId',
+                ],
               },
             ],
           },
@@ -1416,7 +1507,8 @@ class GoodsControllers {
       const simplifiedRandomGoods = randomGoods.map((rg) => ({
         ...rg.toJSON(), // Перетворюємо в звичайний JS об'єкт
         // Якщо потрібно тільки один об'єм для randomGoods:
-        volume: rg.volumes && rg.volumes.length > 0 ? rg.volumes[0].toJSON() : null,
+        volume:
+          rg.volumes && rg.volumes.length > 0 ? rg.volumes[0].toJSON() : null,
       }));
       const reviewsFromDB = await Reviews.findAll({
         where: {
@@ -1445,8 +1537,12 @@ class GoodsControllers {
       if (reviewsFromDB.length > 0) {
         // Розрахунок середнього рейтингу
         const sum = reviewsFromDB.reduce((acc, r) => acc + (r.rating || 0), 0);
-        const countWithRating = reviewsFromDB.filter((r) => r.rating !== null).length;
-        reviews.avarge = countWithRating ? (sum / countWithRating).toFixed(2) : null;
+        const countWithRating = reviewsFromDB.filter(
+          (r) => r.rating !== null
+        ).length;
+        reviews.avarge = countWithRating
+          ? (sum / countWithRating).toFixed(2)
+          : null;
 
         // Якщо буде логіка для зображень — тут можна рахувати
         reviews.countImgs = 0;
@@ -1722,7 +1818,9 @@ class GoodsControllers {
       } = req.body;
 
       if (!nameuk || !nameru || !brendId || !categoryId || !countryMadeId) {
-        return resp.status(400).json({ message: "Не всі обов'язкові дані передані" });
+        return resp
+          .status(400)
+          .json({ message: "Не всі обов'язкові дані передані" });
       }
 
       brendId = parseInt(brendId);
@@ -1975,8 +2073,17 @@ class GoodsControllers {
         nameTyperu,
       } = req.body;
 
-      if (!id || !nameuk || !nameru || !brendId || !categoryId || !countryMadeId) {
-        return resp.status(400).json({ message: "Не всі обов'язкові дані передані" });
+      if (
+        !id ||
+        !nameuk ||
+        !nameru ||
+        !brendId ||
+        !categoryId ||
+        !countryMadeId
+      ) {
+        return resp
+          .status(400)
+          .json({ message: "Не всі обов'язкові дані передані" });
       }
 
       id = parseInt(id);
@@ -2239,7 +2346,9 @@ class GoodsControllers {
       });
       await Volume.update({ url: url }, { where: { goodId: id } });
       const idVolume = goodsUpdate.volumes[0].url;
-      resp.status(200).json({ message: 'Товар успішно оновлено', product, idVolume });
+      resp
+        .status(200)
+        .json({ message: 'Товар успішно оновлено', product, idVolume });
       this.ClearDataBase();
       ConvertPngToWebP.UpdateNoWebp();
       ImageToFullName.UpdateImage();
@@ -2292,7 +2401,7 @@ class GoodsControllers {
       return next(ErrorApi.badRequest(err.message));
     }
   };
-  
+
   static GetView = async (req, resp, next) => {
     try {
       let {
@@ -2409,13 +2518,17 @@ class GoodsControllers {
       await Goods.destroy({ where: { id: goodId } });
       return resp.json({ message: 'Товар та всі повʼязані записи видалено' });
     } catch (err) {
-      return next(ErrorApi.badRequest(err.message || 'Помилка видалення товару'));
+      return next(
+        ErrorApi.badRequest(err.message || 'Помилка видалення товару')
+      );
     }
   };
   static MassDelete = async (req, resp, next) => {
     const { ides } = req.body; // масив айді товарів
     if (!Array.isArray(ides) || ides.length === 0) {
-      return next(ErrorApi.badRequest('Список товарів порожній або некоректний'));
+      return next(
+        ErrorApi.badRequest('Список товарів порожній або некоректний')
+      );
     }
 
     try {
@@ -2446,21 +2559,27 @@ class GoodsControllers {
       return resp.json({ message: 'Успішно видалено товари' });
     } catch (err) {
       await transaction.rollback();
-      return next(ErrorApi.badRequest(err.message || 'Помилка масового видалення'));
+      return next(
+        ErrorApi.badRequest(err.message || 'Помилка масового видалення')
+      );
     }
   };
 
   static MassHide = async (req, resp, next) => {
     const { ides } = req.body;
     if (!Array.isArray(ides) || ides.length === 0) {
-      return next(ErrorApi.badRequest('Список товарів порожній або некоректний'));
+      return next(
+        ErrorApi.badRequest('Список товарів порожній або некоректний')
+      );
     }
 
     try {
       await Goods.update({ isShow: false }, { where: { id: ides } });
       return resp.json({ message: 'Товари приховано' });
     } catch (err) {
-      return next(ErrorApi.badRequest(err.message || 'Помилка приховування товарів'));
+      return next(
+        ErrorApi.badRequest(err.message || 'Помилка приховування товарів')
+      );
     }
   };
 
@@ -2468,7 +2587,9 @@ class GoodsControllers {
     const { ides } = req.body;
 
     if (!Array.isArray(ides) || ides.length === 0) {
-      return next(ErrorApi.badRequest('Список товарів порожній або некоректний'));
+      return next(
+        ErrorApi.badRequest('Список товарів порожній або некоректний')
+      );
     }
 
     try {
@@ -2514,7 +2635,11 @@ class GoodsControllers {
       }));
       return resp.json(categoryAndCountPages);
     } catch (err) {
-      return next(ErrorApi.badRequest(err.message || 'Error fetching categories for sitemap.'));
+      return next(
+        ErrorApi.badRequest(
+          err.message || 'Error fetching categories for sitemap.'
+        )
+      );
     }
   };
   static GetSubcategoryForSiteMap = async (req, resp, next) => {
@@ -2545,7 +2670,11 @@ class GoodsControllers {
       }));
       return resp.json(categoryAndCountPages);
     } catch (err) {
-      return next(ErrorApi.badRequest(err.message || 'Error fetching categories for sitemap.'));
+      return next(
+        ErrorApi.badRequest(
+          err.message || 'Error fetching categories for sitemap.'
+        )
+      );
     }
   };
   static GetBrendsForSitemap = async (req, resp, next) => {
@@ -2645,7 +2774,7 @@ class GoodsControllers {
       return next(ErrorApi.badRequest(err));
     }
   };
-static EditLine = async (req, resp, next) => {
+  static EditLine = async (req, resp, next) => {
     try {
       const { idLine } = req.params;
       const { newName } = req.body;
@@ -2681,6 +2810,25 @@ static EditLine = async (req, resp, next) => {
       await line.destroy();
 
       return resp.json({ message: 'Видалено' });
+    } catch (err) {
+      return next(ErrorApi.badRequest(err));
+    }
+  };
+  static GetForVolumeMini = async (req, resp, next) => {
+    try {
+      const { art } = req.params;
+      const goods = await Goods.findOne({
+        attributes: ['id', 'nameuk', 'nameru'],
+        include: [
+          {
+            model: Volume,
+            where: { art },
+            required: true,
+            include: [{ model: Img }],
+          },
+        ],
+      });
+      return resp.json({ goods });
     } catch (err) {
       return next(ErrorApi.badRequest(err));
     }

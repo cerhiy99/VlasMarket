@@ -85,7 +85,11 @@ const Promokods = ({ lang, setPromokod, promokod }: Props) => {
   useEffect(() => {}, [promokods]);
 
   const setNewPromokod = (x: PromokodFromDBInterface) => {
-    setPromokod(x);
+    if (promokod === null || promokod.id != x.id) {
+      setPromokod(x);
+    } else {
+      setPromokod(null);
+    }
   };
 
   return (
@@ -134,12 +138,12 @@ const Promokods = ({ lang, setPromokod, promokod }: Props) => {
               >
                 <img
                   src={process.env.NEXT_PUBLIC_SERVER + x.img}
-                  alt={lang == 'ru' ? x.nameru : x.nameru}
+                  alt={lang == 'ru' ? x.nameru : x.nameuk}
                   width={100}
                   height={32}
                 />
                 <div className="promokod-name">
-                  {lang == 'ru' ? x.nameru : x.nameru}
+                  {lang == 'ru' ? x.nameru : x.nameuk}
                 </div>
               </div>
             ))}

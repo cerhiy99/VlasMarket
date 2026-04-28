@@ -1,9 +1,17 @@
 const ErrorApi = require('../error/ErrorApi');
 const axios = require('axios');
-const { Goods, Volume, Order, Img } = require('../models/models');
+const {
+  Goods,
+  Volume,
+  Order,
+  Img,
+  Promokods,
+  Users,
+  UserBronPromokod,
+} = require('../models/models');
 const jwt = require('jsonwebtoken');
 const sendEmail = require('./utils/sendEmail');
-const { Op } = require('sequelize');
+const { Op, literal } = require('sequelize');
 
 const TELEGRAM_BOT_TOKEN = process.env.TG_TOKEN;
 const TELEGRAM_CHAT_ID = process.env.TG_CHAT_ID;
@@ -13,24 +21,114 @@ const MENEGER_CHAT_ID = process.env.TG_MENEGER_CHAT_ID;
 const listWayDelivery = [
   {
     id: 1,
-    name: '🟡 Оплата на рахунок IBAN або на картку ▪ ЧЕКАЮ ДЗВІНОК ▪ хочу обговорити деталі замовлення',
-    shortName: 'На картку (Подзвонити)',
+    name: 'Оплата на рахунок IBAN або на картку',
+    description: 'Очікую дзвінок для уточнення деталей',
   },
   {
     id: 2,
-    name: "🟢 Оплата на рахунок IBAN або на картку ▪ ДЗВОНИТИ НЕ ОБОВ'ЯЗКОВО ▪ чекаю SMS з реквізитами",
-    shortName: 'На картку (Не Дзвонити)',
+    name: 'Оплата на рахунок IBAN або на картку',
+    description: 'Отримати SMS з реквізитами',
   },
   {
     id: 3,
-    name: '⚪Наложений платіж по передоплаті ▪ ЧЕКАЮ ДЗВІНОК ▪ хочу обговорити деталі замовлення',
-    shortName: '⚪Наложений по передоплаті',
+    name: 'Накладений платіж (з передоплатою)',
+    description: 'Очікую дзвінок для підтвердження',
   },
 ];
 const FRONTEND_URL = process.env.FRONTEND_URL;
 const IS_SEND = process.env.IS_SEND;
 
 class OrderController {
+  static NewFastOrder = async (req, resp, next) => {
+    try {
+      const { name, phone, realIdVolumeAndCountArray } = req.body;
+
+      const basket = [];
+      for (let i = 0; i < realIdVolumeAndCountArray.length; i++) {
+        const product = await Goods.findOne({
+          attributes: ['id', 'nameuk', 'nameru'],
+          include: [
+            {
+              model: Volume,
+              where: {
+                id: parseInt(realIdVolumeAndCountArray[i].realIdVolume),
+              },
+              include: [
+                {
+                  model: Img,
+
+                  raw: true,
+                  nest: true,
+                },
+              ],
+              raw: true,
+              nest: true,
+              required: true,
+            },
+          ],
+          raw: true,
+          nest: true,
+        });
+
+        if (product) {
+          basket.push({
+            ...product, // перетворюємо Sequelize model на звичайний об'єкт
+            count: realIdVolumeAndCountArray[i].count,
+          });
+        }
+      }
+
+      const sum = basket.reduce(
+        (acc, x) => (acc += x.volumes.priceWithDiscount * x.count),
+        0
+      );
+
+      const message = `
+      Користувач ${name} з мобільним телефоном ${phone} натиснув на швидке замовлення.
+        
+Товари на суму ${sum}
+${basket.map(
+  (x) => `
+назва ${x.nameuk}
+${FRONTEND_URL}/goods/${x.volumes.url}`
+)}`;
+
+      if (IS_SEND) {
+        await axios.post(
+          `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`,
+          {
+            chat_id: TELEGRAM_CHAT_ID,
+            text: message,
+            parse_mode: 'HTML',
+          }
+        );
+
+        sendEmail('info@baylap.com', message, 'Нове швидке замовлення.');
+        sendEmail('7551991@gmail.com', message, `нове швидке замовлення`);
+        sendEmail('664645@gmail.com', message, `нове швидке замовлення`);
+      }
+      /*const res = await Order.create({
+        nameUser: name,
+        email: '',
+        sum,
+        basket: JSON.stringify(basket),
+        phone: '',
+        deliveryType: '',
+        city: '',
+        comment: '',
+        commentMeneger: '',
+        oblast: '',
+        typePay: '',
+      });*/
+      //sendEmail('cerhiy99@gmail.com', message, `нове швидке замовлення`);
+
+      return resp.json({ ok: true });
+    } catch (err) {
+      console.log(4324, err);
+      return next(ErrorApi.badRequest(err));
+    }
+  };
+
   static FastOrder = async (req, resp, next) => {
     try {
       const { name, phone, goodsID, idVolume, nameProduct, realIdVolume } =
@@ -133,15 +231,430 @@ class OrderController {
         nameUser,
         phone,
         email,
-        contactInfo,
         basket,
-        coment,
+        comment,
         deliveryType,
         typePay,
         oblast,
         city,
         departmentOrPostomatOrAddress,
+        token,
+        countBonus,
+        promokod,
       } = await req.body;
+
+      const realBasket = [];
+      let additionalInfo = '';
+      for (let i = 0; i < basket.length; i++) {
+        const goods = await Goods.findOne({
+          attributes: ['id', 'nameuk', 'nameru'],
+          include: [
+            {
+              model: Volume,
+              where: { id: basket[i].volume.id },
+              include: [
+                {
+                  model: Img,
+                  raw: true,
+                  nest: true,
+                },
+              ],
+              required: true,
+              raw: true,
+              nest: true,
+            },
+          ],
+          raw: true,
+          nest: true,
+        });
+        const goodsWithCount = { ...goods, count: basket[i].count };
+        realBasket.push(goodsWithCount);
+      }
+
+      let sum = realBasket.reduce(
+        (acc, x) => (acc += x.count * x.volumes.priceWithDiscount),
+        0
+      );
+      const userGetBonus = realBasket.reduce(
+        (acc, x) =>
+          (acc += Math.floor(x.volumes.priceWithDiscount / 100) * x.count),
+        0
+      );
+
+      let user;
+      if (token) {
+        try {
+          const decoded = jwt.verify(token, process.env.JWT_SECRET);
+          user = await Users.findByPk(decoded.id);
+          if (
+            user.passwordUpdatedAt &&
+            decoded.iat * 1000 < user.passwordUpdatedAt.getTime()
+          ) {
+            return resp.status(403).json({
+              message: 'Не вірні дані акаунту, спробуйте вийти і увійти ще раз',
+            });
+          }
+          Users.update(
+            { latestActivity: literal('NOW()') },
+            { where: { id: decoded.id } }
+          );
+        } catch (err) {
+          return resp.status(403).json({
+            message: 'Не вірні дані акаунту, спробуйте вийти і увійти ще раз',
+          });
+        }
+      }
+
+      let fullPromokod;
+      if (promokod) {
+        additionalInfo = 'Корисутвач використав промкод ' + promokod;
+        fullPromokod = await Promokods.findOne({ where: { code: promokod } });
+        if (!fullPromokod) {
+          return resp
+            .status(404)
+            .json({ message: 'Промокод видалено або не знайдено' });
+        }
+        if (fullPromokod.min_price && sum < fullPromokod.min_price) {
+          return resp.status(403).json({
+            message: `Промокод діє від ${fullPromokod.min_price}, щоб його виористати добавте ще товарів на суму ${fullPromokod.min_price - sum}`,
+          });
+        }
+        if (countBonus > 0) {
+          return resp.status(403).json({
+            message:
+              'Не можна використовувати бонуси якщо використовується промокод',
+          });
+        }
+        if (!token) {
+          if (fullPromokod.countPromokods <= 0) {
+            return resp
+              .status(403)
+              .json({ message: 'Промокод вже не дійсний' });
+          }
+          // якщо є токен то користувач авторизований і промокод за ним зарезервувася і кількість вже зняло
+          fullPromokod.countPromokods = fullPromokod.countPromokods - 1;
+          await fullPromokod.save();
+        } else {
+          const userBronPromokod = await UserBronPromokod.findOne({
+            where: { userId: user.id, promokodId: fullPromokod.id },
+          });
+          if (userBronPromokod.isUse) {
+            return resp.status(403).json({
+              message:
+                'Ви вже використовували цей промокод, його можна використати лише раз',
+            });
+          }
+          userBronPromokod.isUse = true;
+          await userBronPromokod.save();
+        }
+        if (
+          fullPromokod.type == 'select_goods_discount_sum' ||
+          fullPromokod.type == 'select_goods_discount_procent'
+        ) {
+          const productForDiscount = realBasket.find(
+            (x) => x.volumes.art == fullPromokod.selectVolumeArt
+          );
+          if (!productForDiscount) {
+            return resp.status(403).json({
+              message: `Промокод діє для товара з артикулом ${fullPromokod.selectVolumeArt}, добавте цей товар в кошик, або не використовуйте промокод.`,
+            });
+          }
+          const product = productForDiscount;
+          const nameProductForPromokod = product.nameuk;
+          const count = product.count;
+          const price = product.volumes.priceWithDiscount;
+
+          if (fullPromokod.type === 'select_goods_discount_sum') {
+            const discountPerItem = fullPromokod.price_discount;
+
+            const finalPricePerItem = Math.max(0, price - discountPerItem);
+            const discountTotal = (price - finalPricePerItem) * count;
+
+            sum -= discountTotal;
+
+            additionalInfo += `<br>Користувач використав промокод на знижку товару ${nameProductForPromokod} по ${discountPerItem} грн за одиницю, знижка врахована в сумі`;
+          } else {
+            const percent = fullPromokod.procent;
+
+            const discountPerItem = (price / 100) * percent;
+            const finalPricePerItem = Math.max(0, price - discountPerItem);
+            const discountTotal = (price - finalPricePerItem) * count;
+
+            sum -= discountTotal;
+
+            additionalInfo += `<br>Користувач використав промокод на знижку товару ${nameProductForPromokod} по ${percent}%, знижка врахована в сумі`;
+          }
+        } else if (fullPromokod.type === 'select_goods_free') {
+          let product = realBasket.find(
+            (x) => x.volumes.art === fullPromokod.selectVolumeArt
+          );
+
+          if (!product) {
+            // ❗ треба підтягнути товар з БД
+            const goods = await Goods.findOne({
+              include: [
+                {
+                  model: Volume,
+                  where: { art: fullPromokod.selectVolumeArt },
+                  required: true,
+                },
+              ],
+            });
+
+            if (!goods) {
+              return resp.status(403).json({ message: 'Товар не знайдено' });
+            }
+
+            product = { ...goods.dataValues, count: 1, isFree: true };
+            realBasket.push(product);
+
+            additionalInfo += `<br>Користувач отримав безкоштовний товар за промокодом (додано автоматично)`;
+          } else {
+            const price = product.volumes.priceWithDiscount;
+
+            sum = Math.max(0, sum - price);
+
+            additionalInfo += `<br>Користувач отримав 1 безкоштовний товар ${product.nameuk}`;
+          }
+        } else if (fullPromokod.type == 'procent') {
+          additionalInfo += `<br>Користувач використав промокод на знижку -${fullPromokod.procent}%, в сумі знижка врахована`;
+          sum = sum - (sum / 100) * fullPromokod.procent;
+        } else {
+          additionalInfo += `<br>Користувач використав промокод на знижку -${fullPromokod.price_discount} грн, в сумі знижка врахована`;
+          sum = sum - fullPromokod.price_discount;
+        }
+      }
+      if (countBonus > 0) {
+        if (!token) {
+          return resp.status(403).json({
+            message: 'Не можна використовувати бонус якщо ви не авторизовані',
+          });
+        }
+        const countAvaibleBonus = await this.GetCountAvailableBonusUser(
+          user.id
+        );
+        if (countBonus > countAvaibleBonus) {
+          return resp.status(403).json({
+            message: 'Не можна використовувати більше бонусів ніж у вас є',
+          });
+        }
+        if (sum / 2 < countBonus) {
+          return resp.status(403).json({
+            message:
+              'Бонусами можна розрахуватися тільки вартість 50% свого замовленн',
+          });
+        }
+        sum -= countBonus;
+        additionalInfo += `Користувач розахувався бонусами в кількості ${countBonus}, знижка бонусів врахована у суму<br>`;
+      }
+
+      const order = await Order.create({
+        nameUser: nameUser,
+        email: email,
+        sum: sum,
+        basket: JSON.stringify(realBasket),
+        phone: phone,
+        comment: comment,
+        deliveryType: deliveryType,
+        countBonus: countBonus,
+        typePay: typePay,
+        oblast: oblast,
+        city: city,
+        departmentOrPostomatOrAddress: departmentOrPostomatOrAddress,
+        userGetBonus: userGetBonus,
+        promokodId: fullPromokod ? fullPromokod.id : null,
+        userId: user ? user.id : null,
+        additionalInfo,
+      });
+
+      resp.json({ order });
+
+      const telegramMessage = `
+📦 Нове замовлення
+
+👤 Імʼя: ${nameUser}
+📞 Телефон: ${phone}
+📧 Email: ${email || '—'}
+
+🚚 Доставка: ${deliveryType}
+📍 Адреса: ${oblast}, ${city}, ${departmentOrPostomatOrAddress}
+
+💳 Оплата: ${listWayDelivery.find((x) => x.id == typePay).name}
+${listWayDelivery.find((x) => x.id == typePay).description}
+
+🛒 Сума: ${sum} грн
+🎁 Бонуси: ${countBonus || 0}
+🏷 Промокод: ${promokod || '—'}
+
+📝 Коментар: ${comment || '—'}
+
+🧾 Товари:
+${realBasket
+  .map(
+    (item) =>
+      `- ${item.nameuk} × ${item.count} (${item.volumes.priceWithDiscount} грн)`
+  )
+  .join('\n')}
+
+ℹ️ Додаткова інформація:
+${additionalInfo || '—'}
+`;
+    } catch (err) {
+      console.log('Помилка замовлення,', err);
+      return next(ErrorApi.badRequest(err));
+    }
+  };
+
+  //доступні бонуси
+  static GetCountAvailableBonusUser = async (userId) => {
+    try {
+      // 🔹 1. check last order (365 days rule)
+      const lastOrder = await Order.findOne({
+        where: {
+          userId,
+          status: {
+            [Op.ne]: 'cansel',
+          },
+        },
+        order: [['createdAt', 'DESC']],
+      });
+
+      if (lastOrder) {
+        const now = new Date();
+        const lastDate = new Date(lastOrder.createdAt);
+
+        const diffDays = (now - lastDate) / (1000 * 60 * 60 * 24);
+
+        if (diffDays > 365) {
+          return 0;
+        }
+      }
+
+      // 🔹 2. 20 days rule
+      const limitDate = new Date();
+      limitDate.setDate(limitDate.getDate() - 20);
+
+      const earnedBonus = await Order.sum('userGetBonus', {
+        where: {
+          userId,
+          status: 'finish',
+          createdAt: {
+            [Op.lte]: limitDate,
+          },
+        },
+      });
+
+      const usedBonus = await Order.sum('countBonus', {
+        where: {
+          userId,
+          status: {
+            [Op.ne]: 'cansel',
+          },
+        },
+      });
+
+      const available = (earnedBonus || 0) - (usedBonus || 0);
+
+      return available > 0 ? available : 0;
+    } catch (err) {
+      console.log('GetCountAvailableBonusUser error:', err);
+      return 0;
+    }
+  };
+
+  //Витрачено за весь час
+  static GetCountSpentBonuses = async (userId) => {
+    try {
+      const usedBonus = await Order.sum('countBonus', {
+        where: {
+          userId,
+          status: {
+            [Op.ne]: 'cansel',
+          },
+          countBonus: {
+            [Op.gt]: 0,
+          },
+        },
+      });
+
+      return usedBonus || 0;
+    } catch (err) {
+      console.log('GetCountSpentBonuses error:', err);
+      return 0;
+    }
+  };
+
+  //Очікують нарахування
+  static GetCountPendingBonuses = async (userId) => {
+    try {
+      const limitDate = new Date();
+      limitDate.setDate(limitDate.getDate() - 20);
+
+      const pendingBonus = await Order.sum('userGetBonus', {
+        where: {
+          userId,
+          status: {
+            [Op.ne]: 'cansel',
+          },
+          createdAt: {
+            [Op.gt]: limitDate, // ще НЕ пройшло 20 днів
+          },
+        },
+      });
+
+      return pendingBonus || 0;
+    } catch (err) {
+      console.log('GetCountPendingBonuses error:', err);
+      return 0;
+    }
+  };
+
+  //найближчs дні через які бонуси згорають
+  static GetDaysUntilBonusExpire = async (userId) => {
+    try {
+      const { Op } = require('sequelize');
+
+      const lastOrder = await Order.findOne({
+        where: {
+          userId,
+          status: {
+            [Op.ne]: 'cansel',
+          },
+        },
+        order: [['createdAt', 'DESC']],
+      });
+
+      if (!lastOrder) return 0;
+
+      const now = new Date();
+      const lastDate = new Date(lastOrder.createdAt);
+
+      const diffDays = (now - lastDate) / (1000 * 60 * 60 * 24);
+
+      const daysLeft = 365 - diffDays;
+
+      return daysLeft > 0 ? Math.ceil(daysLeft) : 0;
+    } catch (err) {
+      console.log('GetDaysUntilBonusExpire error:', err);
+      return 0;
+    }
+  };
+
+  static GetBonusFull = async (req, resp, next) => {
+    try {
+      const userId = req.user.id;
+
+      const available = await this.GetCountAvailableBonusUser(userId); // доступні
+      const pending = await this.GetCountPendingBonuses(userId); // очікують
+      const spent = await this.GetCountSpentBonuses(userId); // витрачені
+      const daysUntilExpire = await this.GetDaysUntilBonusExpire(userId); // до згорання
+
+      return resp.json({
+        available,
+        pending,
+        spent,
+        daysUntilExpire,
+      });
     } catch (err) {
       return next(ErrorApi.badRequest(err));
     }
@@ -708,7 +1221,7 @@ ${process.env.FRONTEND_URL + `/ru/admin/orders/edit-order/${res.id}`}`;
       const basketText = JSON.parse(res.basket).map((item, i) => {
         return `
 🏪 Кількість товару: (${item.count}) шт
-🔗 Посилання на товар ${item.nameru}: ${FRONTEND_URL}/goods/${item.volumes[0].url}`;
+🔗 Посилання на товар ${item.nameru}: ${FRONTEND_URL}/goods/${item.volumes.url}`;
       });
 
       const message = `<b>ЗАКАЗ №${res.id}</b>
@@ -721,7 +1234,6 @@ ${process.env.FRONTEND_URL + `/ru/admin/orders/edit-order/${res.id}`}`;
   
 💳 Тип оплати: ${res.typePay}
   
-${res.contactInfo.replace(/<[^>]*>/g, '')}
 ${basketText}`;
       if (IS_SEND) {
         await axios.post(
@@ -735,6 +1247,7 @@ ${basketText}`;
       }
       return resp.json(res);
     } catch (err) {
+      console.log(434, err);
       return next(ErrorApi.badRequest(err));
     }
   };
@@ -752,7 +1265,19 @@ ${basketText}`;
   static Getorder = async (req, resp, next) => {
     try {
       const { id } = req.params;
-      const order = await Order.findOne({ where: { id: parseInt(id) } });
+      const order = await Order.findOne({
+        where: {
+          id: parseInt(id),
+        },
+        include: [
+          {
+            model: Promokods,
+          },
+          {
+            model: Users,
+          },
+        ],
+      });
       return resp.json(order);
     } catch (err) {
       return next(ErrorApi.badRequest(err));
@@ -761,7 +1286,6 @@ ${basketText}`;
   static GetProductToOrder = async (req, resp, next) => {
     try {
       const { url } = req.query;
-      console.log(3423, url);
       const product = await Goods.findOne({
         attributes: ['id', 'nameru', 'nameuk'],
         include: [
@@ -770,16 +1294,22 @@ ${basketText}`;
             where: {
               art: url,
             },
+            raw: true,
+            nest: true,
+            required: true,
             include: [
               {
                 model: Img,
+                raw: true,
+                nest: true,
               },
             ],
           },
         ],
+        raw: true,
+        nest: true,
       });
-      const res = { ...product.toJSON(), count: 1 };
-      return resp.json(res);
+      return resp.json(product);
     } catch (err) {
       console.log(324, err);
       return next(ErrorApi.badRequest(err));
@@ -860,9 +1390,10 @@ ${basketText}`;
 
       // Розрахунок бонусу
       const totalBonus = orders.reduce((acc, order) => {
-        const percent = order.procent || 0;
+        let procent = 0;
+        if (order.isToMeneger) procent = 3;
         const sum = Number(order.sum) || 0;
-        return acc + (sum * percent) / 100;
+        return acc + (sum * procent) / 100;
       }, 0);
 
       // Загальна сума замовлень
@@ -907,6 +1438,16 @@ ${basketText}`;
         order: [['id', 'desc']],
       });
       return resp.json({ orders: orders.rows, count: orders.count });
+    } catch (err) {
+      console.log(4324, err);
+      return next(ErrorApi.badRequest(err));
+    }
+  };
+  static getCountUserBonnus = async (req, resp, next) => {
+    try {
+      const userId = req.user.id;
+      const countBonus = await this.GetCountAvailableBonusUser(userId);
+      return resp.json({ countBonus });
     } catch (err) {
       return next(ErrorApi.badRequest(err));
     }

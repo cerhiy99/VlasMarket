@@ -226,7 +226,7 @@ const AddPromokods = (props: Props) => {
             />
           </div>
         )}
-        {(promokod.type.startsWith('select_goods_discount_procent') ||
+        {(promokod.type == 'select_goods_discount_procent' ||
           promokod.type == 'procent') && (
           <div className="value">
             <label>Відсоток знижки</label>
@@ -238,28 +238,28 @@ const AddPromokods = (props: Props) => {
             />
           </div>
         )}
-        {promokod.type == 'price' && (
-          <div className="value">
-            <label>Мінімальна ціна для знижку в грн</label>
-            <input
-              value={Number(promokod.min_price)}
-              name="min_price"
-              onChange={setData}
-              required
-            />
-          </div>
-        )}
-        {promokod.type == 'price' && (
-          <div className="value">
-            <label>Знижка в грн</label>
-            <input
-              value={Number(promokod.price_discount)}
-              name="price_discount"
-              onChange={setData}
-              required
-            />
-          </div>
-        )}
+        <div className="value">
+          <label>Мінімальна ціна для знижку в грн</label>
+          <input
+            value={Number(promokod.min_price)}
+            name="min_price"
+            onChange={setData}
+            required
+          />
+        </div>
+
+        {promokod.type == 'price' ||
+          (promokod.type == 'select_goods_discount_sum' && (
+            <div className="value">
+              <label>Знижка в грн</label>
+              <input
+                value={Number(promokod.price_discount)}
+                name="price_discount"
+                onChange={setData}
+                required
+              />
+            </div>
+          ))}
         <button>Додати</button>
       </form>
     </div>

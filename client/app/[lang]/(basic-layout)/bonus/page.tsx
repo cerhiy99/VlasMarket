@@ -14,26 +14,9 @@ type BonusCard = {
   text?: string;
 };
 
-type BonusDictionary = {
-  title: string;
-  heroTitle: string;
-  heroDescription: string;
-  heroRate: string;
-  heroNote: string;
-  cards: {
-    accrual: BonusCard;
-    activation: BonusCard;
-    noAccrual: BonusCard;
-    cancel: BonusCard;
-    return: BonusCard;
-    term: BonusCard;
-  };
-};
-
 const Page = async ({ params }: Props) => {
   const { lang } = await params;
-  const dictionary = await getDictionary(lang);
-  const bonus = dictionary.bonus as BonusDictionary;
+  const { bonus }: any = await getDictionary(lang);
 
   const cards = [
     {

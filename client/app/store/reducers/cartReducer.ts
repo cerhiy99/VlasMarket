@@ -86,6 +86,17 @@ const cartSlice = createSlice({
       saveToLocalStorage('basket', state.basket);
       state.isOpenBasket = true;
     },
+    addToBasketNoOpenBasket: (state, action: PayloadAction<BasketItem>) => {
+      const itemIndex = state.basket.findIndex(
+        (item) => item.id === action.payload.id
+      );
+      if (itemIndex >= 0) {
+        state.basket[itemIndex].count += action.payload.count;
+      } else {
+        state.basket.push(action.payload);
+      }
+      saveToLocalStorage('basket', state.basket);
+    },
     removeFromBasket: (state, action: PayloadAction<number>) => {
       const itemIndex = state.basket.findIndex(
         (item) => item.id === action.payload
@@ -189,6 +200,7 @@ export const {
   setIsOpenBasket,
   addToComparisont,
   removeFromComparisont,
+  addToBasketNoOpenBasket,
 } = cartSlice.actions;
 
 export default cartSlice.reducer;

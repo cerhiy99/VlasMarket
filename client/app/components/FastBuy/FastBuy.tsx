@@ -44,15 +44,14 @@ const FastBuy = ({
     e.preventDefault();
 
     try {
-      if (message || error) return;
+      setMessage('');
+      setError('');
 
       await $host.post('order/fastOrder', {
         name,
         phone: number,
         goodsID: idGoods,
-        idVolume,
-        nameProduct,
-        realIdVolume,
+        realIdVolumeAndCountArray: [{ realIdVolume, count: 1 }],
       });
 
       setMessage('Заявка успішно надіслана.');

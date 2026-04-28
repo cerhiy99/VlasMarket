@@ -13,22 +13,47 @@ router.post('/mass-delete', IsAdminMiddleWare, GoodsControllers.MassDelete);
 router.post('/mass-hide', IsAdminMiddleWare, GoodsControllers.MassHide);
 router.post('/mass-show', IsAdminMiddleWare, GoodsControllers.MassShow);
 router.get('/get-views', IsAdminMiddleWare, GoodsControllers.GetView);
-router.post('/addRecognition', IsAdminMiddleWare, GoodsControllers.AddRecognitions);
-router.get('/getRecognition', IsAdminMiddleWare, GoodsControllers.GetRecognitions);
-router.get('/getRecognitionForCategory', GoodsControllers.GetRecognitionsForCategory);
-router.post('/editRecognition', IsAdminMiddleWare, GoodsControllers.EditRecognitions);
+router.post(
+  '/addRecognition',
+  IsAdminMiddleWare,
+  GoodsControllers.AddRecognitions
+);
+router.get(
+  '/getRecognition',
+  IsAdminMiddleWare,
+  GoodsControllers.GetRecognitions
+);
+router.get(
+  '/getRecognitionForCategory',
+  GoodsControllers.GetRecognitionsForCategory
+);
+router.post(
+  '/editRecognition',
+  IsAdminMiddleWare,
+  GoodsControllers.EditRecognitions
+);
 router.post('/addLinia', IsAdminMiddleWare, GoodsControllers.AddLine);
 router.get('/getLinia', IsAdminMiddleWare, GoodsControllers.GetLine);
 router.get('/GetForBasketOrLike', GoodsControllers.GetForBasketOrLike);
 router.get('/getForSiteMapCatalog', GoodsControllers.GetForSiteMapCatalog);
 router.get('/getForSiteMapCategory', GoodsControllers.GetCategoryForSiteMap);
-router.get('/getSubcategoryForSiteMap', GoodsControllers.GetSubcategoryForSiteMap);
+router.get(
+  '/getSubcategoryForSiteMap',
+  GoodsControllers.GetSubcategoryForSiteMap
+);
 router.get('/getBrendsForSitemap', GoodsControllers.GetBrendsForSitemap);
 router.get('/getDiscountFromSitemap', GoodsControllers.GetDiscountFromSitemap);
-router.get('/getSelectGoodsForSitemap', GoodsControllers.GetSelectGoodsForSitemap);
-router.get('/getSelectGoodsForSitemapWithImg', GoodsControllers.GetSelectGoodsForSitemapWithImg);
+router.get(
+  '/getSelectGoodsForSitemap',
+  GoodsControllers.GetSelectGoodsForSitemap
+);
+router.get(
+  '/getSelectGoodsForSitemapWithImg',
+  GoodsControllers.GetSelectGoodsForSitemapWithImg
+);
 router.get('/getMiniGoods', GoodsControllers.GetMiniGoods);
 router.post('/editLine/:idLine', IsAdminMiddleWare, GoodsControllers.EditLine);
 router.post('/delLine/:idLine', IsAdminMiddleWare, GoodsControllers.DelLine);
+router.get('/getForVolumeMini/:art', GoodsControllers.GetForVolumeMini);
 
 module.exports = router;

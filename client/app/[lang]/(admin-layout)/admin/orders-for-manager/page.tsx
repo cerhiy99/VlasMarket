@@ -10,6 +10,7 @@ import SearchSVG from '@/app/assest/Admin/Search.svg';
 import Link from 'next/link';
 import { $authHost } from '@/app/http';
 import { getLocalizedPath } from '@/app/components/utils/getLocalizedPath';
+import { listWayDelivery } from '../orders/page';
 // import { ChevronDown, ChevronUp } from 'lucide-react'
 
 interface Order {
@@ -121,7 +122,11 @@ const OrderCard = ({
     <div className={`order-card ${isSelected ? 'selected' : ''}`}>
       <div className="order-card-header">
         <div className="order-checkbox">
-          <input type="checkbox" checked={isSelected} onChange={() => onToggleSelect(order.id)} />
+          <input
+            type="checkbox"
+            checked={isSelected}
+            onChange={() => onToggleSelect(order.id)}
+          />
         </div>
         <div className="order-id">
           <span className="label">ID:</span> {order.id}
@@ -132,7 +137,9 @@ const OrderCard = ({
         <button
           className="expand-button"
           onClick={() => setExpandedOrderId(isExpanded ? null : order.id)}
-          aria-label={isExpanded ? 'Collapse order details' : 'Expand order details'}
+          aria-label={
+            isExpanded ? 'Collapse order details' : 'Expand order details'
+          }
         >
           {isExpanded ? 'Закрыть' : 'Открыть'}
         </button>
@@ -167,7 +174,10 @@ const OrderCard = ({
 
           <div className="details-section">
             <h4>Доставка</h4>
-            <div className="delivery" dangerouslySetInnerHTML={{ __html: order.contactInfo }} />
+            <div
+              className="delivery"
+              dangerouslySetInnerHTML={{ __html: order.contactInfo }}
+            />
           </div>
 
           <div className="details-section">
@@ -178,14 +188,15 @@ const OrderCard = ({
                   <div className="item-title">{x.nameru}</div>
                   <div className="item-details">
                     <div className="item-price">
-                      <span className="label">Цена:</span> {x.volumes[0].priceWithDiscount} грн
+                      <span className="label">Цена:</span>{' '}
+                      {x.volumes.priceWithDiscount} грн
                     </div>
                     <div className="item-quantity">
                       <span className="label">Количество:</span> {x.count} шт.
                     </div>
                     <div className="item-total">
                       <span className="label">Сумма:</span>{' '}
-                      {x.count * x.volumes[0].priceWithDiscount} грн.
+                      {x.count * x.volumes.priceWithDiscount} грн.
                     </div>
                   </div>
                 </div>
@@ -241,7 +252,11 @@ const OrdersPage = ({ params }: { params: Promise<{ lang: Locale }> }) => {
   const [expandedFilters, setExpandedFilters] = useState<boolean>(false);
   const [selectStatus, setSelectStatus] = useState<string>('wait');
 
-  const handleOrderChange = <K extends keyof Order>(id: number, key: K, value: Order[K]) => {
+  const handleOrderChange = <K extends keyof Order>(
+    id: number,
+    key: K,
+    value: Order[K]
+  ) => {
     /*setFilteredOrders(prev =>
       prev.map(order => (order.id === id ? { ...order, [key]: value } : order))
     )*/
@@ -344,7 +359,9 @@ const OrdersPage = ({ params }: { params: Promise<{ lang: Locale }> }) => {
         '7': 'Отменен',
         '8': 'Корзина',
       };
-      result = result.filter((order) => order.status === statusMap[statusFilter]);
+      result = result.filter(
+        (order) => order.status === statusMap[statusFilter]
+      );
     }
     //setFilteredOrders(result)
     setCurrentPage(1);
@@ -375,7 +392,10 @@ const OrdersPage = ({ params }: { params: Promise<{ lang: Locale }> }) => {
   // Проверка, выбраны ли все заказы на текущей странице
   const areAllCurrentPageOrdersSelected = useMemo(() => {
     const currentPageIds = getCurrentPageOrders().map((order) => order.id);
-    return currentPageIds.length > 0 && currentPageIds.every((id) => selectedOrderIds.includes(id));
+    return (
+      currentPageIds.length > 0 &&
+      currentPageIds.every((id) => selectedOrderIds.includes(id))
+    );
   }, [getCurrentPageOrders, selectedOrderIds]);
 
   const setStatus = async () => {
@@ -438,7 +458,9 @@ const OrdersPage = ({ params }: { params: Promise<{ lang: Locale }> }) => {
 
   const getOrders = async () => {
     try {
-      const res = await $authHost.get('order/getOrdersMeneger?page=' + currentPage);
+      const res = await $authHost.get(
+        'order/getOrdersMeneger?page=' + currentPage
+      );
       const trueOrders = res.data.orders.map((x: any) => ({
         id: x.id,
         date: x.createdAt.slice(0, 10),
@@ -448,7 +470,29 @@ const OrdersPage = ({ params }: { params: Promise<{ lang: Locale }> }) => {
         pib: x.nameUser,
         deliveryType: x.deliveryType,
         city: x.city,
-        contactInfo: x.contactInfo,
+        contactInfo: `<div class='info'>
+<p>Телефон:</p>
+<span>${x.phone}</span>
+<p>Ф.И.О.:</p>
+<span>${x.nameUser}</span>
+<p>Вариант доставки:</p>
+<span>${x.deliveryType}</span>
+<p>Область</p>
+<span>${x.oblast}</span>
+<p>Населений пункт</p>
+<span>${x.city}</span>
+<p>Відділення/Адрес</p>
+<span>${x.departmentOrPostomatOrAddress}</span>
+<p>Тип оплати</p>
+<span>${listWayDelivery.find((j) => j.id == x.typePay)?.name}
+<br>
+${listWayDelivery.find((j) => j.id == x.typePay)?.description}
+</span>
+<p>Коментар</p>
+<span>${x.comment}</span>
+<p>Додаткова інформація:</p>
+<span>${x.additionalInfo}</span>
+</div>`,
         sum: x.sum + ' грн.',
         status: listMassOperation.find((j) => j.id == x.status)?.name,
         isMenedher: x.isToMeneger,
@@ -507,7 +551,9 @@ const OrdersPage = ({ params }: { params: Promise<{ lang: Locale }> }) => {
             </button>
           )}
 
-          <div className={`filters ${isMobile && !expandedFilters ? 'filters-hidden' : ''}`}>
+          <div
+            className={`filters ${isMobile && !expandedFilters ? 'filters-hidden' : ''}`}
+          >
             <div className="filter-row">
               <div className="start">
                 <span className="filter-label">Дата начала:</span>
@@ -519,14 +565,23 @@ const OrdersPage = ({ params }: { params: Promise<{ lang: Locale }> }) => {
               </div>
               <div className="finish">
                 <span className="filter-label">Дата окончания:</span>
-                <input type="date" value={endDate} onChange={(e) => setEndDate(e.target.value)} />
+                <input
+                  type="date"
+                  value={endDate}
+                  onChange={(e) => setEndDate(e.target.value)}
+                />
               </div>
             </div>
 
             <div className="filter-row">
               <div className="status">
-                <span className="filter-label status__label">Статус заказа:</span>
-                <select value={selectStatus} onChange={(e) => setSelectStatus(e.target.value)}>
+                <span className="filter-label status__label">
+                  Статус заказа:
+                </span>
+                <select
+                  value={selectStatus}
+                  onChange={(e) => setSelectStatus(e.target.value)}
+                >
                   {listMassOperation.map((x) => (
                     <option key={x.id} value={x.id}>
                       {x.name}
@@ -535,7 +590,10 @@ const OrdersPage = ({ params }: { params: Promise<{ lang: Locale }> }) => {
                 </select>
               </div>
               <div className="add" style={{ position: 'relative' }}>
-                <Link href={`orders/new-order`} style={{ position: 'absolute', inset: 0 }}></Link>
+                <Link
+                  href={`orders/new-order`}
+                  style={{ position: 'absolute', inset: 0 }}
+                ></Link>
                 Добавить заказ
               </div>
             </div>
@@ -556,7 +614,10 @@ const OrdersPage = ({ params }: { params: Promise<{ lang: Locale }> }) => {
       </div>
       {isMobile && (
         <div className="selects-adn-input">
-          <select value={selectStatus} onChange={(e) => setSelectStatus(e.target.value)}>
+          <select
+            value={selectStatus}
+            onChange={(e) => setSelectStatus(e.target.value)}
+          >
             {listMassOperation.map((x) => (
               <li key={x.id} value={x.id}>
                 {x.name}
@@ -564,14 +625,20 @@ const OrdersPage = ({ params }: { params: Promise<{ lang: Locale }> }) => {
             ))}
           </select>
 
-          <button onClick={applyBulkAction} disabled={selectedOrderIds.length === 0}>
+          <button
+            onClick={applyBulkAction}
+            disabled={selectedOrderIds.length === 0}
+          >
             Застосувати
           </button>
         </div>
       )}
       {!isMobile && (
         <div className="selects-adn-input">
-          <select value={selectStatus} onChange={(e) => setSelectStatus(e.target.value)}>
+          <select
+            value={selectStatus}
+            onChange={(e) => setSelectStatus(e.target.value)}
+          >
             {listMassOperation.map((x) => (
               <option key={x.id} value={x.id}>
                 {x.name}
@@ -579,7 +646,10 @@ const OrdersPage = ({ params }: { params: Promise<{ lang: Locale }> }) => {
             ))}
           </select>
 
-          <button onClick={applyBulkAction} disabled={selectedOrderIds.length === 0}>
+          <button
+            onClick={applyBulkAction}
+            disabled={selectedOrderIds.length === 0}
+          >
             Застосувати
           </button>
         </div>
@@ -613,22 +683,27 @@ const OrdersPage = ({ params }: { params: Promise<{ lang: Locale }> }) => {
               onChange={(e) => toggleSelectAll(e.target.checked)}
             />
             <div className="id" onClick={() => sortOrders('id')}>
-              ID {sortConfig?.key === 'id' && (sortConfig.direction === 'ascending' ? '↑' : '↓')}
+              ID{' '}
+              {sortConfig?.key === 'id' &&
+                (sortConfig.direction === 'ascending' ? '↑' : '↓')}
             </div>
             <div className="date" onClick={() => sortOrders('date')}>
               Дата{' '}
-              {sortConfig?.key === 'date' && (sortConfig.direction === 'ascending' ? '↑' : '↓')}
+              {sortConfig?.key === 'date' &&
+                (sortConfig.direction === 'ascending' ? '↑' : '↓')}
             </div>
             <div className="email" onClick={() => sortOrders('email')}>
               E-mail{' '}
-              {sortConfig?.key === 'email' && (sortConfig.direction === 'ascending' ? '↑' : '↓')}
+              {sortConfig?.key === 'email' &&
+                (sortConfig.direction === 'ascending' ? '↑' : '↓')}
             </div>
             <div className="contact-info">Контактная информация</div>
             <div className="order-list-basket">Позиции заказа</div>
             <div className="sum">Сума</div>
             <div className="status" onClick={() => sortOrders('status')}>
               Статус{' '}
-              {sortConfig?.key === 'status' && (sortConfig.direction === 'ascending' ? '↑' : '↓')}
+              {sortConfig?.key === 'status' &&
+                (sortConfig.direction === 'ascending' ? '↑' : '↓')}
             </div>
             <div className="coment-meneger">Комментарий менеджера</div>
             <div className="deystvia">Действия</div>
@@ -650,7 +725,10 @@ const OrdersPage = ({ params }: { params: Promise<{ lang: Locale }> }) => {
               <div className="date">{order.date}</div>
               <div className="email">{order.email}</div>
               <div className="contact-info">
-                <div className="info" dangerouslySetInnerHTML={{ __html: order.contactInfo }} />
+                <div
+                  className="info"
+                  dangerouslySetInnerHTML={{ __html: order.contactInfo }}
+                />
               </div>
               <div className="order-list-basket">
                 <div className="order-list-basket-header">
@@ -663,14 +741,21 @@ const OrdersPage = ({ params }: { params: Promise<{ lang: Locale }> }) => {
                   {JSON.parse(order.basket).map((x: any) => (
                     <div className="one-basket" key={x.id}>
                       <Link
-                        href={getLocalizedPath(`/${lang}/goods/${x.volumes[0].url}`, lang)}
+                        href={getLocalizedPath(
+                          `/${lang}/goods/${x.volumes.url}`,
+                          lang
+                        )}
                         className="title"
                       >
-                        {x.nameru} {x.volumes[0].volume.split('||')[0]}
+                        {x.nameru} {x.volumes.volume.split('||')[0]}
                       </Link>{' '}
-                      <div className="price-with-one">{x.volumes[0].priceWithDiscount} грн.</div>
+                      <div className="price-with-one">
+                        {x.volumes.priceWithDiscount} грн.
+                      </div>
                       <div className="count">{x.count}</div>
-                      <div className="sum">{x.count * x.volumes[0].priceWithDiscount} грн.</div>
+                      <div className="sum">
+                        {x.count * x.volumes.priceWithDiscount} грн.
+                      </div>
                     </div>
                   ))}
                 </div>
@@ -685,7 +770,12 @@ const OrdersPage = ({ params }: { params: Promise<{ lang: Locale }> }) => {
                 />
               </div>
               <div className="deystvia">
-                <Link href={getLocalizedPath(`/${lang}/admin/orders/edit-order/${order.id}`, lang)}>
+                <Link
+                  href={getLocalizedPath(
+                    `/${lang}/admin/orders/edit-order/${order.id}`,
+                    lang
+                  )}
+                >
                   <button>Редактировать</button>
                 </Link>
               </div>

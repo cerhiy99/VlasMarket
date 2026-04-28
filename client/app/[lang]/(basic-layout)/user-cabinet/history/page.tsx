@@ -38,6 +38,41 @@ const limit = 5;
 
 const HistoryPage = ({ params }: { params: Promise<{ lang: Locale }> }) => {
   const { lang } = use(params);
+  const listWayDelivery = [
+    {
+      id: 1,
+      name:
+        lang == 'ru'
+          ? 'Оплата на счет IBAN или на карту'
+          : 'Оплата на рахунок IBAN або на картку',
+      description:
+        lang == 'ru'
+          ? 'Ожидаю звонок для уточнения деталей'
+          : 'Очікую дзвінок для уточнення деталей',
+    },
+    {
+      id: 2,
+      name:
+        lang == 'ru'
+          ? 'Оплата на счет IBAN или на карту'
+          : 'Оплата на рахунок IBAN або на картку',
+      description:
+        lang == 'ru'
+          ? 'Получить SMS с реквизитами'
+          : 'Отримати SMS з реквізитами',
+    },
+    {
+      id: 3,
+      name:
+        lang == 'ru'
+          ? 'Наложенный платеж (с предоплатой)'
+          : 'Накладений платіж (з передоплатою)',
+      description:
+        lang == 'ru'
+          ? 'Ожидаю звонок для подтверждения'
+          : 'Очікую дзвінок для підтвердження',
+    },
+  ];
   const [page, setPage] = useState(1);
   const [orders, setOrders] = useState<Order[]>(mockOrders);
   const [countPages, setCountPages] = useState(1);
@@ -64,13 +99,13 @@ const HistoryPage = ({ params }: { params: Promise<{ lang: Locale }> }) => {
         }).format(createdAt);
         return formattedDate;
       };
-      //console.log(5434, JSON.parse(res.data.orders[0].basket));
+      console.log(5434, res.data.orders);
       setOrders(
         res.data.orders.map((x: any) => ({
           id: x.id,
           date: fotmatCreatedAt(x.createdAt),
           status: x.status,
-          paymentLabel: x.typePay.replaceAll('⚪', ''),
+          paymentLabel: listWayDelivery.find((j) => j.id == x.typePay)?.name,
           deliveryType: x.deliveryType,
           deliveryLabel: x.deliveryType,
           total: x.sum,
@@ -78,9 +113,9 @@ const HistoryPage = ({ params }: { params: Promise<{ lang: Locale }> }) => {
           items: JSON.parse(x.basket).map((j: any) => ({
             id: j.id,
             title: lang == 'ru' ? j.nameru : j.nameuk,
-            image: process.env.NEXT_PUBLIC_SERVER + j.volumes[0].imgs[0].img,
+            image: process.env.NEXT_PUBLIC_SERVER + j.volumes.imgs.img,
             quantity: j.count,
-            price: j.volumes[0].priceWithDiscount,
+            price: j.volumes.priceWithDiscount,
           })),
         }))
       );
