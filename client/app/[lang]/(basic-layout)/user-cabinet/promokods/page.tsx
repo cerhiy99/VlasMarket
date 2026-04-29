@@ -14,33 +14,6 @@ type PromoItem = {
   activatedText: string;
 };
 
-const mockPromoDatabase: PromoItem[] = [
-  {
-    id: 1,
-    code: 'SAVE10',
-    title: 'Промокод на знижку',
-    discountText: '-100 грн до суми замовлення',
-    icon: '/images/promocode-sale-icon.svg',
-    activatedText: 'Цей промокод активований',
-  },
-  {
-    id: 2,
-    code: 'WELCOME',
-    title: 'Вітальний промокод',
-    discountText: '-50 грн до суми замовлення',
-    icon: '/images/promocode-gift-icon.svg',
-    activatedText: 'Цей промокод активований',
-  },
-  {
-    id: 3,
-    code: 'BAYLAP200',
-    title: 'Спеціальна пропозиція',
-    discountText: '-200 грн до суми замовлення',
-    icon: '/images/promocode-percent-icon.svg',
-    activatedText: 'Цей промокод активований',
-  },
-];
-
 const Page = ({ params }: { params: Promise<{ lang: Locale }> }) => {
   const { lang } = use(params);
   const [promoValue, setPromoValue] = useState('');

@@ -9,7 +9,7 @@ import BreadCrumbsCabinetDynamic from '@/app/components/utils/BreadCrumbsCabinet
 
 export async function generateMetadata() {
   return {
-    title: 'Особистий кабінет — Baylap',
+    title: 'Особистий кабінет — VlasMarket',
     robots: 'noindex, nofollow',
   };
 }

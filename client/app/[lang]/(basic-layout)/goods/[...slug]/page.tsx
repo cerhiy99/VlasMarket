@@ -106,7 +106,7 @@ export async function generateMetadata({ params, searchParams }: Props) {
         description: plainDescription,
         url: canonicalUrl,
         type: 'website',
-        siteName: 'Baylap',
+        siteName: 'VlasMarket',
         images: [
           {
             url: imageUrl, // Сюди підставиться https://... автоматично, якщо imageUrl відносний
@@ -198,30 +198,30 @@ export async function generateMetadata({ params, searchParams }: Props) {
 
     if (selectCategory && !selectSubcategory) {
       titles = {
-        ua: `${selectCategory.nameuk} - купити в Україні за найкращою ціною | BayLap`,
-        ru: `${selectCategory.nameru} - купить в Украине по лучшей цене | BayLap`,
+        ua: `${selectCategory.nameuk} - купити в Україні за найкращою ціною | VlasMarket`,
+        ru: `${selectCategory.nameru} - купить в Украине по лучшей цене | VlasMarket`,
       };
       descriptions = {
-        ua: `${selectCategory.nameuk} від інтернет-магазину BayLap. Великий асортимент, замовити продукцію у наявності з доставкою по всій Україні`,
-        ru: `${selectCategory.nameru} от интернет-магазина BayLap. Большой каталог, заказать продукцию в наличии с доставкой по всей Украине`,
+        ua: `${selectCategory.nameuk} від інтернет-магазину VlasMarket. Великий асортимент, замовити продукцію у наявності з доставкою по всій Україні`,
+        ru: `${selectCategory.nameru} от интернет-магазина VlasMarket. Большой каталог, заказать продукцию в наличии с доставкой по всей Украине`,
       };
     } else if (selectSubcategory) {
       titles = {
-        ua: `${selectSubcategory.nameuk} - купити в Україні за найкращою ціною | BayLap`,
-        ru: `${selectSubcategory.nameru} - купить в Украине по лучшей цене | BayLap`,
+        ua: `${selectSubcategory.nameuk} - купити в Україні за найкращою ціною | VlasMarket`,
+        ru: `${selectSubcategory.nameru} - купить в Украине по лучшей цене | VlasMarket`,
       };
       descriptions = {
-        ua: `${selectSubcategory.nameuk} від інтернет-магазину BayLap. Великий асортимент, замовити продукцію у наявності з доставкою по всій Україні`,
-        ru: `${selectSubcategory.nameru} от интернет-магазина BayLap. Большой каталог, заказать продукцию в наличии с доставкой по всей Украине`,
+        ua: `${selectSubcategory.nameuk} від інтернет-магазину VlasMarket. Великий асортимент, замовити продукцію у наявності з доставкою по всій Україні`,
+        ru: `${selectSubcategory.nameru} от интернет-магазина VlasMarket. Большой каталог, заказать продукцию в наличии с доставкой по всей Украине`,
       };
     } else {
       titles = {
-        ua: `Каталог товарів — сторінка ${page} | Baylap`,
-        ru: `Каталог товаров — страница ${page} | Baylap`,
+        ua: `Каталог товарів — сторінка ${page} | VlasMarket`,
+        ru: `Каталог товаров — страница ${page} | VlasMarket`,
       };
       descriptions = {
-        ua: `Перегляньте сторінку ${page} каталогу товарів інтернет-магазину Baylap.`,
-        ru: `Посмотрите страницу ${page} каталога товаров интернет-магазина Baylap.`,
+        ua: `Перегляньте сторінку ${page} каталогу товарів інтернет-магазину VlasMarket.`,
+        ru: `Посмотрите страницу ${page} каталога товаров интернет-магазина VlasMarket.`,
       };
     }
     const queryString = searchParamsString ? `?${searchParamsString}` : '';
@@ -243,7 +243,7 @@ export async function generateMetadata({ params, searchParams }: Props) {
         description: descriptions[lang] || descriptions.ua,
         url: canonicalUrl,
         type: 'website',
-        siteName: 'Baylap',
+        siteName: 'VlasMarket',
       },
       robots: {
         index: isIndexAndFollow,

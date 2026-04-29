@@ -14,4 +14,4 @@ Disallow: /account
 Disallow: /login
 Disallow: /register
 Disallow: /admin
-Sitemap: https://baylap.com/sitemap.xml
+Sitemap: https://vlasmarket.com.ua/sitemap.xml

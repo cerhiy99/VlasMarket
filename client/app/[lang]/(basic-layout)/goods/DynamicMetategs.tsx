@@ -1,30 +1,30 @@
-'use client'
-import { useEffect, useState } from 'react'
+'use client';
+import { useEffect, useState } from 'react';
 
 interface Props {
-  lang: 'ua' | 'ru'
-  page?: number
+  lang: 'ua' | 'ru';
+  page?: number;
 }
 
 export default function GoodsPageHead({ lang, page = 1 }: Props) {
-  const [mounted, setMounted] = useState(false)
-  useEffect(() => setMounted(true), [])
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => setMounted(true), []);
 
-  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000'
-  const urlPath = lang === 'ua' ? '' : '/ru'
-  const canonicalUrl = `${baseUrl}${urlPath}/goods?page=${page}`
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000';
+  const urlPath = lang === 'ua' ? '' : '/ru';
+  const canonicalUrl = `${baseUrl}${urlPath}/goods?page=${page}`;
 
   const titles = {
-    ua: `Каталог товарів — сторінка ${page} | Baylap`,
-    ru: `Каталог товаров — страница ${page} | Baylap`,
-  }
+    ua: `Каталог товарів — сторінка ${page} | VlasMarket`,
+    ru: `Каталог товаров — страница ${page} | VlasMarket`,
+  };
 
   const descriptions = {
-    ua: `Перегляньте сторінку ${page} каталогу товарів інтернет-магазину Baylap.`,
-    ru: `Посмотрите страницу ${page} каталога товаров интернет-магазина Baylap.`,
-  }
+    ua: `Перегляньте сторінку ${page} каталогу товарів інтернет-магазину VlasMarket.`,
+    ru: `Посмотрите страницу ${page} каталога товаров интернет-магазина VlasMarket.`,
+  };
 
-  if (!mounted) return null // чекаємо, поки компонент змонтується
+  if (!mounted) return null; // чекаємо, поки компонент змонтується
 
   return (
     <head>
@@ -35,10 +35,10 @@ export default function GoodsPageHead({ lang, page = 1 }: Props) {
       <meta property="og:description" content={descriptions[lang]} />
       <meta property="og:url" content={canonicalUrl} />
       <meta property="og:type" content="website" />
-      <meta property="og:site_name" content="Baylap" />
+      <meta property="og:site_name" content="VlasMarket" />
       <link rel="alternate" hrefLang="x-default" href={`${baseUrl}/goods`} />
       <link rel="alternate" hrefLang="uk" href={`${baseUrl}/goods`} />
       <link rel="alternate" hrefLang="ru" href={`${baseUrl}/ru/goods`} />
     </head>
-  )
+  );
 }

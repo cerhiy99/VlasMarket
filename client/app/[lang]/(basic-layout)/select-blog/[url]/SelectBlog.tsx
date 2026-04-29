@@ -75,7 +75,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       description: plainDescription,
       url: canonicalUrl,
       type: 'article',
-      siteName: 'Baylap',
+      siteName: 'VlasMarket',
       images: imageUrl
         ? [
             {

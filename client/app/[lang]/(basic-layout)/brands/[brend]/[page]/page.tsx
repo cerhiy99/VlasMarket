@@ -107,7 +107,7 @@ export async function generateMetadata({
       description: descriptions[lang] || descriptions.ua,
       url: canonicalUrl,
       type: 'website',
-      siteName: 'Baylap',
+      siteName: 'VlasMarket',
     },
   };
 }

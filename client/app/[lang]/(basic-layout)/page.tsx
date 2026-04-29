@@ -25,13 +25,13 @@ export async function generateMetadata({ params }: Props) {
   const canonicalUrl = `${baseUrl}${urlPath}`;
 
   const titles = {
-    ua: 'Інтернет-магазин Baylap — шампуні та засоби догляду',
-    ru: 'Интернет-магазин Baylap — шампуни и средства ухода',
+    ua: 'Інтернет-магазин VlasMarket — шампуні та засоби догляду',
+    ru: 'Интернет-магазин VlasMarket — шампуни и средства ухода',
   };
 
   const descriptions = {
-    ua: 'Baylap - інтернет-магазин професійної косметики для волосся, нігтів, обличчя та тіла. Тільки оригінальна продукція',
-    ru: 'Baylap - интернет-магазин профессиональной косметики для волос, ногтей, лица и тела. Только оригинальна продукция',
+    ua: 'VlasMarket - інтернет-магазин професійної косметики для волосся, нігтів, обличчя та тіла. Тільки оригінальна продукція',
+    ru: 'VlasMarket - интернет-магазин профессиональной косметики для волос, ногтей, лица и тела. Только оригинальна продукция',
   };
 
   return {
@@ -50,7 +50,7 @@ export async function generateMetadata({ params }: Props) {
       description: descriptions[lang] || descriptions.ua,
       url: canonicalUrl,
       type: 'website',
-      siteName: 'Baylap',
+      siteName: 'VlasMarket',
     },
   };
 }

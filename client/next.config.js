@@ -28,13 +28,13 @@ const nextConfig = {
   images: {
     //loader: 'custom',
     //loaderFile: './utils/imageLoader.ts', // шлях до файлу, який ми створили вище
-    remotePatterns: [{ protocol: 'https', hostname: 'baylap.com' }],
+    remotePatterns: [{ protocol: 'https', hostname: 'vlasmarket.com.ua' }],
     remotePatterns: [
       { protocol: 'http', hostname: 'localhost' },
       //{ protocol: 'http', hostname: 'localhost:4444' },
       //{ protocol: 'http', hostname: '127.0.0.1' },
       //{ protocol: 'http', hostname: '127.0.0.1:4444' },
-      { protocol: 'https', hostname: 'baylap.com' },
+      { protocol: 'https', hostname: 'vlasmarket.com.ua' },
       //{ protocol: 'http', hostname: '192.168.0.177' },
     ],
     unoptimized: true,

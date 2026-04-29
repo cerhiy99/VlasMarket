@@ -317,16 +317,16 @@ class UserController {
         }
       );
 
-      const resetUrl = `${process.env.FRONTEND_URL}/ua/forgot-password/${token}`;
+      const resetUrl = `${process.env.FRONTEND_URL}/forgot-password?token=${token}`;
 
-      const subject = 'Скидання паролю на Baylap';
+      const subject = 'Скидання паролю на VlasMarket';
 
       const htmlMessage = `
         <div style="font-family: Arial, sans-serif; padding: 20px; background-color: #f6f6f6;">
           <div style="max-width: 600px; margin: 0 auto; background-color: #ffffff; padding: 30px; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
             <h2 style="color: #333333;">Скидання паролю</h2>
             <p style="font-size: 16px; color: #555555;">
-              Ви отримали цей лист, тому що для вашого облікового запису на <strong>Baylap</strong> був надісланий запит на скидання паролю.
+              Ви отримали цей лист, тому що для вашого облікового запису на <strong>VlasMarket</strong> був надісланий запит на скидання паролю.
             </p>
             <p style="font-size: 16px; color: #555555;">
               Щоб встановити новий пароль, натисніть на кнопку нижче:
@@ -340,7 +340,7 @@ class UserController {
               Якщо ви не надсилали запит на скидання паролю, просто проігноруйте цей лист.
             </p>
             <p style="font-size: 14px; color: #cccccc; text-align: center; margin-top: 30px;">
-              © ${new Date().getFullYear()} Baylap. Усі права захищено.
+              © ${new Date().getFullYear()} VlasMarket. Усі права захищено.
             </p>
           </div>
         </div>
