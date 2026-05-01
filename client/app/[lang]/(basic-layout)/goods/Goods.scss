@@ -22,6 +22,9 @@
       -webkit-text-decoration-skip-ink: none;
       text-decoration-skip-ink: none;
     }
+    .count-goods {
+      margin-bottom: 10px;
+    }
     @media (max-width: 1024px) {
       display: grid;
       margin: 0;
@@ -42,9 +45,14 @@
       .sore-and-goods h1 {
         order: 1; /* Перший */
       }
+      .count-goods {
+        order: 2;
+        margin-bottom: 0;
+        margin-top: 10px;
+      }
 
       .mob-open-filter-and-sort {
-        order: 2; /* Другий */
+        order: 3; /* Другий */
       }
 
       .mob-open-filter-and-sort {
@@ -55,7 +63,7 @@
       .sort-container,
       .list-goods-container4,
       .pagination-container2 {
-        order: 3; /* Третіми */
+        order: 4; /* Третіми */
       }
     }
   }

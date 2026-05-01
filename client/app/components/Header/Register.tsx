@@ -4,7 +4,6 @@ import type React from 'react';
 import CloseSVG from '../../assest/Goods/Close.svg';
 import { useState } from 'react';
 import './Registration.scss';
-import PhoneInput from 'react-phone-input-2';
 //import 'react-phone-input-2/lib/style.css';
 import { Locale } from '@/i18n.config';
 import { $authHost } from '@/app/http';
@@ -34,7 +33,7 @@ export default function RegistrationModal({
   const [formData, setFormData] = useState<FormRegisterProps>({
     firstName: '',
     lastName: '',
-    phone: '380',
+    phone: '+380',
     email: '',
     password: '',
     confirmPassword: '',

@@ -3,6 +3,11 @@
 .catalog-home-container {
   display: flex;
   align-items: center;
+  min-height: 100%;
+  .dropdown-home-container {
+    display: flex;
+    height: 100%;
+  }
   .catalog-title {
     display: flex;
     margin: 10px 0;
@@ -22,6 +27,7 @@
     border: 2px solid #fffbfb;
     border-radius: 5px;
     background-color: #ebd8e4;
+    height: 100%;
     // width: calc(23% - 50px);
     @media (min-width: 1300px) {
       min-width: 320px;
@@ -32,10 +38,10 @@
     @media (min-width: 768px) {
       max-width: 220px;
     }
-    z-index: 12;
+    z-index: 3;
   }
   .dropdown {
-    z-index: 100;
+    z-index: 5;
     display: flex;
     flex-direction: row;
     width: auto;
@@ -52,6 +58,7 @@
       gap: 10px;
       min-width: 372px;
       max-width: 372px;
+      justify-content: space-between;
       .category {
         cursor: pointer;
         display: flex;
@@ -117,12 +124,13 @@
       border: 1px solid #e4e7e9;
       border-radius: 3px;
       padding: 20px;
-      min-width: calc(100% - 372px - 43px);
-      max-width: calc(100% - 372px - 43px);
+      min-width: calc(100% - 372px);
+      max-width: calc(100% - 372px);
       position: absolute;
       right: 0;
       z-index: 5;
-      min-height: 90%;
+      min-height: 100%;
+      box-sizing: border-box;
       .subcategory-details {
         display: grid;
         grid-template-columns: repeat(3, 1fr); /* Три елементи в ряд */

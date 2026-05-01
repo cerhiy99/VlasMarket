@@ -38,10 +38,6 @@ type Props = {
 const CatalogHome = ({ lang, dictionary, catalog }: Props) => {
   const [isHovered, setIsHovered] = useState<boolean>(false); // Змінна для збереження стану
 
-  const handleMouseEnter = () => {
-    setIsHovered(true);
-  };
-
   const handleMouseLeave = () => {
     setSelectCategory(0);
     setIsHovered(false);
@@ -49,7 +45,7 @@ const CatalogHome = ({ lang, dictionary, catalog }: Props) => {
 
   const [selectCategory, setSelectCategory] = useState<number>(4);
   const router = useRouter();
-  console.log(4234, catalog);
+
   return (
     <>
       {' '}

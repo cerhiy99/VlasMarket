@@ -419,7 +419,7 @@ const Page = async ({ params, searchParams }: Props) => {
     url += `/${UkrToEng(selectSubcategory.nameru)}`;
   }
   url += '/1';
-  console.log(9234324, url);
+
   const headersList = await headers();
   const userAgent = headersList.get('user-agent') || '';
 
@@ -441,12 +441,15 @@ const Page = async ({ params, searchParams }: Props) => {
         />
         <div className="sore-and-goods">
           {selectSubcategory ? (
-            <h1>{selectSubcategory[`name${lang == 'ru' ? 'ru' : 'uk'}`]}</h1>
+            <h1>{selectSubcategory[`name${lang == 'ru' ? 'ru' : 'uk'}`]} </h1>
           ) : selectCategory ? (
             <h1>{selectCategory[`name${lang == 'ru' ? 'ru' : 'uk'}`]}</h1>
           ) : (
             <h1>{lang == 'ru' ? 'Каталог товаров' : 'Каталог товарів'}</h1>
           )}
+          <div className="count-goods">
+            {totalGoods} {lang == 'ru' ? 'товаров' : 'товарів'}{' '}
+          </div>
           <Sort url={url} lang={lang} />
           <br />
           <ListGoods

@@ -5,7 +5,7 @@
     @include responsive-width;
     display: flex;
     flex-direction: row;
-    align-items: flex-start;
+    align-items: stretch;
     gap: 10px;
     margin-top: 30px;
     margin-bottom: 40px;
@@ -21,9 +21,9 @@
     margin-top: 20px;
     h2,
     h1 {
-      font-weight: 600;
+      font-weight: 500;
       font-style: Semi Bold;
-      font-size: 26px;
+      font-size: 25px;
       line-height: 100%;
       letter-spacing: 0%;
       color: #000000;

@@ -4,7 +4,6 @@ import './CategoryHome.scss';
 import Link from 'next/link';
 import { getLocalizedPath } from '../utils/getLocalizedPath';
 import { Locale } from '@/i18n.config';
-import { toSlug } from '../utils/addittional';
 import { UkrToEng } from '../utils/UkrToEng';
 
 type Props = {
