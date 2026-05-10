@@ -485,20 +485,20 @@ class GoodsControllers {
         case 'price_asc':
           orderOptions.push([
             Sequelize.literal(`(
-              SELECT MIN(v.priceWithDiscount)
-              FROM volumes AS v
-              WHERE v.goodId = goods.id
-            )`),
+                SELECT MIN(v.priceWithDiscount)
+                FROM volumes AS v
+                WHERE v.goodId = goods.id
+              )`),
             'ASC',
           ]);
           break;
         case 'price_desc':
           orderOptions.push([
             Sequelize.literal(`(
-              SELECT MIN(v.priceWithDiscount)
-              FROM volumes AS v
-              WHERE v.goodId = goods.id
-            )`),
+                SELECT MIN(v.priceWithDiscount)
+                FROM volumes AS v
+                WHERE v.goodId = goods.id
+              )`),
             'DESC',
           ]);
           break;
@@ -514,10 +514,10 @@ class GoodsControllers {
         case 'rating_desc':
           orderOptions.push([
             Sequelize.literal(`(
-              SELECT AVG(r.rating)
-              FROM reviews AS r
-              WHERE r.goodsId = goods.id AND r.rating IS NOT NULL AND r.isShow = true
-            )`),
+                SELECT AVG(r.rating)
+                FROM reviews AS r
+                WHERE r.goodsId = goods.id AND r.rating IS NOT NULL AND r.isShow = true
+              )`),
             'DESC',
           ]);
           break;
@@ -538,12 +538,12 @@ class GoodsControllers {
           include: [
             [
               Sequelize.literal(`(
-        SELECT AVG(r.rating)
-        FROM reviews AS r
-        WHERE r.goodsId = goods.id
-          AND r.rating IS NOT NULL
-          AND r.isShow = true
-      )`),
+          SELECT AVG(r.rating)
+          FROM reviews AS r
+          WHERE r.goodsId = goods.id
+            AND r.rating IS NOT NULL
+            AND r.isShow = true
+        )`),
               'averageRating',
             ],
           ],
