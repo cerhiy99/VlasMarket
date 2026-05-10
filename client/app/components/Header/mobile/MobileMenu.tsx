@@ -426,9 +426,8 @@ const MobileMenu = ({
               </div>
               <div className="close">&times;</div>
             </div>
-            <div className="select-category">
-              <div
-                onClick={() => {
+            <div 
+              onClick={() => {
                   router.push(
                     getLocalizedPath(
                       `/${lang}/goods/${UkrToEng(catalog.find((x: any) => x.id == selectCategory)?.nameru || '')}/1`,
@@ -436,9 +435,9 @@ const MobileMenu = ({
                     )
                   );
                   handleClose();
-                }}
-                className="svg-select-category"
-              >
+                }} 
+                className="select-category">
+              <div className="svg-select-category">
                 <img
                   alt={
                     lang == 'ru'
@@ -458,7 +457,16 @@ const MobileMenu = ({
               </div>
             </div>
             <div className="all-subcategory">
-              <div className="all-product">
+              <div  
+                onClick={() => {
+                  router.push(
+                    getLocalizedPath(
+                      `/${lang}/goods/${UkrToEng(catalog.find((x: any) => x.id == selectCategory)?.nameru || '')}/1`,
+                      lang
+                    )
+                  );
+                  handleClose();
+                }}  className="all-product">
                 {lang == 'ru' ? 'Все товары' : 'Всі товари'}
                 <AllProductSVG />
               </div>

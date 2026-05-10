@@ -68,7 +68,7 @@ const Sort = ({ lang, url }: Props) => {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <div className="sort-container">
+    <div className="sort-container no-select">
       <div
         className="title-sort"
         style={{ display: 'flex', flexDirection: 'row' }}

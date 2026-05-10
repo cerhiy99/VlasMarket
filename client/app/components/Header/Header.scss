@@ -178,10 +178,13 @@
           margin-right: 15px;
           @media (max-width: 584px) {
             margin-left: 10px;
+            padding: 0;
+            padding-left: 0;
 
             @media (max-width: 768px) {
               margin-left: 0px;
               margin-right: 0;
+              padding: 0;
             }
           }
         }
@@ -324,9 +327,13 @@
           transition:
             opacity 0.2s ease,
             transform 0.2s ease;
-          @media (max-width: 370px) {
+          @media (max-width: 380px) {
             transform: scale(0.8); // Лого трохи стискається і зникає
             width: 200px;
+          }
+          @media (max-width: 350px) {
+            transform: scale(0.6); // Лого трохи стискається і зникає
+            width: 160px;
           }
         }
 

@@ -31,6 +31,7 @@ import { useTranslation } from '@/context/TranslationProvider';
 import { $host } from '@/app/http';
 import { IoCloseCircle } from 'react-icons/io5';
 import MyRatingSelectGoods from './MyRatingSelectGoods';
+import { getCountBonus } from '../utils/getCountBonus';
 
 type Props = {
   selectGoods: GoodInterface;
@@ -339,7 +340,7 @@ const SelectGoodsTextContainer = ({
                 </div>
               </div>
               <div className="bonus">
-                <BonusSVG /> <span>+100</span> {dictionary.bonus}
+                <BonusSVG /> <span>+{getCountBonus(selectGoods.volumes[selectVolume].priceWithDiscount)}</span> {dictionary.bonus}
               </div>
             </div>
             <div

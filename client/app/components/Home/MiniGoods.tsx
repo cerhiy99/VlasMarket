@@ -23,7 +23,6 @@ type Props = {
 };
 
 const MiniGoods = ({ goods, dictionary, lang, idx }: Props) => {
-  const countBonus = 100;
   const [selectVolumeIdx, setSelectVolumeIdx] = useState(0);
 
   const [clickedVolumeIdx, setClickedVolumeIdx] = useState(0);
@@ -41,9 +40,9 @@ const MiniGoods = ({ goods, dictionary, lang, idx }: Props) => {
     setSelectVolumeIdx(clickedVolumeIdx);
   };
   const { t } = useTranslation();
-  if (goods.id == 26388) {
-    console.log(goods);
-  }
+  
+  const countBonus = getCountBonus(goods.volumes[selectVolumeIdx].priceWithDiscount);
+
   return (
     <Link
       href={getLocalizedPath(`/${lang}/goods/${goods.volumes[0].url}`, lang)}

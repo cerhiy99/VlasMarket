@@ -70,7 +70,7 @@ const Filters = ({
   };
 
   return (
-    <div className="filters-parent">
+    <div className="filters-parent no-select">
       <div className="mob-open-filter-and-sort">
         <div onClick={() => filterOpenOrClose(!isOpen)} className="mob-is-open">
           <MobFilterSVG />
