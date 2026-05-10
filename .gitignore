@@ -3,3 +3,4 @@ client/.next/
 server/node_modules/
 server/.env
 server/static/
+client/.env
