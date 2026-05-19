@@ -280,7 +280,7 @@ const SelectGoodsTextContainer = ({
             </div>
           </div>
           {selectGoods.nameTypeuk && (
-            <div className="info-for-made list-masa">
+            <div className="info-for-made list-masa no-select">
               <div className="title">
                 {lang == 'ru' ? selectGoods.nameTyperu : selectGoods.nameTypeuk}
                 :
@@ -294,7 +294,7 @@ const SelectGoodsTextContainer = ({
                         key={x.id}
                         onMouseEnter={() => hoverVolume(idx)}
                         onClick={() => setVolume(idx)}
-                        className={`masa ${selectVolume == idx && 'masa-select'}`}
+                        className={`masa no-select ${selectVolume == idx && 'masa-select'}`}
                         style={{ whiteSpace: 'nowrap' }}
                       >
                         {x.volume.split('||')[lang == 'ru' ? 1 : 0]}{' '}
@@ -306,7 +306,7 @@ const SelectGoodsTextContainer = ({
                       <div
                         key={x.id}
                         onMouseEnter={() => hoverVolume(idx)}
-                        className={`masa ${selectVolume == idx && 'masa-select'}`}
+                        className={`masa no-select ${selectVolume == idx && 'masa-select'}`}
                         style={{ whiteSpace: 'nowrap' }}
                       >
                         {x.volume.split('||')[lang == 'ru' ? 1 : 0]}{' '}
@@ -340,9 +340,17 @@ const SelectGoodsTextContainer = ({
                 </div>
               </div>
               <div className="bonus">
-                <BonusSVG /> <span>+{getCountBonus(selectGoods.volumes[selectVolume].priceWithDiscount)}</span> {dictionary.bonus}
+                <BonusSVG />{' '}
+                <span>
+                  +
+                  {getCountBonus(
+                    selectGoods.volumes[selectVolume].priceWithDiscount
+                  )}
+                </span>{' '}
+                {dictionary.bonus}
               </div>
             </div>
+
             <div
               className={`like ${isInLike ? 'isLike' : ''}`}
               onClick={inLike}
@@ -375,15 +383,27 @@ const SelectGoodsTextContainer = ({
           </div>
           <div className="compresion-and-like">
             <div
-              className={`compresion ${isInCompresion ? 'isCompresion' : ''}`}
+              className={`compresion relative ${isInCompresion ? 'isCompresion' : ''}`}
               onClick={inCompresion}
             >
+              <div className="info-abs">
+                {lang == 'ru'
+                  ? 'Добавьть в сравнение'
+                  : 'Добавити у порівняння'}
+              </div>
+
               <CompresionSVG />
             </div>
             <div
-              className={`like ${isInLike ? 'isLike' : ''}`}
+              className={`like relative ${isInLike ? 'isLike' : ''}`}
               onClick={inLike}
             >
+              <div className="info-abs">
+                {lang == 'ru'
+                  ? 'Добавьть в понравившееся'
+                  : 'Добавити у вподобане'}
+              </div>
+
               <LikeFattySVG />
             </div>
           </div>

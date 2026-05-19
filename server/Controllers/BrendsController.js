@@ -23,7 +23,7 @@ class BrednController {
   static Update = async (req, resp, next) => {
     try {
       const { id } = req.params;
-      const { name, descriptionuk, descriptionru } = req.body;
+      const { name, descriptionuk, descriptionru, sort, isShow } = req.body;
 
       const brend = await Brends.findByPk(id);
       if (!brend) {
@@ -58,13 +58,15 @@ class BrednController {
         // 🔥 шлях для БД
         imgPath = `brend/${id}/${fileName}`;
       }
-
+      console.log(434, isShow);
       await Brends.update(
         {
           name,
           descriptionuk,
           descriptionru,
           img: imgPath,
+          sort: Number(sort) || null,
+          isShow: isShow == 'true',
         },
         { where: { id: parseInt(id) } }
       );
@@ -245,8 +247,9 @@ class BrednController {
   static BrendWithImg = async (req, resp, next) => {
     try {
       const res = await Brends.findAll({
-        where: { img: { [Op.ne]: null } },
-        attributes: ['id', 'name', 'img'],
+        where: { isShow: true },
+        attributes: ['id', 'name', 'img', 'sort', 'isShow'],
+        order: [['sort', 'ASC']],
       });
       return resp.json({ brends: res });
     } catch (err) {

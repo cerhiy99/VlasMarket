@@ -58,7 +58,10 @@ const CatalogHome = ({ lang, dictionary, catalog }: Props) => {
                 <div
                   key={x.id} // Додаємо унікальний key для списку
                   className={`category ${selectCategory === x.id ? 'active' : ''}`}
-                  onMouseEnter={() => setSelectCategory(x.id)}
+                  onMouseEnter={() => {
+                    setSelectCategory(x.id);
+                    setIsHovered(true);
+                  }}
                   onClick={() => {
                     router.push(
                       getLocalizedPath(

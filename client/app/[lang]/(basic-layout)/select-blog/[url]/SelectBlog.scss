@@ -1,4 +1,4 @@
-@import "../../App.scss";
+@import '../../App.scss';
 
 .select-blog-container {
   @include responsive-width;
@@ -7,7 +7,6 @@
     flex-direction: row;
     gap: 15px;
     width: 100%;
-    font-family: Roboto;
     @media (max-width: 1024px) {
       flex-direction: column;
     }
@@ -18,23 +17,19 @@
         width: 100%;
       }
       h1 {
-        font-family: Roboto;
         font-weight: 500;
         font-style: Medium;
         font-size: 29px;
         leading-trim: NONE;
-        line-height: 40px;
         letter-spacing: 0%;
         vertical-align: middle;
         color: #32353f;
         margin: 0;
       }
       .date {
-        font-family: Roboto;
         font-weight: 400;
         font-style: Regular;
         font-size: 13.02px;
-        leading-trim: NONE;
         line-height: 14px;
         letter-spacing: 0%;
         vertical-align: middle;
@@ -79,7 +74,6 @@
         width: 100%;
       }
       .read-more {
-        font-family: Roboto;
         font-weight: 500;
         font-style: Medium;
         font-size: 19.84px;

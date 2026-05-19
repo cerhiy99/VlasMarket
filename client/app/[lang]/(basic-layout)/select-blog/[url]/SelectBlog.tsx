@@ -1,5 +1,4 @@
 import { Locale } from '@/i18n.config';
-import React from 'react';
 import './SelectBlog.scss';
 import BreadCrumbs from '@/app/components/utils/BreadCrumbs';
 import { getLocalizedPath } from '@/app/components/utils/getLocalizedPath';
@@ -22,7 +21,7 @@ const getData = async (url: string) => {
   try {
     const res = await fetch(
       process.env.NEXT_PUBLIC_API_SERVER + `blog/getOne/${url}`,
-      { cache: 'no-store' },
+      { cache: 'no-store' }
     );
     if (!res.ok) {
       return notFound();

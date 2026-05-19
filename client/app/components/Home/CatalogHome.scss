@@ -1,4 +1,11 @@
 .calalog-home-beck {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #00000060;
+  z-index: 10;
 }
 .catalog-home-container {
   display: flex;
@@ -38,10 +45,10 @@
     @media (min-width: 768px) {
       max-width: 220px;
     }
-    z-index: 3;
+    z-index: 30;
   }
   .dropdown {
-    z-index: 5;
+    z-index: 50;
     display: flex;
     flex-direction: row;
     width: auto;
@@ -128,13 +135,13 @@
       max-width: calc(100% - 372px);
       position: absolute;
       right: 0;
-      z-index: 5;
+      z-index: 50;
       min-height: 100%;
       box-sizing: border-box;
       .subcategory-details {
         display: grid;
         grid-template-columns: repeat(3, 1fr); /* Три елементи в ряд */
-        gap: 15px; /* Проміжок між елементами */
+        gap: 10px; /* Проміжок між елементами */
         //gap: 20px;
         align-items: flex-start;
         overflow: hidden;

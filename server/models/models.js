@@ -17,6 +17,8 @@ const Brends = sequelize.define('brend', {
     unique: false,
     defaultValue: null,
   },
+  isShow: { type: DataTypes.BOOLEAN, defaultValue: false, allowNull: false },
+  sort: { type: DataTypes.INTEGER, allowNull: true },
 });
 
 const CountryMade = sequelize.define('countryMade', {
@@ -42,7 +44,7 @@ const Category = sequelize.define('category', {
     defaultValue: null,
   }, //в mysql
   svg: { type: DataTypes.TEXT, allowNull: false },
-  sort: { type: DataTypes.INTEGER, allowNull: true }, //добавити в mysql
+  sort: { type: DataTypes.INTEGER, allowNull: true },
 });
 
 const FilterCategory = sequelize.define('filterCategory', {
@@ -116,7 +118,7 @@ const Goods = sequelize.define(
     },
     isShow: { type: DataTypes.BOOLEAN, allowNull: false, defaultValue: true },
     isForMan: { type: DataTypes.BOOLEAN, allowNull: true, defaultValue: null }, //якщо null то унісекс
-    isFeed: { type: DataTypes.BOOLEAN, allowNull: false, defaultValue: false }, //щойно добавив, тре команду щоб добавити у mysql
+    isFeed: { type: DataTypes.BOOLEAN, allowNull: false, defaultValue: false },
     nameTypeuk: {
       type: DataTypes.STRING,
       allowNull: false,

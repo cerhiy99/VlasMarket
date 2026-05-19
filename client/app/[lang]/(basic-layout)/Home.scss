@@ -21,7 +21,7 @@
     margin-top: 20px;
     h2,
     h1 {
-      font-weight: 500;
+      font-weight: 600;
       font-style: Semi Bold;
       font-size: 25px;
       line-height: 100%;
@@ -151,6 +151,7 @@
       font-size: 15px;
       line-height: 100%;
       letter-spacing: 0%;
+      color: #555;
     }
     a {
       cursor: pointer;
@@ -169,6 +170,7 @@
         text-align: center;
         border-radius: 6px;
         cursor: pointer;
+        outline: none;
       }
     }
   }

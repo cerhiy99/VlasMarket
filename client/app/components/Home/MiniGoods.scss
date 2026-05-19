@@ -137,7 +137,7 @@
       flex-direction: row;
       flex-wrap: wrap;
       align-items: center;
-      gap: 5px;
+      gap: 0px;
       span {
         white-space: nowrap;
       }
@@ -164,8 +164,10 @@
       flex-direction: row;
       flex-wrap: nowrap;
       text-align: end;
-      @media (max-width: 500px) {
+      flex-direction: column;
+      @media (max-width: 768px) {
         font-size: 12px;
+        text-align: left;
       }
     }
     @media (max-width: 768px) {
@@ -205,7 +207,7 @@
       cursor: pointer;
       background-color: #f3e8ef;
       &:hover {
-        background-color: #ffffff;
+        background-color: #f3e8ef;
       }
     }
     .select-volume {
@@ -262,6 +264,10 @@
     justify-content: space-between;
     margin-bottom: 7.5px;
     align-items: flex-end;
+    position: relative;
+    @media (max-width: 768px) {
+      margin-top: 20px;
+    }
     .price-container {
       display: flex;
       flex-direction: column;
@@ -316,6 +322,12 @@
       justify-content: center;
       align-items: center;
       cursor: pointer;
+      position: absolute;
+      right: 0;
+      top: 25px;
+      @media (max-width: 768px) {
+        top: -7.5px;
+      }
       p {
         display: none;
         margin: 0;

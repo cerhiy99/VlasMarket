@@ -18,6 +18,8 @@ interface Brand {
   descriptionuk: string;
   descriptionru: string;
   img?: string | null;
+  isShow: boolean;
+  sort: number;
 }
 
 const UpdateBrend = () => {
@@ -27,6 +29,8 @@ const UpdateBrend = () => {
   const [name, setName] = useState('');
   const [descriptionuk, setDescriptionuk] = useState<string>('');
   const [descriptionru, setDescriptionru] = useState<string>('');
+  const [isShow, setIsShow] = useState(false);
+  const [sort, setSort] = useState<number | null>(null);
 
   const [newImg, setNewImg] = useState<File | null>(null);
   const [currentImg, setCurrentImg] = useState<string | null>(null);
@@ -57,6 +61,8 @@ const UpdateBrend = () => {
         setDescriptionuk(selected.descriptionuk);
         setDescriptionru(selected.descriptionru);
         setCurrentImg(selected.img || null);
+        setIsShow(selected.isShow);
+        setSort(selected.sort);
         setNewImg(null);
       }
     } else {
@@ -65,6 +71,8 @@ const UpdateBrend = () => {
       setDescriptionru('');
       setCurrentImg(null);
       setNewImg(null);
+      setIsShow(false);
+      setSort(null);
     }
   }, [selectedId, brands]);
 
@@ -81,6 +89,8 @@ const UpdateBrend = () => {
       formData.append('name', name);
       formData.append('descriptionuk', descriptionuk);
       formData.append('descriptionru', descriptionru);
+      formData.append('isShow', isShow.toString());
+      formData.append('sort', String(sort));
 
       if (newImg) {
         formData.append('img', newImg);
@@ -203,6 +213,26 @@ const UpdateBrend = () => {
                 setValue={setDescriptionru}
                 placeholder="Опис російською"
                 name="descriptionru"
+              />
+            </div>
+
+            <div
+              style={{ flexDirection: 'row', alignItems: 'center' }}
+              className="text-with-input"
+            >
+              <label>Показувати?</label>
+              <input
+                type="checkbox"
+                checked={isShow}
+                onChange={(e) => setIsShow(e.target.checked)}
+              />
+            </div>
+            <div className="text-with-input">
+              <label>Сортування</label>
+              <input
+                type="text"
+                value={sort || 0}
+                onChange={(e) => setSort(Number(e.target.value))}
               />
             </div>
 

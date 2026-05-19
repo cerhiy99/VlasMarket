@@ -9,7 +9,6 @@ import InBasket from './InBasket';
 import Image from 'next/image';
 import { GoodInterface } from '@/app/interfaces/goods';
 import { getLocalizedPath } from '../utils/getLocalizedPath';
-import { useTranslation } from '@/context/TranslationProvider';
 import BonusSVG from '../../assest/Goods/Bonus.svg';
 import Comparison from './Comparison';
 import MyRating from '../SelectGoods/MyRating';
@@ -39,9 +38,10 @@ const MiniGoods = ({ goods, dictionary, lang, idx }: Props) => {
   const unHoverVolume = () => {
     setSelectVolumeIdx(clickedVolumeIdx);
   };
-  const { t } = useTranslation();
-  
-  const countBonus = getCountBonus(goods.volumes[selectVolumeIdx].priceWithDiscount);
+
+  const countBonus = getCountBonus(
+    goods.volumes[selectVolumeIdx].priceWithDiscount
+  );
 
   return (
     <Link
@@ -114,7 +114,7 @@ const MiniGoods = ({ goods, dictionary, lang, idx }: Props) => {
             </span>
           </div>
           <div className="art-mini-goods">
-            Артикул: {goods.volumes[selectVolumeIdx].art}
+            Артикул:<span>{goods.volumes[selectVolumeIdx].art}</span>
           </div>
         </div>
         <div className="list-volume" onMouseLeave={() => unHoverVolume()}>
@@ -127,7 +127,7 @@ const MiniGoods = ({ goods, dictionary, lang, idx }: Props) => {
               }}
               onMouseEnter={() => hoverVolume(idx)}
               className={
-                selectVolumeIdx == idx ? 'volume select-volume' : 'volume'
+                selectVolumeIdx != idx ? 'volume select-volume' : 'volume'
               }
             >
               {x.volume.split('||')[lang == 'ru' ? 1 : 0]} {x.nameVolume}
