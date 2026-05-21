@@ -177,7 +177,7 @@ const getBrends = async () => {
         headers: {
           'Content-Type': 'application/json',
         },
-        next: { revalidate: 60 * 60 * 12 }, // якщо використовуєш Next.js 13+ (app router) з кешуванням
+        cache: 'force-cache', // якщо використовуєш Next.js 13+ (app router) з кешуванням
       }
     );
     const data = await res.json();
