@@ -42,7 +42,7 @@ class BrednController {
           .replace(/\s+/g, '_')
           .replace(/[^\w\-]+/g, '');
 
-        const dirPath = path.resolve(__dirname, '..', 'static', 'brend');
+        const dirPath = path.resolve(__dirname, '..', 'static', 'brend', id);
 
         // 🔥 створити папку якщо нема
         if (!fs.existsSync(dirPath)) {
