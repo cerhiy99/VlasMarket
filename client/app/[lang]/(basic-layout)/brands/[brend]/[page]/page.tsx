@@ -94,13 +94,17 @@ export async function generateMetadata({
         ru: ruUrl,
       },
     },
-    robots: {
+    /*robots: {
       index: isIndexAndFollow,
       follow: isIndexAndFollow,
       googleBot: {
         index: isIndexAndFollow,
         follow: isIndexAndFollow,
       },
+    },*/
+    robots: {
+      index: false,
+      follow: false,
     },
     openGraph: {
       title: titles[lang] || titles.ua,

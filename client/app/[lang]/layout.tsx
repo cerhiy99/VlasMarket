@@ -9,6 +9,15 @@ export async function generateStaticParams() {
   return i18n.locales.map((locale) => ({ lang: locale }));
 }
 
+export async function generateMetadata() {
+  return {
+    robots: {
+      index: false,
+      follow: false,
+    },
+  };
+}
+
 export const viewport = {
   width: 'device-width',
   initialScale: 1,

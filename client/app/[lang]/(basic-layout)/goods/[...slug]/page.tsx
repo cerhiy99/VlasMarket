@@ -245,13 +245,17 @@ export async function generateMetadata({ params, searchParams }: Props) {
         type: 'website',
         siteName: 'VlasMarket',
       },
-      robots: {
+      /*robots: {
         index: isIndexAndFollow,
         follow: isIndexAndFollow,
         googleBot: {
           index: isIndexAndFollow,
           follow: isIndexAndFollow,
         },
+      },*/
+      robots: {
+        index: false,
+        follow: false,
       },
     };
   }

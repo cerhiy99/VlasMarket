@@ -55,14 +55,13 @@ const Search = ({ lang, dictionary }: Props) => {
     }
   }, []);
 
-  // Дебаунс ефект для searchValue
   useEffect(() => {
     const handler = setTimeout(() => {
       getSuggestions(searchValue);
-    }, 300); // Затримка 300мс після останнього введення
+    }, 300);
 
     return () => {
-      clearTimeout(handler); // Очищаємо таймер при зміні searchValue або розмонтуванні компонента
+      clearTimeout(handler);
     };
   }, [searchValue, getSuggestions]);
 
