@@ -133,14 +133,14 @@ const Subcategories: React.FC<SubcategoriesProps> = ({
       const parts = currentPathname.split('/').filter(Boolean);
 
       // Перевіряємо, чи останній сегмент — підкатегорія
-      const currentSubcategory = parts[3]; // якщо підкатегорія завжди на index 3
+      const currentSubcategory = parts[2]; // якщо підкатегорія завжди на index 3
 
       if (currentSubcategory === subcategoryUrl) {
         // Вибрали ту саму підкатегорію — видаляємо
-        parts.splice(3, 1);
+        parts.splice(2, 1);
       } else if (currentSubcategory) {
         // Замінюємо стару підкатегорію на нову
-        parts[3] = subcategoryUrl;
+        parts[2] = subcategoryUrl;
       } else {
         // Додаємо нову підкатегорію
         parts.push(subcategoryUrl);

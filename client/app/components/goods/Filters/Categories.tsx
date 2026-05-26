@@ -110,7 +110,7 @@ const Categories: React.FC<CategoriesProps> = ({
       if (isThisCategoryCurrentlySelected) {
         router.push(
           getLocalizedPath(
-            `/${lang}/goods/1?${sortSearchParams(newSearchParams).toString()}`,
+            `/${lang}/1?${sortSearchParams(newSearchParams).toString()}`,
             lang
           ),
           { scroll: false }
@@ -118,7 +118,7 @@ const Categories: React.FC<CategoriesProps> = ({
       } else {
         router.push(
           getLocalizedPath(
-            `/${lang}/goods/${categoryUrl}/1?${sortSearchParams(newSearchParams).toString()}`,
+            `/${lang}/${categoryUrl}/1?${sortSearchParams(newSearchParams).toString()}`,
             lang
           ),
           { scroll: false }

@@ -35,7 +35,9 @@ interface EnhancedProductsTableProps {
     key: string;
     direction: 'ascending' | 'descending';
   } | null;
-  setSortConfig: (config: { key: string; direction: 'ascending' | 'descending' } | null) => void;
+  setSortConfig: (
+    config: { key: string; direction: 'ascending' | 'descending' } | null
+  ) => void;
   currentPage: number;
   itemsPerPage: number;
   selectedProductIds: number[];
@@ -192,7 +194,9 @@ export default function ProductsTable2({
     }
 
     if (manufacturerFilter) {
-      result = result.filter((product) => product.manufacturer === manufacturerFilter);
+      result = result.filter(
+        (product) => product.manufacturer === manufacturerFilter
+      );
     }
 
     if (searchTerm) {
@@ -209,10 +213,16 @@ export default function ProductsTable2({
     if (sortConfig) {
       result.sort((a, b) => {
         // This is now properly typed because sortConfig.key is restricted to keyof Product
-        if (a[sortConfig.key as keyof Product] < b[sortConfig.key as keyof Product]) {
+        if (
+          a[sortConfig.key as keyof Product] <
+          b[sortConfig.key as keyof Product]
+        ) {
           return sortConfig.direction === 'ascending' ? -1 : 1;
         }
-        if (a[sortConfig.key as keyof Product] > b[sortConfig.key as keyof Product]) {
+        if (
+          a[sortConfig.key as keyof Product] >
+          b[sortConfig.key as keyof Product]
+        ) {
           return sortConfig.direction === 'ascending' ? 1 : -1;
         }
         return 0;
@@ -220,13 +230,24 @@ export default function ProductsTable2({
     }
 
     setFilteredProducts(result);
-  }, [allProducts, categoryFilter, manufacturerFilter, searchTerm, sortConfig, updateTotalPages]);
+  }, [
+    allProducts,
+    categoryFilter,
+    manufacturerFilter,
+    searchTerm,
+    sortConfig,
+    updateTotalPages,
+  ]);
 
   // Функция для сортировки по клику на заголовок колонки
   const requestSort = (key: string) => {
     let direction: 'ascending' | 'descending' = 'ascending';
 
-    if (sortConfig && sortConfig.key === key && sortConfig.direction === 'ascending') {
+    if (
+      sortConfig &&
+      sortConfig.key === key &&
+      sortConfig.direction === 'ascending'
+    ) {
       direction = 'descending';
     }
 
@@ -255,7 +276,9 @@ export default function ProductsTable2({
   const areAllProductsSelected = () => {
     return (
       displayedProducts.length > 0 &&
-      displayedProducts.every((product) => selectedProductIds.includes(product.id))
+      displayedProducts.every((product) =>
+        selectedProductIds.includes(product.id)
+      )
     );
   };
   const router = useRouter();
@@ -273,13 +296,17 @@ export default function ProductsTable2({
                   onClick={() => setAllGoods()}
                 />
               </th>
-              <th onClick={() => requestSort('id')}>Артикул {getSortDirectionIcon('id')}</th>
+              <th onClick={() => requestSort('id')}>
+                Артикул {getSortDirectionIcon('id')}
+              </th>
               <th>Фото товара</th>
               <th onClick={() => requestSort('name')}>
                 Название товара {getSortDirectionIcon('name')}
               </th>
               <th>Обьем</th>
-              <th onClick={() => requestSort('price')}>Цена {getSortDirectionIcon('price')}</th>
+              <th onClick={() => requestSort('price')}>
+                Цена {getSortDirectionIcon('price')}
+              </th>
               <th onClick={() => requestSort('manufacturer')}>
                 Производитель {getSortDirectionIcon('manufacturer')}
               </th>
@@ -324,7 +351,7 @@ export default function ProductsTable2({
                   />
                 </td>
                 <td className="product-name" data-label="Название товара">
-                  <a href={`/ru/goods/${product.url}`}>{product.name}</a>
+                  <a href={`/ru/${product.url}`}>{product.name}</a>
                 </td>
                 <td data-label="Обьем">
                   {product.volume.map((x) => (
@@ -352,10 +379,16 @@ export default function ProductsTable2({
                 </td>
                 <td data-label="Публикация">{product.isShow ? 'Да' : 'Нет'}</td>
                 <td data-label="Действия">
-                  <Link href={`/ru/admin/update-product/${product.realId}`} target="_blank">
+                  <Link
+                    href={`/ru/admin/update-product/${product.realId}`}
+                    target="_blank"
+                  >
                     <button className="edit-button">Редактировать</button>
                   </Link>
-                  <button onClick={() => del(product.realId)} className="edit-button">
+                  <button
+                    onClick={() => del(product.realId)}
+                    className="edit-button"
+                  >
                     Удалить
                   </button>
                 </td>

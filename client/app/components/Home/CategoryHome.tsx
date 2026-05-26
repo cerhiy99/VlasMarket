@@ -85,7 +85,7 @@ const CategoryHome = ({ categories, lang }: Props) => {
         {categories.map((x: any) => (
           <Link
             href={getLocalizedPath(
-              `/${lang}/goods/${UkrToEng(x.categoryNameRu)}/${UkrToEng(x.nameru)}/1`,
+              `/${lang}/${UkrToEng(x.categoryNameRu)}/${UkrToEng(x.nameru)}/1`,
               lang
             )}
             key={x.id}

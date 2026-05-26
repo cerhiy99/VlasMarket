@@ -52,7 +52,11 @@ const ReviewRow = memo(
         }}
       >
         <div className="review-checkbox">
-          <input type="checkbox" checked={isSelected} onChange={() => onSelect(review.id)} />
+          <input
+            type="checkbox"
+            checked={isSelected}
+            onChange={() => onSelect(review.id)}
+          />
         </div>
         <div className="tema">
           <span className="mobile-label">Тема:</span>
@@ -65,7 +69,9 @@ const ReviewRow = memo(
         <div className="published">
           <span className="mobile-label">Опубликовано:</span>
           {review.isShow ? (
-            <Link href={`/ru/goods/${review.good.volumes[0].url}`}>{review.published}</Link>
+            <Link href={`/ru/${review.good.volumes[0].url}`}>
+              {review.published}
+            </Link>
           ) : (
             <div>{review.published}</div>
           )}
@@ -222,10 +228,13 @@ const ReviewsPage = ({ params }: { params: Promise<{ lang: Locale }> }) => {
     setCurrentPage(1);
   }, []);
 
-  const handleSearchChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchTerm(e.target.value);
-    setCurrentPage(1);
-  }, []);
+  const handleSearchChange = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      setSearchTerm(e.target.value);
+      setCurrentPage(1);
+    },
+    []
+  );
 
   // Determine if all reviews on current page are selected
   const allSelected = useMemo(() => {
@@ -247,7 +256,9 @@ const ReviewsPage = ({ params }: { params: Promise<{ lang: Locale }> }) => {
   const Paris = 'Paris';
   const getNewReviews = async () => {
     try {
-      const res = await $authHost.get(`review/getAllReviews?page=${currentPage}&limit=${limit}`);
+      const res = await $authHost.get(
+        `review/getAllReviews?page=${currentPage}&limit=${limit}`
+      );
       console.log(4234324, res);
       setReviews(res.data.res);
       setCountReviews(res.data.count);
@@ -311,7 +322,9 @@ const ReviewsPage = ({ params }: { params: Promise<{ lang: Locale }> }) => {
             <div className="mobile-sort-controls">
               <div className="mobile-sort-label">Сортувати по:</div>
               <select
-                onChange={(e) => handleRequestSort(e.target.value as keyof Review)}
+                onChange={(e) =>
+                  handleRequestSort(e.target.value as keyof Review)
+                }
                 value={(sortConfig.key as string) || ''}
               >
                 <option value="">Выберите поле</option>
@@ -326,7 +339,10 @@ const ReviewsPage = ({ params }: { params: Promise<{ lang: Locale }> }) => {
                   onChange={(e) =>
                     setSortConfig({
                       key: sortConfig.key,
-                      direction: e.target.value as 'ascending' | 'descending' | null,
+                      direction: e.target.value as
+                        | 'ascending'
+                        | 'descending'
+                        | null,
                     })
                   }
                   value={sortConfig.direction || ''}
@@ -341,7 +357,11 @@ const ReviewsPage = ({ params }: { params: Promise<{ lang: Locale }> }) => {
           <div className="table-container">
             <div className="review-header">
               <div className="review-checkbox">
-                <input type="checkbox" checked={allSelected} onChange={handleSelectAll} />
+                <input
+                  type="checkbox"
+                  checked={allSelected}
+                  onChange={handleSelectAll}
+                />
               </div>
               <div
                 className={`tema ${getSortDirection('text') ? `sorted-${getSortDirection('text')}` : ''}`}
@@ -357,7 +377,9 @@ const ReviewsPage = ({ params }: { params: Promise<{ lang: Locale }> }) => {
               </div>
               <div
                 className={`published ${
-                  getSortDirection('published') ? `sorted-${getSortDirection('published')}` : ''
+                  getSortDirection('published')
+                    ? `sorted-${getSortDirection('published')}`
+                    : ''
                 }`}
                 onClick={() => handleRequestSort('published')}
               >
@@ -373,7 +395,9 @@ const ReviewsPage = ({ params }: { params: Promise<{ lang: Locale }> }) => {
             </div>
 
             {reviews.length === 0 ? (
-              <div className="review emptyMessage">Нет комментариев для отображения</div>
+              <div className="review emptyMessage">
+                Нет комментариев для отображения
+              </div>
             ) : (
               <div className="reviews-list">
                 {reviews.map((review, index) => (

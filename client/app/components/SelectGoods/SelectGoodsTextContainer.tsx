@@ -268,10 +268,11 @@ const SelectGoodsTextContainer = ({
             <div className="info" style={{ whiteSpace: 'nowrap' }}>
               <Link
                 style={{ whiteSpace: 'nowrap' }}
-                href={getLocalizedPath(
+                /*href={getLocalizedPath(
                   `/${lang}/goods/1?country=${selectGoods.countryMade.id}`,
                   lang
-                )}
+                )}*/
+                href={getLocalizedPath(`/${lang}`, lang)}
               >
                 {lang == 'ru'
                   ? selectGoods.countryMade.nameru
@@ -388,7 +389,7 @@ const SelectGoodsTextContainer = ({
             >
               <div className="info-abs">
                 {lang == 'ru'
-                  ? 'Добавьть в сравнение'
+                  ? 'Добавить в сравнение'
                   : 'Добавити у порівняння'}
               </div>
 
@@ -399,9 +400,7 @@ const SelectGoodsTextContainer = ({
               onClick={inLike}
             >
               <div className="info-abs">
-                {lang == 'ru'
-                  ? 'Добавьть в понравившееся'
-                  : 'Добавити у вподобане'}
+                {lang == 'ru' ? 'Избранное' : 'Вибране'}
               </div>
 
               <LikeFattySVG />

@@ -64,10 +64,7 @@ const CatalogHome = ({ lang, dictionary, catalog }: Props) => {
                   }}
                   onClick={() => {
                     router.push(
-                      getLocalizedPath(
-                        `/${lang}/goods/${UkrToEng(x.nameru)}/1`,
-                        lang
-                      )
+                      getLocalizedPath(`/${lang}/${UkrToEng(x.nameru)}/1`, lang)
                     );
                     setIsHovered(false);
                   }} // Оновлюємо стан підкатегорії при кліку
@@ -98,7 +95,7 @@ const CatalogHome = ({ lang, dictionary, catalog }: Props) => {
                         onClick={() => {
                           router.push(
                             getLocalizedPath(
-                              `/${lang}/goods/${UkrToEng(catalog.find((x) => x.id == selectCategory)?.nameru || '')}/${UkrToEng(categoryTitle.nameru)}/1`,
+                              `/${lang}/${UkrToEng(catalog.find((x) => x.id == selectCategory)?.nameru || '')}/${UkrToEng(categoryTitle.nameru)}/1`,
                               lang
                             )
                           );

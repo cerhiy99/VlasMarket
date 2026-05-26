@@ -70,7 +70,7 @@ export async function generateMetadata({ params, searchParams }: Props) {
       .replace(/<[^>]+>/g, '')
       .slice(0, 200);
 
-    const canonicalUrl = `${baseUrl}${lang === 'ru' ? 'ru/' : ''}goods/${id}`;
+    const canonicalUrl = `${baseUrl}${lang === 'ru' ? 'ru/' : '/'}${id}`;
 
     // Зображення (перший img у volume)
     const imageUrl = volume.imgs?.[0]?.img
@@ -93,12 +93,11 @@ export async function generateMetadata({ params, searchParams }: Props) {
       description: plainDescription,
       metadataBase: new URL(baseUrl), // Переконайтеся, що це об'єкт URL
       alternates: {
-        canonical:
-          lang == 'ru' ? `${baseUrl}ru/goods/${id}` : `${baseUrl}goods/${id}`,
+        canonical: lang == 'ru' ? `${baseUrl}ru/${id}` : `${baseUrl}/${id}`,
         languages: {
-          'x-default': `${baseUrl}goods/${id}`,
-          uk: `${baseUrl}goods/${id}`,
-          ru: `${baseUrl}ru/goods/${id}`,
+          'x-default': `${baseUrl}${id}`,
+          uk: `${baseUrl}${id}`,
+          ru: `${baseUrl}ru/${id}`,
         },
       },
       openGraph: {
@@ -180,13 +179,15 @@ export async function generateMetadata({ params, searchParams }: Props) {
       searchParams2 as Record<string, string>
     ).toString();
 
-    const canonicalUrl =
-      `${baseUrl}${urlPath}/goods/${slug.join('/')}/1`.replace('//1', '/1');
-    const uaUrl = `${baseUrl}/goods/${slug.join('/')}/${page}`.replace(
+    const canonicalUrl = `${baseUrl}${urlPath}/${slug.join('/')}/1`.replace(
+      '//1',
+      '/1'
+    );
+    const uaUrl = `${baseUrl}/${slug.join('/')}/${page}`.replace(
       `//${page}`,
       `/${page}`
     );
-    const ruUrl = `${baseUrl}/ru/goods/${slug.join('/')}/${page}`.replace(
+    const ruUrl = `${baseUrl}/ru/${slug.join('/')}/${page}`.replace(
       `//${page}`,
       `/${page}`
     );
@@ -263,6 +264,29 @@ export async function generateMetadata({ params, searchParams }: Props) {
 
 const limit = 20;
 
+function clearDescriptions(obj: any) {
+  if (!obj || typeof obj !== 'object') {
+    return;
+  }
+
+  if (Array.isArray(obj)) {
+    obj.forEach((item) => clearDescriptions(item));
+    return;
+  }
+
+  for (const key of Object.keys(obj)) {
+    if (
+      key === 'description' ||
+      key === 'descriptionuk' ||
+      key === 'descriptionru'
+    ) {
+      obj[key] = '';
+    } else {
+      clearDescriptions(obj[key]);
+    }
+  }
+}
+
 // Оновлена функція getData для прийому searchParams
 const getData = async (
   page: string,
@@ -327,7 +351,7 @@ const getData = async (
       reviews: x.reviews,
       averageRating: x.averageRating,
     }));
-
+    clearDescriptions(filters);
     return {
       filters,
       totalGoods,
@@ -367,6 +391,7 @@ const Page = async ({ params, searchParams }: Props) => {
       currentSearchParams.set(key, value);
     }
   }
+  console.log(4234, currentSearchParams);
   let category: string = '';
   if (slug.length > 0) {
     category = slug[0];
@@ -400,15 +425,14 @@ const Page = async ({ params, searchParams }: Props) => {
     lang,
     true
   ); // Передаємо currentSearchParams
-
   const listUrles = [];
-  let url = `goods`;
+  let url = ``;
 
   if (selectCategory && selectCategory[`name${lang == 'ru' ? 'ru' : 'uk'}`]) {
     listUrles.push({
       name: selectCategory[`name${lang == 'ru' ? 'ru' : 'uk'}`],
       url: getLocalizedPath(
-        `/${lang}/goods/${UkrToEng(selectCategory.nameru)}/1`,
+        `/${lang}/${UkrToEng(selectCategory.nameru)}/1`,
         lang
       ),
     });
@@ -438,7 +462,7 @@ const Page = async ({ params, searchParams }: Props) => {
           filters={filters}
           lang={lang}
           currentSearchParams={currentSearchParams}
-          currentPathname={`/${lang}/goods/${slug.join('/')}`}
+          currentPathname={`/${lang}/${slug.join('/')}`}
           isMob={isMobile}
           isMobReal={isMobile}
           url={url}
@@ -466,7 +490,7 @@ const Page = async ({ params, searchParams }: Props) => {
             <MyPagination
               totalPages={totalPages}
               currentPage={parseInt(pageStr)}
-              currentPathname={`/${lang}/goods/${slug.join('/')}`}
+              currentPathname={`/${lang}/${slug.join('/')}`}
               currentSearchParams={currentSearchParams} // Передаємо очищені searchParams
               lang={lang}
             />

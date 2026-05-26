@@ -742,7 +742,7 @@ ${listWayDelivery.find((j) => j.id == x.typePay)?.description}
                     <div className="one-basket" key={x.id}>
                       <Link
                         href={getLocalizedPath(
-                          `/${lang}/goods/${x.volumes.url}`,
+                          `/${lang}/${x.volumes.url}`,
                           lang
                         )}
                         className="title"

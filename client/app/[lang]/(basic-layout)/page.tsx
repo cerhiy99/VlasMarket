@@ -271,7 +271,7 @@ const page = async ({ params }: Props) => {
           query="isDiscount"
           startGoods={discount}
         />
-        <h2 className="add-margin">{home.title2}</h2>
+        <h2>{home.title2}</h2>
         <ListArticle
           lang={lang}
           dictionary={miniGoods}
@@ -320,7 +320,7 @@ const page = async ({ params }: Props) => {
         <div className="main-text">
           <h1 style={{ margin: 0 }}>{home.titleMain}</h1>
           <p>{home.description}</p>
-          <Link href={getLocalizedPath(`/${lang}/goods/1`, lang)}>
+          <Link href={getLocalizedPath(`/${lang}`, lang)}>
             <button>{home.watchCatalog}</button>
           </Link>
         </div>

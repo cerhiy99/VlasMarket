@@ -111,7 +111,7 @@ const UserDashboard = ({ lang }: { lang: Locale }) => {
               {t('userDashboard.catalog')}
             </Link>
             {t('userDashboard.taglinePart3')}
-            <Link href={getLocalizedPath(`/${lang}/goods/discount/1`, lang)}>
+            <Link href={getLocalizedPath(`/${lang}/discount/1`, lang)}>
               {t('userDashboard.promotionalOffers')}
             </Link>
           </div>

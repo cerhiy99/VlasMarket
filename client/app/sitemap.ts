@@ -74,9 +74,9 @@ async function generateDynamicGoodsPagesCategory() {
     // Ітеруємо по кожному номеру сторінки та мові
     return pageNumbers.flatMap((pageNumber) =>
       LANGUAGES.map((lang) => ({
-        url: `${BASE_URL}/${lang}goods/${url}/${pageNumber}`,
+        url: `${BASE_URL}/${lang}${url}/${pageNumber}`,
         lastModified: new Date(),
-        alternates: generateLocalizedUrls(`/goods/${url}/${pageNumber}`),
+        alternates: generateLocalizedUrls(`/${url}/${pageNumber}`),
       }))
     );
   });
@@ -101,9 +101,9 @@ async function generateDynamicGoodsPagesSubcategory() {
 
     // Ітеруємо по кожному номеру сторінки та мові
     return LANGUAGES.map((lang) => ({
-      url: `${BASE_URL}/${lang}goods/${url}/1`,
+      url: `${BASE_URL}/${lang}/${url}/1`,
       lastModified: new Date(),
-      alternates: generateLocalizedUrls(`/goods/${url}/1`),
+      alternates: generateLocalizedUrls(`/${url}/1`),
     }));
   });
 }
@@ -213,9 +213,9 @@ async function generateDynamicSelectGoods() {
   );*/
   return urls.flatMap((x: any) =>
     LANGUAGES.map((lang) => ({
-      url: `${BASE_URL}/${lang}goods/${x.url}`,
+      url: `${BASE_URL}/${lang}${x.url}`,
       lastModified: new Date(),
-      alternates: generateLocalizedUrls(`/goods/${x.url}`),
+      alternates: generateLocalizedUrls(`/${x.url}`),
       images: x.img.map((img: any) => `${BASE_URL}${IMG_URL}${img.img}`),
     }))
   );

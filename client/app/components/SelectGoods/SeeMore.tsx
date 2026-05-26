@@ -72,10 +72,7 @@ const SeeMore = ({ dictionary, lang, listGoods }: Props) => {
           onScroll={handleScroll}
         >
           {listGoods.map((x: any) => (
-            <Link
-              key={x.id}
-              href={getLocalizedPath(`/${lang}/goods/${x.id}`, lang)}
-            >
+            <Link key={x.id} href={getLocalizedPath(`/${lang}/${x.id}`, lang)}>
               <div className="see-more-goods">
                 <div className="img">
                   <Image

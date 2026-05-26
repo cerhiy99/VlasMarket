@@ -78,7 +78,7 @@ const SelectGoods = async ({ params: { lang, id }, searchParams }: Props) => {
   const listUrlBread = [];
   if (selectGoods.category) {
     listUrlBread.push({
-      url: `/${lang}/goods/${UkrToEng(selectGoods.category.nameru)}/1`,
+      url: `/${lang}/${UkrToEng(selectGoods.category.nameru)}/1`,
       name:
         lang === 'ru'
           ? selectGoods.category.nameru
@@ -91,7 +91,7 @@ const SelectGoods = async ({ params: { lang, id }, searchParams }: Props) => {
     selectGoods.subcategory.nameuk
   ) {
     listUrlBread.push({
-      url: `/${lang}/goods/${UkrToEng(selectGoods.category.nameru)}/${UkrToEng(selectGoods.subcategory.nameru)}/1`,
+      url: `/${lang}/${UkrToEng(selectGoods.category.nameru)}/${UkrToEng(selectGoods.subcategory.nameru)}/1`,
       name:
         lang === 'ru'
           ? selectGoods.subcategory.nameru
@@ -99,7 +99,7 @@ const SelectGoods = async ({ params: { lang, id }, searchParams }: Props) => {
     });
   }
   listUrlBread.push({
-    url: `/${lang}/goods/${id}`,
+    url: `/${lang}/${id}`,
     name: lang === 'ru' ? selectGoods.nameru : selectGoods.nameuk,
   });
 
@@ -113,7 +113,7 @@ const SelectGoods = async ({ params: { lang, id }, searchParams }: Props) => {
     lang === 'ru' ? selectGoods.descriptionru : selectGoods.descriptionuk;
   const plainDescription = rawDescription.replace(/<[^>]+>/g, '').slice(0, 200);
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
-  const canonicalUrl = `${baseUrl}/${lang === 'ru' ? 'ru/' : ''}goods/${id}`;
+  const canonicalUrl = `${baseUrl}/${lang === 'ru' ? 'ru/' : '/'}${id}`;
   const imageUrl = volume.imgs?.[0]?.img
     ? `${process.env.NEXT_PUBLIC_SERVER}${volume.imgs[0].img}`
     : '';
