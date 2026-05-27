@@ -426,17 +426,18 @@ const MobileMenu = ({
               </div>
               <div className="close">&times;</div>
             </div>
-            <div 
+            <div
               onClick={() => {
-                  router.push(
-                    getLocalizedPath(
-                      `/${lang}/goods/${UkrToEng(catalog.find((x: any) => x.id == selectCategory)?.nameru || '')}/1`,
-                      lang
-                    )
-                  );
-                  handleClose();
-                }} 
-                className="select-category">
+                router.push(
+                  getLocalizedPath(
+                    `/${lang}/${UkrToEng(catalog.find((x: any) => x.id == selectCategory)?.nameru || '')}/1`,
+                    lang
+                  )
+                );
+                handleClose();
+              }}
+              className="select-category"
+            >
               <div className="svg-select-category">
                 <img
                   alt={
@@ -457,16 +458,18 @@ const MobileMenu = ({
               </div>
             </div>
             <div className="all-subcategory">
-              <div  
+              <div
                 onClick={() => {
                   router.push(
                     getLocalizedPath(
-                      `/${lang}/goods/${UkrToEng(catalog.find((x: any) => x.id == selectCategory)?.nameru || '')}/1`,
+                      `/${lang}/${UkrToEng(catalog.find((x: any) => x.id == selectCategory)?.nameru || '')}/1`,
                       lang
                     )
                   );
                   handleClose();
-                }}  className="all-product">
+                }}
+                className="all-product"
+              >
                 {lang == 'ru' ? 'Все товары' : 'Всі товари'}
                 <AllProductSVG />
               </div>
@@ -478,7 +481,7 @@ const MobileMenu = ({
                       onClick={() => {
                         router.push(
                           getLocalizedPath(
-                            `/${lang}/goods/${UkrToEng(catalog.find((x: any) => x.id == selectCategory)?.nameru || '')}/${UkrToEng(x.nameru)}/1`,
+                            `/${lang}/${UkrToEng(catalog.find((x: any) => x.id == selectCategory)?.nameru || '')}/${UkrToEng(x.nameru)}/1`,
                             lang
                           )
                         );

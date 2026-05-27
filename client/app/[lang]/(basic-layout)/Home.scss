@@ -8,7 +8,6 @@
     align-items: stretch;
     gap: 10px;
     margin-top: 30px;
-    margin-bottom: 40px;
     position: relative;
     @media (max-width: 1024px) {
       .catalog-home-container {
@@ -18,7 +17,6 @@
   }
   .home-goods {
     @include responsive-width;
-    margin-top: 20px;
     h2,
     h1 {
       font-weight: 600;
@@ -27,20 +25,23 @@
       line-height: 100%;
       letter-spacing: 0%;
       color: #000000;
-      margin-top: 60px;
-      @media (max-width: 768px) {
-        margin-top: 30px;
-
-        &.add-margin {
-          //margin-top: 20px;
-        }
+      margin-top: 30px;
+      margin-bottom: 15px;
+      &.add-margin {
+        margin-bottom: 15px;
+        margin-top: 10px;
       }
+    }
+    .brends-container {
+      margin-top: 30px;
     }
     .row-blog {
       display: flex;
       flex-direction: column;
+      h2 {
+        margin: 0;
+      }
       .row {
-        margin-top: 40px;
         display: flex;
         flex-direction: row;
         gap: 15px;
@@ -49,9 +50,7 @@
         a {
           text-decoration: none;
         }
-      }
-      h2 {
-        margin: 0;
+        margin-bottom: 15px;
       }
       p {
         font-weight: 600;
@@ -70,7 +69,6 @@
         }
       }
       .list-blog {
-        margin: 20.75px 0;
         display: flex;
         gap: 10px;
         flex-direction: row;
@@ -132,15 +130,16 @@
     }
   }
   .main-text {
-    margin: 40px 0;
     padding: 24px;
     box-sizing: border-box;
     background-color: #ffffff;
     border: 1px solid #ebd8e4;
     border-radius: 12px;
+    margin-top: 30px;
+    margin-bottom: 40px;
     @media (max-width: 768px) {
       margin-top: 10px;
-      margin-bottom: 30px;
+      margin-bottom: 15px;
     }
 
     p {
