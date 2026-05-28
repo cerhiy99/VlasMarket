@@ -235,6 +235,26 @@
           color: #000000;
           border: 1px solid #04c421;
         }
+        &.no-avaibility {
+          opacity: 0.5;
+          position: relative;
+          display: inline-block;
+          &::after {
+            content: '';
+            position: absolute;
+
+            left: 10%;
+            top: 50%;
+
+            width: 80%;
+            height: 1px;
+
+            background: #000;
+
+            transform: rotate(20deg);
+            transform-origin: center;
+          }
+        }
       }
       .masa-select {
         color: #000000;
@@ -398,6 +418,9 @@
           border-radius: 6px;
           height: 50px;
           max-width: 160px;
+          &:hover {
+            background-color: #01a61a;
+          }
           /*@media (min-width: 768px) {
           //#269569
           //#fe680a

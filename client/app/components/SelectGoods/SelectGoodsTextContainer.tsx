@@ -193,6 +193,8 @@ const SelectGoodsTextContainer = ({
     }
   }, [pathname]);
 
+  console.log(4234234, selectGoods.volumes[selectVolume]);
+
   return (
     <>
       <FastBuy
@@ -228,7 +230,18 @@ const SelectGoodsTextContainer = ({
               ) : (
                 <IoCloseCircle size={21} />
               )}
-              <p>
+              <p
+                style={{
+                  color:
+                    selectGoods.volumes[selectVolume].isAvailability ===
+                    'inStock'
+                      ? '#43B02A' // зелений текст
+                      : selectGoods.volumes[selectVolume].isAvailability ===
+                          'customMade'
+                        ? '#ff8c00' // оранжевий текст
+                        : '#ff0000', // червоний текст
+                }}
+              >
                 {t('stock.' + selectGoods.volumes[selectVolume].isAvailability)}
               </p>
             </div>
@@ -295,7 +308,7 @@ const SelectGoodsTextContainer = ({
                         key={x.id}
                         onMouseEnter={() => hoverVolume(idx)}
                         onClick={() => setVolume(idx)}
-                        className={`masa no-select ${selectVolume == idx && 'masa-select'}`}
+                        className={`masa no-select ${selectVolume == idx ? 'masa-select' : ''} ${selectGoods.volumes[idx].isAvailability == 'inStock' ? '' : 'no-avaibility'}`}
                         style={{ whiteSpace: 'nowrap' }}
                       >
                         {x.volume.split('||')[lang == 'ru' ? 1 : 0]}{' '}
@@ -307,7 +320,7 @@ const SelectGoodsTextContainer = ({
                       <div
                         key={x.id}
                         onMouseEnter={() => hoverVolume(idx)}
-                        className={`masa no-select ${selectVolume == idx && 'masa-select'}`}
+                        className={`masa no-select ${selectVolume == idx && 'masa-select'}  ${selectGoods.volumes[idx].isAvailability == 'inStock' ? '' : 'no-avaibility'}`}
                         style={{ whiteSpace: 'nowrap' }}
                       >
                         {x.volume.split('||')[lang == 'ru' ? 1 : 0]}{' '}

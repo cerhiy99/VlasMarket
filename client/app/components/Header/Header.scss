@@ -142,8 +142,8 @@
       &:hover {
         .info {
           position: absolute;
-          bottom: -30px;
-          left: -25px;
+          bottom: -26px;
+          left: -12.5px;
           display: flex;
           white-space: nowrap;
           z-index: 3;
@@ -151,6 +151,7 @@
           border: 0.1px solid #000;
           border-radius: 5px;
           padding: 5px;
+          font-size: 12px;
         }
       }
     }
