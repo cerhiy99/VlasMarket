@@ -12,6 +12,7 @@ import { useRouter } from 'next/navigation';
 
 const ProductsPage = ({ params }: { params: Promise<{ lang: Locale }> }) => {
   const { lang } = use(params);
+
   // Состояния для фильтров и поиска
   const [categoryFilter, setCategoryFilter] = useState('');
   const [manufacturerFilter, setManufacturerFilter] = useState('');
@@ -143,9 +144,10 @@ const ProductsPage = ({ params }: { params: Promise<{ lang: Locale }> }) => {
   const [topBlock, setTopBlock] = useState('');
   const [allProducts, setAllProducts] = useState<any>([]);
   const [countGoods, setCountGoods] = useState<number>(0);
+  const [limit, setLimit] = useState(20);
   const getProducts = async () => {
     try {
-      let searcurl = `goods/get?inAdmin=true&limit=20&page=${currentPage}`;
+      let searcurl = `goods/get?inAdmin=true&limit=${limit}&page=${currentPage}`;
       if (categoryFilter) searcurl += `&category=` + categoryFilter;
       if (manufacturerFilter) searcurl += `&brend=` + manufacturerFilter;
       if (article) searcurl += `&article=` + article;
@@ -276,9 +278,59 @@ const ProductsPage = ({ params }: { params: Promise<{ lang: Locale }> }) => {
   const [searchBrend, setSearchBrend] = useState('');
   const [isshowBrend, setISShowBrend] = useState(false);
 
+  const [discount, setDiscount] = useState(0);
+
+  const newDiscount = async () => {
+    try {
+      const res = await $authHost.patch('goods/setDiscount', {
+        discount,
+        selectGoods,
+      });
+      alert('Знижка задана');
+      getProducts();
+    } catch (err) {
+      alert('Помилка');
+    }
+  };
+
+  const [percent, setPrecent] = useState(0);
+  const [grn, setGrn] = useState(0);
+
+  const updatePrice = async () => {
+    try {
+      const res = await $authHost.patch('goods/updatePrice', {
+        percent,
+        selectGoods,
+      });
+      alert('Ціна оновлена');
+      getProducts();
+    } catch (err) {
+      console.log(err);
+      alert('Помилка');
+    }
+  };
+
+  const updatePriceGrn = async () => {
+    try {
+      const res = await $authHost.patch('goods/updatePriceGrn', {
+        value: grn,
+        selectGoods,
+      });
+      alert('Ціна оновлена');
+      getProducts();
+    } catch (err) {
+      console.log(err);
+      alert('Помилка');
+    }
+  };
+
   return (
     <div>
-      <AdminHeader url="/" name="Массовые операции с отображением товаров" lang={lang} />
+      <AdminHeader
+        url="/"
+        name="Массовые операции с отображением товаров"
+        lang={lang}
+      />
       <div className="admin-items-container2">
         <div id="filter-container" className="filter-container">
           <h2 style={{ marginTop: 0 }}>Найдено {countGoods}</h2>
@@ -293,7 +345,10 @@ const ProductsPage = ({ params }: { params: Promise<{ lang: Locale }> }) => {
             </div>
             <div className="filter">
               Опубликован ли товар
-              <select onChange={(e) => setIsShow(e.target.value)} value={isShow}>
+              <select
+                onChange={(e) => setIsShow(e.target.value)}
+                value={isShow}
+              >
                 <option value="all">Все</option>
                 <option value="0">Нет</option>
                 <option value="1">Да</option>
@@ -335,7 +390,9 @@ const ProductsPage = ({ params }: { params: Promise<{ lang: Locale }> }) => {
                     Не вибрано
                   </div>
                   {listLinia
-                    .filter((x: any) => x.name.toLowerCase().includes(searchLinia))
+                    .filter((x: any) =>
+                      x.name.toLowerCase().includes(searchLinia)
+                    )
                     .map((x: any) => (
                       <div
                         style={{
@@ -388,11 +445,14 @@ const ProductsPage = ({ params }: { params: Promise<{ lang: Locale }> }) => {
                     Не вибрано
                   </div>
                   {manufacturers
-                    .filter((x: any) => x.name.toLowerCase().includes(searchBrend))
+                    .filter((x: any) =>
+                      x.name.toLowerCase().includes(searchBrend)
+                    )
                     .map((x: any) => (
                       <div
                         style={{
-                          color: manufacturerFilter == x.id ? '#FE680A' : '#000',
+                          color:
+                            manufacturerFilter == x.id ? '#FE680A' : '#000',
                         }}
                         onClick={(e) => {
                           handleManufacturerChange(x.id);
@@ -421,10 +481,21 @@ const ProductsPage = ({ params }: { params: Promise<{ lang: Locale }> }) => {
                 ))}
               </select>
             </div>
-
+            <div className="filter">
+              Ліміт
+              <input
+                style={{ width: '100px', maxWidth: '100%' }}
+                value={limit}
+                onChange={(e) => setLimit(Number(e.target.value))}
+                placeholder="Ліміт"
+              />
+            </div>
             <div className="filter">
               Метки товара
-              <select onChange={(e) => setTopBlock(e.target.value)} value={topBlock}>
+              <select
+                onChange={(e) => setTopBlock(e.target.value)}
+                value={topBlock}
+              >
                 <option value="">Все</option>
                 <option value="isDiscount">Со скидкой</option>
                 <option value="isHit">Топ продажов</option>
@@ -463,7 +534,9 @@ const ProductsPage = ({ params }: { params: Promise<{ lang: Locale }> }) => {
           <select
             value={selectMassOperations}
             onChange={(e) =>
-              setSelectMassOperations(e.target.value as '' | 'del' | 'notShow' | 'showTrue')
+              setSelectMassOperations(
+                e.target.value as '' | 'del' | 'notShow' | 'showTrue'
+              )
             }
           >
             <option value="">- Виберите действия -</option>
@@ -472,10 +545,63 @@ const ProductsPage = ({ params }: { params: Promise<{ lang: Locale }> }) => {
             <option value="showTrue">Показать</option>
           </select>
           <button
-            className={selectMassOperations && selectGoods.length > 0 ? 'but-active' : ''}
+            className={
+              selectMassOperations && selectGoods.length > 0 ? 'but-active' : ''
+            }
             onClick={useMassOperations}
           >
             Виполнить
+          </button>
+          <div
+            style={{ display: 'flex', flexDirection: 'column' }}
+            className="col"
+          >
+            <label>Задати знижку</label>
+            <input
+              type="text"
+              value={discount}
+              onChange={(e) => setDiscount(Number(e.target.value))}
+            />
+          </div>
+          <button
+            className={selectGoods.length > 0 ? 'but-active' : ''}
+            onClick={newDiscount}
+          >
+            Задати
+          </button>
+          <div
+            style={{ display: 'flex', flexDirection: 'column' }}
+            className="col"
+          >
+            <label>Оновити ціну у %(наприклад +10 або -10)</label>
+            <input
+              type="text"
+              value={percent}
+              onChange={(e) => setPrecent(Number(e.target.value || 0))}
+            />
+          </div>
+          <button
+            className={selectGoods.length > 0 ? 'but-active' : ''}
+            onClick={updatePrice}
+          >
+            Задати
+          </button>
+          <div
+            style={{ display: 'flex', flexDirection: 'column' }}
+            className="col"
+          >
+            <label>Оновити ціну у грн (наприклад +100 або -100) грн</label>
+            <input
+              type="text"
+              value={grn}
+              onChange={(e) => setGrn(Number(e.target.value || 0))}
+            />
+          </div>
+          <button
+            className={selectGoods.length > 0 ? 'but-active' : ''}
+            onClick={updatePriceGrn}
+          >
+            Задати
           </button>
         </div>
       </div>
@@ -525,7 +651,9 @@ const ProductsPage = ({ params }: { params: Promise<{ lang: Locale }> }) => {
           ))}
           <div
             className={`right ${currentPage === totalPages ? 'disabled' : ''}`}
-            onClick={() => currentPage < totalPages && handlePageChange(currentPage + 1)}
+            onClick={() =>
+              currentPage < totalPages && handlePageChange(currentPage + 1)
+            }
           >
             <RightSVG />
           </div>

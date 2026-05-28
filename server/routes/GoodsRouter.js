@@ -55,5 +55,17 @@ router.get('/getMiniGoods', GoodsControllers.GetMiniGoods);
 router.post('/editLine/:idLine', IsAdminMiddleWare, GoodsControllers.EditLine);
 router.post('/delLine/:idLine', IsAdminMiddleWare, GoodsControllers.DelLine);
 router.get('/getForVolumeMini/:art', GoodsControllers.GetForVolumeMini);
+router.post(
+  '/setDiscountToBrend',
+  IsAdminMiddleWare,
+  GoodsControllers.SetDiscountToBrend
+);
+router.patch('/setDiscount', IsAdminMiddleWare, GoodsControllers.SetDiscount);
+router.patch('/updatePrice', IsAdminMiddleWare, GoodsControllers.UpdatePrice);
+router.patch(
+  '/updatePriceGrn',
+  IsAdminMiddleWare,
+  GoodsControllers.UpdatePriceGRN
+);
 
 module.exports = router;

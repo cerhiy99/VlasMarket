@@ -2833,6 +2833,260 @@ class GoodsControllers {
       return next(ErrorApi.badRequest(err));
     }
   };
+
+  static SetDiscountToBrend = async (req, res, next) => {
+    try {
+      let { brendId, discount } = req.body;
+
+      if (brendId == null || discount == null) {
+        return res.status(400).json({
+          message: 'brendId і discount обовʼязкові',
+        });
+      }
+
+      brendId = Number(brendId);
+      discount = Number(discount);
+
+      if (Number.isNaN(brendId) || Number.isNaN(discount)) {
+        return res.status(400).json({
+          message: 'Невірний формат даних',
+        });
+      }
+
+      const brend = await Brends.findByPk(brendId);
+
+      if (!brend) {
+        return res.status(404).json({
+          message: 'Бренд не знайдено',
+        });
+      }
+
+      // ⚡ ОДИН SQL UPDATE через subquery
+      await Volume.update(
+        {
+          discount,
+
+          priceWithDiscount: Sequelize.literal(
+            `price - (price * ${discount} / 100)`
+          ),
+        },
+        {
+          where: Sequelize.literal(`
+          goodId IN (
+            SELECT id FROM goods WHERE brendId = ${brendId}
+          )
+        `),
+        }
+      );
+
+      return res.json({
+        message: 'Знижку застосовано до бренду',
+        brendId,
+        discount,
+      });
+    } catch (err) {
+      return ErrorApi.badRequest(err);
+    }
+  };
+
+  static SetDiscount = async (req, res, next) => {
+    try {
+      console.log(54);
+      let { discount, selectGoods } = req.body;
+      console.log(req.body);
+      // перевірка
+      if (discount == null || !Array.isArray(selectGoods)) {
+        return res.status(400).json({
+          message: 'discount і selectGoods обовʼязкові',
+        });
+      }
+
+      discount = Number(discount);
+
+      if (Number.isNaN(discount)) {
+        return res.status(400).json({
+          message: 'Невірний discount',
+        });
+      }
+
+      // очищаємо і переводимо в числа
+      const goodsIds = selectGoods
+        .map((id) => Number(id))
+        .filter((id) => !Number.isNaN(id));
+
+      if (!goodsIds.length) {
+        return res.status(400).json({
+          message: 'Немає валідних товарів',
+        });
+      }
+
+      // ⚡ один update
+      await Volume.update(
+        {
+          discount,
+
+          priceWithDiscount: Sequelize.literal(
+            `price - (price * ${discount} / 100)`
+          ),
+        },
+        {
+          where: {
+            goodId: {
+              [Op.in]: goodsIds,
+            },
+          },
+        }
+      );
+
+      return res.json({
+        message: 'Знижку застосовано',
+        countGoods: goodsIds.length,
+        discount,
+      });
+    } catch (err) {
+      return next(ErrorApi.badRequest(err));
+    }
+  };
+  static UpdatePrice = async (req, res, next) => {
+    try {
+      let { percent, selectGoods } = req.body;
+
+      // percent може бути:
+      // 10  => +10%
+      // -10 => -10%
+
+      if (percent == null || !Array.isArray(selectGoods)) {
+        return res.status(400).json({
+          message: 'percent і selectGoods обовʼязкові',
+        });
+      }
+
+      percent = Number(percent);
+
+      if (Number.isNaN(percent)) {
+        return res.status(400).json({
+          message: 'Невірний percent',
+        });
+      }
+
+      const goodsIds = selectGoods
+        .map((id) => Number(id))
+        .filter((id) => !Number.isNaN(id));
+
+      if (!goodsIds.length) {
+        return res.status(400).json({
+          message: 'Немає валідних товарів',
+        });
+      }
+
+      // коефіцієнт зміни ціни
+      // +10% => 1.1
+      // -10% => 0.9
+      const multiplier = 1 + percent / 100;
+
+      await Volume.update(
+        {
+          // нова price
+          price: Sequelize.literal(`
+          ROUND(price * ${multiplier}, 2)
+        `),
+
+          // новий priceWithDiscount
+          priceWithDiscount: Sequelize.literal(`
+          ROUND(
+            price
+            -
+            (
+              price * discount / 100
+            ),
+            2
+          )
+        `),
+        },
+        {
+          where: {
+            goodId: {
+              [Op.in]: goodsIds,
+            },
+          },
+        }
+      );
+
+      return res.json({
+        message: 'Ціни успішно оновлено',
+        percent,
+      });
+    } catch (err) {
+      return next(ErrorApi.badRequest(err));
+    }
+  };
+  static UpdatePriceGRN = async (req, res, next) => {
+    try {
+      let { value, selectGoods } = req.body;
+
+      // value:
+      // 100  => +100 грн
+      // -100 => -100 грн
+
+      if (value == null || !Array.isArray(selectGoods)) {
+        return res.status(400).json({
+          message: 'value і selectGoods обовʼязкові',
+        });
+      }
+
+      value = Number(value);
+
+      if (Number.isNaN(value)) {
+        return res.status(400).json({
+          message: 'Невірний value',
+        });
+      }
+
+      const goodsIds = selectGoods
+        .map((id) => Number(id))
+        .filter((id) => !Number.isNaN(id));
+
+      if (!goodsIds.length) {
+        return res.status(400).json({
+          message: 'Немає валідних товарів',
+        });
+      }
+
+      await Volume.update(
+        {
+          // нова ціна
+          price: Sequelize.literal(`
+          ROUND(price + (${value}), 2)
+        `),
+
+          // нова ціна зі знижкою
+          priceWithDiscount: Sequelize.literal(`
+          ROUND(
+            price -
+            (
+              price * discount / 100
+            ),
+            2
+          )
+        `),
+        },
+        {
+          where: {
+            goodId: {
+              [Op.in]: goodsIds,
+            },
+          },
+        }
+      );
+
+      return res.json({
+        message: 'Ціни успішно оновлено',
+        value,
+      });
+    } catch (err) {
+      return next(ErrorApi.badRequest(err));
+    }
+  };
 }
 
 module.exports = GoodsControllers;
