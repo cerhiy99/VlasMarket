@@ -2891,9 +2891,7 @@ class GoodsControllers {
 
   static SetDiscount = async (req, res, next) => {
     try {
-      console.log(54);
       let { discount, selectGoods } = req.body;
-      console.log(req.body);
       // перевірка
       if (discount == null || !Array.isArray(selectGoods)) {
         return res.status(400).json({
@@ -2926,7 +2924,7 @@ class GoodsControllers {
           discount,
 
           priceWithDiscount: Sequelize.literal(
-            `price - (price * ${discount} / 100)`
+            `ROUND(price - (price * ${discount} / 100), 0)`
           ),
         },
         {
@@ -2988,7 +2986,7 @@ class GoodsControllers {
         {
           // нова price
           price: Sequelize.literal(`
-          ROUND(price * ${multiplier}, 2)
+          ROUND(price * ${multiplier}, 0)
         `),
 
           // новий priceWithDiscount
@@ -2999,7 +2997,7 @@ class GoodsControllers {
             (
               price * discount / 100
             ),
-            2
+            0
           )
         `),
         },
@@ -3056,7 +3054,7 @@ class GoodsControllers {
         {
           // нова ціна
           price: Sequelize.literal(`
-          ROUND(price + (${value}), 2)
+          ROUND(price + (${value}), 0)
         `),
 
           // нова ціна зі знижкою
@@ -3066,7 +3064,7 @@ class GoodsControllers {
             (
               price * discount / 100
             ),
-            2
+            0
           )
         `),
         },
