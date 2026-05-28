@@ -209,14 +209,14 @@ const EditSlide = (props: Props) => {
           {/* Href та Sort */}
           <div className="input-group">
             <label htmlFor="editHref">
-              Посилання (до прикладу: /goods/...)
+              Посилання (до прикладу: /...)
             </label>
             <input
               id="editHref"
               type="text"
               value={editHref}
               onChange={(e) => setEditHref(e.target.value)}
-              placeholder="/goods/..."
+              placeholder="/..."
             />
           </div>
 

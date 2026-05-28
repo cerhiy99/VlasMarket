@@ -74,9 +74,8 @@ const HeaderBasket = ({ lang }: Props) => {
             </div>
           )}
         </div>
-        {
-          //<p>{t('headerBasket.cart')}</p>
-        }
+
+        <p>{t('headerBasket.cart')}</p>
       </div>
       <div
         onClick={(e) => {

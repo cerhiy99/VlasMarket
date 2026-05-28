@@ -134,6 +134,26 @@
     //height: 120px;
     display: flex;
     align-items: center;
+    .header-compresion {
+      position: relative;
+      .info {
+        display: none;
+      }
+      &:hover {
+        .info {
+          position: absolute;
+          bottom: -30px;
+          left: -25px;
+          display: flex;
+          white-space: nowrap;
+          z-index: 3;
+          background-color: #fff;
+          border: 0.1px solid #000;
+          border-radius: 5px;
+          padding: 5px;
+        }
+      }
+    }
 
     @media (max-width: 768px) {
       background-color: unset;

@@ -6,14 +6,12 @@ import ClientRating from '../Reviews/ClientRating';
 import MyClientRating from './MyClientRating';
 import SelectSortSVG from '../../assest/Goods/SelectSort.svg';
 import Review from './Review';
-import ArrowRightSVG from '../../assest/Goods/ArrowRight.svg';
 import AddReview from './AddReview';
 import { GoodInterface } from '@/app/interfaces/goods';
 import { Locale } from '@/i18n.config';
 import UserWatched from '../utils/UserWatched';
 import AddToYouWatched from '../AddToYouWatched/AddToYouWatched';
 import { useTranslation } from '@/context/TranslationProvider';
-import ListGoodsLeftWithRealGoods from '../Home/ListGoodsLeftWithRealGoods';
 
 type Props = {
   dictionary: any;

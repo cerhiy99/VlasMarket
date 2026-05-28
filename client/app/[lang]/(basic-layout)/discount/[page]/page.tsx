@@ -3,10 +3,8 @@ import React from 'react';
 import './Discount.scss';
 import { getDictionary } from '@/lib/dictionary';
 import BreadCrumbs from '@/app/components/utils/BreadCrumbs';
-import Sort from '@/app/components/goods/Sort/Sort';
 import { GoodInterface } from '@/app/interfaces/goods';
 import ListGoods from '@/app/components/goods/ListGoods';
-import dynamic from 'next/dynamic';
 import MyPagination from '@/app/components/MyPagination/MyPagination';
 
 type Props = {

@@ -10,7 +10,6 @@
   box-sizing: border-box;
   z-index: 102;
   padding: 16px;
-  font-family: 'Inter', sans-serif;
 
   @media (min-height: 700px) {
     align-items: center;
@@ -162,7 +161,6 @@
           color: #1e1e1e !important;
           font-size: 14px !important;
           font-weight: 400 !important;
-          font-family: 'Inter', sans-serif !important;
 
           @media (max-width: 480px) {
             height: 42px !important;
@@ -224,7 +222,6 @@
           border: 1px solid #ead7e2 !important;
           box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08) !important;
           margin-top: 6px !important;
-          font-family: 'Inter', sans-serif !important;
         }
       }
       .special-label {

@@ -65,14 +65,26 @@
         border-radius: 100%;
       }
     }
+    position: relative;
     p {
-      color: #ffffff;
-      margin: 0;
-      font-size: 12px;
-      line-height: 14px;
-      padding-right: 10px;
+      position: absolute;
+      bottom: -46px;
+      right: -3px;
+      display: flex;
+      white-space: nowrap;
+      z-index: 3;
+      background-color: #fff;
+      border: 0.1px solid #000;
+      border-radius: 5px;
+      padding: 5px;
+      display: none;
       @media (max-width: 1024px) {
         display: none;
+      }
+    }
+    &:hover {
+      p {
+        display: flex;
       }
     }
   }

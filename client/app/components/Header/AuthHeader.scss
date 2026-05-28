@@ -55,41 +55,28 @@
     z-index: 102;
   }
   .dropdown {
-    display: none;
     position: absolute;
-    top: 100%;
-    box-shadow: 0px 5px 40px 0px #0000001f;
+    bottom: -30px;
+    left: 0px;
+    display: flex;
+    white-space: nowrap;
+    z-index: 3;
+    background-color: #fff;
+    border: 0.1px solid #000;
     border-radius: 5px;
-    background-color: #ffffff;
-    opacity: 0;
-    transform: translateY(-10px);
-    transition:
-      opacity 0.3s ease,
-      transform 0.3s ease;
-    z-index: 102;
-    left: calc(50% - 16px);
-    transform: translateX(-50%);
-    padding: 8px 11px; /* Внутрішні відступи */
+    padding: 5px;
+    display: none;
+    &.dropdown2 {
+      bottom: -47.5px;
+      flex-direction: column;
+      gap: 5px;
+    }
 
     .dropdownBtn {
       &:hover {
         text-decoration: underline;
         color: #fe680a;
       }
-    }
-
-    div {
-      margin: 0;
-      padding: 10px;
-
-      font-size: 14px;
-      font-weight: 400;
-      line-height: 16.94px;
-      text-align: left;
-      text-underline-position: from-font;
-      -webkit-text-decoration-skip-ink: none;
-      text-decoration-skip-ink: none;
-      color: #000000;
     }
 
     &.show {

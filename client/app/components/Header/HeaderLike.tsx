@@ -88,12 +88,15 @@ const HeaderLike = ({ lang }: Props) => {
           </div>
         )}
       </div>
-      <div className={`dropdown ${isOpen ? 'show' : ''}`}>
+      <div
+        style={{ border: like.length == 0 ? '1px solid #000' : 'none' }}
+        className={`dropdown ${isOpen ? 'show' : ''}`}
+      >
         {like.length === 0 ? (
-          <>
+          <div>
             <p className="empty-title">{t('headerLike.emptyTitle')}</p>
             <span>{t('headerLike.emptyDescription')}</span>
-          </>
+          </div>
         ) : (
           <div className="liked-container">
             <p>{t('headerLike.likedItems')}</p>

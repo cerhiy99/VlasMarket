@@ -31,7 +31,7 @@ const AdminLogo = ({ isMob }: Props) => {
               }
             : {
                 position: 'absolute',
-                left: '17px',
+                left: '7.5px',
                 top: '17px',
                 display: 'flex',
                 alignContent: 'center',
@@ -67,7 +67,7 @@ const AdminLogo = ({ isMob }: Props) => {
               }
             : {
                 position: 'absolute',
-                left: '17px',
+                left: '7.5px',
                 top: '17px',
                 display: 'flex',
                 alignContent: 'center',

@@ -6,7 +6,6 @@ import SelectGoodsTextContainer from './SelectGoodsTextContainer';
 import { Locale } from '@/i18n.config';
 import StaticListTitle from './StaticListTitle';
 import { GoodInterface } from '@/app/interfaces/goods';
-import dynamic from 'next/dynamic';
 import { useRouter } from 'next/navigation';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/app/store';
@@ -14,8 +13,7 @@ import SetView from './SetView';
 import ListGoodsLeftWithRealGoods from '../Home/ListGoodsLeftWithRealGoods';
 import { getLocalizedPath } from '../utils/getLocalizedPath';
 import { useTranslation } from '@/context/TranslationProvider';
-
-const AboutGoods = dynamic(() => import('./AboutGoods'), { ssr: false });
+import AboutGoods from './AboutGoods';
 
 const CardWithImg = ({
   dictionary,
@@ -43,7 +41,12 @@ const CardWithImg = ({
     setSelectVolumeIdx(value);
   };
   const [activeSection, setActiveSection] = useState<
-    'about' | 'description' | 'characteristics' | 'reviews' | 'video' | 'similar'
+    | 'about'
+    | 'description'
+    | 'characteristics'
+    | 'reviews'
+    | 'video'
+    | 'similar'
   >('about');
 
   const { user, isAuthorize } = useSelector((state: RootState) => state.user);
@@ -65,7 +68,9 @@ const CardWithImg = ({
             <ImgContainer
               listImg={selectGoods.volumes[selectVolumeIdx].imgs}
               isNovetly={selectGoods.isNovetly}
-              isFreeDelivery={selectGoods.volumes[selectVolumeIdx].isFreeDelivery}
+              isFreeDelivery={
+                selectGoods.volumes[selectVolumeIdx].isFreeDelivery
+              }
               isDiscount={selectGoods.isDiscount}
               isHit={selectGoods.isHit}
               lang={lang}
@@ -107,11 +112,18 @@ const CardWithImg = ({
               }}
               onClick={() =>
                 router.push(
-                  getLocalizedPath(`/${lang}/admin/update-product/${selectGoods.id}`, lang)
+                  getLocalizedPath(
+                    `/${lang}/admin/update-product/${selectGoods.id}`,
+                    lang
+                  )
                 )
               }
-              onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = '#005bb5')}
-              onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = '#0070f3')}
+              onMouseEnter={(e) =>
+                (e.currentTarget.style.backgroundColor = '#005bb5')
+              }
+              onMouseLeave={(e) =>
+                (e.currentTarget.style.backgroundColor = '#0070f3')
+              }
             >
               {t('selectGoods.edit')}
             </button>
@@ -123,7 +135,11 @@ const CardWithImg = ({
         <div className="card-with-image__text_h2">
           <p className="h2">{t('selectGoods.watchMore')}</p>
         </div>
-        <ListGoodsLeftWithRealGoods data={watchMore} lang={lang} dictionary={dictionary.SeeMore} />
+        <ListGoodsLeftWithRealGoods
+          data={watchMore}
+          lang={lang}
+          dictionary={dictionary.SeeMore}
+        />
       </div>
       {/* <SeeMore
         listGoods={selectGoods.listGoods}

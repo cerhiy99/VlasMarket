@@ -204,6 +204,14 @@ export default function RootLayout({
                       >
                         Статистика товаров
                       </Link>
+                      <Link
+                        href={getLocalizedPath(
+                          `/${lang}/admin/set-discount-to-brend`,
+                          lang
+                        )}
+                      >
+                        Добавити знижку бренду
+                      </Link>
                       <Link href={getLocalizedPath(`/${lang}/admin/`, lang)}>
                         Список товаров
                       </Link>

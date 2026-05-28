@@ -175,7 +175,7 @@ const AuthHeader = ({
           }
         </div>
         {!isAuthorize && (
-          <div className={`dropdown ${isOpen ? 'show' : ''}`}>
+          <div className={`dropdown dropdown2 ${isOpen ? 'show' : ''}`}>
             <div
               className="log-in dropdownBtn"
               onClick={() => dispatch(setOpenLogin(true))}

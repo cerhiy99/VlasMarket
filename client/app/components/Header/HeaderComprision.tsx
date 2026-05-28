@@ -23,7 +23,7 @@ const HeaderComprision = ({ lang }: Props) => {
   };
 
   return (
-    <div className="header-like-container">
+    <div className="header-like-container header-compresion">
       <div onClick={openComprision} className={`title`}>
         <ComprisionSvg />
 
@@ -33,6 +33,7 @@ const HeaderComprision = ({ lang }: Props) => {
           </div>
         )}
       </div>
+      <div className="info">{lang == 'ru' ? 'Сравнение' : 'Порівняння'}</div>
     </div>
   );
 };
