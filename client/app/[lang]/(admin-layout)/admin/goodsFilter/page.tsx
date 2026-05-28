@@ -278,7 +278,7 @@ const ProductsPage = ({ params }: { params: Promise<{ lang: Locale }> }) => {
   const [searchBrend, setSearchBrend] = useState('');
   const [isshowBrend, setISShowBrend] = useState(false);
 
-  const [discount, setDiscount] = useState(0);
+  const [discount, setDiscount] = useState('0');
 
   const newDiscount = async () => {
     try {
@@ -293,8 +293,8 @@ const ProductsPage = ({ params }: { params: Promise<{ lang: Locale }> }) => {
     }
   };
 
-  const [percent, setPrecent] = useState(0);
-  const [grn, setGrn] = useState(0);
+  const [percent, setPrecent] = useState('0');
+  const [grn, setGrn] = useState('0');
 
   const updatePrice = async () => {
     try {
@@ -560,7 +560,7 @@ const ProductsPage = ({ params }: { params: Promise<{ lang: Locale }> }) => {
             <input
               type="text"
               value={discount}
-              onChange={(e) => setDiscount(Number(e.target.value))}
+              onChange={(e) => setDiscount(e.target.value)}
             />
           </div>
           <button
@@ -577,7 +577,7 @@ const ProductsPage = ({ params }: { params: Promise<{ lang: Locale }> }) => {
             <input
               type="text"
               value={percent}
-              onChange={(e) => setPrecent(Number(e.target.value || 0))}
+              onChange={(e) => setPrecent(e.target.value)}
             />
           </div>
           <button
@@ -594,7 +594,7 @@ const ProductsPage = ({ params }: { params: Promise<{ lang: Locale }> }) => {
             <input
               type="text"
               value={grn}
-              onChange={(e) => setGrn(Number(e.target.value || 0))}
+              onChange={(e) => setGrn(e.target.value)}
             />
           </div>
           <button
