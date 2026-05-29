@@ -94,7 +94,7 @@ export async function generateMetadata({ params, searchParams }: Props) {
       metadataBase: new URL(baseUrl), // Переконайтеся, що це об'єкт URL
       alternates: {
         canonical:
-          lang == 'ru' ? `${baseUrl}ru/goods/${id}` : `${baseUrl}/goods/${id}`,
+          lang == 'ru' ? `${baseUrl}ru/goods/${id}` : `${baseUrl}goods/${id}`,
         languages: {
           'x-default': `${baseUrl}goods/${id}`,
           uk: `${baseUrl}goods/${id}`,

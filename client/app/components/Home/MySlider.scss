@@ -28,6 +28,8 @@
     position: relative;
     width: 100%;
     aspect-ratio: 3;
+    border-radius: 20px;
+    overflow: hidden;
     @media (max-width: 768px) {
       aspect-ratio: 14/9;
     }

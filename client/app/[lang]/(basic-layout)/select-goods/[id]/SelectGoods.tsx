@@ -113,7 +113,7 @@ const SelectGoods = async ({ params: { lang, id }, searchParams }: Props) => {
     lang === 'ru' ? selectGoods.descriptionru : selectGoods.descriptionuk;
   const plainDescription = rawDescription.replace(/<[^>]+>/g, '').slice(0, 200);
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
-  const canonicalUrl = `${baseUrl}/${lang === 'ru' ? 'ru/' : '/'}${id}`;
+  const canonicalUrl = `${baseUrl}/${lang === 'ru' ? 'ru/' : '/'}goods/${id}`;
   const imageUrl = volume.imgs?.[0]?.img
     ? `${process.env.NEXT_PUBLIC_SERVER}${volume.imgs[0].img}`
     : '';
