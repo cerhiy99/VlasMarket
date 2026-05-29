@@ -93,11 +93,12 @@ export async function generateMetadata({ params, searchParams }: Props) {
       description: plainDescription,
       metadataBase: new URL(baseUrl), // Переконайтеся, що це об'єкт URL
       alternates: {
-        canonical: lang == 'ru' ? `${baseUrl}ru/${id}` : `${baseUrl}/${id}`,
+        canonical:
+          lang == 'ru' ? `${baseUrl}ru/goods/${id}` : `${baseUrl}/goods/${id}`,
         languages: {
-          'x-default': `${baseUrl}${id}`,
-          uk: `${baseUrl}${id}`,
-          ru: `${baseUrl}ru/${id}`,
+          'x-default': `${baseUrl}goods/${id}`,
+          uk: `${baseUrl}goods/${id}`,
+          ru: `${baseUrl}ru/goods/${id}`,
         },
       },
       openGraph: {
@@ -179,15 +180,13 @@ export async function generateMetadata({ params, searchParams }: Props) {
       searchParams2 as Record<string, string>
     ).toString();
 
-    const canonicalUrl = `${baseUrl}${urlPath}/${slug.join('/')}/1`.replace(
-      '//1',
-      '/1'
-    );
-    const uaUrl = `${baseUrl}/${slug.join('/')}/${page}`.replace(
+    const canonicalUrl =
+      `${baseUrl}${urlPath}/goods/${slug.join('/')}/1`.replace('//1', '/1');
+    const uaUrl = `${baseUrl}/goods/${slug.join('/')}/${page}`.replace(
       `//${page}`,
       `/${page}`
     );
-    const ruUrl = `${baseUrl}/ru/${slug.join('/')}/${page}`.replace(
+    const ruUrl = `${baseUrl}/ru/goods/${slug.join('/')}/${page}`.replace(
       `//${page}`,
       `/${page}`
     );
@@ -391,7 +390,7 @@ const Page = async ({ params, searchParams }: Props) => {
       currentSearchParams.set(key, value);
     }
   }
-  console.log(4234, currentSearchParams);
+
   let category: string = '';
   if (slug.length > 0) {
     category = slug[0];
@@ -426,13 +425,13 @@ const Page = async ({ params, searchParams }: Props) => {
     true
   ); // Передаємо currentSearchParams
   const listUrles = [];
-  let url = ``;
+  let url = `goods`;
 
   if (selectCategory && selectCategory[`name${lang == 'ru' ? 'ru' : 'uk'}`]) {
     listUrles.push({
       name: selectCategory[`name${lang == 'ru' ? 'ru' : 'uk'}`],
       url: getLocalizedPath(
-        `/${lang}/${UkrToEng(selectCategory.nameru)}/1`,
+        `/${lang}/goods/${UkrToEng(selectCategory.nameru)}/1`,
         lang
       ),
     });
@@ -462,7 +461,7 @@ const Page = async ({ params, searchParams }: Props) => {
           filters={filters}
           lang={lang}
           currentSearchParams={currentSearchParams}
-          currentPathname={`/${lang}/${slug.join('/')}`}
+          currentPathname={`/${lang}/goods/${slug.join('/')}`}
           isMob={isMobile}
           isMobReal={isMobile}
           url={url}

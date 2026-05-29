@@ -2,6 +2,7 @@ import Script from 'next/script';
 import { Locale, i18n } from '@/i18n.config';
 import Providers from '../store/providers';
 import { TranslationProvider } from '@/context/TranslationProvider';
+import { phones } from '../components/Footer/listSocialNetwork';
 
 type Params = Promise<{ lang: Locale }>;
 
@@ -12,8 +13,8 @@ export async function generateStaticParams() {
 export async function generateMetadata() {
   return {
     robots: {
-      index: false,
-      follow: false,
+      index: true,
+      follow: true,
     },
   };
 }

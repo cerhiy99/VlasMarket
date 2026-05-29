@@ -80,12 +80,12 @@ export const messengers2 = [
 
 export const phones = [
   {
-    text: '+38 (093) 514-39-04',
-    href: 'tel:+380935143904',
+    text: '+380675744350',
+    href: 'tel:+380675744350',
   },
   {
-    text: '+38 (093) 514-39-04',
-    href: 'tel:+380935143904',
+    text: '+380675744350',
+    href: 'tel:+380675744350',
   },
 ];
 
@@ -97,8 +97,8 @@ export const email = {
 
 export const address = {
   SVG: AddressSVG,
-  textuk: 'Україна, м. Черкаси, вул. Гоголя 269',
-  textru: 'Украина, г. Черкассы, ул. Гоголя 269',
+  textuk: 'Україна, м. Харків вул. Григорія Сковороди 67/69',
+  textru: 'Украина, г. Харьков, ул. Григория Сковороды 67/69',
 };
 
 export const timeWorks = [

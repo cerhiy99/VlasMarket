@@ -1,7 +1,6 @@
 import type { MetadataRoute } from 'next';
 
-const BASE_URL =
-  process.env.NEXT_PUBLIC_BASE_URL || 'https://vlasmarket.com.ua/';
+const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || 'https://baylap.com';
 const IMG_URL = process.env.NEXT_PUBLIC_SERVER;
 const LANGUAGES = ['', 'ru/']; // Підтримувані мови
 const revalidateTime = 3600; // Час оновлення
@@ -9,15 +8,14 @@ const revalidateTime = 3600; // Час оновлення
 // Статичні сторінки
 const STATIC_PAGES = [
   'about-us',
-  'bonus',
   'brands',
-  'comparison',
   'cooperation',
   'delivery',
   'how-place-order',
   'offer-agreement',
   'pay',
   'return-goods',
+  'contact',
 ];
 const dynamicPages = ['blog', 'brands/[brend]', 'discount', 'goods'];
 
@@ -74,9 +72,9 @@ async function generateDynamicGoodsPagesCategory() {
     // Ітеруємо по кожному номеру сторінки та мові
     return pageNumbers.flatMap((pageNumber) =>
       LANGUAGES.map((lang) => ({
-        url: `${BASE_URL}/${lang}${url}/${pageNumber}`,
+        url: `${BASE_URL}/${lang}goods/${url}/${pageNumber}`,
         lastModified: new Date(),
-        alternates: generateLocalizedUrls(`/${url}/${pageNumber}`),
+        alternates: generateLocalizedUrls(`/goods/${url}/${pageNumber}`),
       }))
     );
   });
@@ -101,9 +99,9 @@ async function generateDynamicGoodsPagesSubcategory() {
 
     // Ітеруємо по кожному номеру сторінки та мові
     return LANGUAGES.map((lang) => ({
-      url: `${BASE_URL}/${lang}/${url}/1`,
+      url: `${BASE_URL}/${lang}goods/${url}/1`,
       lastModified: new Date(),
-      alternates: generateLocalizedUrls(`/${url}/1`),
+      alternates: generateLocalizedUrls(`/goods/${url}/1`),
     }));
   });
 }
@@ -213,9 +211,9 @@ async function generateDynamicSelectGoods() {
   );*/
   return urls.flatMap((x: any) =>
     LANGUAGES.map((lang) => ({
-      url: `${BASE_URL}/${lang}${x.url}`,
+      url: `${BASE_URL}/${lang}goods/${x.url}`,
       lastModified: new Date(),
-      alternates: generateLocalizedUrls(`/${x.url}`),
+      alternates: generateLocalizedUrls(`/goods/${x.url}`),
       images: x.img.map((img: any) => `${BASE_URL}${IMG_URL}${img.img}`),
     }))
   );

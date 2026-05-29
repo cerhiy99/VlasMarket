@@ -430,7 +430,7 @@ const MobileMenu = ({
               onClick={() => {
                 router.push(
                   getLocalizedPath(
-                    `/${lang}/${UkrToEng(catalog.find((x: any) => x.id == selectCategory)?.nameru || '')}/1`,
+                    `/${lang}/goods/${UkrToEng(catalog.find((x: any) => x.id == selectCategory)?.nameru || '')}/1`,
                     lang
                   )
                 );
@@ -462,7 +462,7 @@ const MobileMenu = ({
                 onClick={() => {
                   router.push(
                     getLocalizedPath(
-                      `/${lang}/${UkrToEng(catalog.find((x: any) => x.id == selectCategory)?.nameru || '')}/1`,
+                      `/${lang}/goods/${UkrToEng(catalog.find((x: any) => x.id == selectCategory)?.nameru || '')}/1`,
                       lang
                     )
                   );
@@ -481,7 +481,7 @@ const MobileMenu = ({
                       onClick={() => {
                         router.push(
                           getLocalizedPath(
-                            `/${lang}/${UkrToEng(catalog.find((x: any) => x.id == selectCategory)?.nameru || '')}/${UkrToEng(x.nameru)}/1`,
+                            `/${lang}/goods/${UkrToEng(catalog.find((x: any) => x.id == selectCategory)?.nameru || '')}/${UkrToEng(x.nameru)}/1`,
                             lang
                           )
                         );

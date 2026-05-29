@@ -45,7 +45,7 @@ const MiniGoods = ({ goods, dictionary, lang, idx }: Props) => {
 
   return (
     <Link
-      href={getLocalizedPath(`/${lang}/${goods.volumes[0].url}`, lang)}
+      href={getLocalizedPath(`/${lang}/goods/${goods.volumes[0].url}`, lang)}
       className="mini-goods-container"
     >
       <div className="mini-goods-main1">

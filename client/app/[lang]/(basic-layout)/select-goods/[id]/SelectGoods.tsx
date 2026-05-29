@@ -78,7 +78,7 @@ const SelectGoods = async ({ params: { lang, id }, searchParams }: Props) => {
   const listUrlBread = [];
   if (selectGoods.category) {
     listUrlBread.push({
-      url: `/${lang}/${UkrToEng(selectGoods.category.nameru)}/1`,
+      url: `/${lang}/goods/${UkrToEng(selectGoods.category.nameru)}/1`,
       name:
         lang === 'ru'
           ? selectGoods.category.nameru
@@ -91,7 +91,7 @@ const SelectGoods = async ({ params: { lang, id }, searchParams }: Props) => {
     selectGoods.subcategory.nameuk
   ) {
     listUrlBread.push({
-      url: `/${lang}/${UkrToEng(selectGoods.category.nameru)}/${UkrToEng(selectGoods.subcategory.nameru)}/1`,
+      url: `/${lang}/goods/${UkrToEng(selectGoods.category.nameru)}/${UkrToEng(selectGoods.subcategory.nameru)}/1`,
       name:
         lang === 'ru'
           ? selectGoods.subcategory.nameru

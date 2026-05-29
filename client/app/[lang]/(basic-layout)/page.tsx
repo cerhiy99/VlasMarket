@@ -258,7 +258,7 @@ const page = async ({ params }: Props) => {
           dictionary={header.catalog}
           catalog={fullCatalog}
         />
-        {slides.length > 0 && <MySlider lang={lang} images={slides} />}
+        {slides.length > 0 && <MySlider lang={lang} images={[]} />}
       </div>
       <div className="home-goods">
         <CategoryHome categories={category} lang={lang} />
