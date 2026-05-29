@@ -8,7 +8,6 @@ import 'swiper/css/pagination';
 
 import './MySlider.scss';
 
-import Image from 'next/image';
 import Link from 'next/link';
 
 import { getLocalizedPath } from '../utils/getLocalizedPath';
@@ -23,12 +22,13 @@ type SliderImage = {
   href: string | null;
 };
 
-type Props = {
+const MySlider = ({
+  images,
+  lang,
+}: {
   images: SliderImage[];
   lang: Locale;
-};
-
-const MySlider = ({ images, lang }: Props) => {
+}) => {
   return (
     <div className="my-swiper-container">
       <Swiper
@@ -40,6 +40,8 @@ const MySlider = ({ images, lang }: Props) => {
           disableOnInteraction: false,
         }}
         loop={images.length > 1}
+        preloadImages={false}
+        lazyPreloadPrevNext={1}
       >
         {images.map((item, idx) => {
           const mobileUrl =
@@ -51,22 +53,17 @@ const MySlider = ({ images, lang }: Props) => {
             item[`pcImg_${lang === 'ru' ? 'ru' : 'uk'}`];
 
           const content = (
-            <div className="slide-image-wrapper">
-              <picture>
-                <source media="(max-width: 768px)" srcSet={mobileUrl} />
+            <picture>
+              <source media="(max-width: 768px)" srcSet={mobileUrl} />
 
-                <Image
-                  src={desktopUrl}
-                  alt={`Slide ${idx + 1}`}
-                  fill
-                  priority={idx === 0}
-                  sizes="100vw"
-                  style={{
-                    objectFit: 'cover',
-                  }}
-                />
-              </picture>
-            </div>
+              <img
+                src={desktopUrl}
+                alt={`Slide ${idx + 1}`}
+                loading={idx === 0 ? 'eager' : 'lazy'}
+                fetchPriority={idx === 0 ? 'high' : 'low'}
+                className="slider-image"
+              />
+            </picture>
           );
 
           return (
