@@ -40,7 +40,7 @@ const MySlider = ({
           disableOnInteraction: false,
         }}
         loop={images.length > 1}
-        preloadImages={false}
+        //preloadImages={false}
         lazyPreloadPrevNext={1}
       >
         {images.map((item, idx) => {
