@@ -55,9 +55,6 @@ const DroprownUrles = ({ dictionary, lang }: Props) => {
         <Link href={getLocalizedPath(`/${lang}/offer-agreement`, lang)}>
           {dictionary.offerAgreement}
         </Link>
-        <Link href={getLocalizedPath(`/${lang}/reviews`, lang)}>
-          {dictionary.reviews}
-        </Link>
       </div>
     </div>
   );
