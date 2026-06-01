@@ -2,12 +2,12 @@
 'use client';
 import React, { useState, useEffect } from 'react';
 import '../add/AddBlog.scss';
-import CyrillicToTranslit from 'cyrillic-to-translit-js';
 import { $authHost } from '@/app/http';
 import MyJoditEditor from '@/app/components/utils/MyJoditReact';
 import { useRouter } from 'next/navigation';
 import { getLocalizedPath } from '@/app/components/utils/getLocalizedPath';
 import { Locale } from '@/i18n.config';
+import slugify from 'slugify';
 //import TipTapEditor from '@/app/components/utils/TipTapEditor'
 //import MyEditor from '@/app/components/utils/MyEditor'
 
@@ -18,7 +18,6 @@ import { Locale } from '@/i18n.config';
 // потрібно ігнорувати цей рядок або оголосити тип вручну.
 // Або ж просто ігноруємо наступний рядок
 // @ts-ignore
-const cyrillicToTranslit = new CyrillicToTranslit();
 
 type Props = {
   url: string;
@@ -39,8 +38,13 @@ const UpdateBlog = ({ url, lang }: Props) => {
   // Функція для створення URL-slug з транслітерацією
   const createSlug = (str: string): string => {
     // Транслітеруємо кирилицю на латиницю.
-    const transliteratedStr = cyrillicToTranslit.transform(str, '-') as string;
-
+    const transliteratedStr = slugify(str, {
+      replacement: '-',
+      remove: /[*+~.()'"!:@]/g,
+      lower: true,
+      strict: true,
+      locale: 'uk',
+    });
     // Очищуємо рядок: переводимо в нижній регістр, видаляємо зайві символи та замінюємо пробіли на дефіси.
     return transliteratedStr
       .toLowerCase()
@@ -96,7 +100,7 @@ const UpdateBlog = ({ url, lang }: Props) => {
   const del = async () => {
     try {
       const isDel = confirm(
-        'Ви справді хочете видалити цю статтю? (її не можна буде відновити)',
+        'Ви справді хочете видалити цю статтю? (її не можна буде відновити)'
       );
 
       if (!isDel) return; // якщо натиснули "Скасувати", нічого не робимо
@@ -105,7 +109,7 @@ const UpdateBlog = ({ url, lang }: Props) => {
       await $authHost.post(`blog/del/${id}`);
       alert('Статтю видалено');
       router.push(
-        getLocalizedPath(`/${lang}/admin/blog/update/selectBlog`, lang),
+        getLocalizedPath(`/${lang}/admin/blog/update/selectBlog`, lang)
       );
     } catch (err) {
       alert('Помилка при видаленні');

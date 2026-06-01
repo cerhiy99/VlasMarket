@@ -38,6 +38,7 @@
     "sass": "^1.97.3",
     "scss": "^0.2.4",
     "sharp": "^0.34.5",
+    "slugify": "^1.6.9",
     "swiper": "^11.2.6"
   },
   "devDependencies": {

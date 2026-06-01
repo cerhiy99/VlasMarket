@@ -2,7 +2,8 @@
 'use client';
 import React, { useState, useEffect } from 'react';
 import './AddBlog.scss';
-import CyrillicToTranslit from 'cyrillic-to-translit-js';
+
+import slugify from 'slugify';
 import { $authHost } from '@/app/http';
 //import TipTapEditor from '@/app/components/utils/TipTapEditor'
 //import MyEditor from '@/app/components/utils/MyEditor'
@@ -15,7 +16,6 @@ import MyJoditEditor from '@/app/components/utils/MyJoditReact';
 // потрібно ігнорувати цей рядок або оголосити тип вручну.
 // Або ж просто ігноруємо наступний рядок
 // @ts-ignore
-const cyrillicToTranslit = new CyrillicToTranslit();
 
 type Props = {};
 
@@ -33,7 +33,15 @@ const AddBlog = (props: Props) => {
   // Функція для створення URL-slug з транслітерацією
   const createSlug = (str: string): string => {
     // Транслітеруємо кирилицю на латиницю.
-    const transliteratedStr = cyrillicToTranslit.transform(str, '-') as string;
+    const transliteratedStr = slugify(str, {
+      replacement: '-',
+      remove: /[*+~.()'"!:@]/g,
+      lower: true,
+      strict: true,
+      locale: 'uk',
+    });
+    //const transliteratedStr = cyrillicToTranslit
+    //.transform(str, '-') as string;
 
     // Очищуємо рядок: переводимо в нижній регістр, видаляємо зайві символи та замінюємо пробіли на дефіси.
     return transliteratedStr
