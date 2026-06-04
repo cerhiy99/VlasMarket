@@ -320,9 +320,6 @@ const page = async ({ params }: Props) => {
         <div className="main-text">
           <h1 style={{ margin: 0 }}>{home.titleMain}</h1>
           <p>{home.description}</p>
-          <Link href={getLocalizedPath(`/${lang}`, lang)}>
-            <button>{home.watchCatalog}</button>
-          </Link>
         </div>
       </div>
     </div>

@@ -144,7 +144,7 @@
       .subcategory-details {
         display: grid;
         grid-template-columns: repeat(3, 1fr); /* Три елементи в ряд */
-        gap: 10px; /* Проміжок між елементами */
+        gap: 5px; /* Проміжок між елементами */
         //gap: 20px;
         align-items: flex-start;
         overflow: hidden;
@@ -157,7 +157,7 @@
             height: 30px;
             display: flex;
             flex-direction: row;
-            gap: 10px;
+            gap: 5px;
             cursor: pointer;
             align-items: center;
 
@@ -186,10 +186,10 @@
           .list-subcategory {
             display: flex;
             flex-direction: column;
-            gap: 5px;
+            gap: 3px;
             width: 30%;
             .subcategory {
-              font-size: 13px;
+              font-size: 12px;
               font-weight: 400;
               line-height: 14.3px;
               text-align: left;
