@@ -8,7 +8,6 @@ import './Home.scss';
 import MiniBlog from '@/app/components/Blog/MiniBlog';
 import { getLocalizedPath } from '@/app/components/utils/getLocalizedPath';
 import Link from 'next/link';
-import { UkrToEng } from '@/app/components/utils/UkrToEng';
 import CatalogHome from '@/app/components/Home/CatalogHome';
 import Brends from '@/app/components/Home/Brends';
 import CategoryHome from '@/app/components/Home/CategoryHome';
@@ -87,7 +86,7 @@ const getBlog = async (lang: Locale) => {
 const getBaners = async () => {
   try {
     const res = await fetch(process.env.NEXT_PUBLIC_API_SERVER + 'slides/get', {
-      next: { revalidate: 600 },
+      next: { revalidate: 60*60*12 },
     });
     if (!res.ok) {
       return [];

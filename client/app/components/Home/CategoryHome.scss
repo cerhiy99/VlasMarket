@@ -49,6 +49,9 @@
           }
         }
         p {
+          display: flex;
+          width: 100%;
+          text-align: center;
           margin: 0;
           font-weight: 400;
           font-style: Semi Bold;
@@ -59,6 +62,7 @@
           text-align: center;
           color: #000000;
           overflow: hidden;
+          justify-content: center;
         }
         &:hover {
           p {
@@ -139,6 +143,7 @@
             text-align: center;
             width: 100%;
             font-size: 17px;
+            display: flex;
           }
         }
       }
