@@ -477,37 +477,6 @@ VLAS
 
       resp.json({ order });
 
-      const telegramMessage = `
-VLAS
-📦 Нове замовлення
-
-👤 Імʼя: ${nameUser}
-📞 Телефон: ${phone}
-📧 Email: ${email || '—'}
-
-🚚 Доставка: ${deliveryType}
-📍 Адреса: ${oblast}, ${city}, ${departmentOrPostomatOrAddress}
-
-💳 Оплата: ${listWayDelivery.find((x) => x.id == typePay).name}
-${listWayDelivery.find((x) => x.id == typePay).description}
-
-🛒 Сума: ${sum} грн
-🎁 Бонуси: ${countBonus || 0}
-🏷 Промокод: ${promokod || '—'}
-
-📝 Коментар: ${comment || '—'}
-
-🧾 Товари:
-${realBasket
-  .map(
-    (item) =>
-      `- ${item.nameuk} × ${item.count} (${item.volumes.priceWithDiscount} грн)`
-  )
-  .join('\n')}
-
-ℹ️ Додаткова інформація:
-${additionalInfo || '—'}
-`;
 
       const htmlListUser = `<!doctype html>
 <html lang="uk">
@@ -831,6 +800,74 @@ ${additionalInfo || '—'}
 </html>
 `;
       sendEmail(email, htmlListUser, `Ваше замовлення прийнято`);
+      if(IS_SEND){
+        try{
+           const telegramMessage = `
+VLAS
+📦 Нове замовлення
+
+👤 Імʼя: ${nameUser}
+📞 Телефон: ${phone}
+📧 Email: ${email || '—'}
+
+🚚 Доставка: ${deliveryType}
+📍 Адреса: ${oblast}, ${city}, ${departmentOrPostomatOrAddress}
+
+💳 Оплата: ${listWayDelivery.find((x) => x.id == typePay).name}
+${listWayDelivery.find((x) => x.id == typePay).description}
+
+🛒 Сума: ${sum} грн
+🎁 Бонуси: ${countBonus || 0}
+🏷 Промокод: ${promokod || '—'}
+
+📝 Коментар: ${comment || '—'}
+
+🧾 Товари:
+${realBasket
+  .map(
+    (item) =>
+      `- ${item.nameuk} × ${item.count} (${item.volumes.priceWithDiscount} грн)`
+  )
+  .join('\n')}
+
+ℹ️ Додаткова інформація:
+${additionalInfo || '—'}
+`;
+          await axios.post(
+            `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`,
+            {
+              chat_id: TELEGRAM_CHAT_ID,
+              text: telegramMessage,
+              parse_mode: 'HTML',
+            }
+          );
+           const messageToEmail = `
+<b>ЗАКАЗ №${res.id}</b><br><br>
+✍️ Надійшло нове замовлення на суму ${totalPrice} грн, від користувача:<br><br>
+😉 Прізвище: ${surname}<br>
+👤 Ім'я: ${name}<br>
+📲 Телефон: ${phone}<br><br>
+💳 Тип оплати: ${payType}<br><br>
+${deliveryText}<br><br>
+✍️ Повідомлення: ${comment || 'відсутнє'}<br><br>
+${basketTextToEmail}<br><br><br>
+${process.env.FRONTEND_URL + `/ru/admin/orders/edit-order/${res.id}`}`;
+
+          sendEmail(
+            '7551991@gmail.com',
+            messageToEmail,
+            `нове замовлення №${res.id} VLAS`
+          );
+          sendEmail(
+            '664645@gmail.com',
+            messageToEmail,
+            `нове замовлення №${res.id} VLAS`
+          );
+        }
+        catch(err){
+          console.log("Помилка в setNewOrder. При відправці в тг і на пошту адміну");
+        }
+      }
     } catch (err) {
       console.log('Помилка замовлення,', err);
       return next(ErrorApi.badRequest(err));
