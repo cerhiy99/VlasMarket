@@ -84,8 +84,8 @@ class OrderController {
       );
 
       const message = `
-      VLAS MARKET
-      Користувач ${name} з мобільним телефоном ${phone} натиснув на швидке замовлення.
+VLAS MARKET
+Користувач ${name} з мобільним телефоном ${phone} натиснув на швидке замовлення.
         
 Товари на суму ${sum}
 ${basket.map(
@@ -169,22 +169,6 @@ ${FRONTEND_URL}/goods/${x.volumes.url}`
         });
       }
 
-      const message = `
-      Користувач ${name} з мобільним телефоном ${phone} натиснув на швидке замовлення.
-        
-Товар: ${nameProduct}
-Посилання: ${FRONTEND_URL}/goods/${idVolume}`.trim();
-      /*ID варіанту (volume): ${idVolume}
-          `.trim();*/
-
-      await axios.post(
-        `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`,
-        {
-          chat_id: TELEGRAM_CHAT_ID,
-          text: message,
-          parse_mode: 'HTML',
-        }
-      );
 
       const res = await Order.create({
         nameUser: name,
@@ -214,9 +198,32 @@ ${FRONTEND_URL}/goods/${x.volumes.url}`
         typePay: '',
       });
 
-      sendEmail('info@baylap.com', message, 'Нове швидке замовлення.');
-      sendEmail('7551991@gmail.com', message, `нове швидке замовлення`);
-      sendEmail('664645@gmail.com', message, `нове швидке замовлення`);
+      const message = `
+VLAS
+      Користувач ${name} з мобільним телефоном ${phone} натиснув на швидке замовлення #${res.id}.
+        
+Товар: ${nameProduct}
+Посилання: ${FRONTEND_URL}/goods/${idVolume}`.trim();
+      /*ID варіанту (volume): ${idVolume}
+          `.trim();*/
+      if(IS_SEND){
+        try{
+        await axios.post(
+          `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`,
+          {
+            chat_id: TELEGRAM_CHAT_ID,
+            text: message,
+            parse_mode: 'HTML',
+          }
+        );
+
+        sendEmail('info@vlasmarket.com.ua', message, 'Нове швидке замовлення.');
+        sendEmail('7551991@gmail.com', message, `нове швидке замовлення`);
+        sendEmail('664645@gmail.com', message, `нове швидке замовлення`);
+      }catch(err){
+        console.log("Помилка в FastOrder.");
+      }
+      }
       //sendEmail('cerhiy99@gmail.com', message, `нове швидке замовлення`);
 
       return resp.json({ ok: true });
@@ -471,6 +478,7 @@ ${FRONTEND_URL}/goods/${x.volumes.url}`
       resp.json({ order });
 
       const telegramMessage = `
+VLAS
 📦 Нове замовлення
 
 👤 Імʼя: ${nameUser}
@@ -1159,6 +1167,7 @@ ${deliveryTextAdmin}
       });
 
       const message = `
+VLAS
 <b>ЗАКАЗ №${res.id}</b>
 
 ✍️ Надійшло нове замовлення на суму ${totalPrice} грн, від користувача:
@@ -1177,16 +1186,7 @@ ${basketText}
 
 
 ${process.env.FRONTEND_URL + `/ru/admin/orders/edit-order/${res.id}`}`;
-      if (IS_SEND) {
-        await axios.post(
-          `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`,
-          {
-            chat_id: TELEGRAM_CHAT_ID,
-            text: message,
-            parse_mode: 'HTML',
-          }
-        );
-      }
+      
 
       const html = `
         <table style="width: 100%; border-collapse: collapse; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol'; background-color: #f4f4f4; padding: 20px;">
@@ -1419,16 +1419,27 @@ ${basketTextToEmail}<br><br><br>
 ${process.env.FRONTEND_URL + `/ru/admin/orders/edit-order/${res.id}`}`;
 
       try {
-        sendEmail(
-          '7551991@gmail.com',
-          messageToEmail,
-          `нове замовлення №${res.id}`
-        );
-        sendEmail(
-          '664645@gmail.com',
-          messageToEmail,
-          `нове замовлення №${res.id}`
-        );
+        if (IS_SEND) {
+          await axios.post(
+            `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`,
+            {
+              chat_id: TELEGRAM_CHAT_ID,
+              text: message,
+              parse_mode: 'HTML',
+            }
+          );
+        
+          sendEmail(
+            '7551991@gmail.com',
+            messageToEmail,
+            `нове замовлення №${res.id} VLAS`
+          );
+          sendEmail(
+            '664645@gmail.com',
+            messageToEmail,
+            `нове замовлення №${res.id} VLAS`
+          );
+        }
       } catch (err) {
         console.log('Помилка відправлення на пошту.', err);
       }
@@ -1446,7 +1457,7 @@ ${process.env.FRONTEND_URL + `/ru/admin/orders/edit-order/${res.id}`}`;
         `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`,
         {
           chat_id: TELEGRAM_CHAT_ID,
-          text: message,
+          text: 'VLAS\n' + message,
           parse_mode: 'HTML',
         }
       );
