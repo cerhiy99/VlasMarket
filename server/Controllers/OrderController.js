@@ -84,6 +84,7 @@ class OrderController {
       );
 
       const message = `
+      VLAS MARKET
       Користувач ${name} з мобільним телефоном ${phone} натиснув на швидке замовлення.
         
 Товари на суму ${sum}
@@ -103,9 +104,9 @@ ${FRONTEND_URL}/goods/${x.volumes.url}`
           }
         );
 
-        sendEmail('info@baylap.com', message, 'Нове швидке замовлення.');
-        sendEmail('7551991@gmail.com', message, `нове швидке замовлення`);
-        sendEmail('664645@gmail.com', message, `нове швидке замовлення`);
+        sendEmail('info@vlasmarket.com.ua', message, 'Нове швидке замовлення. VlasMarket');
+        sendEmail('7551991@gmail.com', message, `нове швидке замовлення VlasMarket`);
+        sendEmail('664645@gmail.com', message, `нове швидке замовлення VlasMarket`);
       }
       /*const res = await Order.create({
         nameUser: name,
