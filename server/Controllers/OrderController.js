@@ -804,7 +804,7 @@ VLAS
         try{
            const telegramMessage = `
 VLAS
-📦 Нове замовлення
+📦 Нове замовлення ${res.id}
 
 👤 Імʼя: ${nameUser}
 📞 Телефон: ${phone}
@@ -842,7 +842,7 @@ ${additionalInfo || '—'}
             }
           );
            const messageToEmail = `
-<b>ЗАКАЗ №${res.id}</b><br><br>
+<b>ЗАКАЗ №${order.id}</b><br><br>
 ✍️ Надійшло нове замовлення на суму ${totalPrice} грн, від користувача:<br><br>
 😉 Прізвище: ${surname}<br>
 👤 Ім'я: ${name}<br>
@@ -856,16 +856,16 @@ ${process.env.FRONTEND_URL + `/ru/admin/orders/edit-order/${res.id}`}`;
           sendEmail(
             '7551991@gmail.com',
             messageToEmail,
-            `нове замовлення №${res.id} VLAS`
+            `нове замовлення №${order.id} VLAS`
           );
           sendEmail(
             '664645@gmail.com',
             messageToEmail,
-            `нове замовлення №${res.id} VLAS`
+            `нове замовлення №${order.id} VLAS`
           );
         }
         catch(err){
-          console.log("Помилка в setNewOrder. При відправці в тг і на пошту адміну");
+          console.log("Помилка в setNewOrder. При відправці в тг і на пошту адміну", err);
         }
       }
     } catch (err) {
