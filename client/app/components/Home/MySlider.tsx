@@ -1,11 +1,12 @@
 'use client';
 
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import './MySlider.scss';
 
 import { getLocalizedPath } from '../utils/getLocalizedPath';
 import { Locale } from '@/i18n.config';
+import ImageNext from 'next/image';
 
 type SliderImage = {
   id: number;
@@ -37,7 +38,6 @@ const MySlider = ({
   const current = images[currentSlide];
   const next = images[(currentSlide + 1) % images.length];
 
-  // авто-слайд
   useEffect(() => {
     if (images.length <= 1) return;
 
@@ -48,35 +48,17 @@ const MySlider = ({
     return () => clearInterval(interval);
   }, [images.length]);
 
-  // preload next slide (ВАЖНО)
+  // preload next (залишаємо обов'язково)
   useEffect(() => {
     if (!next) return;
 
-    const img = new Image();
-    img.src = getUrl(next, lang, 'pc');
-
-    const mobile = new Image();
-    mobile.src = getUrl(next, lang, 'mobile');
+    new Image().src = getUrl(next, lang, 'pc');
+    new Image().src = getUrl(next, lang, 'mobile');
   }, [currentSlide]);
 
   const renderSlide = (item: SliderImage, idx: number, isActive: boolean) => {
-    if (!item) return null;
-
     const mobileUrl = getUrl(item, lang, 'mobile');
     const desktopUrl = getUrl(item, lang, 'pc');
-
-    const content = (
-      <picture>
-        <source media="(max-width: 768px)" srcSet={mobileUrl} />
-        <img
-          src={desktopUrl}
-          alt={`Slide ${idx + 1}`}
-          loading={isActive ? 'eager' : 'lazy'}
-          fetchPriority={isActive ? 'high' : 'low'}
-          className="slider-image"
-        />
-      </picture>
-    );
 
     return (
       <div
@@ -88,10 +70,42 @@ const MySlider = ({
           <Link
             href={getLocalizedPath(`/${lang}/${item.href}`, lang).replace('//', '/')}
           >
-            {content}
+            <div className="img-wrap">
+              {/* DESKTOP */}
+              <ImageNext
+                fill
+                src={desktopUrl}
+                alt="baner"
+                className={`pc-img ${isActive ? 'active' : ''}`}
+                loading={isActive ? 'eager' : 'lazy'}
+                unoptimized
+              />
+
+              {/* MOBILE */}
+              <ImageNext
+                fill
+                src={mobileUrl}
+                alt="baner"
+                className={`mob-img ${isActive ? 'active' : ''}`}
+                loading="lazy"
+                unoptimized
+              />
+            </div>
           </Link>
         ) : (
-          content
+          <div className="img-wrap">
+            <img
+              src={desktopUrl}
+              className={`pc-img ${isActive ? 'active' : ''}`}
+              loading={isActive ? 'eager' : 'lazy'}
+            />
+
+            <img
+              src={mobileUrl}
+              className={`mob-img ${isActive ? 'active' : ''}`}
+              loading="lazy"
+            />
+          </div>
         )}
       </div>
     );
@@ -108,7 +122,9 @@ const MySlider = ({
             transition: 'transform 0.5s ease',
           }}
         >
-          {renderSlide(current, currentSlide, true)}
+          {images.map((item, idx) =>
+            renderSlide(item, idx, idx === currentSlide)
+          )}
         </div>
       </div>
 
@@ -124,7 +140,6 @@ const MySlider = ({
                   : 'swiper-pagination-bullet'
               }
               onClick={() => setCurrentSlide(index)}
-              aria-label={`Slide ${index + 1}`}
             />
           ))}
         </div>
