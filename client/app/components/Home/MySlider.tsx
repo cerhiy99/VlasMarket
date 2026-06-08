@@ -78,6 +78,7 @@ const MySlider = ({
                 alt="baner"
                 className={`pc-img ${isActive ? 'active' : ''}`}
                 loading={isActive ? 'eager' : 'lazy'}
+                priority={idx==0}
                 unoptimized
               />
 
