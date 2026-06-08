@@ -250,78 +250,80 @@ const page = async ({ params }: Props) => {
   const brends = await getBrends();
 
   return (
-    <div className="home-container">
-      <div className="slider-with-catalog">
-        <CatalogHome
-          lang={lang}
-          dictionary={header.catalog}
-          catalog={fullCatalog}
-        />
-        {slides.length > 0 && <MySlider lang={lang} images={slides} />}
-      </div>
-      <div className="home-goods">
-        <CategoryHome categories={category} lang={lang} />
-        <Brends lang={lang} brends={brends} />
-        <h2>{home.title1}</h2>
-        <ListArticle
-          lang={lang}
-          dictionary={miniGoods}
-          type="discount"
-          query="isDiscount"
-          startGoods={discount}
-        />
-        <h2 className="add-margin">{home.title2}</h2>
-        <ListArticle
-          lang={lang}
-          dictionary={miniGoods}
-          type="top"
-          query="isHit"
-          startGoods={hit}
-        />
-        <h2 className="add-margin">{home.title3}</h2>
-        <ListArticle
-          lang={lang}
-          dictionary={miniGoods}
-          type="novetly"
-          query="isNovetly"
-          startGoods={novetly}
-        />
-        <div className="row-blog">
-          <div className="row">
-            <h2 className="add-margin">Блог</h2>
-            <Link href={getLocalizedPath(`/${lang}/blog/1`, lang)}>
-              <p>
-                {lang == 'ru' ? 'Все статьи' : 'Всі статті'}
-                <svg
-                  width="15"
-                  height="15"
-                  viewBox="0 0 15 15"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    d="M5.625 11.25L9.375 7.5L5.625 3.75"
-                    stroke="black"
-                    stroke-width="1.25"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                  />
-                </svg>
-              </p>
-            </Link>
+    <>
+      <div className="home-container">
+        <div className="slider-with-catalog">
+          <CatalogHome
+            lang={lang}
+            dictionary={header.catalog}
+            catalog={fullCatalog}
+          />
+          {slides.length > 0 && <MySlider lang={lang} images={slides} />}
+        </div>
+        <div className="home-goods">
+          <CategoryHome categories={category} lang={lang} />
+          <Brends lang={lang} brends={brends} />
+          <h2>{home.title1}</h2>
+          <ListArticle
+            lang={lang}
+            dictionary={miniGoods}
+            type="discount"
+            query="isDiscount"
+            startGoods={discount}
+          />
+          <h2 className="add-margin">{home.title2}</h2>
+          <ListArticle
+            lang={lang}
+            dictionary={miniGoods}
+            type="top"
+            query="isHit"
+            startGoods={hit}
+          />
+          <h2 className="add-margin">{home.title3}</h2>
+          <ListArticle
+            lang={lang}
+            dictionary={miniGoods}
+            type="novetly"
+            query="isNovetly"
+            startGoods={novetly}
+          />
+          <div className="row-blog">
+            <div className="row">
+              <h2 className="add-margin">Блог</h2>
+              <Link href={getLocalizedPath(`/${lang}/blog/1`, lang)}>
+                <p>
+                  {lang == 'ru' ? 'Все статьи' : 'Всі статті'}
+                  <svg
+                    width="15"
+                    height="15"
+                    viewBox="0 0 15 15"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M5.625 11.25L9.375 7.5L5.625 3.75"
+                      stroke="black"
+                      stroke-width="1.25"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+                  </svg>
+                </p>
+              </Link>
+            </div>
+            <div className="list-blog">
+              {blog.map((x: any) => (
+                <MiniBlog key={x.id} blog={x} lang={lang} />
+              ))}
+            </div>
           </div>
-          <div className="list-blog">
-            {blog.map((x: any) => (
-              <MiniBlog key={x.id} blog={x} lang={lang} />
-            ))}
+          <div className="main-text">
+            <h1 style={{ margin: 0 }}>{home.titleMain}</h1>
+            <p>{home.description}</p>
           </div>
         </div>
-        <div className="main-text">
-          <h1 style={{ margin: 0 }}>{home.titleMain}</h1>
-          <p>{home.description}</p>
-        </div>
       </div>
-    </div>
+    </>
   );
 };
 
