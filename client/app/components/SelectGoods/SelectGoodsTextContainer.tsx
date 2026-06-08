@@ -193,8 +193,8 @@ const SelectGoodsTextContainer = ({
     }
   }, [pathname]);
 
-  console.log(4234234, selectGoods.volumes[selectVolume]);
 
+  
   return (
     <>
       <FastBuy

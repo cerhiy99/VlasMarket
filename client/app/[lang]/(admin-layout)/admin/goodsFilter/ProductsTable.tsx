@@ -351,7 +351,7 @@ export default function ProductsTable2({
                   />
                 </td>
                 <td className="product-name" data-label="Название товара">
-                  <a href={`/ru/${product.url}`}>{product.name}</a>
+                  <a href={`/ru/goods/${product.url}`}>{product.name}</a>
                 </td>
                 <td data-label="Обьем">
                   {product.volume.map((x) => (

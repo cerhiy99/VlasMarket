@@ -85,14 +85,16 @@ class OrderController {
 
       const message = `
 VLAS MARKET
+
+
 Користувач ${name} з мобільним телефоном ${phone} натиснув на швидке замовлення.
         
-Товари на суму ${sum}
+Товари на суму ${sum} грн
 ${basket.map(
   (x) => `
-назва ${x.nameuk}
+${x.nameuk}
 ${FRONTEND_URL}/goods/${x.volumes.url}`
-)}`;
+)}`.join('\n');
 
       if (IS_SEND) {
         await axios.post(
@@ -755,12 +757,12 @@ VLAS
                 >
                   <strong>Viber / Telegram / WhatsApp</strong><br />
                   <a
-                    href="tel:+380931587551"
+                    href="tel:+380675744350"
                     style="color: #000000; text-decoration: none"
                     >+38 (093) 158-75-51</a
                   >
                 </p>
-                <p
+                ${/*<p
                   style="
                     font-size: 13px;
                     color: #000000;
@@ -770,7 +772,7 @@ VLAS
                 >
                   <strong>Lifecell</strong><br />
                   <a
-                    href="tel:+380931587551"
+                    href="tel:+380675744350"
                     style="color: #000000; text-decoration: none"
                     >+38 (093) 158-75-51</a
                   >
@@ -789,7 +791,7 @@ VLAS
                     style="color: #000000; text-decoration: none"
                     >+38 (067) 393-99-52</a
                   >
-                </p>
+                </p>*/''}
               </td>
             </tr>
           </table>
