@@ -1,5 +1,6 @@
 'use client';
-import React, { useState } from 'react';
+
+import React, { useMemo, useState, useCallback } from 'react';
 import './CatalogHome.scss';
 import RightSVG from '../../assest/Header/Right.svg';
 import { Locale } from '@/i18n.config';
@@ -36,32 +37,50 @@ type Props = {
 };
 
 const CatalogHome = ({ lang, dictionary, catalog }: Props) => {
-  const [isHovered, setIsHovered] = useState<boolean>(false); // Змінна для збереження стану
+  const router = useRouter();
 
-  const handleMouseLeave = () => {
+  const [isHovered, setIsHovered] = useState(false);
+  const [selectCategory, setSelectCategory] = useState<number>(4);
+
+  // ✅ швидкий lookup замість find в render
+  const selectedCategory = useMemo(() => {
+    return catalog.find((c) => c.id === selectCategory) || null;
+  }, [catalog, selectCategory]);
+
+  // ✅ сортування один раз при зміні category/lang
+  const sortedSubcategories = useMemo(() => {
+    if (!selectedCategory) return [];
+
+    const key = lang === 'ru' ? 'nameru' : 'nameuk';
+
+    return [...selectedCategory.subcategories].sort((a, b) =>
+      a[key].localeCompare(b[key])
+    );
+  }, [selectedCategory, lang]);
+
+  const handleMouseLeave = useCallback(() => {
     setSelectCategory(0);
     setIsHovered(false);
-  };
+  }, []);
 
-  const [selectCategory, setSelectCategory] = useState<number>(4);
-  const router = useRouter();
+  const handleHover = useCallback((id: number) => {
+    setSelectCategory(id);
+    setIsHovered(true);
+  }, []);
 
   return (
     <>
-      {' '}
       {isHovered && <div className="calalog-home-beck" />}
+
       <div className="catalog-home-container" onMouseLeave={handleMouseLeave}>
         <div className="dropdown-home-container">
-          <div className="dropdown">
+          <div style={{ width: '374px' }} className="dropdown">
             <div className="list-category">
-              {catalog.map((x: any) => (
+              {catalog.map((x) => (
                 <div
-                  key={x.id} // Додаємо унікальний key для списку
+                  key={x.id}
                   className={`category ${selectCategory === x.id ? 'active' : ''}`}
-                  onMouseEnter={() => {
-                    setSelectCategory(x.id);
-                    setIsHovered(true);
-                  }}
+                  onMouseEnter={() => handleHover(x.id)}
                   onClick={() => {
                     router.push(
                       getLocalizedPath(
@@ -70,68 +89,62 @@ const CatalogHome = ({ lang, dictionary, catalog }: Props) => {
                       )
                     );
                     setIsHovered(false);
-                  }} // Оновлюємо стан підкатегорії при кліку
+                  }}
                 >
                   <div className="svg-with-name">
                     <SvgIcon url={process.env.NEXT_PUBLIC_SERVER + x.svg} />
-
-                    <p>{lang == 'ru' ? x.nameru : x.nameuk}</p>
+                    <p>{lang === 'ru' ? x.nameru : x.nameuk}</p>
                   </div>
+
                   <div className="right">
                     <RightSVG />
                   </div>
                 </div>
               ))}
             </div>
-            {selectCategory !== 0 && (
+
+            {selectCategory !== 0 && selectedCategory && (
               <div className="subcategory-details-container">
                 <div className="subcategory-details">
-                  {catalog
-                    .find((category: any) => category.id == selectCategory)
-                    ?.subcategories.sort((a: any, b: any) =>
-                      a[`name${lang == 'ru' ? 'ru' : 'uk'}`].localeCompare(
-                        b[`name${lang == 'ru' ? 'ru' : 'uk'}`]
-                      )
-                    )
-                    .map((categoryTitle: any) => (
-                      <div
-                        onClick={() => {
-                          router.push(
-                            getLocalizedPath(
-                              `/${lang}/goods/${UkrToEng(catalog.find((x) => x.id == selectCategory)?.nameru || '')}/${UkrToEng(categoryTitle.nameru)}/1`,
-                              lang
-                            )
-                          );
-                          setIsHovered(false);
-                        }}
-                        className="list-category-title"
-                        key={`title-${categoryTitle.id}`} // Додаємо унікальний ключ для заголовка підкатегорії
-                      >
-                        <div className="title-list-category-title">
-                          {categoryTitle && categoryTitle?.img && (
-                            <Image
-                              src={
-                                process.env.NEXT_PUBLIC_SERVER +
-                                categoryTitle.img
-                              }
-                              alt={
-                                lang == 'ru'
-                                  ? categoryTitle.nameru
-                                  : categoryTitle.nameuk
-                              }
-                              width={25}
-                              height={25}
-                              style={{ objectFit: 'contain' }}
-                            />
-                          )}
-                          <span>
-                            {lang == 'ru'
-                              ? categoryTitle.nameru
-                              : categoryTitle.nameuk}
-                          </span>
-                        </div>
+                  {sortedSubcategories.map((categoryTitle) => (
+                    <div
+                      key={categoryTitle.id}
+                      className="list-category-title"
+                      onClick={() => {
+                        router.push(
+                          getLocalizedPath(
+                            `/${lang}/goods/${UkrToEng(selectedCategory.nameru)}/${UkrToEng(categoryTitle.nameru)}/1`,
+                            lang
+                          )
+                        );
+                        setIsHovered(false);
+                      }}
+                    >
+                      <div className="title-list-category-title">
+                        {categoryTitle.img && (
+                          <Image
+                            src={
+                              process.env.NEXT_PUBLIC_SERVER + categoryTitle.img
+                            }
+                            alt={
+                              lang === 'ru'
+                                ? categoryTitle.nameru
+                                : categoryTitle.nameuk
+                            }
+                            width={25}
+                            height={25}
+                            style={{ objectFit: 'contain' }}
+                          />
+                        )}
+
+                        <span>
+                          {lang === 'ru'
+                            ? categoryTitle.nameru
+                            : categoryTitle.nameuk}
+                        </span>
                       </div>
-                    ))}
+                    </div>
+                  ))}
                 </div>
               </div>
             )}

@@ -54,8 +54,9 @@
     z-index: 4;
     display: flex;
     flex-direction: row;
-    width: auto;
-    width: 100%;
+    width: 374px;
+    min-width: 374px;
+    max-width: 374px;
 
     .list-category {
       background-color: #ffffff;
@@ -69,6 +70,7 @@
       min-width: 372px;
       max-width: 372px;
       justify-content: space-between;
+      box-sizing: border-box;
       .category {
         cursor: pointer;
         display: flex;

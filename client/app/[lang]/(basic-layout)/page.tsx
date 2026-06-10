@@ -86,7 +86,7 @@ const getBlog = async (lang: Locale) => {
 const getBaners = async () => {
   try {
     const res = await fetch(process.env.NEXT_PUBLIC_API_SERVER + 'slides/get', {
-      next: { revalidate: 60*60*12 },
+      next: { revalidate: 60 * 60 * 12 },
     });
     if (!res.ok) {
       return [];

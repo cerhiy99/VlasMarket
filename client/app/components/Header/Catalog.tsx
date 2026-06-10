@@ -1,5 +1,6 @@
 'use client';
-import React, { useRef, useState } from 'react';
+
+import React, { useCallback, useMemo, useState } from 'react';
 import './Catalog.scss';
 import CatalogSVG from '../../assest/Header/Catalog.svg';
 import RightSVG from '../../assest/Header/Right.svg';
@@ -37,110 +38,123 @@ type Props = {
 };
 
 const Catalog = ({ lang, dictionary, catalog }: Props) => {
-  const [isHovered, setIsHovered] = useState<boolean>(false); // Змінна для збереження стану
+  const router = useRouter();
   const pathname = usePathname();
 
+  const [isOpen, setIsOpen] = useState(false);
   const [selectCategory, setSelectCategory] = useState<number>(4);
-  const router = useRouter();
 
-  const open = () => {
-    if (pathname == '/' || pathname == '/ru') return;
-    setIsHovered(!isHovered);
-  };
+  // ⚡ швидкий lookup замість find у render
+  const selectedCategory = useMemo(() => {
+    return catalog.find((c) => c.id === selectCategory) || null;
+  }, [catalog, selectCategory]);
+
+  // ⚡ сортування один раз
+  const sortedSubcategories = useMemo(() => {
+    if (!selectedCategory) return [];
+
+    const key = lang === 'ru' ? 'nameru' : 'nameuk';
+
+    return [...selectedCategory.subcategories].sort((a, b) =>
+      a[key].localeCompare(b[key])
+    );
+  }, [selectedCategory, lang]);
+
+  const open = useCallback(() => {
+    if (pathname === '/' || pathname === '/ru') return;
+    setIsOpen((prev) => !prev);
+  }, [pathname]);
+
+  const handleSelect = useCallback((id: number) => {
+    setSelectCategory(id);
+  }, []);
+
+  const handleClose = useCallback(() => {
+    setIsOpen(false);
+  }, []);
+
+  const handleCategoryClick = useCallback(
+    (x: CategoryInterface) => {
+      router.push(
+        getLocalizedPath(`/${lang}/goods/${UkrToEng(x.nameru)}/1`, lang)
+      );
+      setIsOpen(false);
+    },
+    [lang, router]
+  );
 
   return (
     <>
-      {' '}
-      {isHovered && (
-        <div onClick={() => setIsHovered(false)} className="back-dark" />
-      )}
-      <div className="catalog-container" /*onMouseLeave={handleMouseLeave}*/>
-        <div
-          onClick={open}
-          /*onMouseEnter={handleMouseEnter}*/ className="catalog-title"
-        >
+      {isOpen && <div onClick={handleClose} className="back-dark" />}
+
+      <div className="catalog-container">
+        <div onClick={open} className="catalog-title">
           <CatalogSVG /> {dictionary.title}
         </div>
 
-        {isHovered && (
+        {isOpen && (
           <div className="dropdown-container">
             <div className="dropdown">
+              {/* CATEGORY LIST */}
               <div className="list-category">
-                {catalog.map((x: any) => (
+                {catalog.map((x) => (
                   <div
-                    key={x.id} // Додаємо унікальний key для списку
-                    className={`category ${selectCategory === x.id ? 'active' : ''}`}
-                    onMouseEnter={() => setSelectCategory(x.id)}
-                    onClick={() => {
-                      router.push(
-                        getLocalizedPath(
-                          `/${lang}/goods/${UkrToEng(x.nameru)}/1`,
-                          lang
-                        )
-                      );
-                      setIsHovered(false);
-                    }} // Оновлюємо стан підкатегорії при кліку
+                    key={x.id}
+                    className={`category ${
+                      selectCategory === x.id ? 'active' : ''
+                    }`}
+                    onMouseEnter={() => handleSelect(x.id)}
+                    onClick={() => handleCategoryClick(x)}
                   >
                     <div className="svg-with-name">
                       <SvgIcon url={process.env.NEXT_PUBLIC_SERVER + x.svg} />
-
-                      <p>{lang == 'ru' ? x.nameru : x.nameuk}</p>
+                      <p>{lang === 'ru' ? x.nameru : x.nameuk}</p>
                     </div>
+
                     <div className="right">
                       <RightSVG />
                     </div>
                   </div>
                 ))}
               </div>
-              {selectCategory !== 0 && (
+
+              {/* SUBCATEGORIES */}
+              {selectCategory !== 0 && selectedCategory && (
                 <div className="subcategory-details-container">
                   <div className="subcategory-details">
-                    {catalog
-                      .find((category: any) => category.id == selectCategory)
-                      ?.subcategories.sort((a: any, b: any) =>
-                        a[`name${lang == 'ru' ? 'ru' : 'uk'}`].localeCompare(
-                          b[`name${lang == 'ru' ? 'ru' : 'uk'}`]
-                        )
-                      )
-                      .map((categoryTitle: any) => (
-                        <div
-                          onClick={() => {
-                            router.push(
-                              getLocalizedPath(
-                                `/${lang}/goods/${UkrToEng(catalog.find((x) => x.id == selectCategory)?.nameru || '')}/${UkrToEng(categoryTitle.nameru)}/1`,
-                                lang
-                              )
-                            );
-                            setIsHovered(false);
-                          }}
-                          className="list-category-title"
-                          key={`title-${categoryTitle.id}`} // Додаємо унікальний ключ для заголовка підкатегорії
-                        >
-                          <div className="title-list-category-title">
-                            {categoryTitle && categoryTitle?.img && (
-                              <Image
-                                src={
-                                  process.env.NEXT_PUBLIC_SERVER +
-                                  categoryTitle.img
-                                }
-                                alt={
-                                  lang == 'ru'
-                                    ? categoryTitle.nameru
-                                    : categoryTitle.nameuk
-                                }
-                                width={30}
-                                height={30}
-                                style={{ objectFit: 'contain' }}
-                              />
-                            )}
-                            <span>
-                              {lang == 'ru'
-                                ? categoryTitle.nameru
-                                : categoryTitle.nameuk}
-                            </span>
-                          </div>
+                    {sortedSubcategories.map((item) => (
+                      <div
+                        key={item.id}
+                        className="list-category-title"
+                        onClick={() => {
+                          router.push(
+                            getLocalizedPath(
+                              `/${lang}/goods/${UkrToEng(
+                                selectedCategory.nameru
+                              )}/${UkrToEng(item.nameru)}/1`,
+                              lang
+                            )
+                          );
+                          setIsOpen(false);
+                        }}
+                      >
+                        <div className="title-list-category-title">
+                          {item.img && (
+                            <Image
+                              src={process.env.NEXT_PUBLIC_SERVER + item.img}
+                              alt={lang === 'ru' ? item.nameru : item.nameuk}
+                              width={30}
+                              height={30}
+                              style={{ objectFit: 'contain' }}
+                            />
+                          )}
+
+                          <span>
+                            {lang === 'ru' ? item.nameru : item.nameuk}
+                          </span>
                         </div>
-                      ))}
+                      </div>
+                    ))}
                   </div>
                 </div>
               )}
