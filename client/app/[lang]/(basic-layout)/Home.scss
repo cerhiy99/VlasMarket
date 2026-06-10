@@ -4,8 +4,8 @@
   .slider-with-catalog {
     @include responsive-width;
     display: flex;
-    flex-direction: row;
-    align-items: stretch;
+    flex-direction: row-reverse;
+    //align-items: stretch;
     gap: 10px;
     margin-top: 30px;
     position: relative;
