@@ -19,7 +19,7 @@ const getData = async (id: string, lang: Locale) => {
     );
 
     if (!res.ok) {
-      return notFound();
+      //return notFound();
     }
 
     const data = await res.json();
@@ -56,7 +56,7 @@ const getData = async (id: string, lang: Locale) => {
     return { good, reviews, indexVolume, watchMore }; // Повертаємо розпарсені дані (товари)
   } catch (err) {
     console.error('Fetch error:', err);
-    return notFound();
+    //return notFound();
   }
 };
 
@@ -67,11 +67,11 @@ const SelectGoods = async ({ params: { lang, id }, searchParams }: Props) => {
     indexVolume,
     watchMore,
     reviews,
-  } = await getData(id, lang);
+  }: any = await getData(id, lang);
 
   // Важливо: перевіряємо, чи отримали ми товар. Якщо ні, повертаємо notFound().
   if (!selectGoods) {
-    return notFound();
+    //return notFound();
   }
 
   // Логіка для хлібних крихт
