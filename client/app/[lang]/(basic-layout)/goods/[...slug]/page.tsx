@@ -225,7 +225,7 @@ export async function generateMetadata({ params, searchParams }: Props) {
       };
     }
     const queryString = searchParamsString ? `?${searchParamsString}` : '';
-    const isIndexAndFollow = queryString.toString() == '';
+    const isIndexAndFollow = true;
 
     return {
       title: titles[lang] || titles.ua,
