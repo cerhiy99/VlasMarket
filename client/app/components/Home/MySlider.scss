@@ -1,130 +1,119 @@
 @import '../../[lang]/(basic-layout)/App.scss';
 
 .my-swiper-container {
+  @include responsive-width;
   height: 100%;
+  margin-top: 30px;
   overflow: hidden;
   position: relative;
-
   aspect-ratio: 3;
 
   @media (max-width: 768px) {
-    aspect-ratio: 14 / 9;
-  }
-}
-
-/* wrapper */
-.my-swiper-container .swiper {
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
-}
-
-/* slides row */
-.my-swiper-container .swiper-wrapper {
-  display: flex;
-  width: 100%;
-  height: 100%;
-
-  //transition: transform 0.4s ease-in-out;
-  //will-change: transform;
-}
-
-/* slide */
-.my-swiper-container .swiper-slide {
-  flex: 0 0 100%;
-
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  width: 100%;
-  max-width: 100%;
-
-  position: relative;
-
-  aspect-ratio: 3;
-
-  border-radius: 20px;
-  overflow: hidden;
-
-  @media (max-width: 768px) {
-    aspect-ratio: 14 / 9;
-  }
-}
-
-/* link wrapper */
-.my-swiper-container .swiper-slide a {
-  display: block;
-  width: 100%;
-  height: 100%;
-}
-
-/* image base */
-.my-swiper-container img {
-  width: 100%;
-  height: 100%;
-  display: block;
-
-  object-fit: cover;
-  border-radius: 20px;
-}
-
-/* =========================
-   DESKTOP / MOBILE SWITCH
-   ========================= */
-
-/* desktop by default */
-.my-swiper-container .pc-img {
-  display: block;
-}
-
-.my-swiper-container .mob-img {
-  display: none;
-}
-
-/* mobile override */
-@media (max-width: 768px) {
-  .my-swiper-container .pc-img {
-    display: none;
+    aspect-ratio: 14/9;
   }
 
-  .my-swiper-container .mob-img {
-    display: block;
+  // Контейнер для слайдів
+  .custom-slider-track {
+    position: relative;
+    width: 100%;
+    height: 100%;
   }
-}
 
-/* pagination */
-.my-swiper-container .swiper-pagination {
-  position: absolute;
-  left: 50%;
-  bottom: 12px;
-  transform: translateX(-50%);
+  // Обгортка для посилання, копіює поведінку слайду
+  .slider-link-wrapper {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    visibility: hidden;
+    transition:
+      opacity 0.5s ease-in-out,
+      visibility 0.5s;
+    z-index: 1;
 
-  display: flex;
-  justify-content: center;
-  gap: 8px;
+    &.active {
+      opacity: 1;
+      visibility: visible;
+      z-index: 2;
+    }
+  }
 
-  z-index: 3;
-}
+  // Сам слайд
+  .custom-slide {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    max-width: 100%;
+    aspect-ratio: 3;
+    opacity: 0;
+    visibility: hidden;
+    transition:
+      opacity 0.5s ease-in-out,
+      visibility 0.5s;
 
-.my-swiper-container .swiper-pagination-bullet {
-  width: 12px;
-  height: 12px;
+    // Якщо слайд не обгорнутий в посилання, працює цей клас
+    &.active {
+      opacity: 1;
+      visibility: visible;
+    }
 
-  background-color: #e0e0e0;
+    @media (max-width: 768px) {
+      aspect-ratio: 14/9;
+    }
 
-  border-radius: 50%;
-  border: none;
+    img {
+      width: 100%;
+      height: 100%;
+      border-radius: 20px;
+      object-fit: cover;
 
-  padding: 0;
-  margin: 0;
+      &.mob-img {
+        display: none;
+      }
 
-  cursor: pointer;
+      @media (max-width: 768px) {
+        &.pc-img {
+          display: none;
+        }
+        &.mob-img {
+          display: block;
+        }
+      }
+    }
+  }
 
-  opacity: 1;
-  transition: background-color 0.2s ease;
-}
+  // Твоя рідна пагінація без змін логіки розміщення
+  .swiper-pagination {
+    position: absolute;
+    bottom: 15px;
+    z-index: 40;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    justify-content: center;
+    gap: 8px;
 
-.my-swiper-container .swiper-pagination-bullet-active {
-  background-color: #fe680a;
+    .swiper-pagination-bullet {
+      width: 12px;
+      height: 12px;
+      background-color: #e0e0e0;
+      border-radius: 50%;
+      border: none;
+      padding: 0;
+      opacity: 1;
+      cursor: pointer;
+      transition: background-color 0.2s ease;
+    }
+
+    .swiper-pagination-bullet-active {
+      background-color: #fe680a; // Твій фірмовий помаранчевий колір
+    }
+  }
 }
