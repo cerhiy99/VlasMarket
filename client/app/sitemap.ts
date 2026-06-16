@@ -101,7 +101,7 @@ async function generateDynamicGoodsPagesSubcategory() {
 
     // Ітеруємо по кожному номеру сторінки та мові
     return LANGUAGES.map((lang) => ({
-      url: `${BASE_URL}/${lang}/${url}/1`,
+      url: `${BASE_URL}/${lang}goods/${url}/1`,
       lastModified: new Date(),
       alternates: generateLocalizedUrls(`/${url}/1`),
     }));

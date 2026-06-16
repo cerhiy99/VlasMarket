@@ -485,7 +485,7 @@ const Page = async ({ params, searchParams }: Props) => {
             <MyPagination
               totalPages={totalPages}
               currentPage={parseInt(pageStr)}
-              currentPathname={`/${lang}/${slug.join('/')}`}
+              currentPathname={`/${lang}/goods/${slug.join('/')}`}
               currentSearchParams={currentSearchParams} // Передаємо очищені searchParams
               lang={lang}
             />
