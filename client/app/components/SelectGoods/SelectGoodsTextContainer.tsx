@@ -193,8 +193,6 @@ const SelectGoodsTextContainer = ({
     }
   }, [pathname]);
 
-
-  
   return (
     <>
       <FastBuy
@@ -370,6 +368,11 @@ const SelectGoodsTextContainer = ({
               onClick={inLike}
             >
               <LikeSVG />
+              <div className="hover">
+                {
+                  //lang=='ru'?''
+                }
+              </div>
             </div>
           </div>
           <div className="buttons">

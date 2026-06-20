@@ -319,6 +319,28 @@
               }
             }
           }
+          .relative {
+            position: relative;
+            .info-abs {
+              display: none;
+              position: absolute;
+              top: -27px;
+              background-color: #ffffff;
+              padding: 5px;
+              border-radius: 5px;
+              border: 0.1px solid #000000;
+              white-space: nowrap;
+              z-index: 3;
+              font-size: 12px;
+              height: 15px;
+              width: auto;
+            }
+            &:hover {
+              .info-abs {
+                display: flex;
+              }
+            }
+          }
         }
       }
     }
@@ -369,6 +391,7 @@
 
         .add-info53 {
           margin-bottom: 30px;
+          font-size: 13px;
         }
       }
       .characteristics {
@@ -816,5 +839,26 @@
   }
   #addReview {
     scroll-margin-top: 200px;
+  }
+
+  .relative {
+    position: relative;
+    .info-abs {
+      display: none;
+      position: absolute;
+      top: -27px;
+      background-color: #ffffff;
+      padding: 5px;
+      border-radius: 5px;
+      border: 0.1px solid #000000;
+      white-space: nowrap;
+      z-index: 3;
+      font-size: 12px;
+    }
+    &:hover {
+      .info-abs {
+        display: flex;
+      }
+    }
   }
 }

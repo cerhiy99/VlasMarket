@@ -192,17 +192,6 @@ const CardSelectGoods = ({
           )}
           {isNovetly && <div className="is-hit">Новинка</div>}
         </div>
-        <div className="like-and-compresion">
-          <div className={`like ${isInLike ? 'isLike' : ''}`} onClick={inLike}>
-            <LikeSVG />
-          </div>
-          <div
-            onClick={inCompresion}
-            className={`compresion ${isInCompresion ? 'inCompresion' : ''}`}
-          >
-            <ComresionSVG />
-          </div>
-        </div>
         <Image
           src={
             process.env.NEXT_PUBLIC_SERVER +
@@ -285,15 +274,23 @@ const CardSelectGoods = ({
           <div className="like-and-compresion">
             <div
               onClick={inCompresion}
-              className={`compresion ${isInCompresion ? 'inCompresion' : ''}`}
+              className={`relative compresion ${isInCompresion ? 'inCompresion' : ''}`}
             >
               <ComresionBigSVG />
+              <div className="info-abs">
+                {lang == 'ru'
+                  ? 'Добавить в сравнение'
+                  : 'Добавити у порівняння'}
+              </div>
             </div>
             <div
-              className={`like ${isInLike ? 'isLike' : ''}`}
+              className={`relative like ${isInLike ? 'isLike' : ''}`}
               onClick={inLike}
             >
               <LikeSVG />
+              <div className="info-abs">
+                {lang == 'ru' ? 'Избранное' : 'Вибране'}
+              </div>
             </div>
           </div>
         </div>
