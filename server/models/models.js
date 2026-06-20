@@ -4,6 +4,17 @@ const sequelize = require('../db'); // Імпортуємо ваш екземп�
 const Brends = sequelize.define('brend', {
   id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
   name: { type: DataTypes.STRING, allowNull: false },
+  nameuk: {
+    type: DataTypes.STRING,
+    allowNull: true,
+    defaultValue: null,
+  },
+
+  nameru: {
+    type: DataTypes.STRING,
+    allowNull: true,
+    defaultValue: null,
+  },
   img: { type: DataTypes.STRING, allowNull: true, defaultValue: null },
   descriptionuk: {
     type: DataTypes.TEXT('long'),
