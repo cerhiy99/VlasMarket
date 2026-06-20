@@ -221,7 +221,8 @@ const CardSelectGoods = ({
             <MyRatingSelectGoods rating={review.avarge} />
             <div className="reviews">
               <span onClick={() => router.push('#listReviews')}>
-                ({review.listReviews.length}) {t('selectGoods.reviews')}
+                ({review.listReviews.length}){' '}
+                {lang == 'ru' ? 'Отзывов' : 'Відгуків'}
               </span>
             </div>
           </div>
@@ -230,7 +231,7 @@ const CardSelectGoods = ({
             onClick={() => router.push('#addReview')}
             className="write-review"
           >
-            {t('selectGoods.writeReview')}
+            {lang == 'ru' ? 'Оставить отзыв' : 'Залишити відгук'}
           </div>
         </div>
         <div className="buy">

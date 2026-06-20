@@ -39,7 +39,6 @@ const AboutGoods = ({
   revie,
   watchMore,
 }: Props) => {
-  const { t } = useTranslation();
   const refDesctription = useRef<HTMLDivElement>(null);
   const refCharactersitics = useRef<HTMLDivElement>(null);
   const refReview = useRef<HTMLDivElement>(null);
@@ -207,8 +206,12 @@ const AboutGoods = ({
             <div className="button-container">
               <button onClick={() => setTextExpanded(!textExpanded)}>
                 {textExpanded
-                  ? t('selectGoods.unShow')
-                  : t('selectGoods.showAll')}
+                  ? lang == 'ru'
+                    ? 'Скрыть'
+                    : 'Приховати'
+                  : lang == 'ru'
+                    ? 'Показать еще'
+                    : 'Показати ще'}
                 {textExpanded ? (
                   <span>
                     <svg
@@ -294,8 +297,12 @@ const AboutGoods = ({
                   }
                 >
                   {isCharacteristicsExpanded
-                    ? t('selectGoods.unShow')
-                    : t('selectGoods.showAll')}
+                    ? lang == 'ru'
+                      ? 'Скрыть'
+                      : 'Приховати'
+                    : lang == 'ru'
+                      ? 'Показать еще'
+                      : 'Показати ще'}
                   {isCharacteristicsExpanded ? (
                     <span>
                       <svg
@@ -354,19 +361,9 @@ const AboutGoods = ({
             </div>
           )}
 
-          {/*<div className="mob-watch-more">
-            <div className="card-with-image__text_h2">
-              <p className="h2">{t('selectGoods.watchMore')}</p>
-            </div>
-            <ListGoodsLeftWithRealGoods
-              data={watchMore}
-              lang={lang}
-              dictionary={dictionary.SeeMore}
-            />
-          </div>*/}
           <div className="reviews" ref={refReview}>
             <div className="title">
-              <h2>{dictionary.reviews}</h2>
+              <h2>{lang == 'ru' ? 'Отзывов' : 'Відгуків'}</h2>
               <p>{lang == 'ru' ? selectGoods.nameru : selectGoods.nameuk}</p>
             </div>
 
@@ -429,7 +426,11 @@ const AboutGoods = ({
                   </div>
                 </div>
               ) : (
-                <div className="review-empty">{t('selectGoods.noReview')}</div>
+                <div className="review-empty">
+                  {lang == 'ru'
+                    ? 'Отзывов пока нет, но вы можете оставить первый.'
+                    : 'Отзывов пока нет, но вы можете оставить первый.'}
+                </div>
               )}
             </div>
             {revie.listReviews.length > 0 && (
@@ -470,22 +471,10 @@ const AboutGoods = ({
                 <div className=""></div>
               )}
             </div>
-
-            {/*revie.listReviews.length > 3 && (
-              <div
-                className="button-all-reviews"
-                onClick={() => setReviewsExpanded(!reviewsExpanded)}
-              >
-                {reviewsExpanded
-                  ? t('selectGoods.unShow')
-                  : t('selectGoods.showReview')}
-                <ArrowRightSVG />
-              </div>
-            )*/}
           </div>
           {convertYoutubeUrl && (
             <div className="video" ref={refVideo}>
-              <h2>{t('selectGoods.video')}</h2>
+              <h2>{lang == 'ru' ? 'Видео' : 'Відео'}</h2>
               <div
                 dangerouslySetInnerHTML={{
                   __html: convertYoutubeUrl,
@@ -510,9 +499,9 @@ const AboutGoods = ({
         </div>
       </div>
       <UserWatched
-        title={t('selectGoods.youWatch') as string}
+        title={lang == 'ru' ? 'Вы просматривали' : 'Ви переглядали'}
         lang={lang}
-        dictionary={{ reviews: t('selectGoods.review') }}
+        dictionary={{ reviews: lang == 'ru' ? 'Отзывы' : 'Відгуки' }}
         type=""
       />
       <AddToYouWatched

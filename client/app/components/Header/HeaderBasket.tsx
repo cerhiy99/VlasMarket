@@ -16,10 +16,13 @@ import { getCountBonus } from '../utils/getCountBonus';
 
 type Props = {
   lang: Locale;
+  dictionary: any;
 };
 
-const HeaderBasket = ({ lang }: Props) => {
-  const { t } = useTranslation();
+const HeaderBasket = ({ lang, dictionary }: Props) => {
+  const t = (value: string) => {
+    return dictionary[value.split('.')[1]];
+  };
   const router = useRouter();
   const [count, setCount] = useState(0);
 

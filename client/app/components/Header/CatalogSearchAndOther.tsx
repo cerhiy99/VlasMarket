@@ -17,11 +17,17 @@ type Props = {
   dictionary: any;
   lang: Locale;
   catalog: any;
+  headerBasket: any;
 };
 
 const heightHeader = 60;
 
-const CatalogSearchAndOther = ({ dictionary, lang, catalog }: Props) => {
+const CatalogSearchAndOther = ({
+  dictionary,
+  lang,
+  catalog,
+  headerBasket,
+}: Props) => {
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
@@ -65,7 +71,7 @@ const CatalogSearchAndOther = ({ dictionary, lang, catalog }: Props) => {
               </div>
 
               <div className="bask23">
-                <HeaderBasket lang={lang} />
+                <HeaderBasket dictionary={headerBasket} lang={lang} />
               </div>
               <div className="sea42">
                 <Search dictionary={dictionary.search} lang={lang} />
@@ -78,7 +84,7 @@ const CatalogSearchAndOther = ({ dictionary, lang, catalog }: Props) => {
               <HeaderComprision lang={lang} />
               <AuthHeader dictionary={dictionary.Auth} lang={lang} />
               <HeaderLike lang={lang} />
-              <HeaderBasket lang={lang} />
+              <HeaderBasket dictionary={headerBasket} lang={lang} />
             </div>
           </div>
         </div>

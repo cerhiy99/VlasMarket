@@ -43,7 +43,7 @@ const getData = async (lang: Locale) => {
 };
 
 const Header = async ({ lang }: Props) => {
-  const { header } = await getDictionary(lang);
+  const { header, headerBasket } = await getDictionary(lang);
   const catalog = await getData(lang);
   return (
     <>
@@ -96,6 +96,7 @@ const Header = async ({ lang }: Props) => {
         catalog={catalog}
         dictionary={header}
         lang={lang}
+        headerBasket={headerBasket}
       />
     </>
   );

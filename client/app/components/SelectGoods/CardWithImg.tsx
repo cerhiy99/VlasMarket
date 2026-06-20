@@ -133,7 +133,9 @@ const CardWithImg = ({
       </div>
       <div className="pc-watch-more">
         <div className="card-with-image__text_h2">
-          <p className="h2">{t('selectGoods.watchMore')}</p>
+          <p className="h2">
+            {lang == 'ru' ? 'Похожие товары' : 'Схожі товари'}
+          </p>
         </div>
         <ListGoodsLeftWithRealGoods
           data={watchMore}
