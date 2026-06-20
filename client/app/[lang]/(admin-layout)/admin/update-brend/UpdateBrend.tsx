@@ -15,6 +15,8 @@ import MyJoditEditor from '@/app/components/utils/MyJoditReact';
 interface Brand {
   id: number;
   name: string;
+  nameuk: string;
+  nameru: string;
   descriptionuk: string;
   descriptionru: string;
   img?: string | null;
@@ -27,6 +29,9 @@ const UpdateBrend = () => {
   const [selectedId, setSelectedId] = useState<string>('');
 
   const [name, setName] = useState('');
+  const [nameuk, setNameuk] = useState('');
+  const [nameru, setNameru] = useState('');
+
   const [descriptionuk, setDescriptionuk] = useState<string>('');
   const [descriptionru, setDescriptionru] = useState<string>('');
   const [isShow, setIsShow] = useState(false);
@@ -43,6 +48,7 @@ const UpdateBrend = () => {
     const fetchBrands = async () => {
       try {
         const res = await $authHost.get('brend/get');
+        console.log(434, res);
         setBrands(res.data || []);
       } catch {
         setError('Не вдалося завантажити бренд.');
@@ -58,6 +64,8 @@ const UpdateBrend = () => {
       const selected = brands.find((b) => b.id === +selectedId);
       if (selected) {
         setName(selected.name);
+        setNameuk(selected.nameuk || '');
+        setNameru(selected.nameru || '');
         setDescriptionuk(selected.descriptionuk);
         setDescriptionru(selected.descriptionru);
         setCurrentImg(selected.img || null);
@@ -67,6 +75,8 @@ const UpdateBrend = () => {
       }
     } else {
       setName('');
+      setNameuk('');
+      setNameru('');
       setDescriptionuk('');
       setDescriptionru('');
       setCurrentImg(null);
@@ -89,6 +99,8 @@ const UpdateBrend = () => {
       formData.append('name', name);
       formData.append('descriptionuk', descriptionuk);
       formData.append('descriptionru', descriptionru);
+      formData.append('nameuk', nameuk);
+      formData.append('nameru', nameru);
       formData.append('isShow', isShow.toString());
       formData.append('sort', String(sort));
 
@@ -160,6 +172,24 @@ const UpdateBrend = () => {
                 type="text"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
+              />
+            </div>
+
+            <div className="text-with-input">
+              <label>Назва бренду uk</label>
+              <input
+                type="text"
+                value={nameuk}
+                onChange={(e) => setNameuk(e.target.value)}
+              />
+            </div>
+
+            <div className="text-with-input">
+              <label>Назва бренду ru</label>
+              <input
+                type="text"
+                value={nameru}
+                onChange={(e) => setNameru(e.target.value)}
               />
             </div>
 

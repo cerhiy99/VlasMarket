@@ -125,6 +125,7 @@ class GoodsControllers {
       } = req.query;
       isLeaveCategoryAndSubcategory = isLeaveCategoryAndSubcategory == 'true';
       let realNameBrend = '';
+      let realNameBrendWithLang = '';
       let realDescriptionBrend = '';
       if (brendName) {
         const normalizedSlug = normalize(brendName);
@@ -143,6 +144,7 @@ class GoodsControllers {
             lang = delLeng == 'ru' ? 'uk' : 'ru';
           }
           realDescriptionBrend = brendId[`description${lang}`];
+          realNameBrendWithLang = brendId[`name${lang}`];
         }
       }
       const goodsWhere = {};
@@ -1234,6 +1236,7 @@ class GoodsControllers {
         selectCategory: categoryToReturn,
         selectSubcategory: subcategoryToRetun,
         realDescriptionBrend,
+        realNameBrendWithLang,
       });
     } catch (err) {
       console.error('Помилка в GoodsController.GetGoods:', err);

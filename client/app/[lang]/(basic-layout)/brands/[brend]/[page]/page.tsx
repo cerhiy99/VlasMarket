@@ -171,6 +171,7 @@ const getData = async (
         imgs: j.imgs,
       })),
     }));
+    const realNameBrendWithLang = data.realNameBrendWithLang;
     return {
       totalGoods,
       totalPages,
@@ -178,6 +179,7 @@ const getData = async (
       realNameBrend,
       realDescriptionBrend,
       goods,
+      realNameBrendWithLang,
     };
   } catch (err) {
     console.error('Fetch error:', err);
@@ -188,6 +190,7 @@ const getData = async (
       filters: {},
       realNameBrend: '',
       realDescriptionBrend: '',
+      realNameBrendWithLang: null,
     }; // Повертаємо порожні дані у випадку помилки
   }
 };
@@ -215,6 +218,7 @@ const Page = async ({ params, searchParams }: Props) => {
     filters,
     realNameBrend,
     realDescriptionBrend,
+    realNameBrendWithLang,
   }: {
     goods: GoodInterface[];
     totalGoods: number;
@@ -222,6 +226,7 @@ const Page = async ({ params, searchParams }: Props) => {
     filters: any;
     realNameBrend: string;
     realDescriptionBrend: string | null;
+    realNameBrendWithLang: string | null;
   } = await getData(
     page,
     limit,
@@ -268,7 +273,7 @@ const Page = async ({ params, searchParams }: Props) => {
           url={url}
         />
         <div className="sore-and-goods">
-          <h1>{realNameBrend}</h1>
+          <h1>{realNameBrendWithLang || realNameBrend}</h1>
 
           <IsAdmin>
             <div style={{ fontSize: '15px', fontWeight: '400' }}>

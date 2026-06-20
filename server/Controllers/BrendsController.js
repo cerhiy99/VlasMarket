@@ -23,7 +23,15 @@ class BrednController {
   static Update = async (req, resp, next) => {
     try {
       const { id } = req.params;
-      const { name, descriptionuk, descriptionru, sort, isShow } = req.body;
+      const {
+        name,
+        descriptionuk,
+        descriptionru,
+        sort,
+        isShow,
+        nameuk,
+        nameru,
+      } = req.body;
 
       const brend = await Brends.findByPk(id);
       if (!brend) {
@@ -58,10 +66,12 @@ class BrednController {
         // 🔥 шлях для БД
         imgPath = `brend/${id}/${fileName}`;
       }
-      console.log(434, isShow);
+
       await Brends.update(
         {
           name,
+          nameuk,
+          nameru,
           descriptionuk,
           descriptionru,
           img: imgPath,
