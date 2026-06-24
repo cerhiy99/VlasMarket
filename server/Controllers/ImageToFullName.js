@@ -3,6 +3,7 @@ const { Op } = require('sequelize');
 const slugify = require('slugify');
 const fs = require('fs');
 const path = require('path');
+const sharp = require('sharp');
 
 class ImageToFullName {
   static UpdateImage = async () => {
@@ -13,8 +14,8 @@ class ImageToFullName {
             { img: { [Op.like]: '%.webp' } },
             {
               [Op.or]: [
-                { img: { [Op.notLike]: '%/%' } }, // Нові фото (лежать в корені)
-                { img: { [Op.like]: 'hidden/%' } }, // Фото в папці hidden
+                { img: { [Op.notLike]: '%/%' } },
+                { img: { [Op.like]: 'hidden/%' } },
               ],
             },
           ],
@@ -27,7 +28,6 @@ class ImageToFullName {
         ],
       });
 
-      // Фільтруємо: якщо фото в hidden, беремо тільки ті, де isShow став true
       const imagesToProcess = images.filter((image) => {
         const isNew = !image.img.includes('/');
         const wasHiddenButNowOpen =
@@ -48,7 +48,7 @@ class ImageToFullName {
 
         if (!product || !volume) continue;
 
-        // 1. ОЧИЩЕННЯ НАЗВИ (Тільки латиниця, як просила Людмила)
+        // 1. ОЧИЩЕННЯ НАЗВИ
         let name = product.nameuk
           .replace(/^\[UA\]\s*/i, '')
           .replace(/^\[RU\]\s*/i, '')
@@ -65,7 +65,7 @@ class ImageToFullName {
         const volumeValue = volume.volume.split('||')[0].trim();
         const combinedName = `${latinName} ${volumeValue}`;
 
-        // 2. Створення Slug (макс 80 символів)
+        // 2. Створення Slug
         let cleanName = slugify(combinedName, {
           replacement: '-',
           lower: true,
@@ -83,8 +83,7 @@ class ImageToFullName {
             .join('-');
         }
 
-        // 3. ВИЗНАЧЕННЯ НОВОГО ШЛЯХУ
-        // Формуємо чистий шлях: id_товару/id_фото/назва.avif
+        // 3. ВИЗНАЧЕННЯ ШЛЯХІВ
         const newRelativeDir = `${product.id}/${image.id}`;
         const newRelativePath = `${newRelativeDir}/${cleanName}.webp`.replace(
           /\\/g,
@@ -94,45 +93,61 @@ class ImageToFullName {
         const fullOldPath = path.join(staticDir, image.img);
         const fullNewDir = path.join(staticDir, newRelativeDir);
         const fullNewPath = path.join(staticDir, newRelativePath);
+        const newSmallPath = fullNewPath.replace('.webp', '_small.webp');
 
         try {
           if (fs.existsSync(fullOldPath)) {
-            // Створюємо папку (якщо її ще немає)
+            // Створюємо нову папку, якщо її немає
             if (!fs.existsSync(fullNewDir)) {
               fs.mkdirSync(fullNewDir, { recursive: true });
             }
 
-            // --- ЛОГІКА ДЛЯ ОСНОВНОГО ФАЙЛУ ---
-            fs.renameSync(fullOldPath, fullNewPath);
+            // Читаємо старий файл у буфер пам'яті (щоб уникнути блокування файлу операційною системою)
+            const imageBuffer = await fs.promises.readFile(fullOldPath);
 
-            // --- ЛОГІКА ДЛЯ МАЛЕНЬКОГО ФАЙЛУ (_small) ---
-            const oldSmallPath = fullOldPath.replace('.webp', '_small.webp');
-            const newSmallPath = fullNewPath.replace('.webp', '_small.webp');
+            // Використовуємо sharp для збереження ОРИГІНАЛУ за новим шляхом
+            await sharp(imageBuffer).toFile(fullNewPath);
+            console.log(
+              `Оригінал переміщено/збережено: ${path.basename(fullNewPath)}`
+            );
 
-            if (fs.existsSync(oldSmallPath)) {
-              fs.renameSync(oldSmallPath, newSmallPath);
-              console.log(
-                `Також переміщено мініатюру: ${path.basename(newSmallPath)}`
-              );
+            // Використовуємо той самий буфер для створення МІНІАТЮРИ (_small)
+            await sharp(imageBuffer)
+              .resize(300) // Ваша ширина мініатюри
+              .toFile(newSmallPath);
+            console.log(
+              `Мініатюру успішно згенеровано: ${path.basename(newSmallPath)}`
+            );
+
+            // Тільки після успішного збереження обох нових файлів видаляємо старі
+            if (fs.existsSync(fullOldPath)) {
+              fs.unlinkSync(fullOldPath);
             }
 
-            // Оновлюємо БД (записуємо тільки основний шлях)
-            await image.update({ img: newRelativePath });
+            const oldSmallPath = fullOldPath.replace('.webp', '_small.webp');
+            if (fs.existsSync(oldSmallPath)) {
+              fs.unlinkSync(oldSmallPath);
+            }
 
-            console.log(`Оновлено: ${image.img} -> ${newRelativePath}`);
+            // Оновлюємо базу даних
+            await image.update({ img: newRelativePath });
+            console.log(`БД оновлено: -> ${newRelativePath}`);
           }
         } catch (fileErr) {
-          console.error(`Помилка файлу ${image.img}:`, fileErr.message);
+          console.error(
+            `❌ КРИТИЧНА ПОМИЛКА ОБРОБКИ ФАЙЛУ ${image.img}:`,
+            fileErr
+          );
         }
       }
 
-      // Чистимо порожні папки в hidden після того, як звідти пішли файли
       await this.removeEmptyDirs(path.join(staticDir, 'hidden'));
       console.log('Процес UpdateImage завершено.');
     } catch (err) {
       console.error('Помилка оновлення фото:', err);
     }
   };
+
   static FixAndCleanImages = async () => {
     try {
       const images = await Img.findAll({
