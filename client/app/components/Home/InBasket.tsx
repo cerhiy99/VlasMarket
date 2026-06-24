@@ -3,17 +3,21 @@ import { $host } from '@/app/http';
 import { RootState } from '@/app/store';
 import { addToBasket } from '@/app/store/reducers/cartReducer';
 import { useTranslation } from '@/context/TranslationProvider';
+import { Locale } from '@/i18n.config';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 type Props = {
   selectGoods: any;
   selectVolumeIdx: number;
+  lang: Locale;
 };
 
-const InBasket = ({ selectGoods, selectVolumeIdx }: Props) => {
+const InBasket = ({ selectGoods, selectVolumeIdx, lang }: Props) => {
   const [isInBasket, setIsInBasket] = useState(false); //тимчасово
   const dispatch = useDispatch();
+
+  const { t } = useTranslation();
 
   const { basket } = useSelector((state: RootState) => state.BasketAndLike);
 
@@ -57,7 +61,7 @@ const InBasket = ({ selectGoods, selectVolumeIdx }: Props) => {
       dispatch(addToBasket(goodToBasket));
     }
   };
-  const { t } = useTranslation();
+
   return (
     <div onClick={inBasket} className={isInBasket ? 'in-basket' : 'basket'}>
       {!isInBasket ? (
@@ -105,7 +109,7 @@ const InBasket = ({ selectGoods, selectVolumeIdx }: Props) => {
       )}
 
       {!isInBasket ? (
-        <p>{t('selectGoods.buy')}</p>
+        <p>{lang == 'ru' ? 'Купить' : 'Купити'}</p>
       ) : (
         <p>{t('selectGoods.inBasket')}</p>
       )}

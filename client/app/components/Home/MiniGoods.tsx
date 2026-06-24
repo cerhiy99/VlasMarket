@@ -163,7 +163,11 @@ const MiniGoods = ({ goods, dictionary, lang, idx }: Props) => {
               {goods.volumes[selectVolumeIdx].priceWithDiscount} <span>₴</span>
             </div>
           </div>
-          <InBasket selectGoods={goods} selectVolumeIdx={selectVolumeIdx} />
+          <InBasket
+            lang={lang}
+            selectGoods={goods}
+            selectVolumeIdx={selectVolumeIdx}
+          />
         </div>
       </div>
     </Link>

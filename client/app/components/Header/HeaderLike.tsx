@@ -94,12 +94,14 @@ const HeaderLike = ({ lang }: Props) => {
       >
         {like.length === 0 ? (
           <div>
-            <p className="empty-title">{t('headerLike.emptyTitle')}</p>
+            <p className="empty-title">
+              {lang == 'ru' ? 'Здесь пока пусто' : 'Тут поки що пусто'}
+            </p>
             <span>{t('headerLike.emptyDescription')}</span>
           </div>
         ) : (
           <div className="liked-container">
-            <p>{t('headerLike.likedItems')}</p>
+            <p>{lang == 'ru' ? 'Избранное' : 'Обране'}</p>
             {like.map((x) => (
               <div className="itemWrapper" key={x.id}>
                 <Link
