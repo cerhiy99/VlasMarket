@@ -53,26 +53,17 @@ class OrderController {
               where: {
                 id: parseInt(realIdVolumeAndCountArray[i].realIdVolume),
               },
-              include: [
-                {
-                  model: Img,
-
-                  raw: true,
-                  nest: true,
-                },
-              ],
-              raw: true,
-              nest: true,
-              required: true,
+              include: [{ model: Img }],
             },
           ],
-          raw: true,
-          nest: true,
         });
 
         if (product) {
+          // Перетворюємо в чистий JSON (це надійніше, ніж raw: true на глибоких include)
+          const productJson = product.toJSON();
+
           basket.push({
-            ...product, // перетворюємо Sequelize model на звичайний об'єкт
+            ...productJson,
             count: realIdVolumeAndCountArray[i].count,
           });
         }
@@ -83,18 +74,19 @@ class OrderController {
         0
       );
 
-      const message = `
-VLAS MARKET
+      // 1. Формуємо список товарів через .map().join() всередині
+      const goodsList = basket
+        .map((x) => `${x.nameuk}\n${FRONTEND_URL}/goods/${x.volumes.url}`)
+        .join('\n\n');
 
+      // 2. Збираємо фінальне повідомлення
+      const message = `VLAS MARKET
 
 Користувач ${name} з мобільним телефоном ${phone} натиснув на швидке замовлення.
         
-Товари на суму ${sum} грн
-${basket.map(
-  (x) => `
-${x.nameuk}
-${FRONTEND_URL}/goods/${x.volumes.url}`
-)}`.join('\n');
+Товари на суму ${sum} грн:
+
+${goodsList}`;
 
       if (IS_SEND) {
         await axios.post(
@@ -102,7 +94,7 @@ ${FRONTEND_URL}/goods/${x.volumes.url}`
           {
             chat_id: TELEGRAM_CHAT_ID,
             text: message,
-            parse_mode: 'HTML',
+            // parse_mode прибрано, щоб уникнути помилок з символами '&' та '<' в URL
           }
         );
 
@@ -122,20 +114,6 @@ ${FRONTEND_URL}/goods/${x.volumes.url}`
           `нове швидке замовлення VlasMarket`
         );
       }
-      /*const res = await Order.create({
-        nameUser: name,
-        email: '',
-        sum,
-        basket: JSON.stringify(basket),
-        phone: '',
-        deliveryType: '',
-        city: '',
-        comment: '',
-        commentMeneger: '',
-        oblast: '',
-        typePay: '',
-      });*/
-      //sendEmail('cerhiy99@gmail.com', message, `нове швидке замовлення`);
 
       return resp.json({ ok: true });
     } catch (err) {
