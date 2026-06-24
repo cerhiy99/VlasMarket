@@ -70,13 +70,13 @@ class OrderController {
       }
 
       const sum = basket.reduce(
-        (acc, x) => (acc += x.volumes.priceWithDiscount * x.count),
+        (acc, x) => (acc += x.volumes[0].priceWithDiscount * x.count),
         0
       );
 
       // 1. Формуємо список товарів через .map().join() всередині
       const goodsList = basket
-        .map((x) => `${x.nameuk}\n${FRONTEND_URL}/goods/${x.volumes.url}`)
+        .map((x) => `${x.nameuk}\n${FRONTEND_URL}/goods/${x.volumes[0].url}`)
         .join('\n\n');
 
       // 2. Збираємо фінальне повідомлення
@@ -839,16 +839,23 @@ ${additionalInfo || '—'}
               parse_mode: 'HTML',
             }
           );
-          const x = `
+          const messageToEmail = `
 <b>ЗАКАЗ №${order.id}</b><br><br>
-✍️ Надійшло нове замовлення на суму ${totalPrice} грн, від користувача:<br><br>
-😉 Прізвище: ${surname}<br>
-👤 Ім'я: ${name}<br>
+✍️ Надійшло нове замовлення на суму ${sum} грн, від користувача:<br><br>
+😉 Прізвище і ім'я: ${nameUser}<br>
 📲 Телефон: ${phone}<br><br>
-💳 Тип оплати: ${payType}<br><br>
-${deliveryText}<br><br>
+💳 Тип оплати: ${listWayDelivery.find((x) => x.id == typePay).name}
+${listWayDelivery.find((x) => x.id == typePay).description}<br><br>
+${deliveryType}<br><br>
 ✍️ Повідомлення: ${comment || 'відсутнє'}<br><br>
-${basketTextToEmail}<br><br><br>
+
+🧾 Товари:
+${realBasket
+  .map(
+    (item) =>
+      `- ${item.nameuk} × ${item.count} (${item.volumes.priceWithDiscount} грн)<br>`
+  )
+  .join('\n')}<br><br><br>
 ${process.env.FRONTEND_URL + `/ru/admin/orders/edit-order/${res.id}`}`;
 
           sendEmail(
