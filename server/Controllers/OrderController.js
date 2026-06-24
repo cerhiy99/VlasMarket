@@ -106,9 +106,21 @@ ${FRONTEND_URL}/goods/${x.volumes.url}`
           }
         );
 
-        sendEmail('info@vlasmarket.com.ua', message, 'Нове швидке замовлення. VlasMarket');
-        sendEmail('7551991@gmail.com', message, `нове швидке замовлення VlasMarket`);
-        sendEmail('664645@gmail.com', message, `нове швидке замовлення VlasMarket`);
+        sendEmail(
+          'info@vlasmarket.com.ua',
+          message,
+          'Нове швидке замовлення. VlasMarket'
+        );
+        sendEmail(
+          '7551991@gmail.com',
+          message,
+          `нове швидке замовлення VlasMarket`
+        );
+        sendEmail(
+          '664645@gmail.com',
+          message,
+          `нове швидке замовлення VlasMarket`
+        );
       }
       /*const res = await Order.create({
         nameUser: name,
@@ -171,7 +183,6 @@ ${FRONTEND_URL}/goods/${x.volumes.url}`
         });
       }
 
-
       const res = await Order.create({
         nameUser: name,
         email: '',
@@ -208,23 +219,27 @@ VLAS
 Посилання: ${FRONTEND_URL}/goods/${idVolume}`.trim();
       /*ID варіанту (volume): ${idVolume}
           `.trim();*/
-      if(IS_SEND){
-        try{
-        await axios.post(
-          `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`,
-          {
-            chat_id: TELEGRAM_CHAT_ID,
-            text: message,
-            parse_mode: 'HTML',
-          }
-        );
+      if (IS_SEND) {
+        try {
+          await axios.post(
+            `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`,
+            {
+              chat_id: TELEGRAM_CHAT_ID,
+              text: message,
+              parse_mode: 'HTML',
+            }
+          );
 
-        sendEmail('info@vlasmarket.com.ua', message, 'Нове швидке замовлення.');
-        sendEmail('7551991@gmail.com', message, `нове швидке замовлення`);
-        sendEmail('664645@gmail.com', message, `нове швидке замовлення`);
-      }catch(err){
-        console.log("Помилка в FastOrder.");
-      }
+          sendEmail(
+            'info@vlasmarket.com.ua',
+            message,
+            'Нове швидке замовлення.'
+          );
+          sendEmail('7551991@gmail.com', message, `нове швидке замовлення`);
+          sendEmail('664645@gmail.com', message, `нове швидке замовлення`);
+        } catch (err) {
+          console.log('Помилка в FastOrder.');
+        }
       }
       //sendEmail('cerhiy99@gmail.com', message, `нове швидке замовлення`);
 
@@ -479,6 +494,7 @@ VLAS
 
       resp.json({ order });
 
+      const res = order;
 
       const htmlListUser = `<!doctype html>
 <html lang="uk">
@@ -762,7 +778,8 @@ VLAS
                     >+38 (093) 158-75-51</a
                   >
                 </p>
-                ${/*<p
+                ${
+                  /*<p
                   style="
                     font-size: 13px;
                     color: #000000;
@@ -791,7 +808,8 @@ VLAS
                     style="color: #000000; text-decoration: none"
                     >+38 (067) 393-99-52</a
                   >
-                </p>*/''}
+                </p>*/ ''
+                }
               </td>
             </tr>
           </table>
@@ -802,9 +820,9 @@ VLAS
 </html>
 `;
       sendEmail(email, htmlListUser, `Ваше замовлення прийнято`);
-      if(IS_SEND){
-        try{
-           const telegramMessage = `
+      if (IS_SEND) {
+        try {
+          const telegramMessage = `
 VLAS
 📦 Нове замовлення ${res.id}
 
@@ -843,7 +861,7 @@ ${additionalInfo || '—'}
               parse_mode: 'HTML',
             }
           );
-           const messageToEmail = `
+          const x = `
 <b>ЗАКАЗ №${order.id}</b><br><br>
 ✍️ Надійшло нове замовлення на суму ${totalPrice} грн, від користувача:<br><br>
 😉 Прізвище: ${surname}<br>
@@ -865,9 +883,11 @@ ${process.env.FRONTEND_URL + `/ru/admin/orders/edit-order/${res.id}`}`;
             messageToEmail,
             `нове замовлення №${order.id} VLAS`
           );
-        }
-        catch(err){
-          console.log("Помилка в setNewOrder. При відправці в тг і на пошту адміну", err);
+        } catch (err) {
+          console.log(
+            'Помилка в setNewOrder. При відправці в тг і на пошту адміну',
+            err
+          );
         }
       }
     } catch (err) {
@@ -1225,7 +1245,6 @@ ${basketText}
 
 
 ${process.env.FRONTEND_URL + `/ru/admin/orders/edit-order/${res.id}`}`;
-      
 
       const html = `
         <table style="width: 100%; border-collapse: collapse; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol'; background-color: #f4f4f4; padding: 20px;">
@@ -1467,7 +1486,7 @@ ${process.env.FRONTEND_URL + `/ru/admin/orders/edit-order/${res.id}`}`;
               parse_mode: 'HTML',
             }
           );
-        
+
           sendEmail(
             '7551991@gmail.com',
             messageToEmail,
