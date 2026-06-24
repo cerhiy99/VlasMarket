@@ -76,20 +76,13 @@ export async function generateMetadata({
   // Локалізовані тексти
 
   let titles = {
-    ua: `${realNameBrend}. Купити косметику ${realNameBrend}`,
-    ru: `${realNameBrend}. Купить косметику ${realNameBrend}`,
+    ua: `${realNameBrend}. Купити косметику бренду в Україні`,
+    ru: `${realNameBrend}. Купить косметику бренду в Украине`,
   };
-
-  if (realNameBrendWithLang) {
-    titles = {
-      ua: realNameBrendWithLang,
-      ru: realNameBrendWithLang,
-    };
-  }
 
   const descriptions = {
     ua: `Вся лінійка продукції ${realNameBrend}. Великий каталог, ціни на косметику ${realNameBrend} в інтернет-магазині в Харкові, Києві`,
-    ru: ` Вся линейка продукции ${realNameBrend}. Большой каталог, цены на косметику ${realNameBrend} в интернет-магазине в Харькове, Киеве`,
+    ru: `Вся линейка продукции ${realNameBrend}. Большой каталог, цены на косметику ${realNameBrend} в интернет-магазине в Харькове, Киеве`,
   };
   const isIndexAndFollow = queryString.toString() == '';
 
