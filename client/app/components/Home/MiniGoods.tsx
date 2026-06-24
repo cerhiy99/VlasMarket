@@ -103,13 +103,15 @@ const MiniGoods = ({ goods, dictionary, lang, idx }: Props) => {
             {lang == 'ru' ? 'бонусов' : 'бонусів '}
           </div>
         </div>
-        <h3>{lang == 'ru' ? goods.nameru : goods.nameuk}</h3>
+        <div className="title">
+          {lang == 'ru' ? goods.nameru : goods.nameuk}
+        </div>
         <div className="rating-and-art">
           <div className="rating">
             <MyRating rating={parseFloat(goods.averageRating)} />
             <span>
               ({goods.reviews?.length || 0}){' '}
-              {lang == 'ru' ? 'Отзивов' : 'Відгуків'}
+              {lang == 'ru' ? 'Отзывов' : 'Відгуків'}
               {/*goods.countReview*/}
             </span>
           </div>

@@ -14,8 +14,8 @@ export async function generateMetadata({ params }: Props) {
   const canonicalUrl = `${baseUrl}${urlPath}/pay`;
 
   const titles = {
-    ua: 'Оплата — VlasMarket',
-    ru: 'Оплата — VlasMarket',
+    ua: 'Оплата на сайті VlasMarket',
+    ru: 'Оплата на сайте VlasMarket',
   };
 
   const descriptions = {

@@ -14,8 +14,8 @@ export async function generateMetadata({ params }: Props) {
   const canonicalUrl = `${baseUrl}${urlPath}/offer-agreement`;
 
   const titles = {
-    ua: 'Оферта — VlasMarket',
-    ru: 'Оферта — VlasMarket',
+    ua: 'Договір публічної оферти - VlasMarket',
+    ru: 'Договор публичной оферты - VlasMarket',
   };
 
   const descriptions = {
@@ -59,7 +59,9 @@ const Page = async ({ params }: Props) => {
         </div>
         <div className="block">
           <h3>{offerAgreement.miniTitle1}</h3>
-          <p dangerouslySetInnerHTML={{ __html: offerAgreement.description1 }} />
+          <p
+            dangerouslySetInnerHTML={{ __html: offerAgreement.description1 }}
+          />
         </div>
         <div className="block">
           <h3>{offerAgreement.miniTitle2}</h3>
@@ -113,7 +115,9 @@ const Page = async ({ params }: Props) => {
         <div className="block">
           <h3>{offerAgreement.miniTitle8}</h3>
           <p dangerouslySetInnerHTML={{ __html: offerAgreement.miniTitle1 }} />
-          <p dangerouslySetInnerHTML={{ __html: offerAgreement.description8 }} />
+          <p
+            dangerouslySetInnerHTML={{ __html: offerAgreement.description8 }}
+          />
         </div>
         <div className="block">
           <h3>{offerAgreement.nanoTitle2}</h3>
@@ -145,7 +149,9 @@ const Page = async ({ params }: Props) => {
         </div>
         <div className="block">
           <h3>{offerAgreement.miniTitle11}</h3>
-          <p dangerouslySetInnerHTML={{ __html: offerAgreement.description11 }} />
+          <p
+            dangerouslySetInnerHTML={{ __html: offerAgreement.description11 }}
+          />
         </div>
         <div className="block">
           <h3>{offerAgreement.miniTitle12}</h3>

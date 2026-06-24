@@ -14,6 +14,43 @@ type BonusCard = {
   text?: string;
 };
 
+export async function generateMetadata({ params }: Props) {
+  const { lang } = await params;
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
+  const urlPath = lang === 'ua' ? '' : `/ru`;
+  const canonicalUrl = `${baseUrl}${urlPath}/about-us`;
+
+  const titles = {
+    ua: 'Бонусна програма - VlasMarket',
+    ru: 'Бонусная программа - VlasMarket',
+  };
+
+  const descriptions = {
+    ua: 'Бонусна програма VlasMarket — накопичуйте бонуси за покупки та використовуйте їх для оплати наступних замовлень. Вигідні покупки для постійних клієнтів.',
+    ru: 'Бонусная программа VlasMarket — накапливайте бонусы за покупки и используйте их для оплаты следующих заказов. Выгодные покупки для постоянных клиентов.',
+  };
+
+  return {
+    title: titles[lang] || titles.ua,
+    description: descriptions[lang] || descriptions.ua,
+    alternates: {
+      canonical: canonicalUrl,
+      languages: {
+        'x-default': `${baseUrl}/bonus`,
+        uk: `${baseUrl}/bonus`,
+        ru: `${baseUrl}/ru/bonus`,
+      },
+    },
+    openGraph: {
+      title: titles[lang] || titles.ua,
+      description: descriptions[lang] || descriptions.ua,
+      url: canonicalUrl,
+      type: 'website',
+      siteName: 'VlasMarket',
+    },
+  };
+}
+
 const Page = async ({ params }: Props) => {
   const { lang } = await params;
   const { bonus }: any = await getDictionary(lang);

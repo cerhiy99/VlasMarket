@@ -76,8 +76,8 @@ export async function generateMetadata({
   // Локалізовані тексти
 
   let titles = {
-    ua: `${realNameBrend}. Купити косметику бренду в Україні`,
-    ru: `${realNameBrend}. Купить косметику бренду в Украине`,
+    ua: `${realNameBrend} - купити косметику бренду в Україні`,
+    ru: `${realNameBrend} - купить косметику бренду в Украине`,
   };
 
   const descriptions = {

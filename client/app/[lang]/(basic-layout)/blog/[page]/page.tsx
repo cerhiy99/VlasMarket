@@ -13,9 +13,12 @@ const LIMIT = 20;
 
 const getBlog = async (url: string) => {
   try {
-    const res = await fetch(process.env.NEXT_PUBLIC_API_SERVER + `blog/getOne/${url}`, {
-      cache: 'no-cache',
-    });
+    const res = await fetch(
+      process.env.NEXT_PUBLIC_API_SERVER + `blog/getOne/${url}`,
+      {
+        cache: 'no-cache',
+      }
+    );
     if (!res.ok) {
       return notFound();
     }
@@ -44,16 +47,21 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     // Title та description з урахуванням мови
     const title = lang === 'ru' ? blog.nameru : blog.nameuk;
 
-    const rawDescription = lang === 'ru' ? blog.descriptionru : blog.descriptionuk;
+    const rawDescription =
+      lang === 'ru' ? blog.descriptionru : blog.descriptionuk;
 
     // Відчищаємо HTML та обрізаємо до 200 символів
-    const plainDescription = rawDescription.replace(/<[^>]+>/g, '').slice(0, 200);
+    const plainDescription = rawDescription
+      .replace(/<[^>]+>/g, '')
+      .slice(0, 200);
 
     // Формуємо URL
     const canonicalUrl = `${baseUrl}/${lang === 'ru' ? 'ru/' : ''}blog/${blog.url}`;
 
     // Зображення
-    const imageUrl = blog.img ? `${process.env.NEXT_PUBLIC_SERVER}${blog.img}` : '';
+    const imageUrl = blog.img
+      ? `${process.env.NEXT_PUBLIC_SERVER}${blog.img}`
+      : '';
 
     return {
       title,
@@ -91,8 +99,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     const ruUrl = `${baseUrl}/ru/blog/${page}`;
 
     const titles = {
-      ua: `Блог сторінка ${page} | VlasMarket`,
-      ru: `Блог страница ${page} | VlasMarket`,
+      ua: `Блог сайту VlasMarket`,
+      ru: `Блог сайта VlasMarket`,
     };
 
     const descriptions = {
@@ -125,7 +133,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 const getData = async (page: number | string) => {
   try {
     const res = await fetch(
-      process.env.NEXT_PUBLIC_API_SERVER + `blog/get?page=${page}&limit=${LIMIT}`,
+      process.env.NEXT_PUBLIC_API_SERVER +
+        `blog/get?page=${page}&limit=${LIMIT}`,
       { cache: 'no-store' }
     );
     if (!res.ok) {
@@ -155,7 +164,10 @@ const page = async (props: Props) => {
 
   return (
     <div className="blog-container">
-      <BreadCrumbs lang={lang} listUrles={[{ name: 'Блог', url: `/${lang}/blog` }]} />
+      <BreadCrumbs
+        lang={lang}
+        listUrles={[{ name: 'Блог', url: `/${lang}/blog` }]}
+      />
       <h1>Блог</h1>
       <div className="blog-list">
         {blog.map((x: any) => (

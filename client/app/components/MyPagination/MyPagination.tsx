@@ -30,7 +30,7 @@ const MyPagination: React.FC<PaginationProps> = ({
     // 2. Фільтруємо параметр 'PAGEN_1' з існуючих пошукових параметрів,
     // оскільки він більше не буде використовуватися для пагінації
     const filteredSearchParams = Object.entries(currentSearchParams).filter(
-      ([key]) => key !== 'PAGEN_1',
+      ([key]) => key !== 'PAGEN_1'
     );
 
     // 3. Створюємо URLSearchParams з решти фільтрів
@@ -40,7 +40,7 @@ const MyPagination: React.FC<PaginationProps> = ({
           return value.map((v) => [key, v]);
         }
         return value ? [[key, value]] : [];
-      }),
+      })
     );
 
     const queryString = params.toString(); // Генеруємо рядок запиту з фільтрів
@@ -55,7 +55,7 @@ const MyPagination: React.FC<PaginationProps> = ({
     // 5. Комбінуємо базовий шлях, сегмент сторінки та рядок запиту
     return `${baseForPagination}${finalPathSegment}${currentSearchParams.toString() != '' ? `?${currentSearchParams.toString()}` : ''}`.replace(
       '//',
-      '/',
+      '/'
     );
   };
 
@@ -74,18 +74,18 @@ const MyPagination: React.FC<PaginationProps> = ({
           isActive={currentPage === 1}
           href={generatePageLink(1)}
           lang={lang}
-        />,
+        />
       );
     }
 
     // Determine the range of pages to show around the current page
     let startMiddle = Math.max(
       boundaryPages + 1,
-      currentPage - Math.floor(middlePages / 2),
+      currentPage - Math.floor(middlePages / 2)
     );
     let endMiddle = Math.min(
       totalPages - boundaryPages,
-      currentPage + Math.floor(middlePages / 2),
+      currentPage + Math.floor(middlePages / 2)
     );
 
     // Adjust the middle range if it overlaps with the start or end boundary pages
@@ -95,7 +95,7 @@ const MyPagination: React.FC<PaginationProps> = ({
         // If it's near the beginning
         endMiddle = Math.min(
           totalPages - boundaryPages,
-          startMiddle + middlePages - 1,
+          startMiddle + middlePages - 1
         );
       } else if (endMiddle >= totalPages - boundaryPages) {
         // If it's near the end
@@ -113,7 +113,7 @@ const MyPagination: React.FC<PaginationProps> = ({
       pages.push(
         <span key="ellipsis-start" className="pagination-ellipsis">
           ...
-        </span>,
+        </span>
       );
     }
 
@@ -131,7 +131,7 @@ const MyPagination: React.FC<PaginationProps> = ({
           isActive={currentPage === i}
           href={generatePageLink(i)}
           lang={lang}
-        />,
+        />
       );
     }
 
@@ -140,7 +140,7 @@ const MyPagination: React.FC<PaginationProps> = ({
       pages.push(
         <span key="ellipsis-end" className="pagination-ellipsis">
           ...
-        </span>,
+        </span>
       );
     }
 
@@ -157,7 +157,7 @@ const MyPagination: React.FC<PaginationProps> = ({
           isActive={currentPage === totalPages}
           href={generatePageLink(totalPages)}
           lang={lang}
-        />,
+        />
       );
     }
 
@@ -165,7 +165,12 @@ const MyPagination: React.FC<PaginationProps> = ({
   };
 
   return (
-    <nav className="pagination-container2" aria-label="Навігація по сторінках">
+    <nav
+      className="pagination-container2"
+      aria-label={
+        lang == 'ru' ? 'Навигация по страницам' : 'Навігація по сторінках'
+      }
+    >
       <ul className="pagination-list">
         {/* Кнопка "Попередня" */}
         {currentPage > 1 && (

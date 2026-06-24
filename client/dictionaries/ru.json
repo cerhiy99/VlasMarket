@@ -38,7 +38,7 @@
       "productMade": "Товары, произведенные в ",
       "products": "Товары:"
     },
-    "Auth": { "logIn": "Вход", "register": "Зареєструватися" },
+    "Auth": { "logIn": "Вход", "register": "Зарегистрироваться" },
     "Like": {
       "emptyTitle": "Ваше обране пусте.",
       "emptyDescription": "Добавте товар в обране."

@@ -27,7 +27,7 @@
         0 4px 8px rgba(0, 0, 0, 0.2),
         0 2px 4px rgba(0, 0, 0, 0.2);
       outline: 2px solid rgba(0, 0, 0, 0.05);
-      h3 {
+      .title {
         color: #f80000;
       }
     }
@@ -100,7 +100,7 @@
       }
     }
   }
-  h3 {
+  .title {
     font-weight: 500;
     font-style: Semi Bold;
     font-size: 14px;

@@ -227,7 +227,7 @@ const PriceSelector = ({
   return (
     <div className="brands-container price-selector-container">
       <div className="price-selector-header" onClick={toggleOpen}>
-        <h3>{lang == 'ru' ? 'ЦЕНА' : 'ЦІНА'}</h3>
+        <div className="h3">{lang == 'ru' ? 'ЦЕНА' : 'ЦІНА'}</div>
         <span className={`arrow-icon ${isOpen ? 'open' : ''}`}>
           {isOpen ? <UpSVG /> : <DownSVG />}
         </span>

@@ -80,7 +80,7 @@ const Filters = ({
       </div>
       <div className={`filters-container ${isOpen ? 'open' : 'close'}`}>
         <div className="filter-main-title">
-          <h4>{lang == 'ru' ? 'Фильтры' : 'Фільтри'}</h4>
+          <div id="filter">{lang == 'ru' ? 'Фильтры' : 'Фільтри'}</div>
           <div onClick={() => filterOpenOrClose(false)} className="close">
             <CloseSVG />
           </div>

@@ -17,8 +17,8 @@ export async function generateMetadata({ params }: Props) {
 
   // Локалізовані тексти
   const titles = {
-    ua: 'Доставка — VlasMarket',
-    ru: 'Доставка — VlasMarket',
+    ua: 'Доставка на сайті VlasMarket',
+    ru: 'Доставка на сайте VlasMarket',
   };
 
   const descriptions = {
@@ -52,7 +52,10 @@ const Page = async ({ params }: Props) => {
   const { delivery } = await getDictionary(lang);
   return (
     <div className="delivery-container">
-      <BreadCrumbs lang={lang} listUrles={[{ name: delivery.title, url: 'delivery' }]} />
+      <BreadCrumbs
+        lang={lang}
+        listUrles={[{ name: delivery.title, url: 'delivery' }]}
+      />
       <div className="delivery-main">
         <div className="main-title">
           <h1>{delivery.title}</h1>
