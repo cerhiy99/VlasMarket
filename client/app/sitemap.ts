@@ -18,6 +18,7 @@ const STATIC_PAGES = [
   'offer-agreement',
   'pay',
   'return-goods',
+  'contact',
 ];
 const dynamicPages = ['blog', 'brands/[brend]', 'discount', 'goods'];
 

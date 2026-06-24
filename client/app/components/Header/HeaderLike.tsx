@@ -97,7 +97,11 @@ const HeaderLike = ({ lang }: Props) => {
             <p className="empty-title">
               {lang == 'ru' ? 'Здесь пока пусто' : 'Тут поки що пусто'}
             </p>
-            <span>{t('headerLike.emptyDescription')}</span>
+            <span>
+              {lang == 'ru'
+                ? 'Добавляйте понравившиеся товары, чтобы не потерять их!'
+                : 'Додавайте товари, що сподобались, щоб не втратити!'}
+            </span>
           </div>
         ) : (
           <div className="liked-container">

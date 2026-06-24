@@ -44,12 +44,14 @@ export async function generateMetadata({
     totalPages,
     filters,
     realNameBrend,
+    realNameBrendWithLang,
   }: {
     goods: GoodInterface[];
     totalGoods: number;
     totalPages: number;
     filters: any;
     realNameBrend: string;
+    realNameBrendWithLang: string | null;
   } = await getData(
     page,
     limit,
@@ -72,10 +74,18 @@ export async function generateMetadata({
   const ruUrl = `${baseUrl}/ru/brands/${brend}/${page}`;
 
   // Локалізовані тексти
-  const titles = {
+
+  let titles = {
     ua: `${realNameBrend}. Купити косметику ${realNameBrend}`,
     ru: `${realNameBrend}. Купить косметику ${realNameBrend}`,
   };
+
+  if (realNameBrendWithLang) {
+    titles = {
+      ua: realNameBrendWithLang,
+      ru: realNameBrendWithLang,
+    };
+  }
 
   const descriptions = {
     ua: `Вся лінійка продукції ${realNameBrend}. Великий каталог, ціни на косметику ${realNameBrend} в інтернет-магазині в Харкові, Києві`,
