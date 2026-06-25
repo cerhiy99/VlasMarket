@@ -446,7 +446,7 @@ const UpdateProduct = ({ id }: { id: string }) => {
 
       if (!isNaN(price) && !isNaN(discount)) {
         current.priceWithDiscount = (price - (price * discount) / 100).toFixed(
-          2
+          0
         );
       }
     } else if (key === 'priceWithDiscount') {
@@ -455,7 +455,7 @@ const UpdateProduct = ({ id }: { id: string }) => {
       const priceWithDiscount = parseFloat(value);
 
       if (!isNaN(price) && price !== 0 && !isNaN(priceWithDiscount)) {
-        current.discount = (100 - (priceWithDiscount * 100) / price).toFixed(2);
+        current.discount = (100 - (priceWithDiscount * 100) / price).toFixed(0);
       }
     } else if (key == 'volumeuk' || key == 'volumeru') {
       if (current.volume.includes('||')) {
@@ -1138,7 +1138,20 @@ const UpdateProduct = ({ id }: { id: string }) => {
     setCharacteristicsru(characteristicsru.filter((x, idx) => idx != index));
   };
 
-  console.log(542343, volume);
+  const del = async () => {
+    const confirmed = window.confirm(
+      'Ви впевнені, що хочете видалити цей товар?'
+    );
+
+    if (!confirmed) return;
+
+    try {
+      await $authHost.post('goods/del/' + id);
+      router.push('/ru/admin/goodsFilter');
+    } catch (err) {
+      alert('Помилка');
+    }
+  };
 
   return (
     <div className="update-product-form">
@@ -2029,6 +2042,14 @@ const UpdateProduct = ({ id }: { id: string }) => {
         {/* Submit button */}
         <button className="but" style={{ marginLeft: '40px' }} type="submit">
           Сохранить товар
+        </button>
+        <button
+          className="but"
+          style={{ marginLeft: '40px', background: 'red' }}
+          type="button"
+          onClick={del}
+        >
+          Видалити товар
         </button>
       </form>
     </div>

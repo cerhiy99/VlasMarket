@@ -55,6 +55,7 @@ const getData = async (id: string, lang: Locale) => {
     }));
     return { good, reviews, indexVolume, watchMore }; // Повертаємо розпарсені дані (товари)
   } catch (err) {
+    return notFound();
     console.error('Fetch error:', err);
     //return notFound();
   }

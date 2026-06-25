@@ -12,6 +12,7 @@ import IsAdmin from '@/app/components/utils/IsAdmin';
 import { getLocalizedPath } from '@/app/components/utils/getLocalizedPath';
 import Filters from '@/app/components/goods/Filters/Filters';
 import { headers } from 'next/headers';
+import { notFound } from 'next/navigation';
 
 type Props = {
   params: Promise<{ lang: Locale; page: string; brend: string }>;
@@ -77,7 +78,7 @@ export async function generateMetadata({
 
   let titles = {
     ua: `${realNameBrend} - купити косметику бренду в Україні`,
-    ru: `${realNameBrend} - купить косметику бренду в Украине`,
+    ru: `${realNameBrend} - купить косметику бренда в Украине`,
   };
 
   const descriptions = {
@@ -175,6 +176,7 @@ const getData = async (
       })),
     }));
     const realNameBrendWithLang = data.realNameBrendWithLang;
+
     return {
       totalGoods,
       totalPages,
@@ -238,6 +240,10 @@ const Page = async ({ params, searchParams }: Props) => {
     lang == 'ru' ? 'uk' : 'ru',
     lang
   ); // Передаємо currentSearchParams
+
+  if (!realNameBrend) {
+    return notFound();
+  }
 
   const headersList = await headers();
   const userAgent = headersList.get('user-agent') || '';
@@ -308,12 +314,14 @@ const Page = async ({ params, searchParams }: Props) => {
           )}
         </div>
       </div>
-      {realDescriptionBrend && page == '1' && (
-        <p
-          className="desc"
-          dangerouslySetInnerHTML={{ __html: realDescriptionBrend }}
-        />
-      )}
+      {realDescriptionBrend &&
+        realDescriptionBrend != 'null' &&
+        page == '1' && (
+          <p
+            className="desc"
+            dangerouslySetInnerHTML={{ __html: realDescriptionBrend }}
+          />
+        )}
     </div>
   );
 };

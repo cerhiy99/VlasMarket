@@ -108,13 +108,13 @@ const Categories: React.FC<CategoriesProps> = ({
       );
     else {
       if (isThisCategoryCurrentlySelected) {
-        router.push(
+        /*router.push(
           getLocalizedPath(
             `/${lang}/goods/1?${sortSearchParams(newSearchParams).toString()}`,
             lang
           ),
           { scroll: false }
-        );
+        );*/
       } else {
         router.push(
           getLocalizedPath(

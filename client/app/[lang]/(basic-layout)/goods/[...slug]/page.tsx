@@ -13,6 +13,7 @@ import { getLocalizedPath } from '@/app/components/utils/getLocalizedPath';
 import SelectGoods from '../../select-goods/[id]/SelectGoods';
 import Filters from '@/app/components/goods/Filters/Filters';
 import { headers } from 'next/headers';
+import { toSlug } from '@/app/components/utils/addittional';
 
 type Props = {
   params: Promise<{ lang: Locale; slug: string[] }>;
@@ -347,6 +348,7 @@ const getData = async (
       averageRating: x.averageRating,
     }));
     clearDescriptions(filters);
+
     return {
       filters,
       totalGoods,
@@ -424,6 +426,10 @@ const Page = async ({ params, searchParams }: Props) => {
   let url = `goods`;
 
   if (selectCategory && selectCategory[`name${lang == 'ru' ? 'ru' : 'uk'}`]) {
+    if (UkrToEng(selectCategory.nameru) != category) {
+      return notFound();
+    }
+
     listUrles.push({
       name: selectCategory[`name${lang == 'ru' ? 'ru' : 'uk'}`],
       url: getLocalizedPath(
@@ -433,8 +439,11 @@ const Page = async ({ params, searchParams }: Props) => {
     });
     url += `/${UkrToEng(selectCategory.nameru)}`;
   }
-  1;
+
   if (selectSubcategory) {
+    if (UkrToEng(selectSubcategory.nameru) != subcategory) {
+      return notFound();
+    }
     listUrles.push({
       name: selectSubcategory[`name${lang == 'ru' ? 'ru' : 'uk'}`],
       url: ``,
