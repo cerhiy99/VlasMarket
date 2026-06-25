@@ -54,7 +54,12 @@ const Page = async ({ params }: Props) => {
     <div className="about-us-cont">
       <div className="about-us">
         <BreadCrumbs
-          listUrles={[{ url: 'about-us', name: lang === 'ru' ? 'О магазине' : 'Про магазин' }]}
+          listUrles={[
+            {
+              url: 'about-us',
+              name: lang === 'ru' ? 'О магазине' : 'Про магазин',
+            },
+          ]}
           lang={lang}
         />
 
@@ -75,7 +80,7 @@ const Page = async ({ params }: Props) => {
 
         <div className="map">
           <iframe
-            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2594.3259799289667!2d32.06140620000001!3d49.4405556!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x40d14b7eeb1523e7%3A0x4572aa0fc206404e!2z0LLRg9C70LjRhtGPINCT0L7Qs9C-0LvRjywgMjY5LCDQp9C10YDQutCw0YHQuCwg0KfQtdGA0LrQsNGB0YzQutCwINC-0LHQu9Cw0YHRgtGMLCAxODAwMA!5e0!3m2!1suk!2sua!4v1757777497693!5m2!1suk!2sua"
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2564.4427576879234!2d36.243456076950686!3d50.00305601947573!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x4127a0c2d1ae46db%3A0x59f9c130633cda6d!2z0LLRg9C70LjRhtGPINCT0YDQuNCz0L7RgNGW0Y8g0KHQutC-0LLQvtGA0L7QtNC4LCA2Nywg0KXQsNGA0LrRltCyLCDQpdCw0YDQutGW0LLRgdGM0LrQsCDQvtCx0LvQsNGB0YLRjCwgNjEwMDA!5e0!3m2!1suk!2sua!4v1782426726481!5m2!1suk!2sua"
             width="100%"
             height="100%"
             style={{ border: 0 }}
