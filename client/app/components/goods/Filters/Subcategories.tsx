@@ -27,6 +27,7 @@ type SubcategoriesProps = {
   open: string;
   setOpen: any;
   isMob: boolean;
+  noCategory?: false;
 };
 
 const Subcategories: React.FC<SubcategoriesProps> = ({
@@ -39,6 +40,7 @@ const Subcategories: React.FC<SubcategoriesProps> = ({
   open,
   setOpen,
   isMob,
+  noCategory,
 }) => {
   const router = useRouter();
   const searchParams = useSearchParams(); // Отримуємо поточні параметри URL
@@ -113,8 +115,15 @@ const Subcategories: React.FC<SubcategoriesProps> = ({
       currentSubcategoryIds.push(subcategoryId);
     }
     if (currentSubcategoryIds.length > 0) {
-      if (brand)
+      if (brand) {
+        if (!searchParams.toString().includes('category')) {
+          newSearchParams.set(
+            'category',
+            listSubcategories[0].categoryId.toString()
+          );
+        }
         newSearchParams.set('subcategory', currentSubcategoryIds.join(','));
+      }
     } else {
       newSearchParams.delete('subcategory'); // Видаляємо параметр, якщо немає вибраних підкатегорій
     }
@@ -137,7 +146,6 @@ const Subcategories: React.FC<SubcategoriesProps> = ({
 
       if (currentSubcategory === subcategoryUrl) {
         // Вибрали ту саму підкатегорію — видаляємо
-        console.log(434, parts);
         parts.splice(3, 2);
       } else if (currentSubcategory) {
         // Замінюємо стару підкатегорію на нову
