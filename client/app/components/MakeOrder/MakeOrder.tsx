@@ -199,9 +199,13 @@ const MakeOrder: React.FC<Props> = ({ lang }) => {
 
   const router = useRouter();
 
+  const [isSend, setIsSend] = useState(false);
+
   const setFinishOrder = async () => {
     try {
       if (!isFinishFillDate) return;
+      if (isSend) return;
+      setIsSend(true);
       const token = localStorage.getItem('token');
       let deliveryType = '';
       const delivery = infoDelivery;
@@ -269,12 +273,12 @@ const MakeOrder: React.FC<Props> = ({ lang }) => {
       const message = err?.response?.data?.message;
 
       if (message) {
-        console.log(23434, message);
         alert(message);
       } else {
         console.log(err);
         alert('Сталася помилка, спробуйте ще раз.');
       }
+      setIsSend(false);
     }
   };
 

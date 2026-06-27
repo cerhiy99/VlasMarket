@@ -168,17 +168,25 @@ const AddGoodsPage = () => {
     { ruTitle: string; ruDescription: string }[]
   >([]);
 
-  const [productRecognitions, setProductRecognitions] = useState<{ recognitionId: number }[]>([]);
+  const [productRecognitions, setProductRecognitions] = useState<
+    { recognitionId: number }[]
+  >([]);
 
   useEffect(() => {}, [productRecognitions]);
 
   const updateCharacteristik = () => {
-    const newCharacteristicsuk = characteristicsuk.filter((x) => x.ukTitle != 'Призначення');
-    const newCharacteristicsru = characteristicsru.filter((x) => x.ruTitle != 'Назначення');
+    const newCharacteristicsuk = characteristicsuk.filter(
+      (x) => x.ukTitle != 'Призначення'
+    );
+    const newCharacteristicsru = characteristicsru.filter(
+      (x) => x.ruTitle != 'Назначення'
+    );
     let newUkDescription = '';
     let newRuDescription = '';
     productRecognitions.forEach((x, index) => {
-      const selectRecognitions: any = recognition.find((j: any) => j.id == x.recognitionId);
+      const selectRecognitions: any = recognition.find(
+        (j: any) => j.id == x.recognitionId
+      );
       newUkDescription += (index == 0 ? '' : ', ') + selectRecognitions.nameuk;
       newRuDescription += (index == 0 ? '' : ', ') + selectRecognitions.nameru;
     });
@@ -195,10 +203,18 @@ const AddGoodsPage = () => {
   };
 
   const addProductRecognitions = async (recognitionId: number) => {
-    if (productRecognitions.findIndex((x) => x.recognitionId == recognitionId) == -1) {
-      setProductRecognitions([...productRecognitions, { recognitionId: recognitionId }]);
+    if (
+      productRecognitions.findIndex((x) => x.recognitionId == recognitionId) ==
+      -1
+    ) {
+      setProductRecognitions([
+        ...productRecognitions,
+        { recognitionId: recognitionId },
+      ]);
     } else {
-      setProductRecognitions(productRecognitions.filter((x) => x.recognitionId != recognitionId));
+      setProductRecognitions(
+        productRecognitions.filter((x) => x.recognitionId != recognitionId)
+      );
     }
   };
   useEffect(() => {
@@ -208,7 +224,9 @@ const AddGoodsPage = () => {
   const [selectLinia, setSelectLinia] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('');
   const [selectedCountry, setSelectedCountry] = useState('');
-  const [isForMan, setIsForMan] = useState<null | true | false | undefined>(null);
+  const [isForMan, setIsForMan] = useState<null | true | false | undefined>(
+    null
+  );
   const [subcategoryId, setSubcategoryId] = useState<number>(0);
   const [volume, setVolume] = useState<VolumeItem[]>([
     {
@@ -253,7 +271,10 @@ const AddGoodsPage = () => {
       valueru: '', // Початково порожній рядок
     }))
   );
-  function mapToFilterValues(data: any[], filters: FilterCategory[]): FilterValue[] {
+  function mapToFilterValues(
+    data: any[],
+    filters: FilterCategory[]
+  ): FilterValue[] {
     const res = filters.map((item) => {
       if (data.find((x) => item.id == x.filterCategoryId)) {
         return {
@@ -278,7 +299,11 @@ const AddGoodsPage = () => {
           valueru: item.valueru
         })
 */
-  const handleFilterChange = (categoryId: number, value: string, lang: 'uk' | 'ru') => {
+  const handleFilterChange = (
+    categoryId: number,
+    value: string,
+    lang: 'uk' | 'ru'
+  ) => {
     setSelectedFilters((prevFilters) => {
       const newFilters = [...prevFilters];
       const filter = newFilters.find((f) => f.filterCategoryId === categoryId);
@@ -297,21 +322,31 @@ const AddGoodsPage = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const [categoriesRes, brendsRes, countriesRes, linia]: any = await Promise.all([
-          $authHost.get(getCategoryUrl),
-          $authHost.get(getBrendUrl),
-          $authHost.get(getCountryUrl),
-          $authHost.get(getLinia),
-        ]);
+        const [categoriesRes, brendsRes, countriesRes, linia]: any =
+          await Promise.all([
+            $authHost.get(getCategoryUrl),
+            $authHost.get(getBrendUrl),
+            $authHost.get(getCountryUrl),
+            $authHost.get(getLinia),
+          ]);
         setCategories(
-          categoriesRes.data.res.sort((a: any, b: any) => a.nameuk.localeCompare(b.nameuk, 'uk'))
+          categoriesRes.data.res.sort((a: any, b: any) =>
+            a.nameuk.localeCompare(b.nameuk, 'uk')
+          )
         );
 
-        setBrends(brendsRes.data.sort((a: any, b: any) => a.name.localeCompare(b.name)));
-        setCountries(
-          countriesRes.data.res.sort((a: any, b: any) => a.nameuk.localeCompare(b.nameuk, 'uk'))
+        setBrends(
+          brendsRes.data.sort((a: any, b: any) => a.name.localeCompare(b.name))
         );
-        if (linia) setLinia(linia.data.sort((a: any, b: any) => a.name.localeCompare(b.name)));
+        setCountries(
+          countriesRes.data.res.sort((a: any, b: any) =>
+            a.nameuk.localeCompare(b.nameuk, 'uk')
+          )
+        );
+        if (linia)
+          setLinia(
+            linia.data.sort((a: any, b: any) => a.name.localeCompare(b.name))
+          );
       } catch (error) {
         console.error('Error fetching data:', error);
       }
@@ -321,17 +356,22 @@ const AddGoodsPage = () => {
 
   const fetchSubcategoriesAndFilters = async (categoryId: string) => {
     try {
-      const [subcategoriesRes, filtersRes, recognition]: any = await Promise.all([
-        $authHost.get(`${getSubcategoryUrl}?categoryId=${categoryId}`),
-        $authHost.get(`${getFilterUrl}?categoryId=${categoryId}`),
-        $authHost.get(`${getRecognition}?categoryId=${categoryId}`),
-      ]);
+      const [subcategoriesRes, filtersRes, recognition]: any =
+        await Promise.all([
+          $authHost.get(`${getSubcategoryUrl}?categoryId=${categoryId}`),
+          $authHost.get(`${getFilterUrl}?categoryId=${categoryId}`),
+          $authHost.get(`${getRecognition}?categoryId=${categoryId}`),
+        ]);
       setFilters(filtersRes.data.res);
       setSubcategories(
-        subcategoriesRes.data.res.sort((a: any, b: any) => a.nameuk.localeCompare(b.nameuk, 'uk'))
+        subcategoriesRes.data.res.sort((a: any, b: any) =>
+          a.nameuk.localeCompare(b.nameuk, 'uk')
+        )
       );
       setRecognition(
-        recognition.data.sort((a: any, b: any) => a.nameuk.localeCompare(b.nameuk, 'uk'))
+        recognition.data.sort((a: any, b: any) =>
+          a.nameuk.localeCompare(b.nameuk, 'uk')
+        )
       );
 
       // ініціалізація filterValues з правильними індексами
@@ -366,7 +406,9 @@ const AddGoodsPage = () => {
       const discount = parseFloat(value);
 
       if (!isNaN(price) && !isNaN(discount)) {
-        current.priceWithDiscount = (price - (price * discount) / 100).toFixed(2);
+        current.priceWithDiscount = (price - (price * discount) / 100).toFixed(
+          2
+        );
       }
     } else if (key === 'priceWithDiscount') {
       current.priceWithDiscount = value;
@@ -425,7 +467,9 @@ const AddGoodsPage = () => {
     const fileArray = Array.from(files); // Перетворюємо FileList на масив
 
     // Перезаписуємо зображення для конкретної варіації
-    fileArray.forEach((x) => newVolume[index].images.push({ img: x, altru: '', altuk: '' })); // Перезаписуємо, а не додаємо
+    fileArray.forEach((x) =>
+      newVolume[index].images.push({ img: x, altru: '', altuk: '' })
+    ); // Перезаписуємо, а не додаємо
 
     setVolume(newVolume); // Оновлюємо стейт
   };
@@ -459,7 +503,10 @@ const AddGoodsPage = () => {
     return (
       '<ul>' +
       characteristicsuk
-        .map((char) => `<li><p>${char.ukTitle}</p><span>${char.ukDescription}</span></li>`)
+        .map(
+          (char) =>
+            `<li><p>${char.ukTitle}</p><span>${char.ukDescription}</span></li>`
+        )
         .join('') +
       '</ul>'
     );
@@ -469,7 +516,10 @@ const AddGoodsPage = () => {
     return (
       '<ul>' +
       characteristicsru
-        .map((char) => `<li><p>${char.ruTitle}</p><span>${char.ruDescription}</span></li>`)
+        .map(
+          (char) =>
+            `<li><p>${char.ruTitle}</p><span>${char.ruDescription}</span></li>`
+        )
         .join('') +
       '</ul>'
     );
@@ -493,13 +543,23 @@ const AddGoodsPage = () => {
     formData.append('nameTypeuk', nameTypeuk);
     formData.append('nameTyperu', nameTyperu);
     formData.append('art', art);
-    formData.append('descriptionuk', descriptionuk.replaceAll(`<p><br></p>`, ''));
-    formData.append('descriptionru', descriptionru.replaceAll(`<p><br></p>`, ''));
+    formData.append(
+      'descriptionuk',
+      descriptionuk.replaceAll(`<p><br></p>`, '')
+    );
+    formData.append(
+      'descriptionru',
+      descriptionru.replaceAll(`<p><br></p>`, '')
+    );
     if (generateCharacteristicHTMLuk())
       formData.append('characteristicuk', generateCharacteristicHTMLuk());
     if (generateCharacteristicHTMLru())
       formData.append('characteristicru', generateCharacteristicHTMLru());
-    console.log(43434, productRecognitions, JSON.stringify(productRecognitions));
+    console.log(
+      43434,
+      productRecognitions,
+      JSON.stringify(productRecognitions)
+    );
     formData.append('brendId', selectedBrend);
     formData.append('categoryId', selectedCategory);
     formData.append('countryMadeId', selectedCountry);
@@ -554,17 +614,23 @@ const AddGoodsPage = () => {
     // Додаємо файли для кожної варіації
     volume.forEach((vol, index) => {
       vol.images.forEach((img, i) => {
-        if (typeof img.img != 'string') formData.append(`imgs[${index}][${i}]`, img.img);
+        if (typeof img.img != 'string')
+          formData.append(`imgs[${index}][${i}]`, img.img);
       });
     });
 
     try {
       const res = await $authHost.post('goods/add', formData);
       if (res.status == 283) alert('Артикул зайнятий');
-      else router.replace(`/goods/${res.data.product.volumes[0].url}`);
+      else {
+        await new Promise((resolve) => setTimeout(resolve, 3000));
+        router.replace(`/goods/${res.data.product.volumes[0].url}`);
+      }
     } catch (error) {
       console.error('Error submitting form:', error);
-      alert('Сталася помилка при добавлені товару (скоріш за все пропущені якісь поля).');
+      alert(
+        'Сталася помилка при добавлені товару (скоріш за все пропущені якісь поля).'
+      );
     }
   };
 
@@ -606,15 +672,27 @@ const AddGoodsPage = () => {
   const setIsForMan2 = (value: null | undefined | true | false) => {
     setIsForMan(value);
     if (value === undefined) {
-      const newCharacteristicsuk = characteristicsuk.filter((x) => x.ukTitle != 'Стать');
-      const newCharacteristicsru = characteristicsru.filter((x) => x.ruTitle != 'Пол');
+      const newCharacteristicsuk = characteristicsuk.filter(
+        (x) => x.ukTitle != 'Стать'
+      );
+      const newCharacteristicsru = characteristicsru.filter(
+        (x) => x.ruTitle != 'Пол'
+      );
       setCharacteristicsuk(newCharacteristicsuk);
       setCharacteristicsru(newCharacteristicsru);
     } else {
-      const newCharacteristicsuk = characteristicsuk.filter((x) => x.ukTitle != 'Стать');
-      const newCharacteristicsru = characteristicsru.filter((x) => x.ruTitle != 'Пол');
+      const newCharacteristicsuk = characteristicsuk.filter(
+        (x) => x.ukTitle != 'Стать'
+      );
+      const newCharacteristicsru = characteristicsru.filter(
+        (x) => x.ruTitle != 'Пол'
+      );
       let newUkDescription =
-        value == null ? 'Унісекс' : value == true ? 'Для чоловіків' : 'Для жінок';
+        value == null
+          ? 'Унісекс'
+          : value == true
+            ? 'Для чоловіків'
+            : 'Для жінок';
 
       let newRUDescription =
         value == null ? 'Унисекс' : value == true ? 'Для мужчин' : 'Для женщин';
@@ -636,11 +714,15 @@ const AddGoodsPage = () => {
       (x) => x.ukTitle != 'Країна виробника' && x.ukTitle != 'Країна виробника:'
     );
     const newCharacteristicsru = characteristicsru.filter(
-      (x) => x.ruTitle != 'Страна производитель' && x.ruTitle != 'Страна производитель:'
+      (x) =>
+        x.ruTitle != 'Страна производитель' &&
+        x.ruTitle != 'Страна производитель:'
     );
-    let newUkDescription = countries.find((x) => x.id == value)?.nameuk as string;
+    let newUkDescription = countries.find((x) => x.id == value)
+      ?.nameuk as string;
 
-    let newRUDescription = countries.find((x) => x.id == value)?.nameru as string;
+    let newRUDescription = countries.find((x) => x.id == value)
+      ?.nameru as string;
 
     newCharacteristicsuk.push({
       ukTitle: 'Країна виробника',
@@ -683,8 +765,12 @@ const AddGoodsPage = () => {
   const setSelectedLinia2 = (value: string) => {
     setSelectLinia(value);
     if (value) {
-      const newCharacteristicsuk = characteristicsuk.filter((x: any) => x.ukTitle != 'Лінія');
-      const newCharacteristicsru = characteristicsru.filter((x: any) => x.ruTitle != 'Линия');
+      const newCharacteristicsuk = characteristicsuk.filter(
+        (x: any) => x.ukTitle != 'Лінія'
+      );
+      const newCharacteristicsru = characteristicsru.filter(
+        (x: any) => x.ruTitle != 'Линия'
+      );
 
       let newUkDescription = linia.find((x: any) => x.id == value).name;
 
@@ -729,9 +815,16 @@ const AddGoodsPage = () => {
           className="input"
           required
         />
-        <div style={{ fontSize: '16px', fontWeight: '500' }} className="row checkbox">
+        <div
+          style={{ fontSize: '16px', fontWeight: '500' }}
+          className="row checkbox"
+        >
           У фід?{' '}
-          <input type="checkbox" checked={isFeed} onChange={(e) => setIsFeed(e.target.checked)} />
+          <input
+            type="checkbox"
+            checked={isFeed}
+            onChange={(e) => setIsFeed(e.target.checked)}
+          />
         </div>
         <br />
         <p className="title">Посилання на відео з ютубу.</p>
@@ -796,7 +889,9 @@ const AddGoodsPage = () => {
               type="text"
               placeholder="Заголовок (укр)"
               value={characteristicsuk[index].ukTitle}
-              onChange={(e) => handleCharacteristicChange(index, e.target.value, 'uk', 'title')}
+              onChange={(e) =>
+                handleCharacteristicChange(index, e.target.value, 'uk', 'title')
+              }
               className="input"
               required
             />
@@ -805,7 +900,12 @@ const AddGoodsPage = () => {
               placeholder="Опис (укр)"
               value={characteristicsuk[index].ukDescription}
               onChange={(e) =>
-                handleCharacteristicChange(index, e.target.value, 'uk', 'description')
+                handleCharacteristicChange(
+                  index,
+                  e.target.value,
+                  'uk',
+                  'description'
+                )
               }
               className="input"
               required
@@ -815,7 +915,10 @@ const AddGoodsPage = () => {
         <button
           type="button"
           onClick={() =>
-            setCharacteristicsuk([...characteristicsuk, { ukTitle: '', ukDescription: '' }])
+            setCharacteristicsuk([
+              ...characteristicsuk,
+              { ukTitle: '', ukDescription: '' },
+            ])
           }
         >
           Додати характеристику (укр)
@@ -827,7 +930,9 @@ const AddGoodsPage = () => {
               type="text"
               placeholder="Заголовок (рос)"
               value={characteristicsru[index].ruTitle}
-              onChange={(e) => handleCharacteristicChange(index, e.target.value, 'ru', 'title')}
+              onChange={(e) =>
+                handleCharacteristicChange(index, e.target.value, 'ru', 'title')
+              }
               className="input"
               required
             />
@@ -836,7 +941,12 @@ const AddGoodsPage = () => {
               placeholder="Опис (рос)"
               value={characteristicsru[index].ruDescription}
               onChange={(e) =>
-                handleCharacteristicChange(index, e.target.value, 'ru', 'description')
+                handleCharacteristicChange(
+                  index,
+                  e.target.value,
+                  'ru',
+                  'description'
+                )
               }
               className="input"
               required
@@ -846,7 +956,10 @@ const AddGoodsPage = () => {
         <button
           type="button"
           onClick={() =>
-            setCharacteristicsru([...characteristicsru, { ruTitle: '', ruDescription: '' }])
+            setCharacteristicsru([
+              ...characteristicsru,
+              { ruTitle: '', ruDescription: '' },
+            ])
           }
         >
           Додати характеристику (рос)
@@ -1001,14 +1114,18 @@ const AddGoodsPage = () => {
           {isPruznacheniaOpen && (
             <ul>
               {[...recognition]
-                .sort((a: any, b: any) => a.nameru.localeCompare(b.nameru, 'ru'))
+                .sort((a: any, b: any) =>
+                  a.nameru.localeCompare(b.nameru, 'ru')
+                )
                 .map((x: any) => (
                   <li key={x.id} onClick={() => addProductRecognitions(x.id)}>
                     <input
                       type="checkbox"
                       readOnly
                       checked={
-                        productRecognitions.findIndex((pr) => pr.recognitionId === x.id) !== -1
+                        productRecognitions.findIndex(
+                          (pr) => pr.recognitionId === x.id
+                        ) !== -1
                       }
                     />
                     <p>{x.nameru}</p>
@@ -1021,16 +1138,19 @@ const AddGoodsPage = () => {
         <div className="radio-button">
           <h2>Пол</h2>
           <p onClick={() => setIsForMan2(undefined)}>
-            <input readOnly type="radio" checked={isForMan === undefined} /> Не вказано
+            <input readOnly type="radio" checked={isForMan === undefined} /> Не
+            вказано
           </p>
           <p onClick={() => setIsForMan2(null)}>
             <input readOnly type="radio" checked={isForMan === null} /> Унісекс
           </p>
           <p onClick={() => setIsForMan2(true)}>
-            <input readOnly type="radio" checked={isForMan == true} /> Для чоловіків
+            <input readOnly type="radio" checked={isForMan == true} /> Для
+            чоловіків
           </p>
           <p onClick={() => setIsForMan2(false)}>
-            <input readOnly type="radio" checked={isForMan == false} /> Для жінок
+            <input readOnly type="radio" checked={isForMan == false} /> Для
+            жінок
           </p>
         </div>
         <br />
@@ -1054,7 +1174,11 @@ const AddGoodsPage = () => {
         </div>
         <div className="row check">
           <p> Топ</p>
-          <input type="checkbox" checked={isHit} onChange={(e) => setIsHit(e.target.checked)} />
+          <input
+            type="checkbox"
+            checked={isHit}
+            onChange={(e) => setIsHit(e.target.checked)}
+          />
         </div>
         <div className="row check">
           <p> Новинка</p>
@@ -1080,14 +1204,24 @@ const AddGoodsPage = () => {
               <input
                 type="text"
                 placeholder={`Значення для ${filter.nameuk}`}
-                value={selectedFilters.find((f) => f.filterCategoryId === filter.id)?.valueuk || ''}
-                onChange={(e) => handleFilterChange(filter.id, e.target.value, 'uk')}
+                value={
+                  selectedFilters.find((f) => f.filterCategoryId === filter.id)
+                    ?.valueuk || ''
+                }
+                onChange={(e) =>
+                  handleFilterChange(filter.id, e.target.value, 'uk')
+                }
               />
               <input
                 type="text"
                 placeholder={`Значення для ${filter.nameru}`}
-                value={selectedFilters.find((f) => f.filterCategoryId === filter.id)?.valueru || ''}
-                onChange={(e) => handleFilterChange(filter.id, e.target.value, 'ru')}
+                value={
+                  selectedFilters.find((f) => f.filterCategoryId === filter.id)
+                    ?.valueru || ''
+                }
+                onChange={(e) =>
+                  handleFilterChange(filter.id, e.target.value, 'ru')
+                }
               />
             </div>
           </div>
@@ -1160,7 +1294,9 @@ const AddGoodsPage = () => {
                   type="text"
                   placeholder="Обсяг (мл)"
                   value={volume[index].volume.split('||')[0] || ''}
-                  onChange={(e) => handleVolumeChange(index, 'volumeuk', e.target.value)}
+                  onChange={(e) =>
+                    handleVolumeChange(index, 'volumeuk', e.target.value)
+                  }
                   className="input"
                   required
                 />
@@ -1169,7 +1305,9 @@ const AddGoodsPage = () => {
                   type="text"
                   placeholder="Обсяг (мл)"
                   value={volume[index].volume.split('||')[1] || ''}
-                  onChange={(e) => handleVolumeChange(index, 'volumeru', e.target.value)}
+                  onChange={(e) =>
+                    handleVolumeChange(index, 'volumeru', e.target.value)
+                  }
                   className="input"
                   required
                 />
@@ -1180,7 +1318,11 @@ const AddGoodsPage = () => {
                       type="string"
                       value={volume[index].sort ? volume[index].sort : ''}
                       onChange={(e) => {
-                        handleVolumeChange(index, 'sort', Number(e.target.value));
+                        handleVolumeChange(
+                          index,
+                          'sort',
+                          Number(e.target.value)
+                        );
                       }}
                     />
                   </div>
@@ -1191,7 +1333,9 @@ const AddGoodsPage = () => {
                     <input
                       type="radio"
                       checked={volume[index].isAvailability == 'inStock'}
-                      onClick={() => handleVolumeChange(index, 'isAvailability', 'inStock')}
+                      onClick={() =>
+                        handleVolumeChange(index, 'isAvailability', 'inStock')
+                      }
                       readOnly
                     />
                   </div>
@@ -1200,7 +1344,13 @@ const AddGoodsPage = () => {
                     <input
                       type="radio"
                       checked={volume[index].isAvailability == 'customMade'}
-                      onClick={() => handleVolumeChange(index, 'isAvailability', 'customMade')}
+                      onClick={() =>
+                        handleVolumeChange(
+                          index,
+                          'isAvailability',
+                          'customMade'
+                        )
+                      }
                       readOnly
                     />
                   </div>
@@ -1210,16 +1360,31 @@ const AddGoodsPage = () => {
                       type="radio"
                       checked={volume[index].isAvailability == 'notAvailable'}
                       readOnly
-                      onClick={() => handleVolumeChange(index, 'isAvailability', 'notAvailable')}
+                      onClick={() =>
+                        handleVolumeChange(
+                          index,
+                          'isAvailability',
+                          'notAvailable'
+                        )
+                      }
                     />
                   </div>
                 </div>
-                <div style={{ display: 'flex', flexDirection: 'row', gap: '5px' }} className="row">
+                <div
+                  style={{ display: 'flex', flexDirection: 'row', gap: '5px' }}
+                  className="row"
+                >
                   Безкоштовна доставка
                   <input
                     type="checkbox"
                     checked={volume[index].isFreeDelivery}
-                    onChange={(e) => handleVolumeChange(index, 'isFreeDelivery', e.target.checked)}
+                    onChange={(e) =>
+                      handleVolumeChange(
+                        index,
+                        'isFreeDelivery',
+                        e.target.checked
+                      )
+                    }
                   />
                 </div>
                 <br />
@@ -1228,7 +1393,9 @@ const AddGoodsPage = () => {
                   type="text"
                   placeholder="art"
                   value={volume[index].art}
-                  onChange={(e) => handleVolumeChange(index, 'art', e.target.value)}
+                  onChange={(e) =>
+                    handleVolumeChange(index, 'art', e.target.value)
+                  }
                   className="input"
                   required
                 />
@@ -1237,7 +1404,9 @@ const AddGoodsPage = () => {
                   type="text"
                   placeholder="metaTitle uk"
                   value={volume[index].metaTitleuk}
-                  onChange={(e) => handleVolumeChange(index, 'metaTitleuk', e.target.value)}
+                  onChange={(e) =>
+                    handleVolumeChange(index, 'metaTitleuk', e.target.value)
+                  }
                   className="input"
                 />
                 <p className="title">metaTitle ru</p>
@@ -1245,7 +1414,9 @@ const AddGoodsPage = () => {
                   type="text"
                   placeholder="metaTitle ru"
                   value={volume[index].metaTitleru}
-                  onChange={(e) => handleVolumeChange(index, 'metaTitleru', e.target.value)}
+                  onChange={(e) =>
+                    handleVolumeChange(index, 'metaTitleru', e.target.value)
+                  }
                   className="input"
                 />
                 <p className="title">metaDescription uk</p>
@@ -1253,7 +1424,13 @@ const AddGoodsPage = () => {
                   type="text"
                   placeholder="metaDescription uk"
                   value={volume[index].metaDescriptionuk}
-                  onChange={(e) => handleVolumeChange(index, 'metaDescriptionuk', e.target.value)}
+                  onChange={(e) =>
+                    handleVolumeChange(
+                      index,
+                      'metaDescriptionuk',
+                      e.target.value
+                    )
+                  }
                   className="input"
                 />
                 <p className="title">metaDescription ru</p>
@@ -1261,7 +1438,13 @@ const AddGoodsPage = () => {
                   type="text"
                   placeholder="metaDescription ru"
                   value={volume[index].metaDescriptionru}
-                  onChange={(e) => handleVolumeChange(index, 'metaDescriptionru', e.target.value)}
+                  onChange={(e) =>
+                    handleVolumeChange(
+                      index,
+                      'metaDescriptionru',
+                      e.target.value
+                    )
+                  }
                   className="input"
                 />
                 <p className="title">canonical uk</p>
@@ -1269,7 +1452,9 @@ const AddGoodsPage = () => {
                   type="text"
                   placeholder="canonical uk"
                   value={volume[index].canonicaluk}
-                  onChange={(e) => handleVolumeChange(index, 'canonicaluk', e.target.value)}
+                  onChange={(e) =>
+                    handleVolumeChange(index, 'canonicaluk', e.target.value)
+                  }
                   className="input"
                 />
                 <p className="title">canonical ru</p>
@@ -1277,7 +1462,9 @@ const AddGoodsPage = () => {
                   type="text"
                   placeholder="canonical ru"
                   value={volume[index].canonicalru}
-                  onChange={(e) => handleVolumeChange(index, 'canonicalru', e.target.value)}
+                  onChange={(e) =>
+                    handleVolumeChange(index, 'canonicalru', e.target.value)
+                  }
                   className="input"
                 />
                 <p className="title">Ціна</p>
@@ -1285,7 +1472,9 @@ const AddGoodsPage = () => {
                   type="text"
                   placeholder="Ціна"
                   value={volume[index].price}
-                  onChange={(e) => handleVolumeChange(index, 'price', e.target.value)}
+                  onChange={(e) =>
+                    handleVolumeChange(index, 'price', e.target.value)
+                  }
                   className="input"
                   required
                 />
@@ -1294,7 +1483,9 @@ const AddGoodsPage = () => {
                   type="text"
                   placeholder="Знижка"
                   value={volume[index].discount}
-                  onChange={(e) => handleVolumeChange(index, 'discount', e.target.value)}
+                  onChange={(e) =>
+                    handleVolumeChange(index, 'discount', e.target.value)
+                  }
                   className="input"
                 />
                 <p className="title">Ціна зі знижкою</p>
@@ -1302,7 +1493,13 @@ const AddGoodsPage = () => {
                   type="text"
                   placeholder="Ціна зі знижкою"
                   value={volume[index].priceWithDiscount}
-                  onChange={(e) => handleVolumeChange(index, 'priceWithDiscount', e.target.value)}
+                  onChange={(e) =>
+                    handleVolumeChange(
+                      index,
+                      'priceWithDiscount',
+                      e.target.value
+                    )
+                  }
                   className="input"
                   required
                 />
@@ -1390,13 +1587,27 @@ const AddGoodsPage = () => {
 
                     <label>alt ua</label>
                     <input
-                      onChange={(e) => setVolumeImages(index, indexVolume, 'altuk', e.target.value)}
+                      onChange={(e) =>
+                        setVolumeImages(
+                          index,
+                          indexVolume,
+                          'altuk',
+                          e.target.value
+                        )
+                      }
                       value={volume[index].images[indexVolume].altuk}
                       type="text"
                     />
                     <label>alt ru</label>
                     <input
-                      onChange={(e) => setVolumeImages(index, indexVolume, 'altru', e.target.value)}
+                      onChange={(e) =>
+                        setVolumeImages(
+                          index,
+                          indexVolume,
+                          'altru',
+                          e.target.value
+                        )
+                      }
                       type="text"
                       value={volume[index].images[indexVolume].altru}
                     />

@@ -456,6 +456,16 @@ const OrdersPage = ({ params }: { params: Promise<{ lang: Locale }> }) => {
     setExpandedFilters((prev) => !prev);
   }, []);
 
+  const getDate = (x: any) => {
+    const d = new Date(x);
+
+    return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(
+      d.getDate()
+    ).padStart(2, '0')} ${String(d.getHours()).padStart(2, '0')}:${String(
+      d.getMinutes()
+    ).padStart(2, '0')}:${String(d.getSeconds()).padStart(2, '0')}`;
+  };
+
   const getOrders = async () => {
     try {
       const res = await $authHost.get(
@@ -463,7 +473,7 @@ const OrdersPage = ({ params }: { params: Promise<{ lang: Locale }> }) => {
       );
       const trueOrders = res.data.orders.map((x: any) => ({
         id: x.id,
-        date: x.createdAt.slice(0, 10),
+        date: getDate(x.createdAt),
         name: x.nameUser,
         email: x.email,
         phone: x.phone,

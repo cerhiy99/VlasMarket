@@ -268,15 +268,21 @@ const StaticListTitle = ({
           <div className="list-titles">
             <div onClick={() => openShare('telegram')} className="tg">
               <TGSVG />
+              <div className="abs">Telegram</div>
             </div>
             <div onClick={() => openShare('facebook')} className="fb">
               <FBSVG />
+              <div className="abs">Facebook</div>
             </div>
             <div onClick={() => openShare('viber')} className="vb">
               <ViberSVG />
+              <div className="abs">Viber</div>
             </div>
             <div onClick={copyLink} className="link">
               {isCopy ? <CopiedSVG /> : <LinkSVG />}
+              <div className="abs">
+                {lang == 'ru' ? 'Скопировать ссылку' : 'Скопіювати посилання'}
+              </div>
             </div>
           </div>
         </div>

@@ -80,7 +80,7 @@ class OrderController {
         .join('\n\n');
 
       // 2. Збираємо фінальне повідомлення
-      const message = `VLAS MARKET
+      const message = `<b>🟢VLAS MARKET</b>
 
 Користувач ${name} з мобільним телефоном ${phone} натиснув на швидке замовлення.
         
@@ -190,7 +190,7 @@ ${goodsList}`;
       });
 
       const message = `
-VLAS
+<b>🟢VLAS MARKET</b>
       Користувач ${name} з мобільним телефоном ${phone} натиснув на швидке замовлення #${res.id}.
         
 Товар: ${nameProduct}
@@ -801,7 +801,9 @@ VLAS
       if (IS_SEND) {
         try {
           const telegramMessage = `
-VLAS
+<b>🟢VLAS MARKET</b>
+
+
 📦 Нове замовлення ${res.id}
 
 👤 Імʼя: ${nameUser}
@@ -840,6 +842,9 @@ ${additionalInfo || '—'}
             }
           );
           const messageToEmail = `
+<b>🟢VLAS MARKET</b>
+
+
 <b>ЗАКАЗ №${order.id}</b><br><br>
 ✍️ Надійшло нове замовлення на суму ${sum} грн, від користувача:<br><br>
 😉 Прізвище і ім'я: ${nameUser}<br>
@@ -1211,7 +1216,9 @@ ${deliveryTextAdmin}
       });
 
       const message = `
-VLAS
+<b>🟢VLAS MARKET</b>
+
+
 <b>ЗАКАЗ №${res.id}</b>
 
 ✍️ Надійшло нове замовлення на суму ${totalPrice} грн, від користувача:
@@ -1500,7 +1507,10 @@ ${process.env.FRONTEND_URL + `/ru/admin/orders/edit-order/${res.id}`}`;
         `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`,
         {
           chat_id: TELEGRAM_CHAT_ID,
-          text: 'VLAS\n' + message,
+          text:
+            `<b>🟢VLAS MARKET</b>
+          
+          ` + message,
           parse_mode: 'HTML',
         }
       );
@@ -1602,7 +1612,10 @@ ${process.env.FRONTEND_URL + `/ru/admin/orders/edit-order/${res.id}`}`;
 🔗 Посилання на товар ${item.nameru}: ${FRONTEND_URL}/goods/${item.volumes.url}`;
       });
 
-      const message = `<b>ЗАКАЗ №${res.id}</b>
+      const message = `<b>🟢VLAS MARKET</b>
+
+      
+<b>ЗАКАЗ №${res.id}</b>
       
   
 ✍️ Надійшло нове замовлення на суму ${res.sum} грн, від користувача:

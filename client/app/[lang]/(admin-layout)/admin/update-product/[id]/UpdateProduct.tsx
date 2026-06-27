@@ -2049,7 +2049,7 @@ const UpdateProduct = ({ id }: { id: string }) => {
           type="button"
           onClick={del}
         >
-          Видалити товар
+          Удалить товар полностью
         </button>
       </form>
     </div>

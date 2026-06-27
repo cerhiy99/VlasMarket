@@ -76,14 +76,15 @@ const Subcategory = sequelize.define('subcategory', {
     allowNull: true,
     unique: false,
     defaultValue: null,
-  }, //в mysql
+  },
   descriptionru: {
     type: DataTypes.TEXT('long'),
     allowNull: true,
     unique: false,
     defaultValue: null,
-  }, //в mysql
+  },
   img: { type: DataTypes.STRING, allowNull: true },
+  sort: { type: DataTypes.INTEGER, allowNull: true, defaultValue: null },
 });
 
 Category.hasMany(Subcategory);
@@ -517,6 +518,7 @@ Promokods.hasMany(Order);
 Order.belongsTo(Promokods, { foreignKey: 'promokodId' });
 
 module.exports = {
+  sequelize,
   Brends,
   CountryMade,
   Category,

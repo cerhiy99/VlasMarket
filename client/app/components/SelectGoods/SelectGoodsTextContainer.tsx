@@ -277,18 +277,18 @@ const SelectGoodsTextContainer = ({
             </div>
             <div className="line" />
             <div className="info" style={{ whiteSpace: 'nowrap' }}>
-              <Link
-                style={{ whiteSpace: 'nowrap' }}
+              <div
+                style={{ whiteSpace: 'nowrap', color: '#000' }}
                 /*href={getLocalizedPath(
                   `/${lang}/goods/1?country=${selectGoods.countryMade.id}`,
                   lang
                 )}*/
-                href={getLocalizedPath(`/${lang}`, lang)}
+                //href={getLocalizedPath(`/${lang}`, lang)}
               >
                 {lang == 'ru'
                   ? selectGoods.countryMade.nameru
                   : selectGoods.countryMade.nameuk}
-              </Link>
+              </div>
             </div>
           </div>
           {selectGoods.nameTypeuk && (

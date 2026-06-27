@@ -28,6 +28,7 @@ const UpdateSubcategory = () => {
   const [descriptionru, setDescriptionru] = useState<string>('');
   const [img, setImg] = useState('');
   const [image, setImage] = useState<File | null>(null);
+  const [sort, setSort] = useState<number | null>(null);
 
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
@@ -78,6 +79,7 @@ const UpdateSubcategory = () => {
         setDescriptionuk(selected.descriptionuk);
         setDescriptionru(selected.descriptionru);
         setImg(selected.img);
+        setSort(selected.sort);
       }
     } else {
       setNameua('');
@@ -100,6 +102,7 @@ const UpdateSubcategory = () => {
     formData.append('descriptionuk', descriptionuk);
     formData.append('descriptionru', descriptionru);
     formData.append('categoryId', categoryId);
+    formData.append('sort', sort !== null ? sort.toString() : 'null');
     if (image) formData.append('image', image);
 
     try {
@@ -205,6 +208,15 @@ const UpdateSubcategory = () => {
                 placeholder="Опис російською"
                 value={descriptionru}
                 setValue={setDescriptionru}
+                name="Опис російською"
+              />
+            </div>
+            <div className="text-with-input">
+              <label htmlFor="nameRU">Сортування</label>
+              <input
+                placeholder="Сортування"
+                value={sort || 0}
+                onChange={(e) => setSort(Number(e.target.value))}
                 name="Опис російською"
               />
             </div>

@@ -1,6 +1,7 @@
 'use client';
 import React from 'react';
 import dynamic from 'next/dynamic';
+import SortSubcategories from '@/app/components/Admin/Subcategory/SortSubcategories';
 const AddSubcategory = dynamic(
   () => import('../../../../components/Admin/Subcategory/AddSubcategory'),
   {
@@ -19,6 +20,7 @@ const page = () => {
     <div>
       <AddSubcategory />
       <UpdateSubcategory />
+      <SortSubcategories />
     </div>
   );
 };

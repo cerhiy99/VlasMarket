@@ -17,7 +17,7 @@ class CategoryController {
       // Перевірка полів
       if (!nameua || !nameru) {
         return next(
-          ErrorApi.badRequest('Всі текстові поля повинні бути заповнені.'),
+          ErrorApi.badRequest('Всі текстові поля повинні бути заповнені.')
         );
       }
 
@@ -32,7 +32,7 @@ class CategoryController {
         const allowedExt = ['.svg', '.png', '.jpg', '.jpeg', '.webp'];
         if (!allowedExt.includes(ext.toLowerCase())) {
           return next(
-            ErrorApi.badRequest('Непідтримуваний формат зображення.'),
+            ErrorApi.badRequest('Непідтримуваний формат зображення.')
           );
         }
 
@@ -65,7 +65,7 @@ class CategoryController {
 
       if (!id || !nameua || !nameru) {
         return next(
-          ErrorApi.badRequest('Всі текстові поля повинні бути заповнені.'),
+          ErrorApi.badRequest('Всі текстові поля повинні бути заповнені.')
         );
       }
       const category = await Category.findByPk(id);
@@ -81,7 +81,7 @@ class CategoryController {
 
         if (!allowedExt.includes(ext.toLowerCase())) {
           return next(
-            ErrorApi.badRequest('Непідтримуваний формат зображення.'),
+            ErrorApi.badRequest('Непідтримуваний формат зображення.')
           );
         }
         // Видаляємо старе зображення (якщо є)
@@ -90,7 +90,7 @@ class CategoryController {
             __dirname,
             '..',
             'static',
-            imageName,
+            imageName
           );
           if (fs.existsSync(oldImagePath)) {
             fs.unlinkSync(oldImagePath);
@@ -161,7 +161,7 @@ class CategoryController {
           {
             model: Subcategory,
             required: true,
-            attributes: ['id', 'nameuk', 'nameru', 'img'],
+            attributes: ['id', 'nameuk', 'nameru', 'img', 'sort'],
             order: [['sort', 'ASC']],
 
             include: [
@@ -184,19 +184,20 @@ class CategoryController {
       });
 
       const result = categories
-        .filter(cat => cat.subcategories?.length)
-        .map(cat => ({
+        .filter((cat) => cat.subcategories?.length)
+        .map((cat) => ({
           id: cat.id,
           nameuk: cat.nameuk,
           nameru: cat.nameru,
           svg: cat.svg,
           subcategories: cat.subcategories
-            .filter(sub => sub.goods?.length)
-            .map(sub => ({
+            .filter((sub) => sub.goods?.length)
+            .map((sub) => ({
               id: sub.id,
               nameuk: sub.nameuk,
               nameru: sub.nameru,
               img: sub.img,
+              sort: sub.sort,
             })),
         }));
 

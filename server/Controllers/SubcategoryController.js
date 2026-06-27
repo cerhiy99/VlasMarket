@@ -3,7 +3,7 @@ const fs = require('fs');
 const uuid = require('uuid');
 const { Op } = require('sequelize');
 const ErrorApi = require('../error/ErrorApi');
-const { Subcategory } = require('../models/models');
+const { Subcategory, sequelize } = require('../models/models');
 const sharp = require('sharp');
 
 class SubcategoryController {
@@ -21,7 +21,9 @@ class SubcategoryController {
         where: { nameuk: nameua },
       });
       if (existingSubcategory) {
-        return next(ErrorApi.badRequest('Підкатегорія з такою назвою вже існує.'));
+        return next(
+          ErrorApi.badRequest('Підкатегорія з такою назвою вже існує.')
+        );
       }
 
       let imageName = null;
@@ -33,7 +35,9 @@ class SubcategoryController {
         const allowedExt = ['.svg', '.png', '.jpg', '.jpeg', '.webp', '.avif'];
 
         if (!allowedExt.includes(ext)) {
-          return next(ErrorApi.badRequest('Непідтримуваний формат зображення.'));
+          return next(
+            ErrorApi.badRequest('Непідтримуваний формат зображення.')
+          );
         }
 
         imageName = uuid.v4() + '.webp';
@@ -62,7 +66,8 @@ class SubcategoryController {
   static Update = async (req, resp, next) => {
     try {
       const { id } = req.params;
-      const { nameua, nameru, descriptionuk, descriptionru, categoryId } = req.body;
+      const { nameua, nameru, descriptionuk, descriptionru, categoryId, sort } =
+        req.body;
 
       // Перевірка полів
       if (!id || !nameua || !nameru || !categoryId) {
@@ -83,7 +88,9 @@ class SubcategoryController {
         },
       });
       if (existing) {
-        return next(ErrorApi.badRequest('Підкатегорія з такою назвою вже існує.'));
+        return next(
+          ErrorApi.badRequest('Підкатегорія з такою назвою вже існує.')
+        );
       }
 
       let imageName = subcategory.img;
@@ -95,7 +102,9 @@ class SubcategoryController {
         const allowedExt = ['.svg', '.png', '.jpg', '.jpeg', '.webp', '.avif'];
 
         if (!allowedExt.includes(ext)) {
-          return next(ErrorApi.badRequest('Непідтримуваний формат зображення.'));
+          return next(
+            ErrorApi.badRequest('Непідтримуваний формат зображення.')
+          );
         }
 
         // Видалення старого зображення (опційно)
@@ -118,6 +127,7 @@ class SubcategoryController {
         descriptionru,
         categoryId,
         img: imageName,
+        sort: sort == 'null' ? null : parseInt(sort),
       });
 
       return resp.status(200).json({
@@ -136,6 +146,58 @@ class SubcategoryController {
       return resp.json({ res });
     } catch (err) {
       return next(ErrorApi.badRequest(err));
+    }
+  };
+
+  static Patch = async (req, resp, next) => {
+    try {
+      const { id } = req.params;
+      const { sort } = req.body;
+      const subcategory = await Subcategory.findOne({
+        where: { id: parseInt(id) },
+      });
+      if (!subcategory)
+        return ErrorApi.badRequest('Не існує підкатегорії з таким id');
+      subcategory.sort = sort !== null ? parseInt(sort) : null;
+      await subcategory.save();
+      return resp.json({ subcategory });
+    } catch (err) {
+      return next(ErrorApi.badRequest(err));
+    }
+  };
+  static ReOrder = async (req, resp, next) => {
+    const transaction = await sequelize.transaction();
+
+    try {
+      const { items } = req.body;
+
+      if (!Array.isArray(items)) {
+        return next(ErrorApi.badRequest('items має бути масивом'));
+      }
+
+      for (const item of items) {
+        if (!item.id) continue;
+
+        await Subcategory.update(
+          {
+            sort: item.sort !== null ? parseInt(item.sort) : null,
+          },
+          {
+            where: { id: item.id },
+            transaction,
+          }
+        );
+      }
+
+      await transaction.commit();
+
+      return resp.json({
+        message: 'Сортування оновлено',
+        success: true,
+      });
+    } catch (err) {
+      await transaction.rollback();
+      return next(ErrorApi.badRequest(err.message));
     }
   };
 }
