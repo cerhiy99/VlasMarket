@@ -460,10 +460,22 @@ class GoodsControllers {
           where: Object.keys(volumeWhere).length > 0 ? volumeWhere : undefined,
           required: Object.keys(volumeWhere).length > 0,
         },
-        { model: Brends, as: 'brend' },
-        { model: CountryMade, as: 'countryMade' },
-        { model: Subcategory, as: 'subcategory' },
-        { model: Category, as: 'category' },
+        { model: Brends, as: 'brend', attributes: ['id', 'name'] },
+        {
+          model: CountryMade,
+          as: 'countryMade',
+          attributes: ['nameuk', 'nameru'],
+        },
+        {
+          model: Subcategory,
+          as: 'subcategory',
+          attributes: ['id', 'nameuk', 'nameru'],
+        },
+        {
+          model: Category,
+          as: 'category',
+          attributes: ['id', 'nameuk', 'nameru'],
+        },
         { model: Linia, as: 'linium' }, // <--- ВИПРАВЛЕНО
         {
           model: ProductRecognition,
@@ -721,15 +733,7 @@ class GoodsControllers {
 
           filters.subcategories = await Subcategory.findAll({
             where: subcatWhere,
-            attributes: [
-              'id',
-              'nameuk',
-              'nameru',
-              'descriptionuk',
-              'descriptionru',
-              'categoryId',
-              'img',
-            ],
+            attributes: ['id', 'nameuk', 'nameru', 'categoryId', 'img'],
             order: [['nameuk', 'ASC']],
           });
         } else {
@@ -1226,6 +1230,21 @@ class GoodsControllers {
         }
       }
 
+      if (brendName && !category && filters.categories.length == 1) {
+        const subcategoryIds = await getDistinctRelatedIds('subcategoryId');
+        if (subcategoryIds.length > 0) {
+          const subcatWhere = { id: { [Op.in]: subcategoryIds } };
+          subcatWhere.categoryId = filters.categories[0].id;
+
+          filters.subcategories = await Subcategory.findAll({
+            where: subcatWhere,
+            attributes: ['id', 'nameuk', 'nameru', 'categoryId', 'img'],
+            order: [['nameuk', 'ASC']],
+          });
+        } else {
+          filters.subcategories = [];
+        }
+      }
       // --- 9. Формування відповіді ---
       return resp.json({
         goods: goodsResult.rows,
