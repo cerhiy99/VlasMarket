@@ -71,14 +71,26 @@ export default function SortSubcategories() {
       'category/getCategoryAndSubcategoryWithProduct'
     );
 
-    const result =
-      res.data.category?.flatMap(
-        (cat: any) =>
-          cat.subcategories?.map((sub: any) => ({
-            ...sub,
-            categoryNameRu: cat.nameru,
-          })) ?? []
-      ) ?? [];
+    const getSubcategories = (data: { category?: any }) => {
+      return (
+        data.category
+          ?.flatMap(
+            (cat: any) =>
+              cat.subcategories?.map((sub: any) => ({
+                ...sub,
+                categoryNameRu: cat.nameru,
+              })) ?? []
+          )
+          .sort((a: any, b: any) => {
+            if (a.sort == null && b.sort == null) return 0;
+            if (a.sort == null) return 1;
+            if (b.sort == null) return -1;
+            return a.sort - b.sort;
+          }) ?? []
+      );
+    };
+
+    const result = getSubcategories(res.data);
 
     setItems(result);
   };
