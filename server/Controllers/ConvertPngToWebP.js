@@ -54,7 +54,7 @@ class ConvertPngToWebP {
         fs.unlinkSync(originalPath);
       }
 
-      console.log(`✅ Оброблено: ${webpFileName} та ${smallFileName}`);
+      //console.log(`✅ Оброблено: ${webpFileName} та ${smallFileName}`);
     } catch (err) {
       console.error(`Помилка ID ${id}:`, err);
     }
