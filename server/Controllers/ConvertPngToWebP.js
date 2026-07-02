@@ -91,7 +91,7 @@ class ConvertPngToWebP {
 
       for (let i = 0; i < imgs.length; i++) {
         // Виводимо прогрес: поточний індекс / загальна кількість
-        console.log(`Обробка: ${i + 1}/${imgs.length} (ID: ${imgs[i].id})`);
+        //console.log(`Обробка: ${i + 1}/${imgs.length} (ID: ${imgs[i].id})`);
 
         // Викликаємо ваш метод конвертації
         await this.convertOneToWebp(imgs[i].id);
