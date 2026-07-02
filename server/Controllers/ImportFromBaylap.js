@@ -144,7 +144,7 @@ class ImportFromBaylap {
           await imgFile.mv(filePath);
 
           await Img.create({
-            img: fileName,
+            img: fileName + '.webp',
             volumeuk: img.volumeuk,
             volumeru: img.volumeru,
             volumeId: newVolume.id,
