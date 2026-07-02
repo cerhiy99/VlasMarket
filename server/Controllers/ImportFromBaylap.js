@@ -386,8 +386,8 @@ class ImportFromBaylap {
 
       // Фонове очищення, стандартизація та сортування
       await ConvertPngToWebP.UpdateNoWebp();
-      await ImageToFullName.UpdateImage(); // Додав await для стабільності потоку
-      await GoodsControllers.ClearDataBase();
+      ImageToFullName.UpdateImage(); // Додав await для стабільності потоку
+      GoodsControllers.ClearDataBase();
 
       console.log(
         `Операція успішно завершена для товару з Baylap ID: ${goods.id}`

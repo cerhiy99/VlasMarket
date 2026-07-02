@@ -12,18 +12,28 @@ class ConvertPngToWebP {
       const src = img.img;
       const originalPath = path.join(__dirname, '..', 'static', src);
 
-      if (!fs.existsSync(originalPath)) return;
+      // 1. ПЕРЕВІРКА: якщо файлу фізично немає, просто міняємо .avif на .webp в базі (фікс залишків)
+      if (!fs.existsSync(originalPath)) {
+        if (src.endsWith('.avif')) {
+          img.img = src.replace(/\.avif$/i, '.webp');
+          await img.save();
+        }
+        return;
+      }
 
       // Створюємо базове ім'я без розширення
       const baseName = src.replace(/\.(png|jpeg|jpg|avif|webp)$/i, '');
 
       const webpFileName = `${baseName}.webp`;
-      const smallFileName = `${baseName}_small.webp`; // Ім'я для мобільної версії
+      const smallFileName = `${baseName}_small.webp`;
 
       const webpPath = path.join(__dirname, '..', 'static', webpFileName);
       const smallPath = path.join(__dirname, '..', 'static', smallFileName);
 
-      const sharpInstance = sharp(originalPath);
+      // 🔥 Читаємо файл у буфер. Тепер Sharp працює з пам'яттю,
+      // і файл на диску ніхто не заблокує і не видалить завчасно
+      const inputBuffer = fs.readFileSync(originalPath);
+      const sharpInstance = sharp(inputBuffer);
 
       // 1. Створюємо основне зображення (888x888)
       await sharpInstance
@@ -42,19 +52,17 @@ class ConvertPngToWebP {
           fit: 'contain',
           background: { r: 255, g: 255, b: 255, alpha: 1 },
         })
-        .webp({ quality: 70, effort: 4 }) // Трохи сильніше стиснення для мобілок
+        .webp({ quality: 70, effort: 4 })
         .toFile(smallPath);
 
-      // 3. Оновлюємо базу (тільки основним ім'ям)
+      // 3. Оновлюємо базу
       img.img = webpFileName;
       await img.save();
 
-      // 4. Видалення оригіналу, якщо він не був основним .webp
+      // 4. Видалення оригіналу (з додатковою перевіркою, щоб шляхи точно не збігалися)
       if (originalPath !== webpPath && fs.existsSync(originalPath)) {
         fs.unlinkSync(originalPath);
       }
-
-      //console.log(`✅ Оброблено: ${webpFileName} та ${smallFileName}`);
     } catch (err) {
       console.error(`Помилка ID ${id}:`, err);
     }
