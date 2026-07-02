@@ -381,6 +381,7 @@ class ImportFromBaylap {
           }
         }
       }
+      console.log('Товар оновлено');
 
       // Фонове очищення, стандартизація та сортування
       await ConvertPngToWebP.UpdateNoWebp();
