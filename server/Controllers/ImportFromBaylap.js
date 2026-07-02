@@ -181,6 +181,7 @@ class ImportFromBaylap {
 
   static UpdateGoods = async (req, res, next) => {
     try {
+      console.log(4343);
       const files = req.files;
       const { goods_data } = req.body;
       const goods = JSON.parse(goods_data);
