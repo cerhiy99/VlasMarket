@@ -198,6 +198,7 @@ class ImportFromBaylap {
         }
       }
       if (existingGoodId === null) {
+        console.log('Товар не знайдено');
         return res.status(400).json('Товар не знайдено');
       }
       console.log(634524);
