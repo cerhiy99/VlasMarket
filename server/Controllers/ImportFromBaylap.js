@@ -135,11 +135,11 @@ class ImportFromBaylap {
         for (let j = 0; j < volume.imgs.length; j++) {
           const img = volume.imgs[j];
 
-          const fileName = 'images' + img.id + '.webp';
+          const fileName = 'images' + img.id;
 
           const imgFile = files?.[fileName];
 
-          const filePath = path.join(uploadDir, fileName);
+          const filePath = path.join(uploadDir, fileName + '.webp');
 
           await imgFile.mv(filePath);
 
