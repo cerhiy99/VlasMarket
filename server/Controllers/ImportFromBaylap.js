@@ -166,7 +166,7 @@ class ImportFromBaylap {
       }
 
       await ConvertPngToWebP.UpdateNoWebp();
-      ImageToFullName.UpdateImage();
+      ImageToFullName.UpdateImage(); // Додав await для стабільності потоку
       GoodsControllers.ClearDataBase();
 
       console.log('Успішно додано товар з байлап ' + goods.id);

@@ -230,10 +230,10 @@ class ImageToFullName {
         let newRelativePath;
         if (product.isShow === false) {
           // Якщо приховано, шлях буде: hidden/24275/33415/name.avif
-          newRelativePath = path.join('hidden', dirPath, `${cleanName}.avif`);
+          newRelativePath = path.join('hidden', dirPath, `${cleanName}.webp`);
         } else {
           // Якщо відкрито: 24275/33415/name.avif
-          newRelativePath = path.join(dirPath, `${cleanName}.avif`);
+          newRelativePath = path.join(dirPath, `${cleanName}.webp`);
         }
 
         // Уніфікуємо роздільники для бази (щоб завжди були '/')
