@@ -196,6 +196,9 @@ class ImportFromBaylap {
           break; // Виходимо з циклу пошуку
         }
       }
+      if (existingGoodId) {
+        return res.status(400).json('Товар не знайдено');
+      }
 
       // Знаходимо всі довідники
       const brend = await Brends.findOne({ where: { name: goods.brend.name } });
