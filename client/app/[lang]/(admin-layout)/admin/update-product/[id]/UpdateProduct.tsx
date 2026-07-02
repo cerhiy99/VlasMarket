@@ -644,7 +644,9 @@ const UpdateProduct = ({ id }: { id: string }) => {
 
     try {
       const res = await $authHost.put(`goods/update/${id}`, formData);
-      setTimeout(() => router.replace(`/ru/goods/${url}`), 3000);
+
+      if (!isShow) return router.push('/ru/admin/goodsFilter');
+      setTimeout(() => router.push(`/ru/goods/${url}`), 3000);
     } catch (error) {
       console.error('Error submitting form:', error);
       alert('Сталася помилка при оновлені товару.');

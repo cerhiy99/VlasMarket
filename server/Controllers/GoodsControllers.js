@@ -1387,7 +1387,7 @@ class GoodsControllers {
 
       // 2. Отримуємо повну інформацію про поточний товар
       const good = await Goods.findOne({
-        where: { id: currentGoodId },
+        where: { id: currentGoodId, isShow: true },
         attributes: [
           'id',
           `name${lang}`,
@@ -2040,7 +2040,7 @@ class GoodsControllers {
           },
         ],
       });
-      ConvertPngToWebP.UpdateNoWebp();
+      await ConvertPngToWebP.UpdateNoWebp();
       const idVolume = goodsUpdate.volumes[0].url;
       for (let i = 0; i < productRecognitions.length; i++) {
         await ProductRecognition.create({
@@ -2372,7 +2372,7 @@ class GoodsControllers {
         .status(200)
         .json({ message: 'Товар успішно оновлено', product, idVolume });
       this.ClearDataBase();
-      ConvertPngToWebP.UpdateNoWebp();
+      await ConvertPngToWebP.UpdateNoWebp();
       ImageToFullName.UpdateImage();
     } catch (err) {
       this.ClearDataBase();
