@@ -141,7 +141,7 @@ class ImageToFullName {
         }
       }
 
-      await this.removeEmptyDirs(path.join(staticDir, 'hidden'));
+      await this.FixAndCleanImages();
       console.log('Процес UpdateImage завершено.');
     } catch (err) {
       console.error('Помилка оновлення фото:', err);
@@ -222,7 +222,8 @@ class ImageToFullName {
 
         // 3. ВИЗНАЧЕННЯ НОВОГО ШЛЯХУ (з урахуванням isShow)
         const oldRelativePath = image.img;
-        const pathParts = oldRelativePath.split('/');
+        const cleanRelativePath = oldRelativePath.replace(/^hidden\//, '');
+        const pathParts = cleanRelativePath.split('/');
         // dirPath зазвичай це щось на кшталт "24275/33415"
         const dirPath = pathParts.slice(0, -1).join('/');
 

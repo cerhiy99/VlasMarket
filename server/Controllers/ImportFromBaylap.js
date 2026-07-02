@@ -45,23 +45,41 @@ class ImportFromBaylap {
       const brend = await Brends.findOne({ where: { name: goods.brend.name } });
       const brendId = brend?.id || null;
 
-      const category = await Category.findOne({
-        where: { nameuk: goods.category.nameuk },
-      });
-      const categoryId = category?.id || null;
+      // 1. КАТЕГОРІЯ
+      let categoryId = null;
+      if (goods?.category?.nameuk) {
+        const category = await Category.findOne({
+          where: { nameuk: goods.category.nameuk },
+        });
+        categoryId = category?.id || null;
+      }
 
-      const countryMade = await CountryMade.findOne({
-        where: { nameuk: goods.countryMade.nameuk },
-      });
-      const countryMadeId = countryMade?.id || null;
+      // 2. КРАЇНА ВИРОБНИК
+      let countryMadeId = null;
+      if (goods?.countryMade?.nameuk) {
+        const countryMade = await CountryMade.findOne({
+          where: { nameuk: goods.countryMade.nameuk },
+        });
+        countryMadeId = countryMade?.id || null;
+      }
 
-      const subcategory = await Subcategory.findOne({
-        where: { nameuk: goods.subcategory.nameuk },
-      });
-      const subcategoryId = subcategory?.id || null;
+      // 3. ПІДКАТЕГОРІЯ
+      let subcategoryId = null;
+      if (goods?.subcategory?.nameuk) {
+        const subcategory = await Subcategory.findOne({
+          where: { nameuk: goods.subcategory.nameuk },
+        });
+        subcategoryId = subcategory?.id || null;
+      }
 
-      const linia = await Linia.findOne({ where: { name: goods.linium.name } });
-      const liniaId = linia?.id || null;
+      // 4. ЛІНІЯ (Виправлено: перевіряємо goods.linium?.name)
+      let liniaId = null;
+      if (goods?.linium?.name) {
+        const linia = await Linia.findOne({
+          where: { name: goods.linium.name },
+        });
+        liniaId = linia?.id || null;
+      }
 
       const goodsCreate = await Goods.create({
         nameuk: goods.nameuk,
@@ -117,10 +135,10 @@ class ImportFromBaylap {
         for (let j = 0; j < volume.imgs.length; j++) {
           const img = volume.imgs[j];
 
-          const fileName = 'images' + img.id;
-          console.log(4234, files, fileName);
+          const fileName = 'images' + img.id + '.webp';
+
           const imgFile = files?.[fileName];
-          console.log(4234324, imgFile);
+
           const filePath = path.join(uploadDir, fileName);
 
           await imgFile.mv(filePath);
