@@ -10,6 +10,7 @@ import SearchSVG from '@/app/assest/Admin/Search.svg';
 import Link from 'next/link';
 import { $authHost } from '@/app/http';
 import { getLocalizedPath } from '@/app/components/utils/getLocalizedPath';
+import { BasketItem } from '@/app/store/reducers/cartReducer';
 // import { ChevronDown, ChevronUp } from 'lucide-react'
 
 export const listWayDelivery = [
@@ -102,6 +103,10 @@ const listMassOperation = [
   {
     id: 'cansel',
     name: 'Отменен',
+  },
+  {
+    id: 'basket',
+    name: 'У кошику',
   },
 ];
 
@@ -488,6 +493,81 @@ const OrdersPage = ({ params }: { params: Promise<{ lang: Locale }> }) => {
       let url = 'order/getOrders?page=' + currentPage;
       if (filterStatus != 'all') {
         url += `&status=${filterStatus}`;
+      }
+      if (filterStatus == 'basket') {
+        const limit = 20;
+        try {
+          const res = await $authHost.get(
+            `basket/?page=${currentPage}&limit=${limit}`
+          );
+
+          const trueOrders = res.data.result.map((x: any) => {
+            const products = JSON.parse(x.products);
+
+            const sum = products.reduce(
+              (acc: number, item: BasketItem) =>
+                acc + item.count * item.volume.priceWithDiscount,
+              0
+            );
+            let user = x.user;
+            let name = '---';
+            let email = '---';
+            let phone = '---';
+
+            if (user) {
+              name = user.name + ' ' + user.surname;
+              email = user.email;
+              phone = user.phone;
+            } else {
+              const infoUser = JSON.parse(x.infoUser);
+              name = infoUser?.name;
+              email = infoUser?.email;
+              phone = infoUser?.phone;
+            }
+            return {
+              id: x.id,
+              date: getDate(x.updatedAt),
+              name: name || '---',
+              email: email || '---',
+              phone: phone || '---',
+              pib: name || '---',
+              deliveryType: '--',
+              city: '---',
+              contactInfo: `<div class='info'>
+<p>Телефон:</p>
+<span>${phone}</span>
+<p>Ф.И.О.:</p>
+<span>${name}</span>
+<p>Адрес:</p>
+<span>${JSON.parse(x.infoUser)?.address || '-'}</span>`,
+              sum: products.reduce(
+                (acc: number, item: BasketItem) =>
+                  acc + item.count * item.volume.priceWithDiscount,
+                0
+              ),
+              status: 'В кошику',
+              isMenedher: false,
+              comentMeneger: '',
+              basket: JSON.stringify(
+                products.map((x: any) => ({
+                  ...x,
+                  nameru: x.nameRU + ' ' + x.volume.volume,
+                  volumes: x.volume,
+                }))
+              ),
+              coment: '',
+            };
+          });
+          setFilteredOrders(trueOrders);
+          setTotalPages(Math.round(res.data.count / limit));
+        } catch (err) {
+          setFilteredOrders([]);
+          setTotalPages(1);
+          alert('Помилка отримати ');
+          console.log(4343, err);
+        }
+
+        return;
       }
       if (startDate) {
         url += `&startDate=${startDate}`;

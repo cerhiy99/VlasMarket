@@ -26,6 +26,7 @@ import {
   PromokodFromDBInterface,
   PromokodInterface,
 } from '@/app/[lang]/(admin-layout)/admin/promokods/GetPromokods';
+import axios from 'axios';
 
 type Props = {
   lang: Locale;
@@ -236,11 +237,22 @@ const MakeOrder: React.FC<Props> = ({ lang }) => {
         departmentOrPostomatOrAddress =
           delivery?.selectInfoDelivery?.Description;
       } else if (delivery?.oblast && delivery?.city && delivery?.departament) {
-        console.log(324324, delivery);
         deliveryType = 'Укр пошта';
         oblast = delivery.oblast;
         city = delivery.city;
         departmentOrPostomatOrAddress = delivery.departament;
+      }
+      try {
+        let guestId = localStorage.getItem('guestId') || null;
+        let infoUser = {
+          email,
+          name: name + ' ' + surname,
+          phone: number,
+          address: departmentOrPostomatOrAddress,
+        };
+        await $host.post('basket/', { products: [], token, guestId, infoUser });
+      } catch (err) {
+        console.error('Помилка відправити дані про доставку на бек', err);
       }
       const res = await $host.post('order/setOrder', {
         nameUser: surname + ' ' + name,

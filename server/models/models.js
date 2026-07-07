@@ -517,6 +517,17 @@ UserBronPromokod.belongsTo(Users, { foreignKey: 'userId' });
 Promokods.hasMany(Order);
 Order.belongsTo(Promokods, { foreignKey: 'promokodId' });
 
+const Basket = sequelize.define('basket', {
+  id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
+  products: { type: DataTypes.JSON, allowNull: true },
+  userId: { type: DataTypes.INTEGER, allowNull: true, defaultValue: null },
+  guestId: { type: DataTypes.STRING, allowNull: true, defaultValue: null },
+  infoUser: { type: DataTypes.JSON, allowNull: true },
+});
+
+Users.hasMany(Basket);
+Basket.belongsTo(Users, { foreignKey: 'userId' });
+
 module.exports = {
   sequelize,
   Brends,
@@ -540,4 +551,5 @@ module.exports = {
   Baners,
   Promokods,
   UserBronPromokod,
+  Basket,
 };

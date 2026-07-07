@@ -1,5 +1,7 @@
+import { $host } from '@/app/http';
 import { ImgInterface } from '@/app/interfaces/goods';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { v4 as uuidv4 } from 'uuid';
 
 export interface LikeItem {
   id: number;
@@ -51,10 +53,31 @@ const initialState: CartState = {
   comparison: [],
 };
 
-const saveToLocalStorage = (key: string, value: any) => {
-  if (typeof window !== 'undefined') {
-    localStorage.setItem(key, JSON.stringify(value));
+const saveToLocalStorage = async (key: string, value: any) => {
+  if (typeof window === 'undefined') return;
+
+  if (key === 'basket') {
+    let guestId = localStorage.getItem('guestId');
+
+    if (!guestId) {
+      guestId = uuidv4();
+      localStorage.setItem('guestId', guestId);
+    }
+
+    const token = localStorage.getItem('token');
+
+    try {
+      await $host.post('/basket', {
+        products: value,
+        token,
+        guestId,
+      });
+    } catch (e) {
+      console.error(e);
+    }
   }
+
+  localStorage.setItem(key, JSON.stringify(value));
 };
 
 const cartSlice = createSlice({

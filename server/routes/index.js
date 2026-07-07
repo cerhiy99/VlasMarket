@@ -15,6 +15,7 @@ const banersRouter = require('./BanersRouter');
 const uploadImage = require('./UploadImage');
 const promokods = require('./PromokodsRouter');
 const importFromBayalp = require('./ImportFromBaylap');
+const BasketRouter = require('./BasketRouter');
 
 router.use('/brend', brendRouter);
 router.use('/category', categoryRouter);
@@ -32,5 +33,6 @@ router.use('/slides', banersRouter);
 router.use('/upload-image', uploadImage);
 router.use('/promokods', promokods);
 router.use('/import', importFromBayalp);
+router.use('/basket', BasketRouter);
 
 module.exports = router;
