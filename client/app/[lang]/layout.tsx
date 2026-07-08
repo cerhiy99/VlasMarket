@@ -38,37 +38,22 @@ export default async function RootLayout({
   return (
     <html lang={lang == 'ru' ? lang : 'uk'}>
       <head>
-        {/*<link
-          rel="stylesheet"
-          href="https://fonts.googleapis.com/css2?family=Inter:wght@100;300;400;500;600;700;800;900&display=swap"
-        />
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link
-          rel="preconnect"
-          href="https://fonts.gstatic.com"
-          crossOrigin="anonymous"
+        <Script
+          src="https://www.googletagmanager.com/gtag/js?id=G-1Q6M8TTHC2"
+          strategy="afterInteractive"
         />
 
-        <Script
-          src="https://www.googletagmanager.com/gtag/js?id=G-E6NLPXJE38"
-          strategy="lazyOnload"
-        />
-
-        <Script
-          id="google-tags-init"
-          
-          strategy="lazyOnload"
-          dangerouslySetInnerHTML={{
-            __html: `
+        <Script id="google-analytics" strategy="afterInteractive">
+          {`
         window.dataLayer = window.dataLayer || [];
         function gtag(){dataLayer.push(arguments);}
         gtag('js', new Date());
 
-        gtag('config', 'G-E6NLPXJE38');
-      `,
-          }}
-        />*/}
+        gtag('config', 'G-1Q6M8TTHC2');
+      `}
+        </Script>
       </head>
+
       <body>
         <TranslationProvider lang={lang}>
           <Providers>{children}</Providers>
