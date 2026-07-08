@@ -17,7 +17,7 @@ export function middleware(request: NextRequest) {
   // 2. СТАТИКА ТА СИСТЕМНІ ШЛЯХИ
   // Пропускаємо відразу, щоб не навантажувати логіку
   if (
-    pathname.includes('.') ||
+    (pathname.includes('.') && !pathname.includes('/brands/')) ||
     pathname.startsWith('/api') ||
     pathname.startsWith('/_next') ||
     pathname.startsWith('/dictionaries')
@@ -39,14 +39,19 @@ export function middleware(request: NextRequest) {
 
   // 4. ПРИХОВУЄМО /ua З URL
   // Якщо користувач заходить на домен/ua або домен/ua/ — кидаємо на чистий корінь /
-  if (pathname === `/${i18n.defaultLocale}` || pathname === `/${i18n.defaultLocale}/`) {
+  if (
+    pathname === `/${i18n.defaultLocale}` ||
+    pathname === `/${i18n.defaultLocale}/`
+  ) {
     url.pathname = '/';
     return NextResponse.redirect(url, 301);
   }
 
   // 5. НОРМАЛІЗАЦІЯ СЛЕШІВ ДЛЯ ВНУТРІШНІХ СТОРІНОК (about-us/ -> about-us)
   // Перевіряємо, щоб це не був корінь іншої локалі (наприклад /en/)
-  const isLocaleRoot = locales.some((loc) => pathname === `/${loc}/` || pathname === `/${loc}`);
+  const isLocaleRoot = locales.some(
+    (loc) => pathname === `/${loc}/` || pathname === `/${loc}`
+  );
 
   if (pathname.endsWith('/') && !isLocaleRoot && pathname !== '/') {
     url.pathname = pathname.slice(0, -1);
@@ -68,5 +73,7 @@ export function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/((?!api|_next/static|_next/image|favicon.ico|robots.txt|sitemap.xml).*)'],
+  matcher: [
+    '/((?!api|_next/static|_next/image|favicon.ico|robots.txt|sitemap.xml).*)',
+  ],
 };
