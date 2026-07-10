@@ -110,15 +110,25 @@ export default function SortableTable({
   }, []);
 
   // Мемоизируем getSortDirection, чтобы избежать повторного создания при каждом рендере
-  const [sortDirection, getSortDirection] = useState('');
-
+  const [sortDirection, setSortDirection] = useState('');
+  const getSortDirection = (value: string) => {
+    console.log(value, sortDirection, isDesc);
+    if (value == sortDirection) setIsDesc((prev) => !prev);
+    else {
+      setIsDesc(true);
+      setSortDirection(value);
+    }
+  };
+  const [isDesc, setIsDesc] = useState(true); //від найбільшого
   const renderSortArrow = useCallback(
     (key: keyof Product) => {
       const direction = sortDirection == key;
       if (!direction) return <UppSVG className="sort-icon" />;
-      return <UppSVG className={`sort-icon ${direction ? 'rotated' : ''}`} />;
+      return (
+        <UppSVG className={`sort-icon ${isDesc ? 'rotated' : 'active'}`} />
+      );
     },
-    [sortDirection]
+    [sortDirection, isDesc]
   );
 
   // Обновляем состояние продуктов, когда изменяется свойство goodsList
@@ -127,7 +137,7 @@ export default function SortableTable({
   }, [goodsList]);
   const getGoods = async () => {
     try {
-      let url = `goods/get-views?page=${currentPage}`;
+      let url = `goods/get-views?page=${currentPage}&isDesc=${isDesc}`;
       if (startDate) url += `&startDate=${startDate}`;
       if (finishDate) url += `&finishDate=${finishDate}`;
       if (search) url += `&search=${search}`;
@@ -147,7 +157,15 @@ export default function SortableTable({
 
   useEffect(() => {
     getGoods();
-  }, [search, startDate, finishDate, search, currentPage, sortDirection]);
+  }, [
+    search,
+    startDate,
+    finishDate,
+    search,
+    currentPage,
+    sortDirection,
+    isDesc,
+  ]);
 
   return (
     <div className="list-reviews">

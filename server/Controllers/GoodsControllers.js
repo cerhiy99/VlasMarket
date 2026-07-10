@@ -2437,8 +2437,9 @@ class GoodsControllers {
         page = 1,
         limit = 20,
         search,
+        isDesc,
       } = req.query;
-
+      isDesc = isDesc == 'true';
       page = parseInt(page);
       limit = parseInt(limit);
       const offset = (page - 1) * limit;
@@ -2491,7 +2492,7 @@ class GoodsControllers {
           GROUP BY goodId
         ) v ON v.goodId = g.id
         ${where}
-        ORDER BY ${orderField} DESC
+        ORDER BY ${orderField} ${isDesc ? 'DESC' : 'ASC'}
         LIMIT ${limit} OFFSET ${offset}
         `,
         { type: QueryTypes.SELECT }

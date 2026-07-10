@@ -1,4 +1,4 @@
-@import "../../../(basic-layout)/App.scss";
+@import '../../../(basic-layout)/App.scss';
 
 // Mobile breakpoints
 $mobile-breakpoint: 768px;
@@ -183,7 +183,11 @@ $mobile-breakpoint: 768px;
         & .sort-icon {
           transition: transform 0.3ms ease-out;
         }
-
+        .active {
+          path {
+            stroke: red;
+          }
+        }
         & .rotated {
           transform: rotate(180deg);
         }

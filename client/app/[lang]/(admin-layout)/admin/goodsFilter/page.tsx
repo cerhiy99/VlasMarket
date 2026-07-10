@@ -79,7 +79,9 @@ const ProductsPage = ({ params }: { params: Promise<{ lang: Locale }> }) => {
   // Обработчик изменения страницы
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
-    router.push('#filter-container');
+    document.querySelector('#filter-container')?.scrollIntoView({
+      behavior: 'smooth',
+    });
     setSelectedProductIds([]); // Сбрасываем выбранные товары при смене страницы
   };
 
