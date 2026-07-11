@@ -355,6 +355,7 @@ const Order = sequelize.define('order', {
     allowNull: false,
     defaultValue: '',
   },
+  procent: { type: DataTypes.INTEGER, allowNull: true },
 });
 
 Users.hasMany(Order);

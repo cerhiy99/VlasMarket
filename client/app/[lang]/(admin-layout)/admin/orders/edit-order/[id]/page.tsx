@@ -151,6 +151,7 @@ export default function EditOrderPage({ params }: OrderPageProps) {
     updatedAt: '';
     userId: number | null;
     user: {} | null;
+    procent: null | number;
   }>({
     id: 0,
     nameUser: '',
@@ -176,6 +177,7 @@ export default function EditOrderPage({ params }: OrderPageProps) {
     updatedAt: '',
     userId: null,
     user: null,
+    procent: null,
   });
 
   const getOrder = async () => {
@@ -283,6 +285,9 @@ export default function EditOrderPage({ params }: OrderPageProps) {
 
   const handleCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, checked } = e.target;
+    if (name == 'isToMeneger') {
+      setFormData((prev) => ({ ...prev, procent: 3 }));
+    }
     setFormData((prev) => ({ ...prev, [name]: checked }));
   };
 
@@ -862,7 +867,10 @@ export default function EditOrderPage({ params }: OrderPageProps) {
                 />
               </div>
               {user?.adminAccess && user.adminAccess == 'owner' && (
-                <div className="formGroup managerCheckbox">
+                <div
+                  style={{ flexWrap: 'wrap' }}
+                  className="formGroup managerCheckbox"
+                >
                   <label htmlFor="isToMeneger">Менеджер</label>
                   <input
                     type="checkbox"
@@ -871,6 +879,24 @@ export default function EditOrderPage({ params }: OrderPageProps) {
                     checked={formData.isToMeneger}
                     onChange={handleCheckboxChange}
                   />
+                  {formData.isToMeneger && (
+                    <div
+                      style={{
+                        width: '100%',
+                        display: 'flex',
+                        gap: '10px',
+                        alignItems: 'center',
+                      }}
+                    >
+                      <label htmlFor="procent">Процент менеджера</label>
+                      <input
+                        type="number"
+                        value={Number(formData.procent) || 0}
+                        name="procent"
+                        onChange={handleInputChange}
+                      />
+                    </div>
+                  )}
                 </div>
               )}
             </div>

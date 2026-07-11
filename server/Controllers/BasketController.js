@@ -94,6 +94,22 @@ class BasketController {
       return next(ErrorApi.badRequest(err.message));
     }
   };
+  static Delete = async (req, res, next) => {
+    try {
+      const { id } = req.params;
+      const deleted = await Basket.destroy({
+        where: { id },
+      });
+
+      if (!deleted) {
+        return next(ErrorApi.notFound('Basket item not found'));
+      }
+
+      return res.json({ message: 'Deleted successfully' });
+    } catch (err) {
+      return next(ErrorApi.badRequest(err));
+    }
+  };
 }
 
 module.exports = BasketController;

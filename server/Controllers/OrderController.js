@@ -1781,8 +1781,8 @@ ${basketText}`;
 
       // Розрахунок бонусу
       const totalBonus = orders.reduce((acc, order) => {
-        let procent = 0;
-        if (order.isToMeneger) procent = 3;
+        let procent = order.procent;
+        if (!procent) procent = 3;
         const sum = Number(order.sum) || 0;
         return acc + (sum * procent) / 100;
       }, 0);
