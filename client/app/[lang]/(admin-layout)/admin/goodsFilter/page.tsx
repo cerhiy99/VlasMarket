@@ -146,7 +146,7 @@ const ProductsPage = ({ params }: { params: Promise<{ lang: Locale }> }) => {
   const [topBlock, setTopBlock] = useState('');
   const [allProducts, setAllProducts] = useState<any>([]);
   const [countGoods, setCountGoods] = useState<number>(0);
-  const [limit, setLimit] = useState(20);
+  const [limit, setLimit] = useState(40);
   const getProducts = async () => {
     try {
       let searcurl = `goods/get?inAdmin=true&limit=${limit}&page=${currentPage}`;
