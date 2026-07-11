@@ -448,7 +448,7 @@ const ProductsPage = ({ params }: { params: Promise<{ lang: Locale }> }) => {
                   </div>
                   {manufacturers
                     .filter((x: any) =>
-                      x.name.toLowerCase().includes(searchBrend)
+                      x.name.toLowerCase().includes(searchBrend.toLowerCase())
                     )
                     .map((x: any) => (
                       <div

@@ -61,6 +61,9 @@ const ProductsPage = ({ params }: { params: Promise<{ lang: Locale }> }) => {
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
     setSelectedProductIds([]); // Сбрасываем выбранные товары при смене страницы
+    document.querySelector('#goods')?.scrollIntoView({
+      behavior: 'smooth',
+    });
   };
 
   // Генерация номеров страниц для пагинации
@@ -103,7 +106,9 @@ const ProductsPage = ({ params }: { params: Promise<{ lang: Locale }> }) => {
   };
 
   // Обработчик выбора производителя
-  const handleManufacturerChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+  const handleManufacturerChange = (
+    e: React.ChangeEvent<HTMLSelectElement>
+  ) => {
     setManufacturerFilter(e.target.value);
     setCurrentPage(1); // Сбрасываем на первую страницу при изменении фильтра
   };
@@ -122,7 +127,7 @@ const ProductsPage = ({ params }: { params: Promise<{ lang: Locale }> }) => {
   return (
     <div>
       <AdminHeader url="/" name="Товары (видимые на сайте)" lang={lang} />
-      <div className="admin-items-container">
+      <div id="goods" className="admin-items-container">
         <div className="filter-container">
           <div className="searchProduct">Найдено {countProducts}</div>
 
@@ -140,7 +145,10 @@ const ProductsPage = ({ params }: { params: Promise<{ lang: Locale }> }) => {
             </div>
             <div className="filter">
               Производитель:
-              <select value={manufacturerFilter} onChange={handleManufacturerChange}>
+              <select
+                value={manufacturerFilter}
+                onChange={handleManufacturerChange}
+              >
                 <option value="">Все производители</option>
                 {manufacturers.map((manufacturer: any, index) => (
                   <option key={index} value={manufacturer.id}>
@@ -203,7 +211,9 @@ const ProductsPage = ({ params }: { params: Promise<{ lang: Locale }> }) => {
           ))}
           <div
             className={`right ${currentPage === totalPages ? 'disabled' : ''}`}
-            onClick={() => currentPage < totalPages && handlePageChange(currentPage + 1)}
+            onClick={() =>
+              currentPage < totalPages && handlePageChange(currentPage + 1)
+            }
           >
             <RightSVG />
           </div>

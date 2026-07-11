@@ -555,6 +555,13 @@
         background-color: #269569;
         cursor: pointer;
       }
+      &.del {
+        background-color: #ff000030;
+        &:not(:disabled) {
+          background-color: #ff0000;
+          cursor: pointer;
+        }
+      }
 
       @media (max-width: 991px) {
         width: 100%;

@@ -207,7 +207,9 @@ const OrderCard = ({
             <div className="order-items">
               {JSON.parse(order.basket).map((x: any) => (
                 <div key={x.id} className="order-item">
-                  <div className="item-title">{x.nameru}</div>
+                  <Link href={`/ru/goods/${x.url}`} className="item-title">
+                    {x.nameru}
+                  </Link>
                   <div className="item-details">
                     <div className="item-price">
                       <span className="label">Цена:</span>{' '}
@@ -423,6 +425,10 @@ const OrdersPage = ({ params }: { params: Promise<{ lang: Locale }> }) => {
 
   const setStatus = async () => {
     try {
+      if (filterStatus == 'basket') {
+        alert('Вивід товару у кошику користувача не має свого статусу');
+        return;
+      }
       await $authHost.post('order/setStatus', {
         ides: selectedOrderIds,
         status: selectStatus,
@@ -576,6 +582,7 @@ const OrdersPage = ({ params }: { params: Promise<{ lang: Locale }> }) => {
         url += `&finishDate=${endDate}`;
       }
       const res = await $authHost.get(url);
+      console.log(434, res);
       const trueOrders = res.data.orders.map((x: any) => ({
         id: x.id,
         date: getDate(x.createdAt),
@@ -649,6 +656,48 @@ ${listWayDelivery.find((j) => j.id == x.typePay)?.description}
       setBonus(Math.ceil(res.data.totalBonus).toString());
     } catch (err) {
       console.log(4234, err);
+      alert('Помилка');
+    }
+  };
+  const delBasket = async (id: number) => {
+    try {
+      const isConfirm = confirm('Ви впевнені, що хочете видалити замовлення?');
+
+      if (!isConfirm) return;
+      const res = await $authHost.delete('basket/' + id);
+      getOrders();
+    } catch (err) {
+      alert('Помилка');
+    }
+  };
+
+  const deleteSelect = async () => {
+    try {
+      if (filterStatus == 'basket') {
+        const isConfirm = confirm(
+          'Ви впевнені, що хочете видалити запис про те що в користувача у кошику?'
+        );
+        if (!isConfirm) return;
+
+        for (let i = 0; i < selectedOrderIds.length; i++) {
+          const res = await $authHost.delete('basket/' + selectedOrderIds[i]);
+        }
+      } else {
+        const isConfirm = confirm(
+          'Ви впевнені, що хочете видалити вибрані замовлення?'
+        );
+        if (!isConfirm) return;
+
+        for (let i = 0; i < selectedOrderIds.length; i++) {
+          const res = await $authHost.delete(
+            'order/del/' + selectedOrderIds[i]
+          );
+        }
+      }
+      setSelectedOrderIds([]);
+      getOrders();
+      alert('Успішно видалено');
+    } catch (err) {
       alert('Помилка');
     }
   };
@@ -743,6 +792,7 @@ ${listWayDelivery.find((j) => j.id == x.typePay)?.description}
             type="date"
           />
           <button onClick={() => getBones()}>Розрахувати</button>
+          <button onClick={getOrders}>Оновить</button>
           {bonus && <p>Бонус: {bonus}</p>}
         </div>
       </div>
@@ -785,6 +835,13 @@ ${listWayDelivery.find((j) => j.id == x.typePay)?.description}
             disabled={selectedOrderIds.length === 0}
           >
             Застосувати
+          </button>
+          <button
+            disabled={selectedOrderIds.length === 0}
+            onClick={deleteSelect}
+            className="del"
+          >
+            Удалить
           </button>
         </div>
       )}
@@ -877,7 +934,12 @@ ${listWayDelivery.find((j) => j.id == x.typePay)?.description}
                 <div className="list-basket">
                   {JSON.parse(order.basket).map((x: any) => (
                     <div className="one-basket" key={x.id}>
-                      <div className="title">{x.nameru}</div>{' '}
+                      <Link
+                        href={'/ru/goods/' + x.volumes.url}
+                        className="title"
+                      >
+                        {x.nameru}
+                      </Link>{' '}
                       <div className="price-with-one">
                         {x.volumes.priceWithDiscount} грн.
                       </div>
@@ -892,32 +954,51 @@ ${listWayDelivery.find((j) => j.id == x.typePay)?.description}
               <div className="sum">{order.sum}</div>
               <div className="status">{order.status}</div>
               <div className="meneger">
-                <input
-                  type="checkbox"
-                  checked={order.isMenedher}
-                  onChange={() => {
-                    handleOrderChange(
-                      order.id,
-                      'isMenedher',
-                      !order.isMenedher
-                    );
-                    setMeneger(order.id);
-                  }}
-                />
+                {filterStatus == 'basket' ? (
+                  <></>
+                ) : (
+                  <input
+                    type="checkbox"
+                    checked={order.isMenedher}
+                    onChange={() => {
+                      handleOrderChange(
+                        order.id,
+                        'isMenedher',
+                        !order.isMenedher
+                      );
+                      setMeneger(order.id);
+                    }}
+                  />
+                )}
               </div>
               {/*<div className='coment-meneger'>
                 <textarea defaultValue={order.comentMeneger} />
               </div>*/}
-              <div className="deystvia">
-                <Link
-                  href={getLocalizedPath(
-                    `/${lang}/admin/orders/edit-order/${order.id}`,
-                    lang
-                  )}
-                >
-                  <button>Редактировать</button>
-                </Link>
-              </div>
+              {filterStatus == 'basket' ? (
+                <div className="deystvia">
+                  <button
+                    style={{
+                      backgroundColor: 'red',
+                      color: '#fff',
+                      border: 'none',
+                    }}
+                    onClick={() => delBasket(order.id)}
+                  >
+                    Удалить
+                  </button>
+                </div>
+              ) : (
+                <div className="deystvia">
+                  <Link
+                    href={getLocalizedPath(
+                      `/${lang}/admin/orders/edit-order/${order.id}`,
+                      lang
+                    )}
+                  >
+                    <button>Редактировать</button>
+                  </Link>
+                </div>
+              )}
             </div>
           ))}
         </div>
