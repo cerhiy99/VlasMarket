@@ -590,7 +590,7 @@ export default function EditOrderPage({ params }: OrderPageProps) {
                       </td>
                       <td>
                         <Link
-                          href={`/${lang}/${product.volumes.url}`}
+                          href={`/${lang}/goods/${product.volumes.url}`}
                           className="productLink"
                         >
                           {product.nameru}
