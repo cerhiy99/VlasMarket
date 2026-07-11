@@ -42,8 +42,21 @@ class ImportFromBaylap {
         }
       }
 
-      const brend = await Brends.findOne({ where: { name: goods.brend.name } });
-      const brendId = brend?.id || null;
+      const brend = await Brends.findOne({
+        where: { name: goods.brend.name },
+      });
+
+      let brendId;
+
+      if (brend) {
+        brendId = brend.id;
+      } else {
+        const newBrend = await Brends.create({
+          name: goods.brend.name,
+        });
+
+        brendId = newBrend.id;
+      }
 
       // 1. КАТЕГОРІЯ
       let categoryId = null;
@@ -95,7 +108,7 @@ class ImportFromBaylap {
         isNovetly: goods.isNovetly,
         isHit: goods.isHit,
         isFreeDelivery: goods.isFreeDelivery,
-        brendId: goods.brendId,
+        brendId,
         categoryId,
         countryMadeId,
         subcategoryId,
@@ -181,7 +194,6 @@ class ImportFromBaylap {
 
   static UpdateGoods = async (req, res, next) => {
     try {
-      console.log(43436456456);
       const files = req.files;
       const { goods_data } = req.body;
       const goods = JSON.parse(goods_data);
