@@ -60,6 +60,20 @@
   button[type='submit'].but:hover {
     background-color: #0056b3;
   }
+  button.del {
+    background-color: red;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-top: 20px;
+    transition: background-color 0.3s;
+    &:hover {
+      background-color: rgb(186, 7, 19);
+    }
+  }
   .list-characteristics {
     display: flex;
     flex-direction: column;

@@ -213,7 +213,6 @@ class ImportFromBaylap {
         console.log('Товар не знайдено');
         return res.status(400).json('Товар не знайдено');
       }
-      console.log(634524);
 
       // Знаходимо всі довідники
       const brend = await Brends.findOne({ where: { name: goods.brend.name } });

@@ -565,7 +565,10 @@ const UpdateProduct = ({ id }: { id: string }) => {
     );
   };
   const router = useRouter();
+  const [submit, setSumbit] = useState(false);
   const handleSubmit = async (e: React.FormEvent) => {
+    if (submit) return;
+    setSumbit(true);
     e.preventDefault();
 
     const formData = new FormData();
@@ -650,6 +653,7 @@ const UpdateProduct = ({ id }: { id: string }) => {
     } catch (error) {
       console.error('Error submitting form:', error);
       alert('Сталася помилка при оновлені товару.');
+      setSumbit(false);
     }
   };
 
@@ -2025,10 +2029,10 @@ const UpdateProduct = ({ id }: { id: string }) => {
                   </div>
                 ))}
                 <button
-                  className="but"
+                  className="del"
                   type="button"
                   onClick={() => deleteVolume(index)}
-                  style={{ backgroundColor: 'red', marginBottom: '20px' }}
+                  style={{ marginBottom: '20px' }}
                 >
                   Удалить товар
                 </button>
@@ -2042,12 +2046,19 @@ const UpdateProduct = ({ id }: { id: string }) => {
         </button>
 
         {/* Submit button */}
-        <button className="but" style={{ marginLeft: '40px' }} type="submit">
+        <button
+          className="but"
+          style={{
+            marginLeft: '40px',
+            background: submit ? '#43814e' : '#007bff',
+          }}
+          type="submit"
+        >
           Сохранить товар
         </button>
         <button
-          className="but"
-          style={{ marginLeft: '40px', background: 'red' }}
+          className="del"
+          style={{ marginLeft: '40px' }}
           type="button"
           onClick={del}
         >
