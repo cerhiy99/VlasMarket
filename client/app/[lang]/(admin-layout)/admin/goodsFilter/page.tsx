@@ -148,16 +148,16 @@ const ProductsPage = ({ params }: { params: Promise<{ lang: Locale }> }) => {
   const [countGoods, setCountGoods] = useState<number>(0);
   const [limit, setLimit] = useState(40);
   const getProducts = async () => {
+    let searcurl = `goods/get?inAdmin=true&limit=${limit}&page=${currentPage}`;
+    if (categoryFilter) searcurl += `&category=` + categoryFilter;
+    if (manufacturerFilter) searcurl += `&brend=` + manufacturerFilter;
+    if (article) searcurl += `&article=` + article;
+    if (isShow) searcurl += `&isShow=` + isShow;
+    if (search) searcurl += `&search=` + search;
+    if (topBlock) searcurl += `&${topBlock}=true`;
+    if (selectLinia) searcurl += `&linia=${selectLinia}`;
+    if (selectRecognition) searcurl += `&recognition=${selectRecognition}`;
     try {
-      let searcurl = `goods/get?inAdmin=true&limit=${limit}&page=${currentPage}`;
-      if (categoryFilter) searcurl += `&category=` + categoryFilter;
-      if (manufacturerFilter) searcurl += `&brend=` + manufacturerFilter;
-      if (article) searcurl += `&article=` + article;
-      if (isShow) searcurl += `&isShow=` + isShow;
-      if (search) searcurl += `&search=` + search;
-      if (topBlock) searcurl += `&${topBlock}=true`;
-      if (selectLinia) searcurl += `&linia=${selectLinia}`;
-      if (selectRecognition) searcurl += `&recognition=${selectRecognition}`;
       const res = await $host.get(searcurl);
       setCountGoods(res.data.totalGoods);
       const goods = res.data.goods;
@@ -169,7 +169,7 @@ const ProductsPage = ({ params }: { params: Promise<{ lang: Locale }> }) => {
         price: x.volumes.map((x: any) => x.priceWithDiscount),
         category: x.category.nameru,
         image: process.env.NEXT_PUBLIC_SERVER + x.volumes[0].imgs[0].img || '',
-        manufacturer: x.brend.name,
+        manufacturer: x.brend?.name || '',
         updatedAt: x.updatedAt,
         isAvailability: x.volumes.map((x: any) =>
           x.isAvailability == 'inStock'
@@ -179,7 +179,7 @@ const ProductsPage = ({ params }: { params: Promise<{ lang: Locale }> }) => {
               : 'Под заказ'
         ),
         volume: x.volumes.map((x: any) => x.volume + ' ' + x.nameVolume),
-        brend: x.brend.name,
+        brend: x.brend?.name || '',
         isShow: x.isShow,
         url: x.volumes[0].url,
       }));
@@ -191,7 +191,7 @@ const ProductsPage = ({ params }: { params: Promise<{ lang: Locale }> }) => {
         setIsOk(false);
       }, 2000);
     } catch (err) {
-      console.log(err);
+      console.log(searcurl, err);
       alert('Помилка отримання товару');
     }
   };
