@@ -6,6 +6,7 @@ import './Goods.scss';
 import UppSVG from '@/app/assest/Admin/Up.svg';
 import Pagination from '@/app/components/utils/Pagination';
 import { $authHost } from '@/app/http';
+import Link from 'next/link';
 
 // Определяем правильные типы для наших данных
 interface Product {
@@ -34,10 +35,14 @@ const ProductRow = memo(
           backgroundColor: index % 2 === 0 ? '#2695691A' : '#A5A1A100',
         }}
       >
-        <div className="name">
+        <Link
+          style={{ color: 'blue' }}
+          href={`/goods/${product.url}`}
+          className="name"
+        >
           <span className="mobile-label">Название:</span>
           {product.name}
-        </div>
+        </Link>
         <div className="time today">
           <span className="mobile-label">Сегодня:</span>
           {product.today}
@@ -142,13 +147,11 @@ export default function SortableTable({
       if (finishDate) url += `&finishDate=${finishDate}`;
       if (search) url += `&search=${search}`;
       if (sortDirection) url += `&${sortDirection}=true`;
-      console.log(434, sortDirection);
       if (sortDirection) url += `$sortDirection=${true}`;
 
       const res = await $authHost.get(url);
       setCountPages(res.data.totalPages);
       setProducts(res.data.data);
-      console.log(42343, res);
     } catch (err) {
       alert('error');
       console.log(err);

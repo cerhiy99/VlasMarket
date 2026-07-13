@@ -2484,14 +2484,24 @@ class GoodsControllers {
 
       const goods = await sequelizeWithDB.query(
         `
-      SELECT
+      SELECT 
         g.id,
         g.nameru as name,
+
+        (
+          SELECT vol.url
+          FROM volumes vol
+          WHERE vol.goodId = g.id
+          ORDER BY vol.sort ASC, vol.id ASC
+          LIMIT 1
+        ) as url,
+
         COALESCE(v.today, 0) as today,
         COALESCE(v.week, 0) as week,
         COALESCE(v.month, 0) as month,
         COALESCE(v.year, 0) as year,
         COALESCE(v.allTime, 0) as allTime
+
       FROM goods g
       LEFT JOIN (
         SELECT
