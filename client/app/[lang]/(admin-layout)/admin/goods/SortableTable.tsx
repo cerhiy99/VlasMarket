@@ -35,11 +35,7 @@ const ProductRow = memo(
           backgroundColor: index % 2 === 0 ? '#2695691A' : '#A5A1A100',
         }}
       >
-        <Link
-          style={{ color: 'blue' }}
-          href={`/goods/${product.url}`}
-          className="name"
-        >
+        <Link href={`/goods/${product.url}`} className="name">
           <span className="mobile-label">Название:</span>
           {product.name}
         </Link>

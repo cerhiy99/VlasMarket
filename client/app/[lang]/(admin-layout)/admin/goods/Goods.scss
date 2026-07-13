@@ -247,6 +247,12 @@ $mobile-breakpoint: 768px;
         width: 70%;
         color: #05172f;
         cursor: pointer;
+        font-weight: 400;
+        text-decoration: none;
+        &:hover {
+          color: blue;
+          text-decoration: underline;
+        }
         @media (max-width: 1024px) {
           width: 50%;
         }
@@ -312,10 +318,10 @@ $mobile-breakpoint: 768px;
         }
 
         .name {
-          font-weight: 600;
+          font-weight: 400;
           font-size: 16px;
           margin-bottom: 5px;
-          border-bottom: 1px dashed rgba(38, 149, 105, 0.3);
+          //border-bottom: 1px dashed rgba(38, 149, 105, 0.3);
           padding-bottom: 8px;
         }
       }
