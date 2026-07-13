@@ -86,11 +86,13 @@ function parseCharacteristics<T extends string, U extends string>(
 interface Category {
   id: string;
   nameuk: string;
+  nameru: string;
 }
 
 interface Subcategory {
   id: number;
   nameuk: string;
+  nameru: string;
 }
 
 interface FilterCategory {
@@ -331,7 +333,7 @@ const AddGoodsPage = () => {
           ]);
         setCategories(
           categoriesRes.data.res.sort((a: any, b: any) =>
-            a.nameuk.localeCompare(b.nameuk, 'uk')
+            a.nameru.localeCompare(b.nameru, 'ru')
           )
         );
 
@@ -340,7 +342,7 @@ const AddGoodsPage = () => {
         );
         setCountries(
           countriesRes.data.res.sort((a: any, b: any) =>
-            a.nameuk.localeCompare(b.nameuk, 'uk')
+            a.nameru.localeCompare(b.nameru, 'ru')
           )
         );
         if (linia)
@@ -365,12 +367,12 @@ const AddGoodsPage = () => {
       setFilters(filtersRes.data.res);
       setSubcategories(
         subcategoriesRes.data.res.sort((a: any, b: any) =>
-          a.nameuk.localeCompare(b.nameuk, 'uk')
+          a.nameru.localeCompare(b.nameru, 'ru')
         )
       );
       setRecognition(
         recognition.data.sort((a: any, b: any) =>
-          a.nameuk.localeCompare(b.nameuk, 'uk')
+          a.nameru.localeCompare(b.nameru, 'ru')
         )
       );
 
@@ -978,7 +980,7 @@ const AddGoodsPage = () => {
           <option value="">Виберіть категорію</option>
           {categories.map((category) => (
             <option key={category.id} value={category.id}>
-              {category.nameuk}
+              {category.nameru}
             </option>
           ))}
         </select>
@@ -992,7 +994,7 @@ const AddGoodsPage = () => {
             <option value="">Виберіть підкатегорію</option>
             {subcategories.map((subcategory) => (
               <option key={subcategory.id} value={subcategory.id}>
-                {subcategory.nameuk}
+                {subcategory.nameru}
               </option>
             ))}
           </select>
@@ -1092,7 +1094,7 @@ const AddGoodsPage = () => {
           <option value="">Виберіть країну виробника</option>
           {countries.map((country) => (
             <option key={country.id} value={country.id}>
-              {country.nameuk}
+              {country.nameru}
             </option>
           ))}
         </select>
