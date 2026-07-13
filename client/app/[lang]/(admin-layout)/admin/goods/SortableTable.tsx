@@ -108,6 +108,9 @@ export default function SortableTable({
   // Используем стабильную функцию обратного вызова для пагинации
   const handlePageChange = useCallback((page: number) => {
     setCurrentPage(page);
+    document.querySelector('#statistic-goods')?.scrollIntoView({
+      behavior: 'smooth',
+    });
   }, []);
 
   // Мемоизируем getSortDirection, чтобы избежать повторного создания при каждом рендере

@@ -287,12 +287,16 @@ const Goods = ({ params }: { params: Promise<{ lang: Locale }> }) => {
   return (
     <>
       <AdminHeader url="reviews" name="Статистика товарів" lang={lang} />
-      <div className="admin-goods-container">
+      <div id="statistic-goods" className="admin-goods-container">
         <div className="filter-container">
           <div className="filters">
             <div className="select filter">
               Дата начала:
-              <input type="date" value={startDate} onChange={(e) => setStartDate(e.target.value)} />
+              <input
+                type="date"
+                value={startDate}
+                onChange={(e) => setStartDate(e.target.value)}
+              />
             </div>
             <div className="filter">
               Дата конца:{' '}
