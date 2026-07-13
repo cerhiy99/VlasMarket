@@ -543,8 +543,8 @@ const ProductsPage = ({ params }: { params: Promise<{ lang: Locale }> }) => {
           >
             <option value="">- Виберите действия -</option>
             <option value="del">Удалить</option>
-            <option value="notShow">Скрить</option>
-            <option value="showTrue">Показать</option>
+            <option value="notShow">снять с публикации</option>
+            <option value="showTrue">Опубликовать материал</option>
           </select>
           <button
             className={
