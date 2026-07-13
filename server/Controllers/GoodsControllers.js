@@ -2558,6 +2558,7 @@ class GoodsControllers {
       return next(ErrorApi.badRequest(err.message));
     }
   };
+
   static Del = async (req, resp, next) => {
     try {
       const { id } = req.params;

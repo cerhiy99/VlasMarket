@@ -1,4 +1,11 @@
-const { Goods, Volume, Img, Brends, Category, Subcategory } = require('../models/models');
+const {
+  Goods,
+  Volume,
+  Img,
+  Brends,
+  Category,
+  Subcategory,
+} = require('../models/models');
 const builder = require('xmlbuilder');
 const path = require('path');
 const { Sequelize } = require('sequelize');
@@ -48,12 +55,13 @@ class FeedController {
 
       const channel = feed.ele('channel');
       channel.ele('title', {}, 'Фід товарів');
-      channel.ele('link', {}, 'https://baylap.com/');
+      channel.ele('link', {}, 'https://vlasmarket.com.ua/');
       channel.ele('description', {}, 'Товари для Google Merchant Center');
 
       goods.forEach((good) => {
         // Беремо лише першу варіацію, якщо вона існує
-        const volume = good.volumes && good.volumes.length > 0 ? good.volumes[0] : null;
+        const volume =
+          good.volumes && good.volumes.length > 0 ? good.volumes[0] : null;
 
         if (volume) {
           const item = channel.ele('item');
@@ -94,11 +102,19 @@ class FeedController {
           );
 
           // Link: Посилання на товар.
-          item.ele('g:link', {}, `https://baylap.com/goods/${volume.url}`);
+          item.ele(
+            'g:link',
+            {},
+            `https://vlasmarket.com.ua/goods/${volume.url}`
+          );
 
           // Image Link: Посилання на головне зображення першої варіації
           if (volume.imgs && volume.imgs.length > 0) {
-            item.ele('g:image_link', {}, `https://baylap.com/image/${volume.imgs[0].img}`);
+            item.ele(
+              'g:image_link',
+              {},
+              `https://vlasmarket.com.ua/image/${volume.imgs[0].img}`
+            );
           }
 
           // Price: Ціна
@@ -114,7 +130,8 @@ class FeedController {
             notAvailable: 'out of stock',
             customMade: 'preorder',
           };
-          const availability = availabilityMap[volume.isAvailability] || 'out of stock';
+          const availability =
+            availabilityMap[volume.isAvailability] || 'out of stock';
 
           item.ele('g:availability', {}, availability);
         }
@@ -172,12 +189,13 @@ class FeedController {
 
       const channel = feed.ele('channel');
       channel.ele('title', {}, 'Фід товарів');
-      channel.ele('link', {}, 'https://baylap.com/ru');
+      channel.ele('link', {}, 'https://vlasmarket.com.ua/ru');
       channel.ele('description', {}, 'Товари для Google Merchant Center');
 
       goods.forEach((good) => {
         // Беремо лише першу варіацію, якщо вона існує
-        const volume = good.volumes && good.volumes.length > 0 ? good.volumes[0] : null;
+        const volume =
+          good.volumes && good.volumes.length > 0 ? good.volumes[0] : null;
 
         if (volume) {
           const item = channel.ele('item');
@@ -219,11 +237,19 @@ class FeedController {
           );
 
           // Link: Посилання на товар.
-          item.ele('g:link', {}, `https://baylap.com/ru/goods/${volume.url}`);
+          item.ele(
+            'g:link',
+            {},
+            `https://vlasmarket.com.ua/ru/goods/${volume.url}`
+          );
 
           // Image Link: Посилання на головне зображення першої варіації
           if (volume.imgs && volume.imgs.length > 0) {
-            item.ele('g:image_link', {}, `https://baylap.com/image/${volume.imgs[0].img}`);
+            item.ele(
+              'g:image_link',
+              {},
+              `https://vlasmarket.com.ua/image/${volume.imgs[0].img}`
+            );
           }
 
           // Price: Ціна
@@ -239,7 +265,8 @@ class FeedController {
             notAvailable: 'out of stock',
             customMade: 'preorder',
           };
-          const availability = availabilityMap[volume.isAvailability] || 'out of stock';
+          const availability =
+            availabilityMap[volume.isAvailability] || 'out of stock';
 
           item.ele('g:availability', {}, availability);
         }
