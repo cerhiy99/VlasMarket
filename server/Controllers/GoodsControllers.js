@@ -2439,15 +2439,40 @@ class GoodsControllers {
         search,
         isDesc,
       } = req.query;
+
       isDesc = isDesc == 'true';
       page = parseInt(page);
       limit = parseInt(limit);
       const offset = (page - 1) * limit;
 
-      let where = 'WHERE g.id IN (SELECT goodId FROM goodsViews)';
+      let where = '';
+      let viewWhere = 'WHERE 1=1';
 
       if (search) {
         where += ` AND g.nameru LIKE '%${search}%'`;
+      }
+
+      if (startDate) {
+        viewWhere += ` AND createdAt >= '${startDate}'`;
+      }
+
+      if (finishDate) {
+        viewWhere += ` AND createdAt <= '${finishDate} 23:59:59'`;
+      }
+
+      if (startDate || finishDate) {
+        where =
+          `WHERE g.id IN (
+          SELECT DISTINCT goodId
+          FROM goodsViews
+          ${viewWhere}
+        )` + where;
+      } else {
+        where =
+          `WHERE g.id IN (
+          SELECT goodId
+          FROM goodsViews
+        )` + where;
       }
 
       let orderField = 'allTime';
@@ -2459,51 +2484,63 @@ class GoodsControllers {
 
       const goods = await sequelizeWithDB.query(
         `
-        SELECT 
-          g.id,
-          g.nameru as name,
-          COALESCE(v.today, 0) as today,
-          COALESCE(v.week, 0) as week,
-          COALESCE(v.month, 0) as month,
-          COALESCE(v.year, 0) as year,
-          COALESCE(v.allTime, 0) as allTime
-        FROM goods g
-        LEFT JOIN (
-          SELECT
-            goodId,
-            COUNT(*) as allTime,
+      SELECT
+        g.id,
+        g.nameru as name,
+        COALESCE(v.today, 0) as today,
+        COALESCE(v.week, 0) as week,
+        COALESCE(v.month, 0) as month,
+        COALESCE(v.year, 0) as year,
+        COALESCE(v.allTime, 0) as allTime
+      FROM goods g
+      LEFT JOIN (
+        SELECT
+          goodId,
+          COUNT(*) as allTime,
 
-            -- 🔥 КАЛЕНДАРНИЙ СЬОГОДНІ
-            SUM(CASE WHEN createdAt >= CURDATE() THEN 1 ELSE 0 END) as today,
+          SUM(CASE WHEN createdAt >= CURDATE() THEN 1 ELSE 0 END) as today,
 
-            -- 🔥 КАЛЕНДАРНИЙ ТИЖДЕНЬ (з понеділка)
-            SUM(CASE WHEN createdAt >= DATE_SUB(CURDATE(), INTERVAL WEEKDAY(CURDATE()) DAY)
-                    THEN 1 ELSE 0 END) as week,
+          SUM(
+            CASE
+              WHEN createdAt >= DATE_SUB(CURDATE(), INTERVAL WEEKDAY(CURDATE()) DAY)
+              THEN 1 ELSE 0
+            END
+          ) as week,
 
-            -- 🔥 КАЛЕНДАРНИЙ МІСЯЦЬ
-            SUM(CASE WHEN createdAt >= DATE_FORMAT(CURDATE(), '%Y-%m-01')
-                    THEN 1 ELSE 0 END) as month,
+          SUM(
+            CASE
+              WHEN createdAt >= DATE_FORMAT(CURDATE(), '%Y-%m-01')
+              THEN 1 ELSE 0
+            END
+          ) as month,
 
-            -- 🔥 КАЛЕНДАРНИЙ РІК
-            SUM(CASE WHEN createdAt >= DATE_FORMAT(CURDATE(), '%Y-01-01')
-                    THEN 1 ELSE 0 END) as year
+          SUM(
+            CASE
+              WHEN createdAt >= DATE_FORMAT(CURDATE(), '%Y-01-01')
+              THEN 1 ELSE 0
+            END
+          ) as year
 
-          FROM goodsViews
-          GROUP BY goodId
-        ) v ON v.goodId = g.id
-        ${where}
-        ORDER BY ${orderField} ${isDesc ? 'DESC' : 'ASC'}
-        LIMIT ${limit} OFFSET ${offset}
-        `,
+        FROM goodsViews
+        ${viewWhere}
+        GROUP BY goodId
+      ) v ON v.goodId = g.id
+
+      ${where}
+
+      ORDER BY ${orderField} ${isDesc ? 'DESC' : 'ASC'}
+      LIMIT ${limit}
+      OFFSET ${offset}
+      `,
         { type: QueryTypes.SELECT }
       );
 
       const total = await sequelizeWithDB.query(
         `
-        SELECT COUNT(*) as count
-        FROM goods g
-        ${where}
-        `,
+      SELECT COUNT(*) as count
+      FROM goods g
+      ${where}
+      `,
         { type: QueryTypes.SELECT }
       );
 
@@ -2517,11 +2554,10 @@ class GoodsControllers {
         currentPage: page,
       });
     } catch (err) {
-      console.log(434, err);
+      console.log(err);
       return next(ErrorApi.badRequest(err.message));
     }
   };
-
   static Del = async (req, resp, next) => {
     try {
       const { id } = req.params;
