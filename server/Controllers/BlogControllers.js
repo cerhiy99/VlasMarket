@@ -20,7 +20,7 @@ class BlogController {
         !img
       ) {
         return next(
-          ErrorApi.badRequest("Не всі обов'язкові поля були надані."),
+          ErrorApi.badRequest("Не всі обов'язкові поля були надані.")
         );
       }
 
@@ -52,7 +52,7 @@ class BlogController {
       }
       // Якщо це помилка Sequelize або інша, повертаємо Bad Request з повідомленням
       return next(
-        ErrorApi.badRequest(`Помилка під час створення запису: ${err.message}`),
+        ErrorApi.badRequest(`Помилка під час створення запису: ${err.message}`)
       );
     }
   };
@@ -88,7 +88,7 @@ class BlogController {
       });
     } catch (err) {
       return next(
-        ErrorApi.badRequest(`Помилка отримання блогу: ${err.message || err}`),
+        ErrorApi.badRequest(`Помилка отримання блогу: ${err.message || err}`)
       );
     }
   };
@@ -98,7 +98,7 @@ class BlogController {
       const res = await Blog.findOne({ where: { url }, raw: true });
 
       const otherBlog = await Blog.findAll({
-        limit: 3,
+        limit: 8,
         where: {
           id: { [Op.not]: res.id },
         },
@@ -124,12 +124,12 @@ class BlogController {
         await img.mv(imagePath);
         res = await Blog.update(
           { nameuk, nameru, descriptionuk, descriptionru, img: imageName },
-          { where: { url } },
+          { where: { url } }
         );
       } else {
         res = await Blog.update(
           { nameuk, nameru, descriptionuk, descriptionru },
-          { where: { url } },
+          { where: { url } }
         );
       }
       return resp.json({ res });
