@@ -2645,6 +2645,9 @@ class GoodsControllers {
 
     try {
       await Goods.update({ isShow: false }, { where: { id: ides } });
+      this.ClearDataBase();
+      await ConvertPngToWebP.UpdateNoWebp();
+      ImageToFullName.UpdateImage();
       return resp.json({ message: 'Товари приховано' });
     } catch (err) {
       return next(
