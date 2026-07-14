@@ -15,7 +15,8 @@ type Props = {
 // Функція для отримання даних
 const getData = async () => {
   const res = await fetch(
-    process.env.NEXT_PUBLIC_API_SERVER + 'brend/getForListBrends'
+    process.env.NEXT_PUBLIC_API_SERVER + 'brend/getForListBrends',
+    { next: { revalidate: 300 } }
   );
   if (!res.ok) return notFound();
   const data = await res.json();

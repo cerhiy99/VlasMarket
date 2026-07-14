@@ -527,8 +527,10 @@ const AddGoodsPage = () => {
     );
   };
   const router = useRouter();
-  console.log(43434, productRecognitions);
+  const [submit, setSumbit] = useState(false);
   const handleSubmit = async (e: React.FormEvent) => {
+    if (submit) return;
+    setSumbit(true);
     e.preventDefault();
     let isImgs = true;
     volume.forEach((x) => {
@@ -1639,7 +1641,13 @@ const AddGoodsPage = () => {
         </button>
 
         {/* Submit button */}
-        <button style={{ marginLeft: '40px' }} type="submit">
+        <button
+          style={{
+            marginLeft: '40px',
+            background: submit ? '#43814e' : '#007bff',
+          }}
+          type="submit"
+        >
           Сохранить товар
         </button>
       </form>
