@@ -204,7 +204,7 @@ const CardSelectGoods = ({
               : selectGoods.volumes[selectVolume].imgs[0].volumeuk
           }
           width={359}
-          height={323}
+          height={340}
           style={{ paddingTop: isPadding ? '35px' : 0 }}
         />
       </div>
