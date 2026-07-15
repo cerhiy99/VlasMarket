@@ -2667,7 +2667,8 @@ class GoodsControllers {
 
     try {
       await Goods.update({ isShow: true }, { where: { id: ides } });
-
+      await ConvertPngToWebP.UpdateNoWebp();
+      ImageToFullName.UpdateImage();
       return resp.json({ message: 'Товари показано' });
     } catch (err) {
       return next(ErrorApi.badRequest(err.message || 'Помилка показу товарів'));

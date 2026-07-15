@@ -858,7 +858,8 @@ ${deliveryType}<br><br>
 ${realBasket
   .map(
     (item) =>
-      `- ${item.nameuk} × ${item.count} (${item.volumes.priceWithDiscount} грн)<br>`
+      `- ${item.nameuk} × ${item.count} (${item.volumes.priceWithDiscount} грн)
+🔗Посилання: ${process.env.FRONTEND_URL + `/goods/${item.volumes.url}`}<br>`
   )
   .join('\n')}<br><br><br>
 ${process.env.FRONTEND_URL + `/ru/admin/orders/edit-order/${res.id}`}`;
