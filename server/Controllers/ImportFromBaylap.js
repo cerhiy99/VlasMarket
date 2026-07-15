@@ -269,7 +269,7 @@ class ImportFromBaylap {
         countryMadeId,
         subcategoryId,
         views: goods.views,
-        isShow: false, // Залишаємо false (метод сортування сам усе розкладе)
+        isShow: true, // Залишаємо false (метод сортування сам усе розкладе)
         liniaId,
         isForMan: goods.isForMan,
         isFeed: goods.isFeed,

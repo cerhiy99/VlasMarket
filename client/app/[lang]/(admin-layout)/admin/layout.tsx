@@ -232,6 +232,14 @@ export default function RootLayout({
                       >
                         Інструкція
                       </Link>
+                      <Link
+                        href={getLocalizedPath(
+                          `/${lang}/admin/sync-prices`,
+                          lang
+                        )}
+                      >
+                        Синхронізація ціни
+                      </Link>
                     </div>
                   </div>
                   <div className="goods-dropdown-container">
