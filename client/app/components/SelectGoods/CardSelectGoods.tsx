@@ -205,7 +205,7 @@ const CardSelectGoods = ({
           }
           width={359}
           height={340}
-          style={{ paddingTop: isPadding ? '35px' : 0 }}
+          style={{ paddingTop: '35px' }}
         />
       </div>
       <div className="text-cont">
