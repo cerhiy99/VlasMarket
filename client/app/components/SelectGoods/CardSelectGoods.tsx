@@ -25,7 +25,7 @@ import MyRatingSelectGoods from './MyRatingSelectGoods';
 
 //const widthBorderAndShadow = 0;
 //const maxWidthScreen = 1600;
-const heightHeader = 112;
+const heightHeader = 130;
 
 type Props = {
   selectGoods: GoodInterface;
