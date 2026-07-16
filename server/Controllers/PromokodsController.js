@@ -4,6 +4,7 @@ const fs = require('fs');
 const sharp = require('sharp');
 const toSlug = require('./utils/ToSlug'); // Припускаю, вона чистить текст
 const { Promokods, UserBronPromokod } = require('../models/models');
+const crypto = require('crypto');
 
 class PromokodsController {
   static Add = async (req, resp, next) => {
@@ -31,8 +32,7 @@ class PromokodsController {
 
       // 1. Правильний слаг з назви (використовуємо значення nameuk)
       // Додаємо Date.now(), щоб назви файлів були унікальними
-      const slugName = toSlug(nameuk) || 'promo';
-      const fileName = `${slugName}_${Date.now()}.webp`;
+      const fileName = `${crypto.randomBytes(8).toString('hex')}.webp`;
 
       const dirPath = path.resolve(__dirname, '..', 'static', 'promokods');
 
