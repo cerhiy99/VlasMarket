@@ -20,28 +20,8 @@ const GoodsControllers = require('./GoodsControllers');
 const uploadDir = path.resolve(__dirname, '..', 'static');
 
 class ImportFromBaylap {
-  static AddGoods = async (req, res, next) => {
+  static add = async (goods) => {
     try {
-      const files = req.files;
-      const { goods_data } = req.body;
-      const goods = JSON.parse(goods_data);
-
-      for (let i = 0; i < goods.volumes.length; i++) {
-        const volume = goods.volumes[i];
-
-        const isVolume = await Volume.findOne({ where: { art: volume.art } });
-        if (isVolume) {
-          console.error(
-            'Помилка прийняти файл з baylap бо артикул зайнятий. Артикул:',
-            volume.art
-          );
-
-          return res.status(400).json({
-            message: 'Артикул зайнятий. Скоріш за все цей товар вже є.',
-          });
-        }
-      }
-
       const brend = await Brends.findOne({
         where: { name: goods.brend.name },
       });
@@ -184,35 +164,14 @@ class ImportFromBaylap {
       console.log('Успішно додано товар з байлап ' + goods.id);
       //productRecognitions
       //Перевірка чи товару ще нема (art в volume)
-      return res.json({});
+      return true;
     } catch (err) {
-      console.error('Помилка прийняти файл з baylap в AddGoods ', err);
-      return next(ErrorApi.badRequest(err));
+      console.error('Помилка добавити товар', goods.id, err);
+      return false;
     }
   };
-
-  static UpdateGoods = async (req, res, next) => {
+  static update = async (goods, files) => {
     try {
-      const files = req.files;
-      const { goods_data } = req.body;
-      const goods = JSON.parse(goods_data);
-
-      let existingGoodId = null;
-
-      // 1. ПЕРЕВІРКА НА ОНОВЛЕННЯ: шукаємо, чи є хоч один артикул у базі
-      for (let i = 0; i < goods.volumes.length; i++) {
-        const volume = goods.volumes[i];
-        const isVolume = await Volume.findOne({ where: { art: volume.art } });
-        if (isVolume) {
-          existingGoodId = isVolume.goodId; // Знайшли ID товару на нашому сайті!
-          break; // Виходимо з циклу пошуку
-        }
-      }
-      if (existingGoodId === null) {
-        console.log('Товар не знайдено');
-        return res.status(400).json('Товар не знайдено');
-      }
-
       // Знаходимо всі довідники
       const brend = await Brends.findOne({ where: { name: goods.brend.name } });
       const brendId = brend?.id || null;
@@ -402,10 +361,58 @@ class ImportFromBaylap {
       console.log(
         `Операція успішно завершена для товару з Baylap ID: ${goods.id}`
       );
-      return res.json({
-        success: true,
-        message: existingGoodId ? 'Товар оновлено' : 'Товар створено',
-      });
+      return true;
+    } catch (err) {
+      console.error('Помилка оновлення товара', goods.id, err);
+      return false;
+    }
+  };
+  static AddGoods = async (req, res, next) => {
+    try {
+      const files = req.files;
+      const { goods_data } = req.body;
+      const goods = JSON.parse(goods_data);
+
+      for (let i = 0; i < goods.volumes.length; i++) {
+        const volume = goods.volumes[i];
+
+        const isVolume = await Volume.findOne({ where: { art: volume.art } });
+        if (isVolume) {
+          const result = await this.update(goods, files);
+          return res.status(result ? 200 : 400);
+        }
+      }
+      const result = await this.add(goods, files);
+      return res.status(result ? 200 : 400);
+    } catch (err) {
+      console.error('Помилка прийняти файл з baylap в AddGoods ', err);
+      return next(ErrorApi.badRequest(err));
+    }
+  };
+
+  static UpdateGoods = async (req, res, next) => {
+    try {
+      const files = req.files;
+      const { goods_data } = req.body;
+      const goods = JSON.parse(goods_data);
+
+      let existingGoodId = null;
+
+      // 1. ПЕРЕВІРКА НА ОНОВЛЕННЯ: шукаємо, чи є хоч один артикул у базі
+      for (let i = 0; i < goods.volumes.length; i++) {
+        const volume = goods.volumes[i];
+        const isVolume = await Volume.findOne({ where: { art: volume.art } });
+        if (isVolume) {
+          existingGoodId = isVolume.goodId; // Знайшли ID товару на нашому сайті!
+          break; // Виходимо з циклу пошуку
+        }
+      }
+      let result;
+      if (existingGoodId === null) {
+        result = await this.add(goods, files);
+      }
+      result = await this.update(goods, files);
+      return res.status(result ? 200 : 400);
     } catch (err) {
       console.error('Помилка прийняти файл з baylap в AddGoods ', err);
       return next(ErrorApi.badRequest(err.message));
