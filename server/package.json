@@ -23,6 +23,7 @@
     "sharp": "^0.34.3",
     "slugify": "^1.6.6",
     "svg-captcha": "^1.4.0",
+    "xlsx": "^0.18.5",
     "xmlbuilder": "^15.1.1"
   },
   "scripts": {

@@ -3,6 +3,7 @@ const axios = require('axios');
 const { parse } = require('csv-parse/sync');
 const { Volume } = require('../models/models');
 const { Sequelize } = require('sequelize');
+const XLSX = require('xlsx');
 
 function sheetUrlToCsv(url) {
   const match = url.match(/spreadsheets\/(?:u\/\d+\/)?d\/([^/]+)/);
@@ -22,7 +23,7 @@ class SyncController {
   static Sync = async (req, res, next) => {
     try {
       const { url } = req.body;
-      //const file = req.file.file;
+      const file = req.files.file;
       let countUpdated = 0;
 
       if (!url && !file) {
@@ -79,8 +80,51 @@ class SyncController {
         });
 
         return res.json();
-        return rows;
       } else {
+        const workbook = XLSX.read(file.data, {
+          type: 'buffer',
+        });
+
+        const sheet = workbook.Sheets[workbook.SheetNames[0]];
+
+        const rows = XLSX.utils.sheet_to_json(sheet, {
+          header: 1,
+          defval: '',
+        });
+
+        const products = [];
+
+        for (const row of rows) {
+          const article = String(row[1]).trim();
+
+          // пропускаємо все, що не є артикулом
+          if (!/^\d+$/.test(article)) {
+            continue;
+          }
+
+          products.push({
+            article,
+            name: String(row[3]).trim(),
+            wholesalePrice: Number(row[4]),
+            retailPrice: Number(row[5]),
+          });
+        }
+        products.forEach((x) => {
+          Volume.update(
+            {
+              price: x.retailPrice,
+              priceWithDiscount: Sequelize.literal(
+                `ROUND(${x.retailPrice} * (1 - discount / 100), 0)`
+              ),
+            },
+            {
+              where: {
+                art: x.article,
+              },
+            }
+          );
+        });
+        return res.json();
       }
     } catch (err) {
       console.log(err);
