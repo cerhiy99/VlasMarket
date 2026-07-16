@@ -826,7 +826,9 @@ ${listWayDelivery.find((x) => x.id == typePay).description}
 ${realBasket
   .map(
     (item) =>
-      `- ${item.nameuk} × ${item.count} (${item.volumes.priceWithDiscount} грн)`
+      `- ${item.nameuk} × ${item.count} (${item.volumes.priceWithDiscount} грн)
+🔗Посилання: ${process.env.FRONTEND_URL + `/goods/${item.volumes.url}`}<br>
+`
   )
   .join('\n')}
 
