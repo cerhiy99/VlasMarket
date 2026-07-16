@@ -379,11 +379,11 @@ class ImportFromBaylap {
         const isVolume = await Volume.findOne({ where: { art: volume.art } });
         if (isVolume) {
           const result = await this.update(goods, files, isVolume.goodId);
-          return res.status(result ? 200 : 400);
+          return res.sendStatus(result ? 200 : 400);
         }
       }
       const result = await this.add(goods, files);
-      return res.status(result ? 200 : 400);
+      return res.sendStatus(result ? 200 : 400);
     } catch (err) {
       console.error('Помилка прийняти файл з baylap в AddGoods ', err);
       return next(ErrorApi.badRequest(err));
@@ -411,7 +411,7 @@ class ImportFromBaylap {
       if (existingGoodId === null) {
         result = await this.add(goods, files);
       } else result = await this.update(goods, files, existingGoodId);
-      return res.status(result ? 200 : 400);
+      return res.sendStatus(result ? 200 : 400);
     } catch (err) {
       console.error('Помилка прийняти файл з baylap в AddGoods ', err);
       return next(ErrorApi.badRequest(err.message));
