@@ -827,13 +827,13 @@ ${realBasket
   .map(
     (item) =>
       `- ${item.nameuk} × ${item.count} (${item.volumes.priceWithDiscount} грн)
-🔗Посилання: ${process.env.FRONTEND_URL + `/goods/${item.volumes.url}`}<br>
+🔗Посилання: ${process.env.FRONTEND_URL + `/goods/${item.volumes.url}`}\n
 `
   )
   .join('\n')}
 
 ℹ️ Додаткова інформація:
-${additionalInfo || '—'}
+${additionalInfo.replace(/<br\s*\/?>/gi, '\n') || '—'}
 `;
           await axios.post(
             `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`,
