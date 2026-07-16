@@ -201,17 +201,17 @@ const GetPromokods = (props: Props) => {
                 required
               />
             </div>
-            {selectPromokod.type == 'price' ||
-              (selectPromokod.type == 'select_goods_discount_sum' && (
-                <div className="value">
-                  <label>Знижка в грн</label>
-                  <input
-                    value={Number(selectPromokod.price_discount)}
-                    name="price_discount"
-                    required
-                  />
-                </div>
-              ))}
+            {(selectPromokod.type == 'price' ||
+              selectPromokod.type == 'select_goods_discount_sum') && (
+              <div className="value">
+                <label>Знижка в грн</label>
+                <input
+                  value={Number(selectPromokod.price_discount)}
+                  name="price_discount"
+                  required
+                />
+              </div>
+            )}
           </div>
         )}
       </div>

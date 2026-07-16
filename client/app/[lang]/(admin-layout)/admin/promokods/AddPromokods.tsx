@@ -248,18 +248,18 @@ const AddPromokods = (props: Props) => {
           />
         </div>
 
-        {promokod.type == 'price' ||
-          (promokod.type == 'select_goods_discount_sum' && (
-            <div className="value">
-              <label>Знижка в грн</label>
-              <input
-                value={Number(promokod.price_discount)}
-                name="price_discount"
-                onChange={setData}
-                required
-              />
-            </div>
-          ))}
+        {(promokod.type == 'price' ||
+          promokod.type == 'select_goods_discount_sum') && (
+          <div className="value">
+            <label>Знижка в грн</label>
+            <input
+              value={Number(promokod.price_discount)}
+              name="price_discount"
+              onChange={setData}
+              required
+            />
+          </div>
+        )}
         <button>Додати</button>
       </form>
     </div>
