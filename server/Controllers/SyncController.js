@@ -72,8 +72,7 @@ class SyncController {
             },
             {
               where: {
-                article,
-                brendId,
+                article: x.articles,
               },
             }
           );
