@@ -65,9 +65,9 @@ class SyncController {
         products.forEach((x) => {
           Volume.update(
             {
-              price: retailPrice,
+              price: x.retailPrice,
               priceWithDiscount: Sequelize.literal(
-                `ROUND(${retailPrice} * (1 - discount / 100), 0)`
+                `ROUND(${x.retailPrice} * (1 - discount / 100), 0)`
               ),
             },
             {
