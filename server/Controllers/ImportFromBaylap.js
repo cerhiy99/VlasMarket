@@ -20,7 +20,7 @@ const GoodsControllers = require('./GoodsControllers');
 const uploadDir = path.resolve(__dirname, '..', 'static');
 
 class ImportFromBaylap {
-  static add = async (goods) => {
+  static add = async (goods, files) => {
     try {
       const brend = await Brends.findOne({
         where: { name: goods.brend.name },
@@ -170,7 +170,7 @@ class ImportFromBaylap {
       return false;
     }
   };
-  static update = async (goods, files) => {
+  static update = async (goods, files, existingGoodId) => {
     try {
       // Знаходимо всі довідники
       const brend = await Brends.findOne({ where: { name: goods.brend.name } });
@@ -378,7 +378,7 @@ class ImportFromBaylap {
 
         const isVolume = await Volume.findOne({ where: { art: volume.art } });
         if (isVolume) {
-          const result = await this.update(goods, files);
+          const result = await this.update(goods, files, isVolume.goodId);
           return res.status(result ? 200 : 400);
         }
       }
@@ -411,7 +411,7 @@ class ImportFromBaylap {
       if (existingGoodId === null) {
         result = await this.add(goods, files);
       }
-      result = await this.update(goods, files);
+      result = await this.update(goods, files, existingGoodId);
       return res.status(result ? 200 : 400);
     } catch (err) {
       console.error('Помилка прийняти файл з baylap в AddGoods ', err);
