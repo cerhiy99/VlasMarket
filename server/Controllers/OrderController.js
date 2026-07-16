@@ -248,6 +248,7 @@ ${goodsList}`;
 
       const realBasket = [];
       let additionalInfo = '';
+      let infoForEmail = '';
       for (let i = 0; i < basket.length; i++) {
         const goods = await Goods.findOne({
           attributes: ['id', 'nameuk', 'nameru'],
@@ -311,6 +312,7 @@ ${goodsList}`;
       let fullPromokod;
       if (promokod) {
         additionalInfo = 'Корисутвач використав промкод ' + promokod;
+        infoForEmail = `Промокод ${promokod} враховано!`;
         fullPromokod = await Promokods.findOne({ where: { code: promokod } });
         if (!fullPromokod) {
           return resp
@@ -350,6 +352,7 @@ ${goodsList}`;
           userBronPromokod.isUse = true;
           await userBronPromokod.save();
         }
+
         if (
           fullPromokod.type == 'select_goods_discount_sum' ||
           fullPromokod.type == 'select_goods_discount_procent'
@@ -376,6 +379,7 @@ ${goodsList}`;
             sum -= discountTotal;
 
             additionalInfo += `<br>Користувач використав промокод на знижку товару ${nameProductForPromokod} по ${discountPerItem} грн за одиницю, знижка врахована в сумі`;
+            infoForEmail += `<br>Промокод дав знижку на товар ${nameProductForPromokod}. Знижка врахована в сумі!`;
           } else {
             const percent = fullPromokod.procent;
 
@@ -386,6 +390,7 @@ ${goodsList}`;
             sum -= discountTotal;
 
             additionalInfo += `<br>Користувач використав промокод на знижку товару ${nameProductForPromokod} по ${percent}%, знижка врахована в сумі`;
+            infoForEmail += `<br>Промокод дав знижку на товар ${nameProductForPromokod}. Знижка врахована в сумі!`;
           }
         } else if (fullPromokod.type === 'select_goods_free') {
           let product = realBasket.find(
@@ -412,18 +417,23 @@ ${goodsList}`;
             realBasket.push(product);
 
             additionalInfo += `<br>Користувач отримав безкоштовний товар за промокодом (додано автоматично)`;
+            infoForEmail += `<br>Ви отримати безковний товар за сертифікатом!`;
           } else {
             const price = product.volumes.priceWithDiscount;
 
             sum = Math.max(0, sum - price);
 
             additionalInfo += `<br>Користувач отримав 1 безкоштовний товар ${product.nameuk}`;
+            infoForEmail += `<br>Ви отримати безковний товар за сертифікатом!`;
           }
         } else if (fullPromokod.type == 'procent') {
           additionalInfo += `<br>Користувач використав промокод на знижку -${fullPromokod.procent}%, в сумі знижка врахована`;
+          infoForEmail += `<br>Знижка з промокоду на -${fullPromokod.procent}% врахована!`;
           sum = sum - (sum / 100) * fullPromokod.procent;
         } else {
           additionalInfo += `<br>Користувач використав промокод на знижку -${fullPromokod.price_discount} грн, в сумі знижка врахована`;
+          infoForEmail += `<br>Знижка з промокоду на -${fullPromokod.price_discount} врахована!`;
+
           sum = sum - fullPromokod.price_discount;
         }
       }
@@ -449,6 +459,7 @@ ${goodsList}`;
         }
         sum -= countBonus;
         additionalInfo += `Користувач розахувався бонусами в кількості ${countBonus}, знижка бонусів врахована у суму<br>`;
+        infoForEmail += `Ваші бонуси в кількості ${countBonus} враховані в сумі!`;
       }
 
       const order = await Order.create({
@@ -526,6 +537,17 @@ ${goodsList}`;
                 <h1 style="font-size: 24px; color: #000000; margin: 0 0 10px">
                   Чудово, замовлення оформлено!
                 </h1>
+                <div
+                  style="
+                    font-size: 16px;
+                    color: #000000;
+                    margin: 10px 0;
+                    font-weight: 700;
+                    line-height: 1.5;
+                  "
+                >
+                  ${infoForEmail}
+                </div>
                 <p style="font-size: 16px; color: #000000; margin: 0">
                   Замовлення <strong>№${order.id}</strong> успішно прийнято та
                   передано в обробку
