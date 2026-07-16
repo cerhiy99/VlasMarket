@@ -410,8 +410,7 @@ class ImportFromBaylap {
       let result;
       if (existingGoodId === null) {
         result = await this.add(goods, files);
-      }
-      result = await this.update(goods, files, existingGoodId);
+      } else result = await this.update(goods, files, existingGoodId);
       return res.status(result ? 200 : 400);
     } catch (err) {
       console.error('Помилка прийняти файл з baylap в AddGoods ', err);
