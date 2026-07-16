@@ -72,7 +72,7 @@ class SyncController {
             },
             {
               where: {
-                article: x.articles,
+                art: x.articles,
               },
             }
           );
