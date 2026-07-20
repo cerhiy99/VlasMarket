@@ -80,8 +80,8 @@ export const messengers2 = [
 
 export const phones = [
   {
-    text: '+380675744350',
-    href: 'tel:+380675744350',
+    text: '+380673687574',
+    href: 'tel:+380673687574',
   },
   {
     text: '+380673687574',
