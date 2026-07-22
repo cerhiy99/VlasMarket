@@ -2042,7 +2042,7 @@ const UpdateProduct = ({ id }: { id: string }) => {
             </>
           )
         )}
-        <button className="but" type="button" onClick={addVolumeField}>
+        <button className="but but1" type="button" onClick={addVolumeField}>
           Добавить товар
         </button>
 

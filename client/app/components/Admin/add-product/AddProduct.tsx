@@ -1636,7 +1636,7 @@ const AddGoodsPage = () => {
           )
         )}
 
-        <button type="button" onClick={addVolumeField}>
+        <button className="but1" type="button" onClick={addVolumeField}>
           Добавить товар
         </button>
 

@@ -64,6 +64,16 @@
     background-color: #0056b3;
   }
 
+  button[type='button'].but1 {
+    /* Для кнопки додавання полів характеристик та обсягів */
+
+    background-color: #28a745;
+    color: white;
+  }
+
+  button[type='button']:hover.but1 {
+    background-color: #68c67e;
+  }
   /* Стилі для додавання характеристик */
   .characteristics {
     display: flex;
