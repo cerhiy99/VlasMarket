@@ -396,7 +396,7 @@ const MobileMenu = ({
               <div className="phone-container">
                 <PhoneSVG />
                 <div className="phones">
-                  {phones.map((x) => (
+                  {phones.slice(0, 1).map((x) => (
                     <a target="_blank" href={x.href}>
                       {x.text}
                     </a>

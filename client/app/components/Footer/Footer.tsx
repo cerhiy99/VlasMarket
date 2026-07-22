@@ -32,7 +32,7 @@ const Footer = async ({ lang }: { lang: Locale }) => {
         </div>
         <div className="contact-info">
           <section className="numbers">
-            {phones.map((x, idx) => (
+            {phones.slice(0, 1).map((x, idx) => (
               <div key={idx} className="number">
                 <a target="_blank" href={x.href}>
                   <div className="svg">

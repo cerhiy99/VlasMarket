@@ -78,15 +78,15 @@ const ContactWithUs = ({ lang, dictionary }: Props) => {
             <p>Whatsapp</p>
             <a href={process.env.NEXT_PUBLIC_WHATSAPP}></a>
           </div>
-          <div className="icon2">
+          <div style={{ alignItems: 'center' }} className="icon2">
             <PhoneSVG color={'#fe680a'} stroke={'white'} />
             <p>
               <a href={process.env.NEXT_PUBLIC_PHONE_URL_1}>
                 {process.env.NEXT_PUBLIC_PHONE_1}
               </a>
-              <a href={process.env.NEXT_PUBLIC_PHONE_URL_2}>
+              {/*<a href={process.env.NEXT_PUBLIC_PHONE_URL_2}>
                 {process.env.NEXT_PUBLIC_PHONE_2}
-              </a>
+              </a>*/}
             </p>
           </div>
           <div className="list__item">

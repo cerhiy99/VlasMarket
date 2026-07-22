@@ -80,12 +80,12 @@ const page = async ({ params }: Props) => {
                 {process.env.NEXT_PUBLIC_PHONE_1}
               </a>
             </div>
-            <div className="contact-item">
+            {/*<div className="contact-item">
               <span className="icon">📞</span>
               <a href={`${process.env.NEXT_PUBLIC_PHONE_URL_2}`}>
                 {process.env.NEXT_PUBLIC_PHONE_2}
               </a>
-            </div>
+            </div>*}
             {/* Сюди можна додати інстаграм / телеграм як на фото 
             <div className="contact-item">
               <span className="icon">
