@@ -105,6 +105,14 @@
   button[type='button']:hover {
     background-color: #e0a800;
   }
+  button[type='button'].del {
+    background-color: red;
+    color: white;
+  }
+
+  button[type='button'].del:hover {
+    background-color: rgb(130, 60, 60);
+  }
 
   /* Загальний стиль для списків фільтрів */
   h3 {

@@ -660,6 +660,12 @@ const AddGoodsPage = () => {
   };
 
   const delImg = (indexVolume: number, indexImage: number) => {
+    const confirmed = window.confirm(
+      'Ви впевнені, що хочете видалити це зображення?'
+    );
+
+    if (!confirmed) return;
+
     const updatedVolume = [...volume]; // створюємо копію масиву
     const updatedImages = [...updatedVolume[indexVolume].images]; // копія зображень
     updatedImages.splice(indexImage, 1); // видаляємо потрібне зображення
@@ -1618,6 +1624,7 @@ const AddGoodsPage = () => {
                     <button
                       style={{ alignItems: 'center', margin: '0' }}
                       type="button"
+                      className="del"
                       onClick={() => delImg(index, indexVolume)}
                     >
                       del

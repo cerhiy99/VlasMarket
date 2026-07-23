@@ -40,7 +40,7 @@
   }
 
   /* Кнопки */
-  button.but {
+  .but {
     background-color: #28a745;
     color: white;
     padding: 10px 20px;
@@ -51,7 +51,7 @@
     margin-top: 20px;
     transition: background-color 0.3s;
   }
-  button.but:hover {
+  .but:hover {
     background-color: #218838;
   }
   button[type='submit'].but {
@@ -117,17 +117,17 @@
     font-size: 16px;
     background-color: #fff;
   }
-  button[type='button'].but {
+  .but {
     /* Для кнопки додавання полів характеристик та обсягів */
 
     background-color: #ffc107;
     color: white;
   }
 
-  button[type='button']:hover.but {
+  .but:hover {
     background-color: #e0a800;
   }
-  button[type='button'].but1 {
+  .but1 {
     /* Для кнопки додавання полів характеристик та обсягів */
 
     background-color: #28a745;

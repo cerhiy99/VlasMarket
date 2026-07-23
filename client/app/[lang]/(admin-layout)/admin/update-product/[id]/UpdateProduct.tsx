@@ -681,6 +681,10 @@ const UpdateProduct = ({ id }: { id: string }) => {
   };
 
   const delImg = (indexVolume: number, indexImage: number) => {
+    const confirmed = window.confirm('Ви впевнені, що хочете це зображення?');
+
+    if (!confirmed) return;
+
     const updatedVolume = [...volume]; // створюємо копію масиву
     const updatedImages = [...updatedVolume[indexVolume].images]; // копія зображень
     updatedImages.splice(indexImage, 1); // видаляємо потрібне зображення
@@ -2021,7 +2025,7 @@ const UpdateProduct = ({ id }: { id: string }) => {
                       value={volume[index].images[indexVolume].altru}
                     />
                     <button
-                      className="but"
+                      className="del but"
                       style={{ alignItems: 'center', margin: '0' }}
                       type="button"
                       onClick={() => delImg(index, indexVolume)}
