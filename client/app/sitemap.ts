@@ -214,7 +214,7 @@ async function generateDynamicSelectGoods() {
   );*/
   return urls.flatMap((x: any) =>
     LANGUAGES.map((lang) => ({
-      url: `${BASE_URL}/${lang}${x.url}`,
+      url: `${BASE_URL}/${lang}goods/${x.url}`,
       lastModified: new Date(),
       alternates: generateLocalizedUrls(`goods/${x.url}`),
       images: x.img.map((img: any) => `${BASE_URL}${IMG_URL}${img.img}`),
