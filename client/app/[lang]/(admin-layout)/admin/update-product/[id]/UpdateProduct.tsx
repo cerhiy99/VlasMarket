@@ -2046,7 +2046,12 @@ const UpdateProduct = ({ id }: { id: string }) => {
             </>
           )
         )}
-        <button className="but but1" type="button" onClick={addVolumeField}>
+        <button
+          id="#saves-products"
+          className="but but1"
+          type="button"
+          onClick={addVolumeField}
+        >
           Добавить товар
         </button>
 
