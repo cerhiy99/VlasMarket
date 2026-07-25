@@ -1644,7 +1644,7 @@ const AddGoodsPage = () => {
         )}
 
         <button
-          id="#saves-products"
+          id="saves-products"
           className="but1"
           type="button"
           onClick={addVolumeField}
