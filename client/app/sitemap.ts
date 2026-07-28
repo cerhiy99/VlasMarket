@@ -75,7 +75,7 @@ async function generateDynamicGoodsPagesCategory() {
     // Ітеруємо по кожному номеру сторінки та мові
     return pageNumbers.flatMap((pageNumber) =>
       LANGUAGES.map((lang) => ({
-        url: `${BASE_URL}/${lang}${url}/${pageNumber}`,
+        url: `${BASE_URL}/${lang}goods/${url}/${pageNumber}`,
         lastModified: new Date(),
         alternates: generateLocalizedUrls(`/${url}/${pageNumber}`),
       }))
