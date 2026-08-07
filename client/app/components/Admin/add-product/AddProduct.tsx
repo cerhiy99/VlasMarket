@@ -625,8 +625,10 @@ const AddGoodsPage = () => {
 
     try {
       const res = await $authHost.post('goods/add', formData);
-      if (res.status == 283) alert('Артикул зайнятий');
-      else {
+      if (res.status == 283) {
+        alert('Артикул зайнятий');
+        setSumbit(false);
+      } else {
         await new Promise((resolve) => setTimeout(resolve, 3000));
         router.replace(`/goods/${res.data.product.volumes[0].url}`);
       }
@@ -635,6 +637,7 @@ const AddGoodsPage = () => {
       alert(
         'Сталася помилка при добавлені товару (скоріш за все пропущені якісь поля).'
       );
+      setSumbit(false);
     }
   };
 
