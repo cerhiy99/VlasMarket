@@ -50,7 +50,7 @@ export default function RegistrationModal({
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
-    if (formData.phone.length != 12) {
+    if (formData.phone.length != 13) {
       setError('Не вірний номер телефону.');
       return;
     }
