@@ -243,5 +243,9 @@
     font-weight: 400;
     line-height: 1;
     cursor: pointer;
+    &.saved {
+      background-color: #0ef038;
+      cursor: default;
+    }
   }
 }

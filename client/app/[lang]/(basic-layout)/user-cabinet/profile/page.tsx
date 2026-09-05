@@ -86,11 +86,15 @@ const page = ({ params }: Props) => {
 
   const dispatch = useDispatch();
 
+  const [isSave, setIsSave] = useState(false);
+
   const sumbit = async (e: React.SubmitEvent<HTMLFormElement>) => {
     try {
+      if (isSave) return;
       e.preventDefault();
       const res = await $authHost.put('user/myDate', formData);
       dispatch(setToken(res.data.token));
+      setIsSave(true);
     } catch (err) {
       alert('Помилка');
     }
@@ -265,8 +269,17 @@ const page = ({ params }: Props) => {
             : 'Будь ласка, заповніть усі поля, позначені зірочкою (*).'}
         </p>
 
-        <button type="submit" className="profile-save-btn">
-          {lang == 'ru' ? 'Сохранить' : 'Зберегти'}
+        <button
+          type="submit"
+          className={!isSave ? 'profile-save-btn' : 'profile-save-btn saved'}
+        >
+          {!isSave
+            ? lang == 'ru'
+              ? 'Сохранить'
+              : 'Зберегти'
+            : lang != 'ru'
+              ? 'Змінено'
+              : 'Изменено'}
         </button>
       </form>
     </div>
