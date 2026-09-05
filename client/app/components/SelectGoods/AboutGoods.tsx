@@ -118,6 +118,12 @@ const AboutGoods = ({
       const value = li.querySelector('span')?.textContent.trim() || '';
       return { name, value };
     });
+    characteristics.push({
+      name: selectGoods[`nameType${lang == 'ru' ? 'ru' : 'uk'}`] + ':',
+      value: selectGoods.volumes
+        .map((x) => x.volume.split('||')[lang == 'ru' ? 1 : 0])
+        .join(','),
+    });
 
     // 🔧 Пріоритети для обох мов
     const priorityOrder =
