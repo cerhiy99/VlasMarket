@@ -1500,6 +1500,11 @@ class GoodsControllers {
           {
             model: Volume,
             include: [Img],
+            separate: true,
+            order: [
+              [Sequelize.literal('`sort` IS NULL'), 'ASC'],
+              ['sort', 'ASC'],
+            ],
           },
           {
             model: Reviews,

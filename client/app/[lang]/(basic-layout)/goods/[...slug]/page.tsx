@@ -71,7 +71,7 @@ export async function generateMetadata({ params, searchParams }: Props) {
       .replace(/<[^>]+>/g, '')
       .slice(0, 200);
 
-    const canonicalUrl = `${baseUrl}${lang === 'ru' ? 'ru/' : '/'}${id}`;
+    const canonicalUrl = `${baseUrl}${lang === 'ru' ? 'ru/' : ''}${id}`;
 
     // Зображення (перший img у volume)
     const imageUrl = volume.imgs?.[0]?.img

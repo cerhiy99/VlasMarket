@@ -399,6 +399,8 @@
             top: unset;
             height: 100%;
             align-items: center;
+            flex-direction: column;
+            justify-content: center;
           }
         }
         .show-img {
