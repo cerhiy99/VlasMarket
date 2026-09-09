@@ -1429,6 +1429,11 @@ class GoodsControllers {
                 ],
               },
             ],
+            separate: true,
+            order: [
+              [Sequelize.literal('ISNULL(`sort`)'), 'ASC'],
+              ['sort', 'ASC'],
+            ],
           },
           {
             model: Brends,
@@ -1454,10 +1459,6 @@ class GoodsControllers {
             where: { isShow: true },
             separate: true,
           },
-        ],
-        order: [
-          [Sequelize.literal('`volumes`.`sort` IS NULL'), 'ASC'],
-          [Sequelize.literal('`volumes`.`sort`'), 'ASC'],
         ],
       });
 
@@ -2098,6 +2099,7 @@ class GoodsControllers {
         url,
         nameTypeuk,
         nameTyperu,
+        video,
       } = req.body;
 
       if (
@@ -2176,6 +2178,7 @@ class GoodsControllers {
         nameTyperu,
         product_type_uk: product_type_uk || null,
         product_type_ru: product_type_ru || null,
+        video,
       });
 
       const { files } = req;

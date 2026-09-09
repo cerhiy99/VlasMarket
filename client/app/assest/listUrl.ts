@@ -1,4 +1,4 @@
-export const FacebookURL = 'https://www.facebook.com/vlasmarket.ua';
+export const FacebookURL = 'https://www.facebook.com/vlasmarket';
 export const InstagramURL = 'https://www.instagram.com/';
 export const YouTubeURL = 'https://www.youtube.com/';
 export const TikTokURL = 'https://www.tiktok.com/uk-UA/';

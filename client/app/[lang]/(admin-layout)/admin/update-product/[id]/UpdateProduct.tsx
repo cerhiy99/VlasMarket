@@ -579,6 +579,7 @@ const UpdateProduct = ({ id }: { id: string }) => {
     formData.append('nameru', nameru);
     formData.append('nameTypeuk', nameTypeuk);
     formData.append('nameTyperu', nameTyperu);
+    formData.append('video', video);
     formData.append('art', art);
     formData.append('url', url);
     formData.append(
@@ -712,6 +713,7 @@ const UpdateProduct = ({ id }: { id: string }) => {
       setProduct_type_ru(good.product_type_ru);
       setNameuk(good.nameuk);
       setNameru(good.nameru);
+      setVideo(good.video);
       setArt(good.art);
       setDescriptionuk(good.descriptionuk);
       setDescriptionru(good.descriptionru);
