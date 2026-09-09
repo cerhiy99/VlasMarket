@@ -713,7 +713,7 @@ const UpdateProduct = ({ id }: { id: string }) => {
       setProduct_type_ru(good.product_type_ru);
       setNameuk(good.nameuk);
       setNameru(good.nameru);
-      setVideo(good.video);
+      setVideo(good.video == null || good.video == 'null' ? '' : good.video);
       setArt(good.art);
       setDescriptionuk(good.descriptionuk);
       setDescriptionru(good.descriptionru);
