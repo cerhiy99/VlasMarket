@@ -1,21 +1,23 @@
-'use client'
+'use client';
 
-import React, { useEffect } from 'react'
-import { useDispatch } from 'react-redux'
-import { Provider } from 'react-redux'
-import { initializeFromLocalStorage } from '@/app/store/reducers/cartReducer'
-import { store } from './index'
+import React, { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+import { Provider } from 'react-redux';
+import { initializeFromLocalStorage } from '@/app/store/reducers/cartReducer';
+import { store } from './index';
+import { initialize } from './reducers/userReducers';
 
 const LocalStorageInitializer = () => {
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
   useEffect(() => {
     // Ініціалізуємо стан з localStorage при завантаженні клієнта
-    dispatch(initializeFromLocalStorage())
-  }, [dispatch])
+    dispatch(initializeFromLocalStorage());
+    dispatch(initialize());
+  }, [dispatch]);
 
-  return null // Цей компонент нічого не рендерить, а лише ініціалізує стан
-}
+  return null; // Цей компонент нічого не рендерить, а лише ініціалізує стан
+};
 
 const Providers = ({ children }: React.PropsWithChildren<{}>) => {
   return (
@@ -23,7 +25,7 @@ const Providers = ({ children }: React.PropsWithChildren<{}>) => {
       <LocalStorageInitializer />
       {children}
     </Provider>
-  )
-}
+  );
+};
 
-export default Providers
+export default Providers;

@@ -510,7 +510,7 @@ const Page = async ({ params, searchParams }: Props) => {
         selectCategory &&
         page == 1 &&
         selectCategory[`description${lang == 'ru' ? 'ru' : 'uk'}`] && (
-          <p
+          <div
             className="desc"
             dangerouslySetInnerHTML={{
               __html:
@@ -521,7 +521,7 @@ const Page = async ({ params, searchParams }: Props) => {
       {selectSubcategory &&
         page == 1 &&
         selectSubcategory[`description${lang == 'ru' ? 'ru' : 'uk'}`] && (
-          <p
+          <div
             className="desc"
             dangerouslySetInnerHTML={{
               __html:

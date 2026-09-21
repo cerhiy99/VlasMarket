@@ -1,11 +1,11 @@
 'use client';
 
-import React, { useMemo, useState, useCallback } from 'react';
+import React, { useState } from 'react';
 import './CatalogHome.scss';
 import RightSVG from '../../assest/Header/Right.svg';
 import { Locale } from '@/i18n.config';
 import Image from 'next/image';
-import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 import { getLocalizedPath } from '../utils/getLocalizedPath';
 import { UkrToEng } from '../utils/UkrToEng';
 import SvgIcon from '../Header/SvgIcon';
@@ -37,117 +37,119 @@ type Props = {
 };
 
 const CatalogHome = ({ lang, dictionary, catalog }: Props) => {
-  const router = useRouter();
-
   const [isHovered, setIsHovered] = useState(false);
-  const [selectCategory, setSelectCategory] = useState<number>(4);
+  const [selectCategory, setSelectCategory] = useState<number>(
+    catalog?.[0]?.id || 4
+  );
 
-  // ✅ швидкий lookup замість find в render
-  const selectedCategory = useMemo(() => {
-    return catalog.find((c) => c.id === selectCategory) || null;
-  }, [catalog, selectCategory]);
-
-  // ✅ сортування один раз при зміні category/lang
-  const sortedSubcategories = useMemo(() => {
-    if (!selectedCategory) return [];
-
-    const key = lang === 'ru' ? 'nameru' : 'nameuk';
-
-    return [...selectedCategory.subcategories].sort((a, b) =>
-      a[key].localeCompare(b[key])
-    );
-  }, [selectedCategory, lang]);
-
-  const handleMouseLeave = useCallback(() => {
-    setSelectCategory(0);
+  const handleMouseLeave = () => {
     setIsHovered(false);
-  }, []);
+    setSelectCategory(0);
+  };
 
-  const handleHover = useCallback((id: number) => {
-    setSelectCategory(id);
+  const handleMouseEnter = () => {
     setIsHovered(true);
-  }, []);
+  };
 
   return (
     <>
       {isHovered && <div className="calalog-home-beck" />}
 
-      <div className="catalog-home-container" onMouseLeave={handleMouseLeave}>
+      <div
+        className="catalog-home-container"
+        onMouseEnter={handleMouseEnter}
+        onMouseLeave={handleMouseLeave}
+      >
         <div className="dropdown-home-container">
           <div style={{ width: '374px' }} className="dropdown">
             <div className="list-category">
-              {catalog.map((x) => (
-                <div
-                  key={x.id}
-                  className={`category ${selectCategory === x.id ? 'active' : ''}`}
-                  onMouseEnter={() => handleHover(x.id)}
-                  onClick={() => {
-                    router.push(
-                      getLocalizedPath(
-                        `/${lang}/goods/${UkrToEng(x.nameru)}/1`,
-                        lang
-                      )
-                    );
-                    setIsHovered(false);
-                  }}
-                >
-                  <div className="svg-with-name">
-                    <SvgIcon url={process.env.NEXT_PUBLIC_SERVER + x.svg} />
-                    <p>{lang === 'ru' ? x.nameru : x.nameuk}</p>
-                  </div>
+              {catalog.map((x) => {
+                const categoryPath = getLocalizedPath(
+                  `/${lang}/goods/${UkrToEng(x.nameru)}/1`,
+                  lang
+                );
+                return (
+                  <Link
+                    key={x.id}
+                    href={categoryPath}
+                    className={`category ${selectCategory === x.id ? 'active' : ''}`}
+                    onMouseEnter={() => setSelectCategory(x.id)}
+                    onClick={() => setIsHovered(false)}
+                  >
+                    <div className="svg-with-name">
+                      <SvgIcon url={process.env.NEXT_PUBLIC_SERVER + x.svg} />
+                      <p>{lang === 'ru' ? x.nameru : x.nameuk}</p>
+                    </div>
 
-                  <div className="right">
-                    <RightSVG />
-                  </div>
-                </div>
-              ))}
+                    <div className="right">
+                      <RightSVG />
+                    </div>
+                  </Link>
+                );
+              })}
             </div>
 
-            {selectCategory !== 0 && selectedCategory && (
-              <div className="subcategory-details-container">
-                <div className="subcategory-details">
-                  {sortedSubcategories.map((categoryTitle) => (
-                    <div
-                      key={categoryTitle.id}
-                      className="list-category-title"
-                      onClick={() => {
-                        router.push(
-                          getLocalizedPath(
-                            `/${lang}/goods/${UkrToEng(selectedCategory.nameru)}/${UkrToEng(categoryTitle.nameru)}/1`,
-                            lang
-                          )
-                        );
-                        setIsHovered(false);
-                      }}
-                    >
-                      <div className="title-list-category-title">
-                        {categoryTitle.img && (
-                          <Image
-                            src={
-                              process.env.NEXT_PUBLIC_SERVER + categoryTitle.img
-                            }
-                            alt={
-                              lang === 'ru'
-                                ? categoryTitle.nameru
-                                : categoryTitle.nameuk
-                            }
-                            width={25}
-                            height={25}
-                            style={{ objectFit: 'contain' }}
-                          />
-                        )}
+            {/* Рендеримо підкатегорії для ВСІХ категорій в DOM одразу для SEO */}
+            <div className="subcategory-details-container">
+              {catalog.map((category) => {
+                const isCurrentCategory = category.id === selectCategory;
+                const sortedSubcategories = [...category.subcategories].sort(
+                  (a, b) => {
+                    const key = lang === 'ru' ? 'nameru' : 'nameuk';
+                    return a[key].localeCompare(b[key]);
+                  }
+                );
 
-                        <span>
-                          {lang === 'ru'
-                            ? categoryTitle.nameru
-                            : categoryTitle.nameuk}
-                        </span>
-                      </div>
+                return (
+                  <div
+                    key={`sub-container-${category.id}`}
+                    className={`subcategory-details-wrapper ${isCurrentCategory ? 'active' : ''}`}
+                  >
+                    <div className="subcategory-details">
+                      {sortedSubcategories.map((categoryTitle) => {
+                        const subcategoryPath = getLocalizedPath(
+                          `/${lang}/goods/${UkrToEng(category.nameru)}/${UkrToEng(categoryTitle.nameru)}/1`,
+                          lang
+                        );
+
+                        return (
+                          <Link
+                            key={categoryTitle.id}
+                            href={subcategoryPath}
+                            className="list-category-title"
+                            onClick={() => setIsHovered(false)}
+                          >
+                            <div className="title-list-category-title">
+                              {categoryTitle.img && (
+                                <Image
+                                  src={
+                                    process.env.NEXT_PUBLIC_SERVER +
+                                    categoryTitle.img
+                                  }
+                                  alt={
+                                    lang === 'ru'
+                                      ? categoryTitle.nameru
+                                      : categoryTitle.nameuk
+                                  }
+                                  width={25}
+                                  height={25}
+                                  style={{ objectFit: 'contain' }}
+                                />
+                              )}
+                              <span>
+                                {lang === 'ru'
+                                  ? categoryTitle.nameru
+                                  : categoryTitle.nameuk}
+                              </span>
+                            </div>
+                          </Link>
+                        );
+                      })}
                     </div>
-                  ))}
-                </div>
-              </div>
-            )}
+                  </div>
+                );
+              })}
+            </div>
           </div>
         </div>
       </div>

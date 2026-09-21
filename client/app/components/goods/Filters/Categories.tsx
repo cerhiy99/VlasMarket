@@ -8,6 +8,7 @@ import { Locale } from '@/i18n.config'; // Імпортуємо Locale для la
 import { sortSearchParams } from './SortSerchParams';
 import { getLocalizedPath } from '../../utils/getLocalizedPath';
 import { UkrToEng } from '../../utils/UkrToEng';
+import Link from 'next/link';
 
 // Оновлена типізація Category, щоб відображати nameuk та nameru
 type Category = {
@@ -81,8 +82,8 @@ const Categories: React.FC<CategoriesProps> = ({
     setSelectedCategories(newSelectedState);
   }, [searchParams, listCategories]); // Залежимо від searchParams та listCategories
 
-  // Обробник зміни чекбоксу
-  const handleCheckboxChange = (categoryId: number, categoryUrl: string) => {
+  // Дублююча функція, яка генерує та повертає URL для SEO та посилань
+  const getHandleCheckboxChange = (categoryId: number, categoryUrl: string) => {
     const newSearchParams = new URLSearchParams(searchParams.toString());
     const currentSelectedCategoryInUrl = searchParams.get('category');
     const isThisCategoryCurrentlySelected =
@@ -97,40 +98,44 @@ const Categories: React.FC<CategoriesProps> = ({
       if (brand) newSearchParams.set('category', categoryId.toString());
       newSearchParams.delete('subcategory'); // Очищаємо підкатегорію при виборі нової основної категорії
     }
-    // Формуємо новий URL та перенаправляємо
-    if (brand)
-      router.push(
-        getLocalizedPath(
-          `/${lang}/brands/${brand}/1?${sortSearchParams(newSearchParams).toString()}`,
-          lang
-        ),
-        { scroll: false }
+
+    // Формуємо новий URL та повертаємо його
+    if (brand) {
+      return getLocalizedPath(
+        `/${lang}/brands/${brand}/1?${sortSearchParams(newSearchParams).toString()}`,
+        lang
       );
-    else {
+    } else {
       if (isThisCategoryCurrentlySelected) {
-        /*router.push(
-          getLocalizedPath(
-            `/${lang}/goods/1?${sortSearchParams(newSearchParams).toString()}`,
-            lang
-          ),
-          { scroll: false }
-        );*/
+        return getLocalizedPath(
+          `/${lang}/goods/1?${sortSearchParams(newSearchParams).toString()}`,
+          lang
+        );
       } else {
-        router.push(
-          getLocalizedPath(
-            `/${lang}/goods/${categoryUrl}/1?${sortSearchParams(newSearchParams).toString()}`,
-            lang
-          ),
-          { scroll: false }
+        return getLocalizedPath(
+          `/${lang}/goods/${categoryUrl}/1?${sortSearchParams(newSearchParams).toString()}`,
+          lang
         );
       }
     }
   };
 
+  // Обробник зміни чекбоксу (для кліку з router.push та збереженням скролу)
+  const handleCheckboxChange = (
+    categoryId: number,
+    categoryUrl: string,
+    e: React.MouseEvent
+  ) => {
+    e.preventDefault();
+    const targetUrl = getHandleCheckboxChange(categoryId, categoryUrl);
+    router.push(targetUrl, { scroll: false });
+  };
+
   const toggleDropdown = () => {
-    //setIsDropdownOpen((prevState) => !prevState);
     setOpen(nameOpen);
   };
+
+  const isOpenVisible = (isDropdownOpen && !isMobile) || nameOpen == open;
 
   return (
     <div className="brands-container categories-container">
@@ -144,50 +149,60 @@ const Categories: React.FC<CategoriesProps> = ({
           {isDropdownOpen ? <UpSVG /> : <DownSVG />}
         </span>
       </div>
-      {((isDropdownOpen && !isMobile) || nameOpen == open) && (
-        <div
-          style={{ left: '5px' }}
-          className={isMobile ? 'dropdownFilterMobile dropdown' : ''}
-        >
-          {/* Алфавітний фільтр видалено */}
-          <ul className="brands-list filter-scroll" ref={scrollContainerRef}>
-            {sortedCategories.map((category) => (
+
+      {/* Завжди присутній у DOM для повної SEO індексації, ховається/показується через CSS display */}
+      <div
+        style={{ left: '5px', display: isOpenVisible ? 'block' : 'none' }}
+        className={isMobile ? 'dropdownFilterMobile dropdown' : ''}
+      >
+        {/* Алфавітний фільтр видалено */}
+        <ul className="brands-list filter-scroll" ref={scrollContainerRef}>
+          {sortedCategories.map((category) => {
+            const categoryEngUrl = UkrToEng(category.nameru);
+            const generatedHref = getHandleCheckboxChange(
+              category.id,
+              categoryEngUrl
+            );
+
+            return (
               <li key={category.id} className="brand-item">
-                {' '}
-                {/* Змінено class на category-item */}
-                <label
-                  style={{ display: 'flex', alignItems: 'center', gap: '8px' }}
+                <Link
+                  href={generatedHref}
+                  onClick={(e) =>
+                    handleCheckboxChange(category.id, categoryEngUrl, e)
+                  }
+                  style={{ textDecoration: 'none', width: '100%' }}
                 >
-                  <input
-                    type="checkbox"
-                    checked={
-                      selectedCategories[category.id] ||
-                      currentPathname?.includes(
-                        `${UkrToEng(category.nameru)}`
-                      ) ||
-                      false
-                    }
-                    onChange={() =>
-                      handleCheckboxChange(
-                        category.id,
-                        UkrToEng(category.nameru)
-                      )
-                    }
-                    style={{ display: 'none' }}
-                  />
-                  <span className="custom-checkbox"></span>
-                  {/* Відображаємо назву відповідно до поточної мови */}
-                  <span className="brand-name">
-                    {' '}
-                    {/* Змінено class на category-name */}
-                    {lang !== 'ru' ? category.nameuk : category.nameru}
-                  </span>
-                </label>
+                  <label
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '8px',
+                      cursor: 'pointer',
+                    }}
+                  >
+                    <input
+                      type="checkbox"
+                      checked={
+                        selectedCategories[category.id] ||
+                        currentPathname?.includes(categoryEngUrl) ||
+                        false
+                      }
+                      readOnly
+                      style={{ display: 'none' }}
+                    />
+                    <span className="custom-checkbox"></span>
+                    {/* Відображаємо назву відповідно до поточної мови */}
+                    <span className="brand-name">
+                      {lang !== 'ru' ? category.nameuk : category.nameru}
+                    </span>
+                  </label>
+                </Link>
               </li>
-            ))}
-          </ul>
-        </div>
-      )}
+            );
+          })}
+        </ul>
+      </div>
     </div>
   );
 };

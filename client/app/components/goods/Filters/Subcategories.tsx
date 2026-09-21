@@ -8,6 +8,7 @@ import { Locale } from '@/i18n.config'; // Імпортуємо Locale для la
 import { sortSearchParams } from './SortSerchParams';
 import { getLocalizedPath } from '../../utils/getLocalizedPath';
 import { UkrToEng } from '../../utils/UkrToEng';
+import Link from 'next/link';
 
 // Оновлена типізація Subcategory
 type Subcategory = {
@@ -89,8 +90,8 @@ const Subcategories: React.FC<SubcategoriesProps> = ({
     setSelectedSubcategories(newSelectedState);
   }, [searchParams, listSubcategories]); // Залежимо від searchParams та listSubcategories
 
-  // Обробник зміни чекбоксу
-  const handleCheckboxChange = (
+  // Дублююча функція, яка генерує та повертає URL для SEO та посилань
+  const getHandleCheckboxChange = (
     subcategoryId: number,
     subcategoryUrl: string
   ) => {
@@ -106,12 +107,10 @@ const Subcategories: React.FC<SubcategoriesProps> = ({
     const isCurrentlySelected = currentSubcategoryIds.includes(subcategoryId);
 
     if (isCurrentlySelected) {
-      // Якщо підкатегорія вже вибрана, знімаємо вибір
       currentSubcategoryIds = currentSubcategoryIds.filter(
         (id) => id !== subcategoryId
       );
     } else {
-      // Якщо підкатегорія не вибрана, додаємо її
       currentSubcategoryIds.push(subcategoryId);
     }
     if (currentSubcategoryIds.length > 0) {
@@ -125,52 +124,59 @@ const Subcategories: React.FC<SubcategoriesProps> = ({
         newSearchParams.set('subcategory', currentSubcategoryIds.join(','));
       }
     } else {
-      newSearchParams.delete('subcategory'); // Видаляємо параметр, якщо немає вибраних підкатегорій
+      newSearchParams.delete('subcategory');
     }
 
-    // Формуємо новий URL та перенаправляємо
-    if (brand)
-      router.push(
-        getLocalizedPath(
-          `/${lang}/brands/${brand}/1?${sortSearchParams(newSearchParams).toString()}`,
-          lang
-        ),
-        { scroll: false }
+    if (brand) {
+      return getLocalizedPath(
+        `/${lang}/brands/${brand}/1?${sortSearchParams(newSearchParams).toString()}`,
+        lang
       );
-    if (currentPathname) {
-      // Розбиваємо шлях на частини
-      const parts = currentPathname.split('/').filter(Boolean);
+    }
 
-      // Перевіряємо, чи останній сегмент — підкатегорія
-      const currentSubcategory = parts[3]; // якщо підкатегорія завжди на index 3
+    if (currentPathname) {
+      const parts = currentPathname.split('/').filter(Boolean);
+      const currentSubcategory = parts[3];
+
+      const newParts = [...parts];
 
       if (currentSubcategory === subcategoryUrl) {
-        // Вибрали ту саму підкатегорію — видаляємо
-        parts.splice(3, 2);
+        newParts.splice(3, 2);
       } else if (currentSubcategory) {
-        // Замінюємо стару підкатегорію на нову
-        parts[3] = subcategoryUrl;
+        newParts[3] = subcategoryUrl;
       } else {
-        // Додаємо нову підкатегорію
-        parts.push(subcategoryUrl);
+        newParts.push(subcategoryUrl);
       }
 
-      // Формуємо новий шлях
       const newPathname =
         '/' +
-        parts.join('/') +
+        newParts.join('/') +
         '/1?' +
         sortSearchParams(newSearchParams).toString();
 
-      // Редирект
-      router.push(getLocalizedPath(newPathname, lang), { scroll: false });
+      return getLocalizedPath(newPathname, lang);
     }
+
+    return getLocalizedPath(`/${lang}/goods/1`, lang);
+  };
+
+  // Обробник зміни чекбоксу для кліку із router.push та збереженням скролу
+  const handleCheckboxChange = (
+    subcategoryId: number,
+    subcategoryUrl: string,
+    e: React.MouseEvent
+  ) => {
+    e.preventDefault();
+    const targetUrl = getHandleCheckboxChange(subcategoryId, subcategoryUrl);
+    router.push(targetUrl, { scroll: false });
   };
 
   const toggleDropdown = () => {
     setIsDropdownOpen((prevState) => !prevState);
     setOpen(nameOpen);
   };
+
+  const isOpenVisible = (isDropdownOpen && !isMobile) || nameOpen == open;
 
   return (
     <div className="brands-container subcategories-container">
@@ -184,45 +190,59 @@ const Subcategories: React.FC<SubcategoriesProps> = ({
           {isDropdownOpen ? <UpSVG /> : <DownSVG />}
         </span>
       </div>
-      {((isDropdownOpen && !isMobile) || nameOpen == open) && (
-        <div
-          style={{ left: '5px' }}
-          className={isMobile ? 'dropdownFilterMobile dropdown' : ''}
-        >
-          <ul className="brands-list filter-scroll" ref={scrollContainerRef}>
-            {sortedSubcategories.map((subcategory) => (
+
+      {/* Завжди присутній у DOM для SEO, показується/ховається через style.display */}
+      <div
+        style={{ left: '5px', display: isOpenVisible ? 'block' : 'none' }}
+        className={isMobile ? 'dropdownFilterMobile dropdown' : ''}
+      >
+        <ul className="brands-list filter-scroll" ref={scrollContainerRef}>
+          {sortedSubcategories.map((subcategory) => {
+            const subcategoryEngUrl = UkrToEng(subcategory.nameru);
+            const generatedHref = getHandleCheckboxChange(
+              subcategory.id,
+              subcategoryEngUrl
+            );
+
+            return (
               <li key={subcategory.id} className="brand-item">
-                <label
-                  style={{ display: 'flex', alignItems: 'center', gap: '8px' }}
+                <Link
+                  href={generatedHref}
+                  onClick={(e) =>
+                    handleCheckboxChange(subcategory.id, subcategoryEngUrl, e)
+                  }
+                  style={{ textDecoration: 'none', width: '100%' }}
                 >
-                  <input
-                    type="checkbox"
-                    checked={
-                      selectedSubcategories[subcategory.id] ||
-                      currentPathname?.includes(
-                        `${UkrToEng(subcategory.nameru)}`
-                      ) ||
-                      false
-                    }
-                    onChange={() =>
-                      handleCheckboxChange(
-                        subcategory.id,
-                        UkrToEng(subcategory.nameru)
-                      )
-                    }
-                    style={{ display: 'none' }}
-                  />
-                  <span className="custom-checkbox"></span>
-                  {/* Відображаємо назву відповідно до поточної мови */}
-                  <span className="brand-name">
-                    {lang !== 'ru' ? subcategory.nameuk : subcategory.nameru}
-                  </span>
-                </label>
+                  <label
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '8px',
+                      cursor: 'pointer',
+                    }}
+                  >
+                    <input
+                      type="checkbox"
+                      checked={
+                        selectedSubcategories[subcategory.id] ||
+                        currentPathname?.includes(subcategoryEngUrl) ||
+                        false
+                      }
+                      readOnly
+                      style={{ display: 'none' }}
+                    />
+                    <span className="custom-checkbox"></span>
+                    {/* Відображаємо назву відповідно до поточної мови */}
+                    <span className="brand-name">
+                      {lang !== 'ru' ? subcategory.nameuk : subcategory.nameru}
+                    </span>
+                  </label>
+                </Link>
               </li>
-            ))}
-          </ul>
-        </div>
-      )}
+            );
+          })}
+        </ul>
+      </div>
     </div>
   );
 };

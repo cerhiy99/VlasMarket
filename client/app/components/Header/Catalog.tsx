@@ -1,13 +1,14 @@
 'use client';
 
-import React, { useCallback, useMemo, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import './Catalog.scss';
 import CatalogSVG from '../../assest/Header/Catalog.svg';
 import RightSVG from '../../assest/Header/Right.svg';
 import { Locale } from '@/i18n.config';
 import Image from 'next/image';
 import SvgIcon from './SvgIcon';
-import { usePathname, useRouter } from 'next/navigation';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { getLocalizedPath } from '../utils/getLocalizedPath';
 import { UkrToEng } from '../utils/UkrToEng';
 
@@ -38,27 +39,12 @@ type Props = {
 };
 
 const Catalog = ({ lang, dictionary, catalog }: Props) => {
-  const router = useRouter();
   const pathname = usePathname();
 
   const [isOpen, setIsOpen] = useState(false);
-  const [selectCategory, setSelectCategory] = useState<number>(4);
-
-  // ⚡ швидкий lookup замість find у render
-  const selectedCategory = useMemo(() => {
-    return catalog.find((c) => c.id === selectCategory) || null;
-  }, [catalog, selectCategory]);
-
-  // ⚡ сортування один раз
-  const sortedSubcategories = useMemo(() => {
-    if (!selectedCategory) return [];
-
-    const key = lang === 'ru' ? 'nameru' : 'nameuk';
-
-    return [...selectedCategory.subcategories].sort((a, b) =>
-      a[key].localeCompare(b[key])
-    );
-  }, [selectedCategory, lang]);
+  const [selectCategory, setSelectCategory] = useState<number>(
+    catalog?.[0]?.id || 4
+  );
 
   const open = useCallback(() => {
     if (pathname === '/' || pathname === '/ru') return;
@@ -71,17 +57,8 @@ const Catalog = ({ lang, dictionary, catalog }: Props) => {
 
   const handleClose = useCallback(() => {
     setIsOpen(false);
+    setSelectCategory(0);
   }, []);
-
-  const handleCategoryClick = useCallback(
-    (x: CategoryInterface) => {
-      router.push(
-        getLocalizedPath(`/${lang}/goods/${UkrToEng(x.nameru)}/1`, lang)
-      );
-      setIsOpen(false);
-    },
-    [lang, router]
-  );
 
   return (
     <>
@@ -92,19 +69,23 @@ const Catalog = ({ lang, dictionary, catalog }: Props) => {
           <CatalogSVG /> {dictionary.title}
         </div>
 
-        {isOpen && (
-          <div className="dropdown-container">
-            <div className="dropdown">
-              {/* CATEGORY LIST */}
-              <div className="list-category">
-                {catalog.map((x) => (
-                  <div
+        {/* Завжди в DOM для SEO, показуємо/ховаємо через CSS клас 'visible' */}
+        <div className={`dropdown-container ${isOpen ? 'visible' : ''}`}>
+          <div className="dropdown">
+            {/* CATEGORY LIST */}
+            <div className="list-category">
+              {catalog.map((x) => {
+                const categoryPath = getLocalizedPath(
+                  `/${lang}/goods/${UkrToEng(x.nameru)}/1`,
+                  lang
+                );
+                return (
+                  <Link
                     key={x.id}
-                    className={`category ${
-                      selectCategory === x.id ? 'active' : ''
-                    }`}
+                    href={categoryPath}
+                    className={`category ${selectCategory === x.id ? 'active' : ''}`}
                     onMouseEnter={() => handleSelect(x.id)}
-                    onClick={() => handleCategoryClick(x)}
+                    onClick={handleClose}
                   >
                     <div className="svg-with-name">
                       <SvgIcon url={process.env.NEXT_PUBLIC_SERVER + x.svg} />
@@ -114,53 +95,70 @@ const Catalog = ({ lang, dictionary, catalog }: Props) => {
                     <div className="right">
                       <RightSVG />
                     </div>
-                  </div>
-                ))}
-              </div>
+                  </Link>
+                );
+              })}
+            </div>
 
-              {/* SUBCATEGORIES */}
-              {selectCategory !== 0 && selectedCategory && (
-                <div className="subcategory-details-container">
-                  <div className="subcategory-details">
-                    {sortedSubcategories.map((item) => (
-                      <div
-                        key={item.id}
-                        className="list-category-title"
-                        onClick={() => {
-                          router.push(
-                            getLocalizedPath(
-                              `/${lang}/goods/${UkrToEng(
-                                selectedCategory.nameru
-                              )}/${UkrToEng(item.nameru)}/1`,
-                              lang
-                            )
-                          );
-                          setIsOpen(false);
-                        }}
-                      >
-                        <div className="title-list-category-title">
-                          {item.img && (
-                            <Image
-                              src={process.env.NEXT_PUBLIC_SERVER + item.img}
-                              alt={lang === 'ru' ? item.nameru : item.nameuk}
-                              width={30}
-                              height={30}
-                              style={{ objectFit: 'contain' }}
-                            />
-                          )}
+            {/* SUBCATEGORIES - рендеримо для всіх категорій одразу для SEO, перемикаємо через CSS */}
+            <div className="subcategory-details-container">
+              {catalog.map((category) => {
+                const isCurrentCategory = category.id === selectCategory;
+                const sortedSubcategories = [...category.subcategories].sort(
+                  (a, b) => {
+                    const key = lang === 'ru' ? 'nameru' : 'nameuk';
+                    return a[key].localeCompare(b[key]);
+                  }
+                );
 
-                          <span>
-                            {lang === 'ru' ? item.nameru : item.nameuk}
-                          </span>
-                        </div>
-                      </div>
-                    ))}
+                return (
+                  <div
+                    key={`sub-container-${category.id}`}
+                    className={`subcategory-details-wrapper ${isCurrentCategory ? 'active' : ''}`}
+                  >
+                    <div className="subcategory-details">
+                      {sortedSubcategories.map((item) => {
+                        const subcategoryPath = getLocalizedPath(
+                          `/${lang}/goods/${UkrToEng(category.nameru)}/${UkrToEng(item.nameru)}/1`,
+                          lang
+                        );
+
+                        return (
+                          <Link
+                            key={item.id}
+                            href={subcategoryPath}
+                            className="list-category-title"
+                            onClick={handleClose}
+                          >
+                            <div className="title-list-category-title">
+                              {item.img && (
+                                <Image
+                                  src={
+                                    process.env.NEXT_PUBLIC_SERVER + item.img
+                                  }
+                                  alt={
+                                    lang === 'ru' ? item.nameru : item.nameuk
+                                  }
+                                  width={30}
+                                  height={30}
+                                  style={{ objectFit: 'contain' }}
+                                />
+                              )}
+
+                              <span>
+                                {lang === 'ru' ? item.nameru : item.nameuk}
+                              </span>
+                            </div>
+                          </Link>
+                        );
+                      })}
+                    </div>
                   </div>
-                </div>
-              )}
+                );
+              })}
             </div>
           </div>
-        )}
+        </div>
       </div>
     </>
   );

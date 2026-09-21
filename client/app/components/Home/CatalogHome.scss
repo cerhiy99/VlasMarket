@@ -7,17 +7,23 @@
   background-color: #00000060;
   z-index: 13;
 }
+
 .catalog-home-container {
   display: flex;
   align-items: center;
   min-height: 100%;
+  a {
+    text-decoration: none;
+  }
   &:hover {
     z-index: 20;
   }
+
   .dropdown-home-container {
     display: flex;
     height: 100%;
   }
+
   .catalog-title {
     display: flex;
     margin: 10px 0;
@@ -42,14 +48,18 @@
     @media (min-width: 1300px) {
       min-width: 320px;
     }
+
     @media (min-width: 1024px) {
       max-width: 300px;
     }
+
     @media (min-width: 768px) {
       max-width: 220px;
     }
+
     z-index: 4;
   }
+
   .dropdown {
     z-index: 4;
     display: flex;
@@ -57,7 +67,6 @@
     width: 374px;
     min-width: 374px;
     max-width: 374px;
-
     .list-category {
       background-color: #ffffff;
       border: 1px solid #e4e7e9;
@@ -105,12 +114,14 @@
                 fill: #ff8e8e;
               }
             }
+
             img {
               fill: #ff8e8e;
               * {
                 fill: #ff8e8e;
               }
             }
+
             p {
               font-size: 14px;
               font-weight: 500;
@@ -121,6 +132,7 @@
               color: #ff8e8e;
             }
           }
+
           .right {
             svg {
               path {
@@ -131,7 +143,8 @@
         }
       }
     }
-    .subcategory-details-container {
+
+    .subcategory-details-wrapper {
       background-color: #ffffff;
       border: 1px solid #e4e7e9;
       border-radius: 3px;
@@ -143,14 +156,19 @@
       z-index: 4;
       min-height: 100%;
       box-sizing: border-box;
+      display: none;
+      &.active {
+        display: block;
+      }
       .subcategory-details {
         display: grid;
         grid-template-columns: repeat(3, 1fr); /* Три елементи в ряд */
+
         gap: 5px; /* Проміжок між елементами */
+
         //gap: 20px;
         align-items: flex-start;
         overflow: hidden;
-
         .list-category-title {
           display: flex;
           flex-direction: row;
@@ -162,7 +180,6 @@
             gap: 5px;
             cursor: pointer;
             align-items: center;
-
             font-size: 15px;
             font-weight: 500;
             line-height: 20.25px;
@@ -185,6 +202,7 @@
               }
             }
           }
+
           .list-subcategory {
             display: flex;
             flex-direction: column;

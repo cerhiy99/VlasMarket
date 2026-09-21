@@ -317,7 +317,7 @@ const Page = async ({ params, searchParams }: Props) => {
       {realDescriptionBrend &&
         realDescriptionBrend != 'null' &&
         page == '1' && (
-          <p
+          <div
             className="desc"
             dangerouslySetInnerHTML={{ __html: realDescriptionBrend }}
           />
