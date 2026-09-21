@@ -167,7 +167,11 @@ const Categories: React.FC<CategoriesProps> = ({
             return (
               <li key={category.id} className="brand-item">
                 <Link
-                  href={generatedHref}
+                  href={
+                    generatedHref.endsWith('?')
+                      ? generatedHref.slice(0, generatedHref.length - 1)
+                      : generatedHref
+                  }
                   onClick={(e) =>
                     handleCheckboxChange(category.id, categoryEngUrl, e)
                   }

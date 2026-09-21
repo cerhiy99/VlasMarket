@@ -8,7 +8,7 @@ import { Locale } from '@/i18n.config';
 import Image from 'next/image';
 import SvgIcon from './SvgIcon';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { getLocalizedPath } from '../utils/getLocalizedPath';
 import { UkrToEng } from '../utils/UkrToEng';
 
@@ -59,6 +59,8 @@ const Catalog = ({ lang, dictionary, catalog }: Props) => {
     setIsOpen(false);
     setSelectCategory(0);
   }, []);
+
+  const router = useRouter();
 
   return (
     <>
@@ -124,11 +126,13 @@ const Catalog = ({ lang, dictionary, catalog }: Props) => {
                         );
 
                         return (
-                          <Link
+                          <div
                             key={item.id}
-                            href={subcategoryPath}
+                            onClick={() => {
+                              router.push(subcategoryPath);
+                              handleClose();
+                            }}
                             className="list-category-title"
-                            onClick={handleClose}
                           >
                             <div className="title-list-category-title">
                               {item.img && (
@@ -149,7 +153,7 @@ const Catalog = ({ lang, dictionary, catalog }: Props) => {
                                 {lang === 'ru' ? item.nameru : item.nameuk}
                               </span>
                             </div>
-                          </Link>
+                          </div>
                         );
                       })}
                     </div>

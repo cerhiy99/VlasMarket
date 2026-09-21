@@ -9,6 +9,7 @@ import Link from 'next/link';
 import { getLocalizedPath } from '../utils/getLocalizedPath';
 import { UkrToEng } from '../utils/UkrToEng';
 import SvgIcon from '../Header/SvgIcon';
+import { useRouter } from 'next/navigation';
 
 interface SubcategoryInterface {
   id: number;
@@ -50,6 +51,8 @@ const CatalogHome = ({ lang, dictionary, catalog }: Props) => {
   const handleMouseEnter = () => {
     setIsHovered(true);
   };
+
+  const router = useRouter();
 
   return (
     <>
@@ -113,11 +116,13 @@ const CatalogHome = ({ lang, dictionary, catalog }: Props) => {
                         );
 
                         return (
-                          <Link
+                          <div
                             key={categoryTitle.id}
-                            href={subcategoryPath}
+                            onClick={() => {
+                              router.push(subcategoryPath);
+                              setIsHovered(false);
+                            }}
                             className="list-category-title"
-                            onClick={() => setIsHovered(false)}
                           >
                             <div className="title-list-category-title">
                               {categoryTitle.img && (
@@ -142,7 +147,7 @@ const CatalogHome = ({ lang, dictionary, catalog }: Props) => {
                                   : categoryTitle.nameuk}
                               </span>
                             </div>
-                          </Link>
+                          </div>
                         );
                       })}
                     </div>
