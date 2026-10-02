@@ -1,51 +1,44 @@
 const nodemailer = require('nodemailer');
 
+// Ініціалізуємо транспорт один раз на рівні модуля
+const transporter = nodemailer.createTransport({
+  host: 'mail.adm.tools', // надійний прямий хост поштового сервера
+  port: 465,
+  secure: true, // SSL
+  auth: {
+    user: process.env.GMAIL_USER_SEND,
+    pass: process.env.GMAIL_PASS,
+  },
+  pool: true, // повторне використання з'єднань для швидкості
+});
+
 // Функція для надсилання повідомлення на пошту
 const sendEmail = async (to, messageHtml, subject) => {
   try {
-    // Налаштування транспорту (використовуємо Gmail)
-    const transporter = nodemailer.createTransport({
-      host: 'mail.vlasmarket.com.ua',
-      port: 465,
-      secure: true,
-      auth: {
-        user: process.env.GMAIL_USER_SEND,
-        pass: process.env.GMAIL_PASS,
-      },
-      tls: {
-        // Відключення перевірки сертифіката.
-        // Використовуйте тільки якщо ви довіряєте серверу.
-        rejectUnauthorized: false,
-      },
-    });
-
-    // Параметри електронного листа
     const mailOptions = {
-      from: `"vlasmarket.com.ua - інтернет магазин" <${process.env.GMAIL_USER_SEND}>`, // Від кого
-      to, // Кому надсилаємо
-      subject, // Тема листа
-      html: messageHtml, // HTML-контент листа
+      from: `"vlasmarket.com.ua - інтернет магазин" <${process.env.GMAIL_USER_SEND}>`,
+      to,
+      subject,
+      html: messageHtml,
     };
 
-    // Відправка листа
     await transporter.sendMail(mailOptions);
+    console.log('Лист успішно надіслано на:', to);
 
-    console.log('Лист успішно надіслано');
-    // Якщо лист успішно надіслано
     return {
       status: 200,
       message: 'Лист успішно надіслано',
     };
   } catch (error) {
-    console.log('Помилка відправлення на пошту', error);
-    // Визначаємо, який тип помилки стався
+    console.error('Помилка відправлення на пошту:', error);
+
     if (error.response && error.response.code === 550) {
       return {
         status: 404,
         message: 'Електронна адреса отримувача не знайдена',
       };
     }
-    // Якщо виникла інша помилка
+
     return {
       status: 500,
       message: `Помилка під час надсилання листа: ${error.message}`,
