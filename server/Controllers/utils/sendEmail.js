@@ -1,22 +1,22 @@
 const nodemailer = require('nodemailer');
 
-// Ініціалізуємо транспорт один раз на рівні модуля
 const transporter = nodemailer.createTransport({
-  host: 'mail.adm.tools', // надійний прямий хост поштового сервера
-  port: 465,
-  secure: true, // SSL
+  host: 'mail.vlasmarket.com.ua', // Ваш VPS, а не adm.tools
+  port: 587,
+  secure: false, // STARTTLS для порту 587
   auth: {
-    user: process.env.GMAIL_USER_SEND,
-    pass: process.env.GMAIL_PASS,
+    user: process.env.MAIL_USER, // info@vlasmarket.com.ua
+    pass: process.env.MAIL_PASS, // пароль від скриньки
   },
-  pool: true, // повторне використання з'єднань для швидкості
+  tls: {
+    rejectUnauthorized: false, // щоб уникнути проблем із самопідписаними/Let's Encrypt сертифікатами в node
+  },
 });
 
-// Функція для надсилання повідомлення на пошту
 const sendEmail = async (to, messageHtml, subject) => {
   try {
     const mailOptions = {
-      from: `"vlasmarket.com.ua - інтернет магазин" <${process.env.GMAIL_USER_SEND}>`,
+      from: `"vlasmarket.com.ua - інтернет магазин" <${process.env.MAIL_USER}>`,
       to,
       subject,
       html: messageHtml,
