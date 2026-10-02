@@ -1,15 +1,11 @@
 const nodemailer = require('nodemailer');
 
 const transporter = nodemailer.createTransport({
-  host: 'mail.vlasmarket.com.ua', // Ваш VPS, а не adm.tools
-  port: 587,
-  secure: false, // STARTTLS для порту 587
-  auth: {
-    user: process.env.MAIL_USER, // info@vlasmarket.com.ua
-    pass: process.env.MAIL_PASS, // пароль від скриньки
-  },
+  host: '127.0.0.1',
+  port: 25,
+  secure: false,
   tls: {
-    rejectUnauthorized: false, // щоб уникнути проблем із самопідписаними/Let's Encrypt сертифікатами в node
+    rejectUnauthorized: false,
   },
 });
 
