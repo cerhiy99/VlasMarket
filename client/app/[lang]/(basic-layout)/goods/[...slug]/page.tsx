@@ -43,7 +43,8 @@ export async function generateMetadata({ params, searchParams }: Props) {
   const { lang, slug } = await params;
   const searchParams2 = await searchParams;
   if (slug.length == 0) return notFound();
-  else if (slug.length == 1 && isNaN(parseInt(slug[0]))) {
+  
+  else if (slug.length == 1 && isTheInt(slug[0])) {
     const id = slug[0];
     const baseUrl = new URL(process.env.NEXT_PUBLIC_BASE_URL!);
     const { good: product, indexVolume } = await getDataSelectGoods(id, lang); // твоя функція
@@ -260,6 +261,11 @@ export async function generateMetadata({ params, searchParams }: Props) {
 
 const limit = 20;
 
+
+const isTheInt = (value: string) => {
+  return !Number.isInteger(Number(value));
+};
+
 function clearDescriptions(obj: any) {
   if (!obj || typeof obj !== 'object') {
     return;
@@ -369,7 +375,8 @@ const Page = async ({ params, searchParams }: Props) => {
   const { slug, lang } = await params;
   const searchParams2 = await searchParams;
   if (slug.length == 0) return notFound();
-  else if (isNaN(parseInt(slug[0])) && slug.length == 1) {
+  else if (isTheInt(slug[0]) && slug.length == 1) {
+    console.log(4324234234);
     return (
       <SelectGoods params={{ lang: lang, id: slug[0] }} searchParams={{}} />
     );
