@@ -21,6 +21,10 @@ type Props = {
   lang: Locale;
   revie: any;
   watchMore: any;
+  characteristics: {
+    name: string;
+    value: string;
+  }[];
 };
 
 function convertYoutubeUrlToIframe(url: string) {
@@ -38,6 +42,7 @@ const AboutGoods = ({
   lang,
   revie,
   watchMore,
+  characteristics,
 }: Props) => {
   const refDesctription = useRef<HTMLDivElement>(null);
   const refCharactersitics = useRef<HTMLDivElement>(null);
@@ -107,60 +112,8 @@ const AboutGoods = ({
     useState(true);
   const [reviewsExpanded, setReviewsExpanded] = useState(true);
 
-  function parseCharacteristics(html: string, lang: 'ru' | 'ua') {
-    if (typeof window === 'undefined') return [];
-    const parser = new DOMParser();
-    const doc = parser.parseFromString(html, 'text/html');
-    const items = Array.from(doc.querySelectorAll('li'));
-
-    const characteristics = items.map((li: any) => {
-      const name = li.querySelector('p')?.textContent.trim() || '';
-      const value = li.querySelector('span')?.textContent.trim() || '';
-      return { name, value };
-    });
-    characteristics.push({
-      name: selectGoods[`nameType${lang == 'ru' ? 'ru' : 'uk'}`] + ':',
-      value: selectGoods.volumes
-        .map((x) => x.volume.split('||')[lang == 'ru' ? 1 : 0])
-        .join(','),
-    });
-
-    // 🔧 Пріоритети для обох мов
-    const priorityOrder =
-      lang === 'ru'
-        ? [
-            'Страна производ', // початок фрази
-            'Производ',
-            'Назначе',
-            'Линия',
-            'Пол',
-          ]
-        : ['Країна виробника', 'Виробник', 'Призначення', 'Лінія', 'Стать'];
-
-    // 🧠 Кастомна функція сортування
-    characteristics.sort((a, b) => {
-      const indexA = priorityOrder.findIndex((x) => a.name.startsWith(x));
-      const indexB = priorityOrder.findIndex((x) => b.name.startsWith(x));
-
-      // Якщо обидва не в списку → звичайне алфавітне сортування
-      if (indexA === -1 && indexB === -1) {
-        return a.name.localeCompare(b.name, lang === 'ru' ? 'ru' : 'uk');
-      }
-
-      // Якщо лише один не в списку — він має бути вище
-      if (indexA === -1) return -1;
-      if (indexB === -1) return 1;
-
-      // Якщо обидва в списку — сортуємо за порядком у масиві
-      return indexA - indexB;
-    });
-
-    return characteristics;
-  }
-
   const html =
     lang == 'ru' ? selectGoods.characteristicru : selectGoods.characteristicuk;
-  const characteristics = parseCharacteristics(html, lang);
   const displayedCharacteristics = isCharacteristicsExpanded
     ? characteristics
     : characteristics.slice(0, 3);

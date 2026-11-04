@@ -181,7 +181,7 @@ const AddGoodsPage = () => {
       (x) => x.ukTitle != 'Призначення'
     );
     const newCharacteristicsru = characteristicsru.filter(
-      (x) => x.ruTitle != 'Назначення'
+      (x) => x.ruTitle != 'Назначение'
     );
     let newUkDescription = '';
     let newRuDescription = '';
@@ -220,7 +220,7 @@ const AddGoodsPage = () => {
     }
   };
   useEffect(() => {
-    if (productRecognitions.length > 0) updateCharacteristik();
+    updateCharacteristik();
   }, [productRecognitions]);
   const [selectedBrend, setSelectedBrend] = useState('');
   const [selectLinia, setSelectLinia] = useState('');

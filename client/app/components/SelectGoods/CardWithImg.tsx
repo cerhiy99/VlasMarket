@@ -14,6 +14,7 @@ import ListGoodsLeftWithRealGoods from '../Home/ListGoodsLeftWithRealGoods';
 import { getLocalizedPath } from '../utils/getLocalizedPath';
 import { useTranslation } from '@/context/TranslationProvider';
 import AboutGoods from './AboutGoods';
+import { parseCharacteristics } from './parseCharacteristics';
 
 const CardWithImg = ({
   dictionary,
@@ -51,6 +52,11 @@ const CardWithImg = ({
 
   const { user, isAuthorize } = useSelector((state: RootState) => state.user);
   useEffect(() => {}, [searchParams]);
+  const characteristics = parseCharacteristics(
+    selectGoods[`characteristic${lang == 'ru' ? 'ru' : 'uk'}`],
+    lang,
+    selectGoods
+  );
 
   return (
     <>
@@ -156,6 +162,7 @@ const CardWithImg = ({
         lang={lang}
         revie={reviews}
         watchMore={watchMore}
+        characteristics={characteristics}
       />
       <SetView id={selectGoods.id} />
     </>
