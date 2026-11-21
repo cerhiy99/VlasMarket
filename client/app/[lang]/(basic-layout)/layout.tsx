@@ -35,17 +35,17 @@ export default async function RootLayout({
       `}
         </Script>
       </head>
-      <Header lang={lang} />
       <body>
+        <Header lang={lang} />
         <TranslationProvider lang={lang}>
           <Providers>
             <main>{children}</main>
           </Providers>
         </TranslationProvider>
+        <footer>
+          <Footer lang={lang} />
+        </footer>
       </body>
-      <footer>
-        <Footer lang={lang} />
-      </footer>
     </>
   );
 }
