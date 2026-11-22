@@ -35,8 +35,6 @@ export default async function RootLayout({
       `}
         </Script>
       </head>
-        <TranslationProvider lang={lang}>
-          <Providers>
             <body>
               <Header lang={lang} />
                   <main>{children}</main>
@@ -44,8 +42,6 @@ export default async function RootLayout({
                 <Footer lang={lang} />
               </footer>
             </body>
-          </Providers>
-        </TranslationProvider>
     </>
   );
 }
