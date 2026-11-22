@@ -151,9 +151,7 @@ const Subcategories: React.FC<SubcategoriesProps> = ({
       const newPathname =
         '/' +
         newParts.join('/') +
-        '/1?' +
-        sortSearchParams(newSearchParams).toString();
-
+        '/1'
       return getLocalizedPath(newPathname, lang);
     }
 
