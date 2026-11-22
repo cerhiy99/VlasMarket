@@ -35,5 +35,5 @@ export default async function RootLayout({
   const resolvedParams = await params;
   const lang = resolvedParams.lang;
 
-  return <html lang={lang == 'ru' ? lang : 'uk'}></html>;
+  return <html lang={lang == 'ru' ? lang : 'uk'}>{children}</html>;
 }
