@@ -14,7 +14,7 @@ const UpdateCategory = dynamic(
 
 const page = () => {
   return (
-    <div>
+    <div style={{display:'flex',alignItems:'center',justifyContent:'center',flexDirection:'column',width:'100%'}}>
       <AddCategory />
       <UpdateCategory />
     </div>

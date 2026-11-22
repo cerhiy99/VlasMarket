@@ -16,6 +16,8 @@ interface Category {
   id: number;
   nameuk: string;
   nameru: string;
+  descriptionuk:string;
+  descriptionru:string;
   svg: string;
 }
 
@@ -51,6 +53,8 @@ const UpdateCategory = () => {
       if (selected) {
         setNameUA(selected.nameuk);
         setNameRU(selected.nameru);
+        setDescriptionru(selected.descriptionru);
+        setDescriptionuk(selected.descriptionuk);
       }
     } else {
       setNameUA('');
